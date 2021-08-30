@@ -1,0 +1,47 @@
+/*************************
+Default Colors
+*************************/
+
+/* Colors styleguid 1 */
+$white:     #fff;
+$black:     #000;
+
+$burgundy:  #9c2f85;
+$cyan:      #00C8FF;
+$gold:      #f2c68c;
+
+$red:       #d92a1b;
+$green:     #73b362;
+
+/* Basic colors */
+$color-primary:   $cyan;
+$color-secondary: $burgundy;
+$color-tertiary:  $gold;
+
+$color-notification: #e8840b;
+
+/* Basic greys */
+$gray-primary:    #898989;
+$gray-secondary:  #dedede;
+
+$gray:  #8c8c8c;
+$gray2: #a3a3a3;
+$gray3: #eee;
+$gray3b: #ccc;
+$gray4: #929292; // light text
+$gray5: #444d4d; // menu
+$gray6: #f8f8f8;
+
+$color-primary-alpha: rgba($color-primary, 0.4);
+$color-secondary-alpha: rgba($color-secondary, 0.4);
+$color-tertiary-alpha: rgba($color-tertiary, 0.4);
+$gray-primary-alpha: rgba($gray-primary, 0.4);
+$gray-secondary-alpha: rgba($gray-secondary, 0.4);
+
+$default-color-alpha: #00C8FF80;
+$default-color-alpha: #00C8FF80;
+
+
+$backdrop-transparent: rgba($gray, 0.8);
+
+$white-transparent: rgba($white, 0.2);

@@ -1,0 +1,9 @@
+<lib-panel-settings
+  [titleNew]="'Nieuwe hoofdcategorie'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <lib-list-panel-main-category [isNew]="isNew" [mainCategory]="selectedMainCategory" (onEvent)="events($event)"></lib-list-panel-main-category>
+</lib-panel-settings>

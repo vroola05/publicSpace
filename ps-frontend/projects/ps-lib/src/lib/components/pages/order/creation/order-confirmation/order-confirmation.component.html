@@ -1,0 +1,22 @@
+<lib-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageType]="pageType" [buttonsRight]="buttonsRight" [title]="'Melding informatie'">
+  <lib-panel-title>
+    <div  class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <lib-details-header [data]="headerData"></lib-details-header>
+      </div>
+      <div class="col-sm-12 col-md-6 details-main-info">
+        <lib-panel-info 
+          [call]="call" 
+          [urlNotes]="postUrlNote" 
+          [urlImages]="getUrlImages"
+          [urlImage]="getUrlImage"
+          [urlImageUpload]="postUrlImage"></lib-panel-info>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        
+        <lib-panel-order [action]="'new'" [title]="'Nieuwe opdracht(en)'" [orders]="orders" (changed)="onOrderChanged($event)"></lib-panel-order>
+        <lib-panel-order [title]="'Bestaande opdracht(en)'" [orders]="call.orders" (changed)="onOrderChanged($event)"></lib-panel-order>
+      </div>
+    </div>
+  </lib-panel-title>
+</lib-panel>

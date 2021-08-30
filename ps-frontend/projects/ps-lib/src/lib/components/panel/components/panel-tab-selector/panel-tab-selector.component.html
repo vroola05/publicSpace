@@ -1,0 +1,10 @@
+<div *ngIf="_tabs" class="tabs-selector">
+  <div *ngIf="_tabs" class="tabs {{direction}}">
+    <div *ngFor="let tab of _tabs" class="tab" (click)="onClicked(tab)" [ngClass]="{'selected': tab.selected}">
+      {{tab.name}}
+    </div>
+  </div>
+  <div class="tabs-selector-content">
+    <ng-content></ng-content>
+  </div>
+</div>

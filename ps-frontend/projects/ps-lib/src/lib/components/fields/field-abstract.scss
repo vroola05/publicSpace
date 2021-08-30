@@ -1,0 +1,76 @@
+@import "../../../../../assets/scss/styles.scss";
+
+.field {
+  display: flex;
+  flex-direction: row;
+
+  width: 100%;
+  margin: 0px;
+  
+  padding: $default-spacing/2;
+
+  color: $gray-primary;
+  background: $white;
+  border-bottom: solid 1px $color-primary;
+
+  textarea, input[class*="-input"] {
+    width: 100%;
+    padding: $default-spacing/2;
+    outline: none;
+    border: none;
+    color: $black;
+    font-size: $large-font-size;
+    caret-color: $color-primary;
+  }
+
+  &.filled {
+    background: $gray-secondary;
+    font-size: $default-font-size;
+
+    textarea, input[class*="-input"] {
+      background: $gray-secondary;
+      font-size: $default-font-size;
+    }
+  }
+
+  &.small {
+    font-size: $default-font-size;
+    textarea, input[class*="-input"] {
+      font-size: $default-font-size;
+    }
+  }
+
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .field-icon {
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+    }
+  }
+  
+  &:focus-within{
+    
+    border-bottom: solid 1px $color-primary-alpha;
+
+    .icon-container {
+      .field-icon {
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.field-errors {
+  display: flex;
+  flex-direction: column;
+
+  width: calc(100% - #{$default-spacing*2});
+  margin: $default-spacing;
+  margin-bottom: $default-spacing;
+  font-size: $small-font-size;
+  color: $red;
+}

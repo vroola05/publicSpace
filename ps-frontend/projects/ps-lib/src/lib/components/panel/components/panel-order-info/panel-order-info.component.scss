@@ -1,0 +1,39 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.panel-order-info {
+  .panel-order-info-ordertypes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .panel-order-info-ordertype {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      width: 100%;
+      padding-left: $default-spacing;
+
+      .panel-order-info-bullet {
+        padding-right: $default-spacing / 2;
+      }
+
+      .field-icon {
+        padding: $default-spacing / 2;
+        padding-left: 0;
+
+        font-size: $large-font-size;
+        color: $gray-primary;
+
+        cursor: pointer;
+      }
+    }
+  }
+  .panel-order-info-edit {
+    margin: 0px;
+    margin-top: $default-spacing*2;
+    padding: 0px;
+    padding-top: $default-spacing*2;
+    border-top: $gray-secondary solid 2px;
+  }
+}

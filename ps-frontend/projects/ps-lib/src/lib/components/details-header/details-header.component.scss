@@ -1,0 +1,120 @@
+@import "../../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .ps-table {
+    max-height: 120px;
+    overflow: hidden;
+
+    &.open {
+      max-height: unset;
+      overflow: unset;
+    }
+    .ps-table-header {
+      display: none;
+    }
+    .ps-table-row {
+      display: table;
+      margin: 0px;
+
+      .ps-table-cell {
+        display: table-row;
+        
+
+        .ps-table-cell-label {
+          display:table-cell;
+          padding-top: $default-spacing/2;
+          padding-right: $default-spacing/2;
+          font-weight: bold;
+        }
+        .ps-table-cell-inner {
+          display:table-cell;
+          padding-top: $default-spacing/2;
+        }
+      }
+    }
+    .ps-table-collapse {
+      position: sticky;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      bottom: 0px;
+      background: $white;
+      border-bottom: #dedede solid 1px;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .ps-table {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% + #{$default-spacing*4});
+
+    margin: auto;
+    margin-left: calc(0px - #{$default-spacing*2});
+    margin-right: calc(0px - #{$default-spacing*2});
+
+    background: $white;
+
+    .ps-table-header {
+      top: 0px;
+      background: $gray-secondary;
+      box-shadow: 0 2px 5px -1px rgba(0,0,0,.65);
+      
+      &.row {
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+
+      .ps-table-header-cell {
+        padding: $default-spacing;
+
+        font-weight: bold;
+        font-style: normal;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+    }
+
+    .ps-table-row {
+      align-items: stretch;
+
+      padding-top: $default-spacing/2;
+      padding-bottom: $default-spacing;
+      box-shadow: 0px 1px 2px #fefefeaa;
+      border-bottom: 1px solid $gray3;
+      background: $color-primary-alpha;
+
+      &.row {
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+      
+      .ps-table-cell {
+        padding: $default-spacing;
+        
+        border-left: 1px solid $black;
+        word-break: break-word;
+
+        .ps-table-cell-label {
+          display: none;
+        }
+        .col-text {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        &:first-child {
+          border-left: none;
+        }
+      }
+    }
+    .ps-table-collapse {
+      display: none;
+    }
+  }
+}

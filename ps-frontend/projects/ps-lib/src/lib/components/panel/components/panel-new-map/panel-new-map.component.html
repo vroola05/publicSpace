@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h4>Zoek op straatnaam en huisnummer</h4>
+  </div>
+</div>
+<div class="row search-address-container">
+  <div class="col-sm-12 col-md-8 search-address-street">
+    <div class="field-wrapper">
+      <lib-text-field-prefill
+        [style]="'filled'"
+        [id]="'street'"
+        [required]="true"
+        [name]="'street'"
+        [placeholder]="'Straat'"
+        [value]="options"
+        (typing)="getStreetList($event)"
+        (changed)="onStreetChanged($event)"
+        #streetComponent></lib-text-field-prefill>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-2 search-address-number">
+    <div class="field-wrapper">
+      <lib-text-field
+        [style]="'filled'"
+        [type]="'number'"
+        [id]="'number'"
+        [name]="'number'"
+        [placeholder]="'Huisnummer'"
+        [maxLength]="6"
+        (changed)="onNumberChanged($event)"
+        #numberComponent></lib-text-field>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-2 search-address-button">
+    <lib-btn-contained (clicked)="search()">Zoeken</lib-btn-contained>
+  </div>
+  <div class="col-sm-12">
+    <div class="field-errors" *ngIf="errors.length > 0">
+      <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+    </div>
+  </div>
+</div>
+<div class="row current-address-container">
+  <div class="col-sm-12 col-md-6">
+    <h4>Zoek op straatnaam en huisnummer</h4>
+  </div>
+  <div class="col-sm-12 col-md-6 current-address">
+    {{getShowAddress()}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <lib-maps [classes]="'bigger'" [clickable]="true" [zoom]="true" [pan]="true" [zoomControl]="true" [location]="call.location" (clicked)="clicked($event)"></lib-maps>
+  </div>
+</div>
+<div class="row" *ngIf="showNearby()">
+  <div class="col-sm-12 col-md-6">
+    <h4>Staat de melding die je wil doen al in deze lijst?</h4>
+  </div>
+  <div class="col-sm-12">
+    <lib-list
+      [listTemplate]="listTemplate"
+      [data]="callList"
+      (clicked)="clickedNearby($event)">
+
+      <lib-list-panel [template]="listTemplate" [call]="callNearby"></lib-list-panel>
+
+    </lib-list>
+  </div>
+</div>

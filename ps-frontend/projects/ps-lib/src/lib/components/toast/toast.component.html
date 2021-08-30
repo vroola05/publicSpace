@@ -1,0 +1,7 @@
+<div class="ps-toasts" *ngIf="toasts && toasts.length > 0">
+  <div class="ps-toast {{toast.type}}" *ngFor="let toast of toasts">
+    <span class="ps-toast-icon material-icons">{{toast.type}}</span>
+    <span class="ps-toast-message">{{toast.message}}</span>
+    <span class="ps-toast-close material-icons" (click)="close(toast)">close</span>
+  </div>
+</div>

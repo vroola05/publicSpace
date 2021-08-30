@@ -1,0 +1,5 @@
+<button type="button" class="ps-settings-btn" [ngClass]="{'selected': selected}" (click)="click()">
+  <span *ngIf="icon" class="ps-settings-btn-icon material-icons md-36">{{icon}}</span>
+  <span *ngIf="!icon" class="ps-settings-btn-no-icon">{{getNameAsAvatar(name)}}</span>
+  <span class="ps-settings-btn-text">{{name}}</span>
+</button>

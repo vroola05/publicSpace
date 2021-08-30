@@ -1,0 +1,136 @@
+@import "../../../../../assets/scss/styles.scss";
+
+
+.ps-toasts {
+  display: flex;
+  flex-direction: column;
+
+  .ps-toast {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &.done {
+      background: $color-primary-alpha;
+      .ps-toast-icon {
+        color: $color-primary;
+      }
+    }
+    &.info {
+      background: #c3cae766;
+
+      .ps-toast-icon {
+        color: #c3cae7;
+      }
+    }
+    &.warning {
+      background: $color-tertiary-alpha;
+      .ps-toast-icon {
+        color: $color-tertiary;
+      }
+    }
+    &.error {
+      background: #ff848466;
+      .ps-toast-icon {
+        color: #ff8484;
+      }
+    }
+
+    &:first-child {
+      margin-top: 0px;
+    }
+    .ps-toast-icon {
+      flex: none;
+      padding: $default-spacing;
+      font-size: $xlarge-font-size;
+    }
+    .ps-toast-message {
+      flex: auto;
+    }
+    .ps-toast-close {
+      flex: none;
+      cursor: pointer;
+      padding: $default-spacing;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .ps-toasts {
+    width: 100%;
+    background: $white;
+
+    .ps-toast {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      padding: $default-spacing/2;
+
+      &.done {
+        border-bottom: $color-primary solid 1px;
+      }
+      &.info {
+        border-bottom: #c3cae7 solid 1px;
+      }
+      &.warning {
+        border-bottom: $color-tertiary solid 1px;
+      }
+      &.error {
+        border-bottom: #ff8484 solid 1px;
+      }
+
+      &:first-child {
+        margin-top: 0px;
+      }
+      .ps-toast-icon {
+        flex: none;
+        padding: $default-spacing;
+        font-size: $xlarge-font-size;
+      }
+      .ps-toast-message {
+        flex: auto;
+      }
+      .ps-toast-close {
+        flex: none;
+        cursor: pointer;
+        padding: $default-spacing;
+      }
+    }
+  }
+}
+@include media-breakpoint-up(md) {
+  .ps-toasts {
+    width: 90%;
+    margin: auto;
+    margin-top: $default-spacing*4;
+  
+    .ps-toast {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: calc(100% - #{$default-spacing*4});
+      padding: $default-spacing*2;
+  
+      border-radius: 4px;
+      margin-top: $default-spacing;
+
+      &:first-child {
+        margin-top: 0px;
+      }
+      .ps-toast-icon {
+        flex: none;
+        padding: $default-spacing;
+        font-size: $xlarge-font-size;
+      }
+      .ps-toast-message {
+        flex: auto;
+      }
+      .ps-toast-close {
+        flex: none;
+        cursor: pointer;
+        padding: $default-spacing;
+      }
+    }
+  }
+}

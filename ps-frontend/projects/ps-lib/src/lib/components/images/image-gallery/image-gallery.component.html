@@ -1,0 +1,13 @@
+<div *ngIf="images" class="image-gallery">
+  <div class="image-gallery-container-outer {{shadow}}">
+    <div class="image-gallery-container" #psGallery>
+      <lib-image class="{{isSelected(rowIndex)}}" [image]="image" (click)="click(rowIndex, image)" *ngFor="let image of images; let rowIndex = index"></lib-image>
+    </div>
+  </div>
+  <span *ngIf="showPrevious()" class="image-gallery-nav btn-left" (click)="previous($event)">
+    <span class="material-icons">keyboard_arrow_left</span>
+  </span>
+  <span *ngIf="showNext()" class="image-gallery-nav btn-right" (click)="next($event)">
+    <span class="material-icons">keyboard_arrow_right</span>
+  </span>
+</div>

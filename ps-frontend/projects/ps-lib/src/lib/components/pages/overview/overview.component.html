@@ -1,0 +1,37 @@
+
+<div class="layout-container">
+  <div class="layout-header">
+    <lib-header [pageType]="pageType"></lib-header>
+  </div>
+  <div class="layout-toast">
+    <lib-toast></lib-toast>
+  </div>
+  <div class="search-container d-flex flex-col justify-content-center">
+    <lib-text-field-big
+    [id]="'search'"
+    [name]="'search'"
+    [icon]="'search'"
+    [class]="'search-field col-md-4 italic'"
+    [placeholder]="title"
+    [value]="search"
+    (typing)="onSearch($event)"></lib-text-field-big>
+  </div>  
+  <div class="overview-list-container" #tableContainer>
+    <div class="overview-list-container-inner">
+      <lib-list
+        [listTemplate]="listTemplate"
+        [data]="callList" 
+        (clicked)="clicked($event)"
+        (positionChanged)="setPosition($event)"
+        (filterChanged)="filterChanged($event)">
+
+        <lib-list-panel *ngIf="!overview.panelType || overview.panelType === 'call'" [template]="listTemplate" [call]="call"></lib-list-panel>
+        <lib-list-panel-order *ngIf="overview.panelType === 'order'" [template]="listTemplate" [call]="call"></lib-list-panel-order>
+      </lib-list>
+    </div>
+    <div *ngIf="!endOfList" class="overview-load-more">
+        <lib-btn-contained (clicked)="loadMoreItems()">Meer meldingen ophalen...</lib-btn-contained>
+    </div>
+  </div>
+  
+</div>

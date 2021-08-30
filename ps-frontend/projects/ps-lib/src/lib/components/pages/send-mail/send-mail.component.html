@@ -1,0 +1,28 @@
+<lib-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageType]="pageType" [buttonsRight]="buttonsRight"
+  [title]="'Melding informatie'">
+  <lib-panel-title>
+    <div class="row mail-main">
+      <div class="col-sm-12 mail-main-header">
+        <lib-details-header [data]="headerData"></lib-details-header>
+      </div>
+      <div class="col-sm-12 col-md-6 mail-main-info">
+        <lib-panel-info [call]="call" [urlNotes]="postUrlNote" [urlImages]="getUrlImages"
+          [urlImage]="getUrlImage" [urlImageUpload]="postUrlImage"></lib-panel-info>
+      </div>
+      <div class="col-sm-12 col-md-6 mail-main-content">
+        <div class="">
+          <h4>{{label}}</h4>
+          <div class="field-wrapper">
+            <lib-textarea-field class="content-field" [id]="'content'" [name]="'content'" [placeholder]="label"
+              [required]="true" [maxLength]="500" (typing)="onTyping($event)" (changed)="onContentChanged($event)"
+              #descriptionField>
+            </lib-textarea-field>
+          </div>
+        </div>
+        <div>
+          <lib-mail [title]="label"></lib-mail>
+        </div>
+      </div>
+    </div>
+  </lib-panel-title>
+</lib-panel>

@@ -1,0 +1,30 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .assign-main {
+    padding: 0px;
+
+    .assign-tabs {
+      padding-top: 0;
+    }
+  }
+}
+@include media-breakpoint-up(md) {
+  .assign-main {
+    .assign-tabs {
+      padding-top: $default-spacing*2;
+
+      .tab-search {
+        border-left: solid 1px $color-primary;
+        border-right: solid 1px $color-primary;
+      }
+
+      .no-items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: $default-spacing;
+      }
+    }
+  }
+}

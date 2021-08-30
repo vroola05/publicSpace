@@ -1,0 +1,22 @@
+<div class="notes container" *ngIf="_notes">
+  <div class="note-row-header row row-cols-3">
+    <span class="col col-4">Datum</span>
+    <span class="col col-4">Type notitie</span>
+    <span class="col col-4">Gebruiker</span>
+  </div>
+  <div class="note-row row row-cols-3" *ngFor="let note of _notes; let colIndex = index">
+    <span class="note-cols col col-12" (click)="toggle(colIndex)">
+      <div class="row">
+        <span class="note-col col-4">{{getDate(note.date)}}</span>
+        <span class="note-col col-4">{{note.type}}</span>
+        <span class="note-col col-4">{{note.supervisor}}</span>
+      </div>
+    </span>
+    <span *ngIf="isOpen(colIndex)" class="note-toggle col col-12">
+      <h5>Toelichting</h5>
+      <p [innerHtml]="note.description">
+        
+      </p>
+    </span>
+  </div>
+</div>

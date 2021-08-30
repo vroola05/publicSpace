@@ -1,0 +1,27 @@
+<div class="field-wrapper">
+  <label (click)="openList()" class="field {{classes}}">
+    <input
+      type="text"
+      class="text-field-input"
+      [id]="id"
+      [name]="name"
+      [disabled]="disabled"
+      [value]="value"
+      [placeholder]="placeholder" readonly />
+
+      <span *ngIf="!opened" class="field-icon closed material-icons" [ngClass]="{'invisible': !hasItems()}">
+        arrow_drop_down
+      </span>
+      <span *ngIf="opened" class="field-icon closed material-icons" [ngClass]="{'invisible': !hasItems()}">
+        arrow_drop_up
+      </span>
+  </label>
+  <div *ngIf="hasItems() && opened" class="dropdown-field-list">
+    <div *ngFor="let option of options" (click)="onClick(option)" [ngClass]="{'selected': isSelected(option)}" class="dropdown-field-list-item">
+      {{option.name}}
+    </div>
+  </div>
+  <div class="field-errors" *ngIf="errors.length > 0">
+    <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+  </div>
+</div>

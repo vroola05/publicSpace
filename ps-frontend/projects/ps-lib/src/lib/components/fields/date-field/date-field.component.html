@@ -1,0 +1,20 @@
+<label class="field {{classes}} {{style}}">
+  <span class="icon-container" *ngIf="hasIcon()">
+    <span class="field-icon material-icons">{{icon}}</span>
+  </span>
+  <input
+    class="text-field-input"
+    [id]="id"
+    [name]="name"
+    [disabled]="disabled"
+    [value]="value"
+    (dateChange)="onDateChanged($event)"
+    [placeholder]="placeholder"
+    [matDatepicker]="datePicker"
+    #fieldRef/>
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+</label>
+<div class="field-errors" *ngIf="errors.length > 0">
+  <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+</div>

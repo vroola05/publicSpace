@@ -1,0 +1,40 @@
+$font-primary: Roboto, "Helvetica Neue", sans-serif;
+$font-secondary: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+
+$small-font-size: 12px;
+$default-font-size: 14px;
+$default-font-size-mobile: 16px;
+$middle-font-size: 18px;
+$large-font-size: 21px;
+$xlarge-font-size: 36px;
+
+$header-font-size: 54px;
+
+
+$title-font-weight: 200;
+$title-font-size: 20px;
+
+// Font weight
+$font-weight-bold: 700;
+$font-weight-semi-bold: 500;
+
+// Font style
+$font-style-italic: italic;
+
+h4 {
+  font-weight: bold;
+  font-size: $default-font-size;
+  margin-top: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+h5 {
+  font-weight: bold;
+  font-size: $small-font-size;
+  
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

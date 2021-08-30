@@ -1,0 +1,10 @@
+<div class="filter-container" #container>
+  <span class="filter-toggle" (click)="toggle()">
+    <span class="toggle-btn-title">{{title}}</span>
+    <span class="toggle-btn material-icons" *ngIf="!hasFilter">visibility_off</span>
+    <span class="toggle-btn material-icons" *ngIf="hasFilter">visibility</span>
+  </span>
+  <div class="filter-dropdown" [ngClass]="{'open': isOpen}" #dropdown>
+    <ng-content></ng-content>
+  </div>
+</div>

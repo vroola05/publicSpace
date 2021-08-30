@@ -1,0 +1,25 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 38px;
+  }
+}
+.edit-btn {
+  float: right;
+
+  .change-btn {
+    display: inline;
+  
+    color: $black;
+    font-size: $default-font-size;
+  
+    button {
+      display: inline;
+    }
+  }
+}

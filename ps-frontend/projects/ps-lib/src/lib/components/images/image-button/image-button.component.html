@@ -1,0 +1,14 @@
+<div class="image-btn">
+  <div class="image-btn-container">
+    <div class="image-btn-image-container">
+      <div *ngIf="hasImages()" class="image-btn-image">
+        <lib-image [image]="getImage()"></lib-image>
+      </div>
+      <div (click)="popupImage($event)" class="image-btn-overlay">{{hasOverlayText()}}</div>
+    </div>
+  </div>
+  <div *ngIf="hasUploadUrl()" class="image-btn-upload-container" (click)="uploadPhotoClick()">
+    <span class="material-icons md-36">cloud_upload</span>
+    <input type="file" name="photo-upload" accept="image/gif, image/jpeg, image/png" (change)="uploadPhoto($event)" #inputUpload />
+  </div>
+</div>

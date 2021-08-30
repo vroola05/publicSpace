@@ -1,0 +1,33 @@
+<div class="row list-panel" *ngIf="_action">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Status</h4>
+        <div class="field-wrapper">
+          <lib-dropdown-field [id]="'status'" [name]="'status'" [placeholder]="'Status'" [options]="statusItems"
+            (changed)="onStatusChanged($event)" #statusComponent>
+          </lib-dropdown-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row buttons">
+      <div class="col-md-6 text-left">
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div class="col-md-4">
+            <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

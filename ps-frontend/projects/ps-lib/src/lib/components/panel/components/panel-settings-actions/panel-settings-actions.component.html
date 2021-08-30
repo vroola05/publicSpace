@@ -1,0 +1,8 @@
+<lib-panel-settings
+  [data]="data"
+  [open]="open"
+  [titleNew]="''"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <lib-list-panel-action [action]="selectedAction" (onEvent)="events($event)"></lib-list-panel-action>
+</lib-panel-settings>

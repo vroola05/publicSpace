@@ -1,0 +1,22 @@
+<div class="panel-toggle {{style}}" [ngClass]="{'open': toggle}">
+    <div class="panel-toggle-title" (click)="onClick($event)">
+
+      <div class="toggle-row">
+        <div class="toggle-col" *ngFor="let t of title">
+          {{t}}
+        </div>
+      </div>
+      <div class="toggle-icon">
+        <span *ngIf="!toggle" class="field-icon closed material-icons">
+          arrow_drop_down
+        </span>
+        <span *ngIf="toggle" class="field-icon closed material-icons">
+          arrow_drop_up
+        </span>
+      </div>
+  </div>
+  
+  <div *ngIf="toggle" class="panel-toggle-toggle">
+      <ng-content></ng-content>
+  </div>
+</div>

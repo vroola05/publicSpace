@@ -1,0 +1,102 @@
+<div class="row list-panel" *ngIf="_user">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Naam</h4>
+        <div class="field-wrapper">
+          <lib-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [placeholder]="'Naam'"
+            [value]="_user?.name" [required]="true" [maxLength]="50" (changed)="onNameChanged($event)"
+            #nameComponent></lib-text-field>
+        </div>
+        <h4>Gebruikersnaam</h4>
+        <div class="field-wrapper">
+          <lib-text-field [style]="'filled'" [id]="'username'" [name]="'username'" [placeholder]="'Gebruikersnaam'"
+            [value]="_user?.username" [required]="true" [maxLength]="20" (changed)="onUsernameChanged($event)"
+            #usernameComponent></lib-text-field>
+        </div>
+        <h4>Email</h4>
+        <div class="field-wrapper">
+          <lib-text-field [style]="'filled'" [id]="'email'" [name]="'email'" [placeholder]="'Email'"
+            [value]="_user?.email" [required]="true" [maxLength]="150" (changed)="onEmailChanged($event)"
+            #emailComponent></lib-text-field>
+        </div>
+
+        
+        <div class="field-wrapper">
+          <lib-checkbox-field [id]="'admin'" [name]="'admin'" [value]="_user?.admin"
+            (changed)="onAdminChanged($event)">Administrator
+          </lib-checkbox-field>
+        </div>
+
+        <div *ngIf="isNew">
+          <h4>Wachtwoord</h4>
+          <div class="field-wrapper">
+            <lib-password-field
+              [style]="'filled'"
+              [id]="'password'"
+              [name]="'password'"
+              [placeholder]="'Wachtwoord'"
+              [value]=""
+              [required]="true"
+              (changed)="onPasswordChanged($event)" #passwordComponent></lib-password-field>
+            <h4>Wachtwoord opnieuw</h4>
+            <lib-password-field
+              [style]="'filled'"
+              [id]="'rePassword'"
+              [name]="'rePassword'"
+              [placeholder]="'Wachtwoord opnieuw'"
+              [value]=""
+              [required]="true"
+              (changed)="onRePasswordChanged($event)" #rePasswordComponent></lib-password-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Rollen</h4>
+        <div class="field-wrapper">
+          <lib-select-field [id]="'roles'" [name]="'roles'" [options]="roles" [classes]="'max-height'"
+            [style]="'filled'"
+            (changed)="onRolesChanged($event)"
+            #rolesField></lib-select-field>
+        </div>
+        <h4>Groepen</h4>
+        <div class="field-wrapper">
+          <lib-select-field [id]="'groups'" [name]="'groups'" [options]="groups" [classes]="'max-height'"
+            [style]="'filled'"
+            (changed)="onGroupsChanged($event)"
+            #rolesField></lib-select-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row buttons">
+      <div class="col-md-6 text-left">
+        <div *ngIf="!isNew" class="row">
+          <div class="col-md-8">
+            <lib-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+              (changed)="onDeleteChanged($event)">Verwijderen</lib-checkbox-field>
+          </div>
+          <div *ngIf="delete" class="col-md-4">
+            <lib-btn-contained [type]="'outlineSecondary'">Verwijderen</lib-btn-contained>
+          </div>
+          
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div *ngIf="isNew" class="col-md-4">
+            <lib-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</lib-btn-contained>
+          </div>
+          <div class="col-md-4">
+            <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

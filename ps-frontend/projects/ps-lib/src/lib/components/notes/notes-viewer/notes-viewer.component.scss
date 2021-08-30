@@ -1,0 +1,25 @@
+@import "../../../../../../assets/scss/styles.scss";
+
+.notes-viewer-notes {
+  margin-bottom: $default-spacing*2;
+}
+
+.notes-viewer-footer {
+  position: sticky;
+  bottom: 0px;
+
+  background: $white;
+
+  .notes-viewer-note-container {
+    margin-bottom: $default-spacing;
+
+    lib-textarea-field {
+      width: 100%;
+      height: 111px;
+    }
+  }
+
+  .notes-viewer-buttons {
+    width: 100%;
+  }
+}

@@ -1,0 +1,5 @@
+<div *ngIf="template" class="mail">
+  <h4 *ngIf="title">{{title}}</h4>
+  <div class="mail-template" [innerHtml]="sanitizer.bypassSecurityTrustHtml(template)">
+  </div>
+</div>

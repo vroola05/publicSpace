@@ -1,0 +1,12 @@
+<div class="person">
+  <div *ngIf="!blobString || !_image.url" class="person-initials-container">
+    {{getNameAsAvatar(_image)}}
+  </div>
+  <div *ngIf="blobString && _image.url" class="person-image-container">
+    <img class="person-image" *ngIf="blobString" [src]="sanitizer.bypassSecurityTrustResourceUrl(blobString)" alt="internet"/>
+  </div>
+  <div class="person-info-container">
+    <div class="person-info-container-title">{{_image?.name}}</div>
+    <div class="person-info-container-name">{{_image?.alt}}</div>
+  </div>
+</div>

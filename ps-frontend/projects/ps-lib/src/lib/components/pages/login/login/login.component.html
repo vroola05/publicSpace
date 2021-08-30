@@ -1,0 +1,52 @@
+<div class="login-wrapper">
+  <lib-toast class="toasts"></lib-toast>
+  <div class="login-container">
+    <div class="login-input-container">
+      <h1 class="login-form-title"> Aanmelden met uw <br/> gebruikersnaam</h1>
+      <form id="login-form">
+        <div class="field-wrapper">
+          <lib-text-field
+            [id]="'username'"
+            [name]="'username'"
+            [icon]="'person'"
+            [placeholder]="'Gebruikersnaam'"
+            [value]="username"
+            [required]="true"
+            (typing)="onTyping($event)"
+            (changed)="onUsernameChanged($event)" #usernameComponent></lib-text-field>
+        </div>
+        <div class="field-wrapper">
+          <lib-password-field
+            [id]="'password'"
+            [name]="'password'"
+            [icon]="'lock'"
+            [placeholder]="'Wachtwoord'"
+            [value]="password"
+            [required]="true"
+            (typing)="onTyping($event)"
+            (changed)="onPasswordChanged($event)" #passwordComponent></lib-password-field>
+        </div>
+        <div class="field-wrapper">
+          <lib-checkbox-field
+            [id]="'stayedLogedIn'"
+            [name]="'stayedLogedIn'"
+            (changed)="onRememberLoginChanged($event)">Ingelogd blijven</lib-checkbox-field>
+        </div>
+        <div class="btn-container">
+          <lib-btn-contained (clicked)="submit()" [classes]="'full'">Inloggen</lib-btn-contained>
+        </div>
+        <div class="field-errors" *ngIf="error">
+          {{error.message}}
+        </div>
+        <div class="field-wrapper" *ngIf="hasReset()">
+          <span class="link" (click)="resetAccount()">Wachtwoord vergeten?</span>
+        </div>
+      </form>
+    </div>
+    <div class="login-logo-container">
+      <img class="company-logo"
+         src="{{getLogo()}}"
+         alt="Logo gemeente"/>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="ps-table" *ngIf="hasTemplate()">
+  <div class="row d-sm-none d-md-flex ps-table-header" #headerRef>
+    <span class="col ps-table-header-cell {{column.css}}" [ngClass]="{'filter': column.filter}"
+      *ngFor="let column of columns">
+      <span *ngIf="!column.filter">{{column.name}}</span>
+      <lib-filter-in *ngIf="column.filter == 'in'" [id]="column.id" [type]="column.type" [title]="column.name" (changed)="_filterChanged($event)">
+      </lib-filter-in>
+      <lib-filter-equals *ngIf="column.filter == 'equals'" [id]="column.id" [type]="column.type" [title]="column.name" (changed)="_filterChanged($event)">
+      </lib-filter-equals>
+      <lib-filter-between *ngIf="column.filter == 'between'" [id]="column.id" [type]="column.type" [title]="column.name" (changed)="_filterChanged($event)">
+      </lib-filter-between>
+    </span>
+  </div>
+  <div class="ps-table-row-container" *ngFor="let row of data; let rowIndex = index">
+    <div class="row ps-table-row" [ngClass]="{'selected': selected(rowIndex), 'priority': isPrio(row)}">
+      <div (click)="onClick($event, rowIndex)" class="col ps-table-cell {{column.css}} {{column.mobile}}"
+        *ngFor="let column of columns">
+        <div *ngIf="column.type=='text'" class="ps-table-cell-element col-text">{{getValue(column.id, row)}}</div>
+        <span *ngIf="column.type=='date'" class="ps-table-cell-element">{{date(column.id, row)}}</span>
+        <span *ngIf="column.type=='date-as-days'" class="ps-table-cell-element">{{dateAsDays(column.id, row)}}</span>
+        <span *ngIf="column.type=='string' || column.type=='number'" class="ps-table-cell-element">{{getValue(column.id, row)}}</span>
+        <span *ngIf="column.type=='boolean'" class="ps-table-cell-element">{{boolean(column.id, row)}}</span>
+      </div>
+    </div>
+    <div class="row ps-table-panel-row" [ngClass]="{'selected': selected(rowIndex)}">
+      <div class="col-sm-12 toggle-panel" *ngIf="listTemplate.toggle && selected(rowIndex)">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div class="notification text" *ngIf="!selected(rowIndex) && hasTextNotification(row)">
+      {{getNotification(row)}}
+    </div>
+    <div class="notification color-{{getNotification(row)}}" *ngIf="!selected(rowIndex) && hasNotification(row)">
+
+    </div>
+  </div>
+</div>

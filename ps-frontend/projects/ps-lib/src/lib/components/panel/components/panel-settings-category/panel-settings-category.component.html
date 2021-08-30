@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-12">
+    <h4>hoofdcategorie</h4>
+    <div class="field-wrapper">
+      <lib-dropdown-field [id]="'mainCategories'" [required]="true" [name]="'mainCategories'" [options]="mainCategoryItems"
+        [placeholder]="'Hoofdcategorie'" (changed)="onMainCategoryChanged($event)" #mainCategoryComponent>
+      </lib-dropdown-field>
+    </div>
+
+  </div>
+</div>
+<div class="row" *ngIf="hasMainCategory()">
+  <div class="col-md-12">
+    <h4>Categorieën</h4>
+    <lib-panel-settings
+      [titleNew]="'Nieuwe categorie'"
+      [data]="data"
+      [isNew]="isNew"
+      [open]="open"
+      [listTemplate]="listTemplate"
+      (onEvent)="events($event)">
+      <lib-list-panel-category [isNew]="isNew" [mainCategory]="selectedMainCategory" [category]="selectedCategory" (onEvent)="events($event)"></lib-list-panel-category>
+    </lib-panel-settings>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+@import "../field-abstract.scss";
+
+
+.field {
+  padding: $default-spacing;
+  color: $gray-primary;
+  background: $white;
+  border: $white solid 2px;
+  border-radius: 2px;
+  box-shadow: $gray 0px 1px 5px;
+
+  input[class*="-input"] {
+    border: none;
+    color: $black;
+    font-size: $large-font-size;
+    caret-color: $color-primary;
+    font-style: inherit;
+    &:focus {
+      border: none;
+    }
+  }
+  &:focus-within{
+    border: $color-primary solid 2px;
+  }
+}
