@@ -1,0 +1,92 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.orderitem-handle {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .orderitem-handle-list {
+    .orderitem-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      background: $gray-secondary;
+      padding: $default-spacing;
+      margin-bottom: $default-spacing/4;
+
+      .orderitem-item-checkbox {
+        flex: 1;
+      }
+      .orderitem-item-amount {
+        width: 70px;
+      }
+      .orderitem-item-unit {
+        width: 70px;
+        padding: $default-spacing;
+        text-align: right;
+      }
+    }
+
+
+    .orderitem-misc-item {
+      display: flex;
+      flex-direction:  column;
+      padding: $default-spacing;
+      margin-bottom: $default-spacing/4;
+
+      background: $gray-secondary;
+
+      .orderitem-misc-item-row {
+        display: flex;
+        flex-direction:  row;
+
+        .orderitem-misc-item-checkbox {
+          width: 33.333%;
+        }
+        .orderitem-misc-name {
+          width: 66.666%;
+        }
+        .orderitem-misc-amount {
+          width: 33.333%;
+          margin-right: $default-spacing/2;
+        }
+        .orderitem-misc-unit {
+          width: 33.333%;
+          margin-right: $default-spacing/2;
+        }
+        .orderitem-misc-cost {
+          width: 33.333%;
+        }
+      }
+    }
+  }
+  .orderitem-add-misc-item {
+    margin-top: $default-spacing;
+    margin-bottom: $default-spacing;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .orderitem-handle {
+    .orderitem-handle-list {
+      .orderitems-list {
+        display: block;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .orderitem-handle {
+    .orderitem-handle-list {
+      .orderitems-list {
+        display: block;
+        max-height: 500px;
+        overflow-y: auto;
+      }
+    }
+  }
+}

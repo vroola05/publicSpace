@@ -1,0 +1,31 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.orderitem-handle {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+@include media-breakpoint-up(md) {
+  .orderitem-handle {
+    .orderitem-handle-list {
+      .orderitems-list {
+        display: block;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .orderitem-handle {
+    .orderitem-handle-list {
+      .orderitems-list {
+        display: block;
+        max-height: 500px;
+        overflow-y: auto;
+      }
+    }
+  }
+}

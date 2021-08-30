@@ -1,0 +1,6 @@
+<button type="button" class="ps-header-btn {{classes}}" [ngClass]="{'selected': selected}" (click)="click()">
+  <span *ngIf="icon" class="ps-header-btn-icon material-icons md-36">{{icon}}</span>
+  <span *ngIf="!icon" class="ps-header-btn-no-icon">{{getNameAsAvatar(name)}}</span>
+  <span class="ps-header-btn-text">{{name}}</span>
+  <span class="ps-header-btn-notification" *ngIf="hasNotification()">{{getNotification()}}</span>
+</button>

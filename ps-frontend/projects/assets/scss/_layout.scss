@@ -1,0 +1,24 @@
+$mediaWidthSmall: 576px;
+$mediaWidthMedium: 768px;
+$mediaWidthLarge: 992px;
+$mediaWidthExtraLarge: 1200px;
+
+$header-height: 70px;
+$header-mobile-height: 60px;
+
+$default-spacing: 10px;
+
+$max-button-size: 200px;
+$image-size: 200px;
+
+$z-index-headers: 10;
+$z-index-popups: 20;
+
+.bold { font-weight: bold!important; }
+.italic { font-style: italic!important; }
+
+
+.field-wrapper {
+  margin-bottom: $default-spacing;
+}
+

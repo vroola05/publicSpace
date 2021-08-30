@@ -1,0 +1,26 @@
+<ng-template #contentTemplate><ng-content></ng-content></ng-template>
+<div class="layout-settings-container">
+  <div *ngIf="titleNew !== ''" class="row">
+    <div class="col-4 ml-auto">
+      <lib-btn-contained (clicked)="createNew()">{{titleNew}}</lib-btn-contained>
+    </div>
+  </div>
+  <div class="row layout-settings-list-container">
+    <div class="col-12">
+      <lib-list
+            [listTemplate]="listTemplate"
+            [data]="data"
+            (clicked)="clicked($event)" #listComponent>
+            <div *ngIf="_open">
+              <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+            </div>
+      </lib-list>
+    </div>
+  </div>
+  <div *ngIf="_open && _isNew" class="layout-settings-new-container">
+    <div class="layout-settings-new">
+      <h2>{{titleNew}}</h2>
+      <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+    </div>
+  </div>
+</div>

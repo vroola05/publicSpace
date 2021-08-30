@@ -1,0 +1,78 @@
+@import "../../../../../../../../assets/scss/styles.scss";
+
+.ps-settings-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: inherit;
+  width: 100%;
+
+  padding-top: $default-spacing/2;
+  padding-bottom: $default-spacing/2;
+  background: none;
+  border: none;
+  outline:none;
+
+  color: inherit;
+
+  .ps-settings-btn-icon {
+    flex: 0;
+  }
+  .ps-settings-btn-no-icon {
+    width: $default-spacing*3;
+    height: $default-spacing*3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: $gray5;
+    color: $white;
+  }
+
+  .ps-settings-btn-text {
+    flex: auto;
+    padding-left: $default-spacing/2;
+    font-size: $default-font-size;
+  }
+
+  &:hover {
+    background-color: $white-transparent;
+    cursor: pointer;
+  }
+
+  &.dropdown-btn {
+    color: $black;
+  }
+  &.selected {
+    background: $white;
+    color: $color-primary;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .ps-settings-btn {
+    width: 100%;
+    max-width: unset;
+
+    color: $black;
+    font-size: $middle-font-size;
+    font-weight: $font-weight-bold;
+
+    &.selected {
+      background: $color-primary-alpha;
+      color: $color-primary;
+    }
+
+    .ps-settings-btn-icon {
+      flex: unset;
+      width: $default-spacing*6;
+    }
+    .ps-settings-btn-text {
+      text-align: left;
+    }
+  }
+}

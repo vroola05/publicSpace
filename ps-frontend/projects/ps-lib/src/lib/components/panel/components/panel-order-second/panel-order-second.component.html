@@ -1,0 +1,30 @@
+<div class="order-info" *ngIf="order">
+  <div class="order-info-description" *ngIf="action == 'view'">
+    <h4><span>{{title}}</span><span class="right">{{getDays(order?.dateSend)}}</span></h4>
+    {{order.description}}
+  </div>
+  <div class="order-info-category" *ngIf="action == 'view' && hasOrdertypes()">
+    <h4>Bestek categorie(en)</h4>
+    {{printOrdertypes()}}
+  </div>
+  <div class="order-info-explanation" *ngIf="order.explanation">
+    <h4 *ngIf="action == 'view'"><span>Toelichting</span><span class="right">{{getExecutor()}}</span></h4>
+    <h4 *ngIf="action == 'confirm'"><span>Toelichting gereedmelding</span></h4>
+    {{order.explanation}}
+  </div>
+  <div class="order-info-specifications" *ngIf="hasOrderitems()">
+    <h4>Gekozen bestek</h4>
+    <table class="order-info-specifications-table">
+      <tr *ngFor="let orderitem of order?.orderitems">
+        <td class="order-info-specifications-small">{{orderitem?.quotationNumber}}</td>
+        <td class="order-info-specifications-text">{{orderitem?.name}}</td>
+        <td class="order-info-specifications-small">{{orderitem?.amount}} {{orderitem?.unit}}</td>
+      </tr>
+      <tr *ngFor="let miscOrderitem of order?.miscOrderitems">
+        <td class="order-info-specifications-small">Divers</td>
+        <td class="order-info-specifications-text">{{miscOrderitem?.name}}</td>
+        <td class="order-info-specifications-small">{{miscOrderitem?.amount}} {{miscOrderitem?.unit}} <span *ngIf="miscOrderitem?.cost > 0">&euro; {{miscOrderitem?.cost}}</span></td>
+      </tr>
+    </table>
+  </div>
+</div>

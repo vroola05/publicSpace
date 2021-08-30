@@ -1,0 +1,68 @@
+@import "../../../../../../../assets/scss/styles.scss";
+.tabs-selector {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+
+    .tab {
+      flex-grow: 1;
+      flex-basis: 0;
+      padding: $default-spacing $default-spacing*2;
+      border: $color-primary solid 2px;
+      border-left: $color-primary solid 1px;
+      border-right: $color-primary solid 1px;
+      background: $white;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      cursor: pointer;
+
+      &.selected {
+        background: $color-primary;
+        color: $white;
+        
+      }
+      &:first-child {
+        border-left: $color-primary solid 2px;
+      }
+      &:last-child {
+        border-right: $color-primary solid 2px;
+      }
+    }
+  }
+  .tabs-selector-content {
+    background: $gray-secondary;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .tabs-selector {
+    .tabs {
+      position: relative;
+      flex-direction: column;
+
+      &.tab-row {
+        .tab {
+          flex-grow: initial;
+          flex-basis: unset;
+          width: 100%;
+        }
+      }
+      &.tab-row {
+        flex-direction: row;
+      }
+    }
+  }
+}

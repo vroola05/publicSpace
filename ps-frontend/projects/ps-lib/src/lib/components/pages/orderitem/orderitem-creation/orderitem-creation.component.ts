@@ -1,0 +1,139 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ActionService } from '../../../../services/action/action.service';
+import { ApiService } from '../../../../services/api/api.service';
+import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
+import { DomainService } from '../../../../services/domain/domain.service';
+import { NavigationService } from '../../../../services/navigation/navigation.service';
+import { StorageService } from '../../../../services/storage/storage.service';
+import { TransformService } from '../../../../services/transform/transform.service';
+import { Page } from '../../page';
+import { Call } from '../../../../../model/call';
+import { CallList } from '../../../../../model/call-list';
+import { Order } from '../../../../../model/order';
+import { Orderitem } from '../../../../../model/order-item';
+import { ButtonT } from '../../../../../model/template';
+
+@Component({
+  selector: 'lib-orderitem-creation',
+  templateUrl: './orderitem-creation.component.html',
+  styleUrls: ['./orderitem-creation.component.scss']
+})
+export class OrderitemCreationComponent extends Page implements OnInit, OnDestroy {
+  private subscription: Subscription[] = [];
+  public call: Call;
+  public order: Order;
+  public getUrlImages: string;
+  public getUrlImage: string;
+  public postUrlImage: string;
+  public postUrlNote: string;
+  public headerData: CallList;
+  public buttonsLeft: ButtonT[];
+  public buttonsRight: ButtonT[];
+
+  public orderitems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+
+  constructor(
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
+    protected navigationService: NavigationService,
+    protected storage: StorageService,
+    protected action: ActionService,
+    protected transform: TransformService,
+    protected authorisation: AuthorisationService,
+    private domain: DomainService,
+    private apiService: ApiService
+  ) {
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+
+    const order = this.storage.getSession('order');
+    if (order) {
+      this.order = JSON.parse(order) as Order;
+      this.transform.setVariable('order', this.order);
+    }
+  }
+
+  public ngOnInit(): void {
+    super.ngOnInit();
+    this.getCall();
+    this.buttonsLeft = this.domain.config.order.creation.buttonsLeft;
+    this.buttonsRight = this.domain.config.order.creation.buttonsRight;
+    if (this.domain.config.order.creation.pageType) {
+      this.pageType = this.domain.config.order.creation.pageType;
+    }
+
+    this.action.register('next', () => { this.next(); });
+  }
+
+  public ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.subscription.forEach(subscription => subscription.unsubscribe());
+  }
+
+  public getOrderitems(): void {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getOrderitems').endpoint))
+      .subscribe((orderitems: Orderitem[]) => {
+        if (orderitems) {
+          orderitems.forEach(orderitem => {
+            this.orderitems.push(
+              {
+                name: orderitem.quotationNumber + ' - ' + orderitem.name + ' (' + orderitem.unit + ')',
+                value: '' + orderitem.id, data: orderitem,
+                selected: this.orderitemSelected(orderitem.quotationId)
+              }
+            );
+          });
+        }
+    }));
+  }
+
+  public orderitemSelected(id: number): boolean {
+    if (this.order && this.order.orderitems && this.order.orderitems.find(o => o.quotationId === id)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public getCall(): void {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+      this.transform.setVariable('call', call);
+      this.call = call;
+      if (! this.order && this.call.orders && this.call.orders.length > 0) {
+        this.order = this.call.orders[0];
+        this.transform.setVariable('order', this.order);
+        this.storage.setSession('order', JSON.stringify(this.order), true);
+      }
+
+      this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
+      this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
+      this.postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
+      this.postUrlNote = this.transform.URL(this.domain.getEndpoint('postNote').endpoint);
+      this.headerData = this.domain.transformCallOrder(call);
+
+      this.getOrderitems();
+    }));
+  }
+
+  public getSelectedOrderitems(): Orderitem[] {
+    const orderitems: Orderitem[] = [];
+    this.orderitems.forEach(orderitem => {
+      if (orderitem.selected) {
+        orderitems.push(orderitem.data);
+      }
+    });
+    return orderitems;
+  }
+
+  public onOrderitemsChanged($event): void {
+    if (this.order) {
+      this.order.orderitems = this.getSelectedOrderitems();
+      this.storage.setSession('order', JSON.stringify(this.order), true);
+    }
+  }
+
+  public next(): void {
+    this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-information')], true);
+  }
+}

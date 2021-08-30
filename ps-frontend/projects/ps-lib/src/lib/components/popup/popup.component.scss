@@ -1,0 +1,79 @@
+@import "../../../../../assets/scss/styles.scss";
+
+.ps-popup-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000000aa;
+}
+.ps-popup {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ps-popup-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 800px;
+
+    border-radius: 4px;
+    .ps-popup-title {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      background: $color-primary;
+      height: $default-spacing * 4;
+
+      .ps-header-title {
+        flex: auto;
+        padding: $default-spacing;
+        color: $white;
+      }
+      .ps-header-close {
+        width: $default-spacing * 4;
+
+        .btn-close {
+          padding: 0px !important;
+          color: $white;
+
+          button {
+            padding: 0px !important;
+            font-size: 38px !important;
+          }
+        }
+      }
+    }
+    .ps-popup-body {
+      position: relative;
+      padding: $default-spacing;
+
+      min-height: 200px;
+      max-height: calc(100vh - #{$default-spacing * 4});
+      background: $white;
+      overflow-y: auto;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .ps-popup {
+    .ps-popup-inner {
+      width: 100%;
+      height: 100%;
+
+      .ps-popup-body {
+        height: calc(100vh - #{$default-spacing * 4});
+      }
+    }
+  }
+}

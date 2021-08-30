@@ -1,0 +1,47 @@
+<app-filter [title]="title" [hasFilter]="hasFilter">
+  <div class="search-box-search-field-container">
+    
+    <div *ngIf="type == 'string'">
+      <label>
+        <div class="field-label">Van:</div>
+        <input type="text" class="field-input" [value]="valueFrom" placeholder="Van" (change)="onChangeFrom($event)" />
+      </label>
+      <label>
+        <div class="field-label">T/m:</div>
+        <input type="text" class="field-input" [value]="valueTo" placeholder="T/m" (change)="onChangeTo($event)" />
+      </label>
+    </div>
+    <div *ngIf="type == 'number'">
+      <label>
+        <div class="field-label">Van:</div>
+        <input type="number" class="field-input" [value]="valueFrom" placeholder="Van" (change)="onChangeFrom($event)" />
+      </label>
+      <label>
+        <div class="field-label">T/m:</div>
+        <input type="number" class="field-input" [value]="valueTo" placeholder="T/m" (change)="onChangeTo($event)" />
+      </label>
+    </div>
+    <div *ngIf="type == 'date'">
+      <label>
+        <div class="field-label">Datum van:</div>
+        <input class="field-input"
+          (dateChange)="onDateChangeFrom($event)"
+          [value]="valueFrom"
+          placeholder="Datum van"
+          [matDatepicker]="pickerFrom">
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+      </label>
+      <label>
+        <div class="field-label">Datum t/m:</div>
+        <input class="field-input"
+          (dateChange)="onDateChangeTo($event)"
+          [value]="valueTo"
+          placeholder="Datum t/m"
+          [matDatepicker]="pickerTo">
+        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+      </label>
+    </div>
+  </div>
+</app-filter>

@@ -1,0 +1,12 @@
+@import "../field-abstract.scss";
+
+.file-field-list {
+  .field {
+    .field-remove-btn {
+      cursor: pointer;
+    }
+  }
+}
+.file-field-input {
+  display: none;
+}

@@ -1,0 +1,50 @@
+<lib-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageType]="pageType" [buttonsRight]="buttonsRight"
+  [title]="'Melding informatie'">
+  <lib-panel-title>
+    <div class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <lib-details-header [data]="headerData"></lib-details-header>
+      </div>
+      <div class="col-sm-12 col-md-6 details-main-info">
+        <lib-panel-info [call]="call" [urlNotes]="postUrlNote" [urlImages]="getUrlImages" [urlImage]="getUrlImage"
+          [urlImageUpload]="postUrlImage"></lib-panel-info>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div *ngIf="hasActionItems()" class="order-action">
+          <h4>Kies een aannemer of een actie</h4>
+          <div class="field-wrapper">
+            <lib-dropdown-field [id]="'action'" [required]="true" [name]="'action'" [options]="actionItems"
+              [placeholder]="'Kies een aannemer of een actie'" (changed)="onActionChanged($event)" #actions>
+            </lib-dropdown-field>
+          </div>
+        </div>
+        <div *ngIf="hasOptionItems()" class="order-option">
+          <h4>Kies een optie</h4>
+          <div class="field-wrapper">
+            <lib-dropdown-field [id]="'options'" [required]="true" [name]="'options'" [options]="optionItems"
+              [placeholder]="'Kies een optie'" (changed)="onOptionChanged($event)" #options></lib-dropdown-field>
+          </div>
+        </div>
+        <div class="order-types">
+          <div class="field-wrapper">
+            <lib-select-field [id]="'ordertypes'" [name]="'ordertypes'" [options]="ordertypes" [classes]="'max-height'"
+              [style]="'filled'" (changed)="onOrdertypesChanged($event)" #ordertypesField></lib-select-field>
+          </div>
+        </div>
+
+        <div class="order-description">
+          <h4>Opdracht omschrijving</h4>
+          <div class="field-wrapper">
+            <lib-textarea-field class="order-description-field" [id]="'description'" [name]="'description'"
+              [placeholder]="'Opdracht omschrijving'" [value]="orders[this.index]?.description" [required]="true"
+              [maxLength]="500" (typing)="onTyping($event)" (changed)="onDescriptionChanged($event)" #descriptionField>
+            </lib-textarea-field>
+          </div>
+        </div>
+        <div>
+          <lib-mail [title]="'Inhoud email'"></lib-mail>
+        </div>
+      </div>
+    </div>
+  </lib-panel-title>
+</lib-panel>

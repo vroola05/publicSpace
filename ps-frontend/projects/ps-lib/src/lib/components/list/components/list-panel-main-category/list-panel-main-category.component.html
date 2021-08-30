@@ -1,0 +1,47 @@
+<div class="row list-panel" *ngIf="_mainCategory">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>hoofdcategorie</h4>
+        <div class="field-wrapper">
+          <lib-text-field [style]="'filled'" [id]="'mainCategory'" [name]="'mainCategory'" [placeholder]="'hoofdcategorie'"
+            [value]="_mainCategory?.name" [required]="true" [maxLength]="50" (changed)="onMainCategoryChanged($event)"
+            #mainCategoryComponent></lib-text-field>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row buttons">
+      <div class="col-md-6 text-left">
+        <div *ngIf="!isNew" class="row">
+          <div class="col-md-8">
+            <lib-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+              (changed)="onDeleteChanged($event)">Verwijderen</lib-checkbox-field>
+          </div>
+          <div *ngIf="delete" class="col-md-4">
+            <lib-btn-contained [type]="'outlineSecondary'">Verwijderen</lib-btn-contained>
+          </div>
+          
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div *ngIf="isNew" class="col-md-4">
+            <lib-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</lib-btn-contained>
+          </div>
+          <div class="col-md-4">
+            <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

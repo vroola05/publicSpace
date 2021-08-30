@@ -1,0 +1,57 @@
+@import "../field-abstract.scss";
+
+.field-wrapper {
+  width: 100%;
+  position: relative;
+
+  .field-icon {
+    width: 34px;
+    height: 34px;
+    user-select: none;
+
+    cursor: pointer;
+  }
+
+  .dropdown-field-list {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    padding: $default-spacing/2;
+
+    background: $white;
+    border: $color-primary solid 1px;
+    border-top: none;
+    box-shadow: $gray5 0px 4px 6px 0px;
+
+    z-index: 1100;
+
+    .dropdown-field-list-item {
+      width: 100%;
+      padding: $default-spacing;
+      padding-top: $default-spacing/2;
+      padding-bottom: $default-spacing/2;
+      
+      color: $black;
+      font-size: $large-font-size;
+      caret-color: $color-primary;
+
+      user-select: none;
+      cursor: pointer;
+      &.selected {
+        background: $gray;
+        color: $white;
+      }
+      &:hover {
+        background: $default-color-alpha;
+      }
+    }
+    
+    &.filled {
+      .dropdown-field-list-item {
+        font-size: $default-font-size;
+      }
+    }
+  }
+}

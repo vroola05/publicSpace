@@ -1,0 +1,12 @@
+<div class="image-viewer">
+  <div class="image-viewer-image">
+    <lib-image *ngIf="image" [image]="image"></lib-image>
+  </div>
+  <div class="image-viewer-gallery">
+    <lib-image-gallery
+      [url]="_url"
+      [documents]="_documents"
+      (clicked)="click($event)"
+    ></lib-image-gallery>
+  </div>
+</div>

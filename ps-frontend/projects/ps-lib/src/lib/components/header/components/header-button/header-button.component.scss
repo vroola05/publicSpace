@@ -1,0 +1,99 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.ps-header-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: inherit;
+  width: 100%;
+
+  background: none;
+  border: none;
+  outline:none;
+
+  color: inherit;
+
+  .ps-header-btn-icon {
+    flex: 0;
+  }
+  .ps-header-btn-no-icon {
+    width: $default-spacing*3;
+    height: $default-spacing*3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background: $gray5;
+    color: $white;
+  }
+
+  .ps-header-btn-text {
+    flex: auto;
+    padding-left: $default-spacing/2;
+    font-size: $default-font-size;
+  }
+  .ps-header-btn-notification {
+    position: absolute;
+    top: $default-spacing/4;
+    right: $default-spacing/4;
+    width: 22px;
+    height: 22px;
+    background: $color-notification;
+    border-radius: 50%;
+    font-size: $small-font-size;
+    line-height: 22px;
+    text-align: center;
+    color: $white;
+    overflow: hidden;
+  }
+
+  &.group {
+    .ps-header-btn-text {
+      text-align: left;
+    }
+  }
+
+  &:hover {
+    background-color: $white-transparent;
+    cursor: pointer;
+  }
+
+  &.dropdown-btn {
+    color: $black;
+  }
+  &.selected {
+    background: $white;
+    color: $color-primary;
+  }
+  &.group.selected {
+    background: $color-primary-alpha;
+    color: $color-primary;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .ps-header-btn {
+    width: 100%;
+    max-width: unset;
+
+    color: $black;
+    font-size: $middle-font-size;
+    font-weight: $font-weight-bold;
+    &.selected {
+      background: $color-primary-alpha;
+      color: $color-primary;
+    }
+
+    .ps-header-btn-icon {
+      flex: unset;
+      width: $default-spacing*6;
+    }
+    .ps-header-btn-text {
+      text-align: left;
+    }
+  }
+}

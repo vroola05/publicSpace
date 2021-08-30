@@ -1,0 +1,34 @@
+<div class="panel-order-info" *ngIf="order">
+  <h5>Opdrachtomschrijving voor de {{order.contractor.name}}</h5>
+  <p>{{order.description}}</p>
+  <div *ngIf="hasOrdertypes()">
+    <h5>Bestek categorie(en)</h5>
+    <div class="panel-order-info-ordertypes">
+      <div class="panel-order-info-ordertype" *ngFor="let ordertype of order.ordertypes">
+        <span class="panel-order-info-bullet">&#9679;</span><span *ngIf="isEditable()" (click)="deleteOrdertype(ordertype)" class="field-icon material-icons">delete_forever</span><span>{{ordertype.name}}</span>
+      </div>
+    </div>
+    
+  </div>
+  <div *ngIf="isEditable() && action === 'new'" class="row panel-order-info-edit">
+    <div class="col-md-6 ml-md-0">
+      <lib-btn-contained [type]="'containedSecondary'" (clicked)="delete()">Verwijderen</lib-btn-contained>
+    </div>
+    <div class="col-md-6 mr-md-0">
+      <lib-btn-contained [type]="'containedPrimary'" (clicked)="edit()">Bewerken</lib-btn-contained>
+    </div>
+  </div>
+  <div *ngIf="isDone() && action === 'full'" class="row panel-order-info-edit">
+    <div class="col-md-6 ml-md-0">
+      <lib-btn-contained [type]="'containedSecondary'" (clicked)="notAccept()">Niet akkoord</lib-btn-contained>
+    </div>
+    <div class="col-md-6 mr-md-0">
+      <lib-btn-contained [type]="'containedPrimary'" (clicked)="accept()">Akkoord</lib-btn-contained>
+    </div>
+  </div>
+  <div *ngIf="isRejected() && action === 'full'" class="row panel-order-info-edit">
+    <div class="col-md-6 ml-md-0">
+      <lib-btn-contained [type]="'containedPrimary'" (clicked)="closeRejected()">Gezien</lib-btn-contained>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,155 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+
+@include media-breakpoint-down(sm) {
+  .login-wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    background: $white;
+    .toasts {
+      position: absolute;
+      top: 0px;
+    }
+
+    .login-container {
+      display: grid;
+      grid-template-areas:
+        'left'
+        'right';
+      grid-template-rows: auto auto;
+
+      justify-content: center;
+      align-items: center;
+
+      max-width: 850px;
+      margin-right: auto;
+      margin-left: auto;
+      padding: $default-spacing;
+      background: $white;
+
+      .login-input-container {
+        grid-area: right;
+        width: 100%;
+
+        .login-form-title {
+          display: none;
+        }
+        .btn-container {
+          width: 100%;
+          margin: $default-spacing 0px;
+        }
+
+        .field-errors {
+          display: flex;
+          flex-direction: column;
+        
+          width: calc(100% - #{$default-spacing*2});
+          margin: $default-spacing;
+          margin-bottom: $default-spacing;
+          color: $red;
+        }
+      }
+
+      .link {
+        margin: $default-spacing 0px;
+        color: $color-primary;
+        font-style: italic;
+        cursor: pointer;
+      }
+
+      .login-logo-container {
+        grid-area: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: $default-spacing*2;
+
+        .company-logo {
+          width: 30%;
+        }
+      }
+    }
+  }
+}
+@include media-breakpoint-up(md) {
+  .login-wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    background: $gray6;
+
+    .toasts {
+      position: absolute;
+      top: 0px;
+      width: 90%;
+    }
+
+    .login-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      max-width: 850px;
+      min-width: 774px;
+      margin-right: auto;
+      margin-left: auto;
+      padding: $default-spacing*4;
+
+      background: $white;
+
+      .login-input-container {
+        width: 50%;
+
+        .btn-container {
+          width: 100%;
+          margin: $default-spacing 0px;
+        }
+
+        .field-errors {
+          display: flex;
+          flex-direction: column;
+        
+          width: 100%;
+          margin: $default-spacing 0px;
+          color: $red;
+        }
+
+        .link {
+          margin: $default-spacing 0px;
+          color: $color-primary;
+          font-style: italic;
+          cursor: pointer;
+        }
+      }
+
+      .login-logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+
+        .company-logo {
+          width: 80%;
+        }
+      }
+    }
+  }
+}

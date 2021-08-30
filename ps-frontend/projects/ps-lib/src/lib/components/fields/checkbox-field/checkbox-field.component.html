@@ -1,0 +1,11 @@
+
+<label class="checkbox checkbox-label {{type}} {{style}}">
+  <input type="checkbox" class="checkbox-input" [id]="id" [name]="name" (change)="onChanged($event)" [checked]="value"/>
+  <span class="checkbox-mark"></span>
+  <span class="checkbox-content">
+    <ng-content></ng-content>
+  </span>
+</label>
+<div class="field-errors" *ngIf="errors.length > 0">
+  <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+</div>

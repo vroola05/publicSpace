@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-12 col-md-5">
+  <lib-checkbox-field [id]="'isPriority'" [name]="'isPriority'" [value]="callChanged?.priority"
+        (changed)="onPriorityChanged($event)">Spoed
+      </lib-checkbox-field>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-5">
+    <div class="details-main-description">
+      <h4><span>Huidige melding informatie</span><span class="edit-btn"><lib-btn-icon (clicked)="changeInformation()" class="'change-btn'" [icon]="'edit'"></lib-btn-icon></span></h4>
+      <p>{{_call?.mainCategory?.name}}</p>
+      <p>{{_call?.description}}</p>
+    </div>
+  </div>
+  <div *ngIf="hasinformationChanged()" class="arrow col-sm-12 col-md-2">
+    <span class="material-icons">arrow_right_alt</span>
+  </div>
+  <div *ngIf="hasinformationChanged()" class="col-sm-12 col-md-5">
+    <div class="details-main-description">
+      <h4><span>Gewijzigde melding informatie</span><span class="edit-btn"><lib-btn-icon (clicked)="undoInformation()" class="'change-btn'" [icon]="'clear'"></lib-btn-icon></span></h4>
+      <p>{{getShowCategory()}}</p>
+      <p>{{callChanged?.description}}</p>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-5">
+    <h4><span>Huidige melding locatie</span><span class="edit-btn"><lib-btn-icon (clicked)="changeLocation()" class="'change-btn'" [icon]="'edit'"></lib-btn-icon></span></h4>
+    {{getShowAddress(_call?.location)}}
+    <lib-maps (click)="popupMap($event, _call?.location)" [classes]="'button'" [location]="_call?.location"></lib-maps>
+  </div>
+  <div *ngIf="hasLocationChanged()" class="arrow col-sm-12 col-md-2">
+    <span class="material-icons">arrow_right_alt</span>
+  </div>
+  <div *ngIf="hasLocationChanged()" class="col-sm-12 col-md-5">
+    <h4><span>Gewijzigde locatie</span><span class="edit-btn"><lib-btn-icon (clicked)="undoLocation()" class="'change-btn'" [icon]="'clear'"></lib-btn-icon></span></h4>
+    {{getShowAddress(callChanged?.location)}}
+    <lib-maps (click)="popupMap($event, callChanged?.location)" [classes]="'button'" [location]="callChanged?.location"></lib-maps>
+  </div>
+</div>

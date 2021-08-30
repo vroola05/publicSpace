@@ -1,0 +1,67 @@
+@import "../btn-abstract.scss";
+
+.ps-btn {
+  background: $color-primary;
+  border: $color-primary solid 2px;
+  outline: none;
+  color: $white;
+ 
+  &:hover {
+    background-color: $white-transparent;
+    color: $color-primary;
+    border: $color-secondary solid 2px;
+  }
+}
+
+.ps-btn.containedPrimary {}
+
+.ps-btn.containedSecondary {
+  background: $color-secondary;
+  border: $color-secondary solid 2px;
+
+  &:hover {
+    background-color: $white-transparent;
+    color: $color-secondary;
+    border: $color-primary solid 2px;
+  }
+}
+
+.ps-btn.outlinePrimary {
+  color: $color-primary;
+  background-color: $white-transparent;
+  border: $color-primary solid 2px;
+
+  &:hover {
+    color: $color-primary;
+    border: $color-secondary solid 2px;
+  }
+}
+
+.ps-btn.outlineSecondary {
+  color: $color-secondary;
+  background-color: $white-transparent;
+  border: $color-secondary solid 2px;
+
+  &:hover {
+    color: $color-secondary;
+    border: $color-primary solid 2px;
+  }
+}
+
+.ps-btn.blank {
+  color: $color-primary;
+  background-color: $white-transparent;
+  border: $white-transparent solid 2px;
+
+  &:hover {
+    color: $color-secondary;
+    border: $color-primary solid 2px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .ps-btn {
+    margin-top: $default-spacing;
+    margin-bottom: $default-spacing;
+  }
+}

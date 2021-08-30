@@ -1,0 +1,8 @@
+<div *ngIf="keepInformed()">
+  <p>Melder wil <b>WEL</b> op de hoogte gehouden worden over de melding.</p>
+  <p [innerHTML]="getPerson()">
+  </p>
+</div>
+<div *ngIf="!keepInformed()">
+  <p>Melder wil <b>NIET</b> op de hoogte gehouden worden over de melding.</p>
+</div>

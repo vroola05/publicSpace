@@ -1,0 +1,89 @@
+@import "../field-abstract.scss";
+
+.checkbox {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  padding: $default-spacing;
+  user-select: none;
+
+  &.filled {
+    background: $gray-secondary;
+    font-size: $default-font-size;
+
+    textarea, input[class*="-input"] {
+      background: $gray-secondary;
+      font-size: $default-font-size;
+    }
+  }
+
+  .checkbox-input {
+    display: none;
+  }
+
+  .checkbox-mark {
+    float: left;
+    position: relative;
+    height: $default-spacing*2;
+    min-height: $default-spacing*2;
+    width: $default-spacing*2;
+    min-width: $default-spacing*2;
+    margin-right: $default-spacing;
+    
+    background-color: $white;
+    border-radius: 3px;
+    border: solid 1px $gray-primary;
+    box-sizing: border-box;
+  }
+  &.radio .checkbox-mark {
+    border-radius: 50%;
+  }
+
+  &:hover {
+    text-decoration: underline;
+
+    .checkbox-input ~ .checkbox-mark {
+      background-color: $gray-secondary;
+      border: solid 1px $gray-primary;
+
+      &:after {
+        display: block;
+      }
+    }
+  }
+
+  .checkbox-input:checked ~ .checkbox-mark {
+    background-color: $color-primary;
+    border: solid 1px $color-primary;
+
+    &:after {
+      display: block;
+    }
+  }
+
+  .checkbox-mark:after {
+    left: ($default-spacing/2);
+    top: ($default-spacing/10);
+    width: $default-spacing*0.8;
+    height: $default-spacing*1.2;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .checkbox-mark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .checkbox-content {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

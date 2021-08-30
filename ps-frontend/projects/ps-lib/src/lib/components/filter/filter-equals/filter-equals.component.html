@@ -1,0 +1,33 @@
+<app-filter [title]="title" [hasFilter]="hasFilter">
+  <div class="equals-filter-field-container">
+    <div class="icon-container">
+      <span class="field-icon material-icons">search</span>
+    </div>
+    <div *ngIf="type == 'date'" class="equals-filter-field-inner-container">
+      <input
+        class="equals-filter-field date" 
+        [value]="value"
+        placeholder="Datum:"
+        (dateChange)="onDateChange($event)"
+        [matDatepicker]="pickerValueDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerValueDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerValueDate></mat-datepicker>
+    </div>
+    <div *ngIf="type == 'number'" class="equals-filter-field-inner-container">
+      <input 
+      class="equals-filter-field" 
+      (keyup)="onKeydown($event)"
+      placeholder="Filteren op:"
+      [value]="value"
+      type="number"/>
+    </div>
+    <div *ngIf="type == 'string'" class="equals-filter-field-inner-container">
+      <input 
+      class="equals-filter-field" 
+      (keyup)="onKeydown($event)"
+      placeholder="Filteren op:"
+      [value]="value"
+      type="text"/>
+    </div>
+  </div>
+</app-filter>

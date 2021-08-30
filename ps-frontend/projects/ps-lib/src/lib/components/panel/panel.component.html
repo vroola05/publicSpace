@@ -1,0 +1,34 @@
+<div class="layout-container {{pageType}}">
+  <div class="layout-header">
+    <lib-header class="header-component" [pageType]="pageType"></lib-header>
+  </div>
+  <div class="layout-toast">
+    <lib-toast></lib-toast>
+  </div>
+  <div class="layout-body">
+    <div class="layout-main">
+      <div class="layout-title">
+        <h1>{{title}}</h1>
+      </div>
+      <div class="layout-body-container">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div class="row layout-footer">
+      <div class="col-md-6">
+        <div class="row" *ngIf="buttonsLeft">
+          <div class="layout-footer-botton-container col-md-4" *ngFor="let button of filterRolesAndConditions(buttonsLeft); let rowIndex = index">
+            <lib-btn-contained [type]="button.type" (clicked)="onClick(button)">{{button.name}}</lib-btn-contained>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row justify-content-end" *ngIf="buttonsRight">
+          <div class="layout-footer-botton-container col-md-4" *ngFor="let button of filterRolesAndConditions(buttonsRight); let rowIndex = index">
+            <lib-btn-contained [type]="button.type" (clicked)="onClick(button)">{{button.name}}</lib-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+@import "../field-abstract.scss";
+
+
+.selectbox {
+  width: 100%;
+
+  &.max-height {
+    overflow-y: auto;
+    max-height: 200px;
+  }
+
+  .selectbox-search {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+  }
+  .selectbox-items {}
+
+}

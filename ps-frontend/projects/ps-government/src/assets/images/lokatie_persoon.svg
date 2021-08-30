@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>lokatie_persoon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="14.5" cy="14.5" r="14.5"></circle>
+    </defs>
+    <g id="lokatie_persoon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon_Kleur" transform="translate(15.000000, 16.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#9C2F85" xlink:href="#path-1"></use>
+            <g id="appcolor_green" mask="url(#mask-2)" fill="#00C8FF" fill-rule="nonzero">
+                <rect id="BG-Button" x="0" y="0" width="29" height="29" rx="2"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

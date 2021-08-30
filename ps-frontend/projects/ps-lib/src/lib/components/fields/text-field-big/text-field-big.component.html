@@ -1,0 +1,19 @@
+
+<label class="field {{classes}} {{style}}">
+  <span class="icon-container" *ngIf="hasIcon()">
+    <span class="field-icon material-icons">{{icon}}</span>
+  </span>
+  <input
+    type="text"
+    class="text-field-input"
+    [id]="id"
+    [name]="name"
+    [disabled]="disabled"
+    [value]="value"
+    (change)="onChanged($event)"
+    (keydown)="onKeydown($event)"
+    [placeholder]="placeholder" #fieldRef/>
+</label>
+<div class="field-errors" *ngIf="errors.length > 0">
+  <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+</div>

@@ -1,0 +1,9 @@
+<lib-panel-settings
+  [titleNew]="'Nieuw domein'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <lib-list-panel-domain [isNew]="isNew" [domain]="selectedDomain" (onEvent)="events($event)"></lib-list-panel-domain>
+</lib-panel-settings>

@@ -1,0 +1,16 @@
+@import "../../../../../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .details-main {
+    .details-main-info {
+      display: none;
+    }
+  }
+}
+
+.details-main {
+  .details-main-header {
+    padding-top: $default-spacing;
+    padding-bottom: $default-spacing;
+  }
+}

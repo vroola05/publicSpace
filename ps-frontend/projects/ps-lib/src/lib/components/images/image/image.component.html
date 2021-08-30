@@ -1,0 +1,3 @@
+<div *ngIf="blobString" class="ps-image-container {{_classes}}">
+      <img class="ps-image" *ngIf="blobString" [src]="sanitizer.bypassSecurityTrustResourceUrl(blobString)" [alt]="_image.alt"/>
+</div>

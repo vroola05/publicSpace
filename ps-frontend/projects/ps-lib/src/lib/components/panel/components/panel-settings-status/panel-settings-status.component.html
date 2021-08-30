@@ -1,0 +1,9 @@
+<lib-panel-settings
+  [titleNew]="'Nieuwe status'"
+  [data]="data"
+  [open]="open"
+  [isNew]="isNew"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <lib-list-panel-status [isNew]="isNew" [status]="selectedStatus" (onEvent)="events($event)"></lib-list-panel-status>
+</lib-panel-settings>
