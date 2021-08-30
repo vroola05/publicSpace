@@ -34,7 +34,7 @@ DROP DATABASE IF EXISTS publicspace;
 -- Name: publicspace; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE publicspace WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'Dutch_Netherlands.1252';
+CREATE DATABASE publicspace WITH TEMPLATE = template0 ENCODING = 'UTF8';
 
 
 ALTER DATABASE publicspace OWNER TO postgres;
