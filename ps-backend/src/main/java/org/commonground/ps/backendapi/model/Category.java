@@ -22,5 +22,5 @@ public class Category {
   private Date endDate;
   private Boolean active;
 
-  //private MainCategory mainCategory;
+  private Group group;
 }

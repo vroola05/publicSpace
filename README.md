@@ -32,3 +32,9 @@ ng build --project=ps-lib --watch
 Vervolgens draai je een van de twee projecten.
 ng serve --project=ps-government
 
+To view the project in the browser on localhost you will get cors errors.
+on linux you can run:
+chromium-browser --disable-web-security --user-data-dir="/home/.../ChromiumTemp"
+
+On windows you can run:
+chrome.exe --disable-web-security --user-data-dir="/home/.../ChromiumTemp"

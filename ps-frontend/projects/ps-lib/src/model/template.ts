@@ -1,4 +1,5 @@
 import { ButtonTypes, ContractorType, PageType } from './intefaces';
+import { Status } from './status';
 
 export interface KeyValueT {
   key: any;
@@ -150,6 +151,7 @@ export interface InfoT {
   favicon?: string;
   favicon32?: string;
   favicon512?: string;
+  status: Status[]
 }
 
 export interface EndpointT {

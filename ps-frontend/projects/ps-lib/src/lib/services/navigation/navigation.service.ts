@@ -7,6 +7,7 @@ import { NavigationRoute } from '../../../model/intefaces';
 import { StorageService } from '../storage/storage.service';
 import { HeaderMenuItemT } from '../../../model/template';
 import { TransformService } from '../transform/transform.service';
+import { Status } from '../../../model/status';
 
 
 @Injectable({

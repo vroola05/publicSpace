@@ -11,19 +11,13 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Optional;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
-import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.model.Category;
-import org.commonground.ps.backendapi.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
@@ -37,9 +31,6 @@ public @interface PostCategoryValidator {
 	Class<? extends Payload>[] payload() default {};
 
 	class Validator implements ConstraintValidator<PostCategoryValidator, Category> {
-		@Autowired
-		private CategoryRepository categoryRepository;
-
 		@Override
 		public void initialize(PostCategoryValidator postMainCategory) {
 		}

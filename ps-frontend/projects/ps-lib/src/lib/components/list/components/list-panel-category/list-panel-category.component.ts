@@ -10,6 +10,9 @@ import { Category } from '../../../../../model/category';
 
 import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
 import { DateFieldComponent } from '../../../fields/date-field/date-field.component';
+import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
+import { first } from 'rxjs/operators';
+import { Group } from 'projects/ps-lib/src/model/group';
 
 @Component({
   selector: 'lib-list-panel-category',
@@ -20,6 +23,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   @ViewChild('nameComponent') nameComponent: TextFieldComponent;
   @ViewChild('startDateComponent') startDateComponent: DateFieldComponent;
   @ViewChild('endDateComponent') endDateComponent: DateFieldComponent;
+  @ViewChild('groupComponent') groupComponent: DropdownFieldComponent;
 
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
 
@@ -43,15 +47,20 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
       this._category.startDate = category.startDate;
       this._category.endDate = category.endDate;
       this._category.active = category.active;
+      this._category.group = category.group;
     }
   }
   
+  public groupItems: { name: string, value?: string, data?: any }[] = [];
+
   constructor(
     private apiService: ApiService,
     private domainService: DomainService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
-  ) { }
+  ) {
+    this.getGroups();
+  }
 
   public ngOnInit(): void {
   }
@@ -83,6 +92,40 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
     this._category.active = $event;
   }
 
+  public onGroupChanged($event) {
+    if (this.groupComponent.validate()) {
+      this._category.group = $event.data;
+    }
+  }
+
+
+  public selectGroup() {
+    if ( this.groupComponent) {
+
+      if (!this._category || !this._category.group) {
+        this.groupComponent.select(null);
+        return;
+      }
+
+      const item = this.groupItems.find( type => !type.data || type.data.id === this._category.group.id);
+      if (item) {
+        this.groupComponent.select(item);
+      }
+    }
+  }
+
+  public getGroups(): void {
+    const endpointT = this.domainService.getEndpoint('getGroups');
+    if (this.authorisation.hasRoles(endpointT.roles)) {
+      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((groups: Group[]) => {
+        groups.forEach(group => {
+          this.groupItems.push({ name: group.name, value: String(group.id), data: group });
+        });
+        this.selectGroup();
+      });
+    }
+  }
+
   public cancel(): void {
     this.onEvent.emit({
       action: 'cancel',
@@ -99,7 +142,9 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
     const a = this.nameComponent.validate();
     const b = this.startDateComponent.validate();
     const c = this.endDateComponent.validate();
-    if (a && b && c) {
+    const d = this.groupComponent.validate();
+    console.log(d);
+    if (a && b && c && d) {
       this.transform.setVariable('category', this._category);
       if (this.isNew) {
         this.post(this._category);

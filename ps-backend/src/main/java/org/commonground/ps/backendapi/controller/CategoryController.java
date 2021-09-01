@@ -14,9 +14,11 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
+import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
+import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.jpa.repositories.MainCategoryRepository;
 import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.MainCategory;
@@ -37,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/maincategory", produces = { "application/json; charset=utf-8" })
+@RequestMapping(value = "/company/{companyId}/domain/{domainId}/maincategory", produces = { "application/json; charset=utf-8" })
 public class CategoryController extends Controller {
 
   @Autowired
@@ -45,6 +47,9 @@ public class CategoryController extends Controller {
 
   @Autowired
   private CategoryRepository categoryRepository;
+
+  @Autowired
+  private GroupRepository groupRepository;
 
   @Autowired
   private CompanyRepository companyRepository;
@@ -150,17 +155,21 @@ public class CategoryController extends Controller {
   @PostMapping(value = "/{mainCategoryId}/category", consumes = "application/json")
   public Category postCategory(
     @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PostCategoryValidator @RequestBody Category category) throws BadRequestException {
 
     isValid(companyId);
     validateCategoryByName(category.getName(), companyId, mainCategoryId, null);
-
     Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, companyId);
     if (mainCategoryEntity.isPresent()) {
-      CategoryEntity categoryEntity = Convert.category(category);
-      categoryEntity.setMainCategory(mainCategoryEntity.get());
-      return Convert.categoryEntity(categoryRepository.saveAndFlush(categoryEntity));
+      Optional<GroupEntity> groupEntity = groupRepository.getGroupById(category.getGroup().getId(), domainId);
+      if (groupEntity.isPresent()) {
+        CategoryEntity categoryEntity = Convert.category(category);
+        categoryEntity.setMainCategory(mainCategoryEntity.get());
+        categoryEntity.setGroup(groupEntity.get());
+        return Convert.categoryEntity(categoryRepository.saveAndFlush(categoryEntity));
+      }
     }
     throw new BadRequestException();
   }
