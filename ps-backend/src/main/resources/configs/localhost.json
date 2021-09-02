@@ -198,7 +198,8 @@
     "putCategory":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory/${mainCategory.id}/category/${category.id}", "roles": ["ROLE_ADMIN"]},
     "getStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
     "postStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
-    "putStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status/${status.id}", "roles": ["ROLE_ADMIN"]}
+    "putStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status/${status.id}", "roles": ["ROLE_ADMIN"]},
+    "getPages":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page", "roles": ["ROLE_ADMIN"]}
   },
   "components": {
     "detailsHeader": [

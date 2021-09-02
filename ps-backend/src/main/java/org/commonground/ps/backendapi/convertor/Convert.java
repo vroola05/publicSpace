@@ -13,6 +13,7 @@ import org.commonground.ps.backendapi.jpa.entities.DomainTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
@@ -26,6 +27,7 @@ import org.commonground.ps.backendapi.model.DomainType;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
+import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.Person;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.User;
@@ -257,6 +259,14 @@ public class Convert {
     ActionEntity actionEntity = new ActionEntity();
     actionEntity.setId(actionType.getId());
     return actionEntity;
+  }
+
+  public static Page pageEntity(PageEntity actionEntity) {
+    Page page = new Page();
+    page.setId(actionEntity.getId());
+    page.setName(actionEntity.getName());
+    
+    return page;
   }
 
 }
