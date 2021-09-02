@@ -1,5 +1,8 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 import lombok.Data;
@@ -21,4 +24,8 @@ public class PageEntity {
 
   @ManyToOne(fetch = FetchType.EAGER)
   PageTypeEntity pageType;
+
+  @OneToMany(targetEntity = PageButtonEntity.class, mappedBy = "page", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<PageButtonEntity> pageButtons = new ArrayList<>();
+
 }

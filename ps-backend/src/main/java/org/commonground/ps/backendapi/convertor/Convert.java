@@ -13,8 +13,11 @@ import org.commonground.ps.backendapi.jpa.entities.DomainTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
+import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.model.Action;
@@ -28,7 +31,10 @@ import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageButton;
+import org.commonground.ps.backendapi.model.PageType;
 import org.commonground.ps.backendapi.model.Person;
+import org.commonground.ps.backendapi.model.Role;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.User;
 
@@ -261,12 +267,43 @@ public class Convert {
     return actionEntity;
   }
 
-  public static Page pageEntity(PageEntity actionEntity) {
+  public static Page pageEntity(PageEntity pageEntity) {
     Page page = new Page();
-    page.setId(actionEntity.getId());
-    page.setName(actionEntity.getName());
-    
+    page.setId(pageEntity.getId());
+    page.setName(pageEntity.getName());
     return page;
   }
 
+  public static PageEntity page(Page page) {
+    PageEntity pageEntity = new PageEntity();
+    pageEntity.setId(page.getId());
+    pageEntity.setName(page.getName());
+    
+    return pageEntity;
+  }
+
+  public static PageType pageTypeEntity(PageTypeEntity pageTypeEntity) {
+    PageType pageType = new PageType();
+    pageType.setId(pageTypeEntity.getId());
+    pageType.setName(pageTypeEntity.getName());
+    
+    return pageType;
+  }
+
+  public static PageButton pageButtonEntity(PageButtonEntity pageButtonEntity) {
+    PageButton pageButton = new PageButton();
+    pageButton.setId(pageButtonEntity.getId());
+    pageButton.setName(pageButtonEntity.getName());
+    pageButton.setRoute(pageButtonEntity.getRoute());
+    return pageButton;
+  }
+
+  /*public static Role pageButtonEntity(RolesEntity rolesEntity) {
+    Role role = new Role();
+    role.setId(rolesEntity.getId());
+    role.setAllow(rolesEntity.ge.getName());
+    role.setRoute(pageButtonEntity.getRoute());
+    return role;
+  }*/
+  
 }

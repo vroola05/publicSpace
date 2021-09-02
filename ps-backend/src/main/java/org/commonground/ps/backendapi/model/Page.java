@@ -12,4 +12,5 @@ public class Page {
   private String name;
   private ArrayList<PageButton> buttonsLeft;
   private ArrayList<PageButton> buttonsRight;
+  private PageType pageType;
 }
