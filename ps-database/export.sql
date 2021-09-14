@@ -1005,8 +1005,6 @@ ALTER TABLE ONLY public.page_type
 -- --------------------------------------
 
 
-
-
 CREATE TABLE public.page (
     id integer NOT NULL,
     domain_id integer NOT NULL,
@@ -1033,6 +1031,16 @@ ALTER TABLE ONLY public.page
         ON DELETE NO ACTION
         NOT VALID;
 
+
+CREATE SEQUENCE public.seq_page_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_page_id
+    OWNER TO postgres;
 
 -- ---------------------------------
 
