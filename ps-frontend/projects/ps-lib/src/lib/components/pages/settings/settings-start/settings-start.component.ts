@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 
 import { ApiService } from '../../../../services/api/api.service';
 import { DomainService } from '../../../../services/domain/domain.service';
@@ -23,7 +23,7 @@ import { Environment } from '../../../../../model/intefaces';
   templateUrl: './settings-start.component.html',
   styleUrls: ['./settings-start.component.scss']
 })
-export class SettingsStartComponent extends Page implements OnInit, OnDestroy {
+export class SettingsStartComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('companyComponent') public companyComponent: DropdownFieldComponent;
   @ViewChild('domainComponent') public domainComponent: DropdownFieldComponent;
 

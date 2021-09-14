@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-md-4">
+        <h4>Naam</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [id]="'buttonName'" [name]="'buttonName'" [placeholder]="'Naam'"
+            [value]="_button?.name" [required]="true" [maxLength]="50" (changed)="onButtonNameChanged($event)"
+            #buttonNameComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Type</h4>
+        <div class="field-wrapper">
+            <lib-dropdown-field [id]="'byttonType'" [name]="'byttonType'" [placeholder]="'Type'" [options]="_buttonTypeItems"
+            (changed)="onButtonTypeChanged($event)" #buttonTypeComponent></lib-dropdown-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Route</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [id]="'buttonRoute'" [name]="'buttonRoute'" [placeholder]="'Route'"
+                [value]="_button?.route" [required]="true" [maxLength]="50" (changed)="onButtonRouteChanged($event)"
+                #buttonRouteComponent></lib-text-field>
+        </div>
+    </div>
+</div>
+
+
+

@@ -10,9 +10,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface PageRepository extends JpaRepository<PageEntity, Long> {
 
-  @Query("select p from PageEntity p where p.domain.id = :#{#domainId}")
+  @Query("select p from PageEntity p where p.domain.id = :#{#domainId} order by p.name asc")
   List<PageEntity> getPages(@Param("domainId") Long domainId);
 
-  @Query("select p from GroupEntity p where p.id = :#{#id} and p.domain.id = :#{#domainId}")
+  @Query("select p from PageEntity p where p.id = :#{#id} and p.domain.id = :#{#domainId}")
   Optional<PageEntity> getPageById(@Param("id") Long id, @Param("domainId") Long domainId);
 }

@@ -28,6 +28,7 @@ export * from './lib/components/list/components/list-panel-user/list-panel-user.
 export * from './lib/components/list/components/list-panel-category/list-panel-category.component';
 export * from './lib/components/list/components/list-panel-status/list-panel-status.component';
 export * from './lib/components/list/components/list-panel-action/list-panel-action.component';
+export * from './lib/components/list/components/list-panel-pages/list-panel-pages.component';
 
 export * from './lib/components/filter/filter-equals/filter-equals.component';
 export * from './lib/components/filter/filter-between/filter-between.component';
@@ -59,6 +60,7 @@ export * from './lib/components/panel/components/panel-settings-main-category/pa
 export * from './lib/components/panel/components/panel-settings-category/panel-settings-category.component';
 export * from './lib/components/panel/components/panel-settings-status/panel-settings-status.component';
 export * from './lib/components/panel/components/panel-settings-actions/panel-settings-actions.component';
+export * from './lib/components/panel/components/panel-settings-pages/panel-settings-pages.component';
 
 export * from './lib/components/maps/maps.component';
 export * from './lib/components/mail/mail.component';
@@ -109,6 +111,9 @@ export * from './lib/components/pages/overview/overview.component';
 export * from './lib/components/pages/send-mail/send-mail.component';
 
 export * from './lib/components/pages/settings/settings-start/settings-start.component';
+
+export * from './lib/components/pages/components/create-buttons/create-buttons.component';
+export * from './lib/components/pages/components/create-buttons/components/create-button/create-button.component';
 
 // SERVICES
 export * from './lib/services/navigation/navigation.service';

@@ -1,4 +1,5 @@
 import { ButtonTypes, ContractorType, PageType } from './intefaces';
+import { Page } from './page';
 import { Status } from './status';
 
 export interface KeyValueT {
@@ -217,7 +218,8 @@ export interface PagesT {
 }
 
 export interface DomainT {
-  pages: PagesT;
+  pages?: Map<string, Page>;
+  pagesOld: PagesT;
   login?: LoginT;
   assign?: DomainPageT;
   components?: ComponentsT;

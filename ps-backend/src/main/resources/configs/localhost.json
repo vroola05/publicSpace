@@ -1,7 +1,5 @@
 {
   "info": {
-    "company": 1,
-    "domain": 1,
     "apikey": "x-apikey",
     "prefix": "jer",
     "logo": "assets/images/default-logo.svg",
@@ -16,7 +14,7 @@
       { "id": 5, "type": "call", "name": "Afgesloten", "path": "closed" }
     ]
   },
-  "pages": {
+  "pagesOld": {
     "overview": {
       "listSize": 50,
       "listTemplate": [
@@ -199,7 +197,9 @@
     "getStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
     "postStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
     "putStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status/${status.id}", "roles": ["ROLE_ADMIN"]},
-    "getPages":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page", "roles": ["ROLE_ADMIN"]}
+    "getPages":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page", "roles": ["ROLE_ADMIN"]},
+    "getButtonTypes":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/button/types", "roles": ["ROLE_ADMIN"]},
+    "putPage":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/${page.id}/${page.pageType.name}", "roles": ["ROLE_ADMIN"]}
   },
   "components": {
     "detailsHeader": [

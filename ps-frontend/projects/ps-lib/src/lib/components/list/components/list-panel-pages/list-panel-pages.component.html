@@ -1,0 +1,43 @@
+<div class="row list-panel" *ngIf="_page">
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Naam</h4>
+          <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [id]="'pageName'" [name]="'pageName'" [placeholder]="'Naam'"
+            [value]="_page?.name" [required]="true" [maxLength]="50" (changed)="onPageNameChanged($event)"
+            #pageNameComponent></lib-text-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Knoppen links</h4>
+          <lib-panel-toggle [style]="'default'" [title]="['Knoppen links']">
+            <lib-create-buttons [buttons]="_page?.buttonsLeft"></lib-create-buttons>
+          </lib-panel-toggle>
+        </div>
+        <div class="col-md-12">
+          <h4>Knoppen rechts</h4>
+        <lib-panel-toggle [style]="'default'" [title]="['Knoppen rechts']">
+          <lib-create-buttons [buttons]="_page?.buttonsRight"></lib-create-buttons>
+        </lib-panel-toggle>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="row buttons">
+        <div class="col-md-6 text-left">
+        </div>
+        <div class="col-md-6 text-right">
+          <div class="row">
+            <div class="col-md-4">
+              <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

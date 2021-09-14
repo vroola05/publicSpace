@@ -1,16 +1,17 @@
 package org.commonground.ps.backendapi.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public interface Page {
+    void setId(Long id);
+    Long getId();
 
-@Data
-@NoArgsConstructor
-public class Page {
-  private Long id;
-  private String name;
-  private ArrayList<PageButton> buttonsLeft;
-  private ArrayList<PageButton> buttonsRight;
-  private PageType pageType;
+    void setName(String name);
+    String getName();
+
+    void setPageType(PageType pageType);
+    PageType getPageType();
+
+    void setButtonsLeft(List<PageButton> pageButtons);
+    void setButtonsRight(List<PageButton> pageButtons);
 }

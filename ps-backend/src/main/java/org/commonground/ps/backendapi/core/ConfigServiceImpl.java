@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,6 +16,8 @@ import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
+import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.template.DomainT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class ConfigServiceImpl implements ConfigService {
 
   @Autowired
 	private StatusRepository statusRepository;
+
+  @Autowired
+	private PageService pageService;
 
   public DomainT get(String domain) throws SecurityException {
     if(!ConfigService.isValidDomain(domain)) {
@@ -51,21 +57,28 @@ public class ConfigServiceImpl implements ConfigService {
     try {
       if (TypeReference.class.getResource(file) != null) {
         InputStream inputStream = TypeReference.class.getResourceAsStream(file);
-        DomainT domainT = mapper.readValue(inputStream, typeReference);
+        DomainT config = mapper.readValue(inputStream, typeReference);
 
         Optional<DomainEntity> domainEntity = domainRepository.getDomainByDomain(domain);
         if (domainEntity.isPresent()) {
-          List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainEntity.get().getId());
+          Long companyId = domainEntity.get().getCompany().getId();
+          Long domainId = domainEntity.get().getId();
+          config.getInfo().setCompany(companyId);
+          config.getInfo().setDomain(domainId);
+          
+          List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
           List<Status> statusses = new ArrayList<>();
           statusEntities.forEach(statusEntity -> {
             statusses.add(Convert.statusEntity(statusEntity));
           });
-          domainT.getInfo().setStatus(statusses);
+          config.getInfo().setStatus(statusses);
+
+          config.setPages(getPages(companyId, domainId));
         }
         
         //
-        configs.put(domain, domainT);
-        return domainT;
+        configs.put(domain, config);
+        return config;
       }
     } catch (IOException e) {
       throw new SecurityException("Error reading");
@@ -90,5 +103,15 @@ public class ConfigServiceImpl implements ConfigService {
       return referer.substring(0, index).equalsIgnoreCase(domain);
     }
     return referer.equalsIgnoreCase(domain);
+  }
+
+  public Map<String, Page> getPages(Long companyId, Long domainId) {
+    Map<String, Page> pages = new HashMap<String, Page>();
+    List<Page> pagesList = pageService.get(companyId, domainId);
+
+    pagesList.forEach(page -> {
+      pages.put(page.getPageType().getName(), page); 
+    });
+    return pages;
   }
 }

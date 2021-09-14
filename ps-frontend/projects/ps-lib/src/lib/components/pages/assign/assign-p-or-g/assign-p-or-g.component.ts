@@ -8,7 +8,7 @@ import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
@@ -27,7 +27,7 @@ import { ActionService } from '../../../../services/action/action.service';
   templateUrl: './assign-p-or-g.component.html',
   styleUrls: ['./assign-p-or-g.component.scss']
 })
-export class AssignPOrGComponent extends Page implements OnInit, OnDestroy {
+export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
   private sending = false;
 

@@ -8,7 +8,7 @@ import { DomainService } from '../../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
-import { Page } from '../../../page';
+import { PageAbstract } from '../../../page';
 
 import { Call } from '../../../../../../model/call';
 import { CallList } from '../../../../../../model/call-list';
@@ -25,7 +25,7 @@ import { Loader } from '../../../../../services/loader/loader.service';
   templateUrl: './order-handle.component.html',
   styleUrls: ['./order-handle.component.scss']
 })
-export class OrderHandleComponent extends Page implements OnInit, OnDestroy {
+export class OrderHandleComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('explanationField') public explanationField: TextareaFieldComponent;
   private subscription: Subscription[] = [];
 

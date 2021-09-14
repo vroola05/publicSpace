@@ -23,7 +23,8 @@ import {
   PanelSettingsMainCategoryComponent,
   PanelSettingsCategoryComponent,
   PanelSettingsStatusComponent,
-  PanelSettingsActionsComponent
+  PanelSettingsActionsComponent,
+  PanelSettingsPagesComponent
 } from 'ps-lib';
 
 const routes: Routes = [
@@ -64,6 +65,10 @@ const routes: Routes = [
       {
         path: 'actions',
         component: PanelSettingsActionsComponent
+      },
+      {
+        path: 'pages',
+        component: PanelSettingsPagesComponent
       }
     ]
   },

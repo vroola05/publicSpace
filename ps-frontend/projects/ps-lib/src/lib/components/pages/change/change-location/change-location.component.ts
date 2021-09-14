@@ -7,7 +7,7 @@ import { NavigationService } from '../../../../services/navigation/navigation.se
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewMapComponent } from '../../../panel/components/panel-new-map/panel-new-map.component';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
@@ -17,7 +17,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
   templateUrl: './change-location.component.html',
   styleUrls: ['./change-location.component.scss']
 })
-export class ChangeLocationComponent extends Page implements OnInit, OnDestroy {
+export class ChangeLocationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewMapComponent') panelNewMapComponent: PanelNewMapComponent;
 
   public call: Call;

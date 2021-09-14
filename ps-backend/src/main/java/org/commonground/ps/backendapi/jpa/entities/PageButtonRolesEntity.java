@@ -16,7 +16,7 @@ public class PageButtonRolesEntity {
 
   @ManyToOne()
   @JoinColumn(name="role_id", referencedColumnName = "id")
-   private PageButtonEntity role;
+  private RolesEntity role;
 
   @ManyToOne()
   @JoinColumn(name="page_button_id", referencedColumnName = "id")

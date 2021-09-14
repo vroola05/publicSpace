@@ -7,7 +7,7 @@ import { NavigationService } from '../../../../services/navigation/navigation.se
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewMapComponent } from '../../../panel/components/panel-new-map/panel-new-map.component';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
@@ -17,7 +17,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
   templateUrl: './new-location.component.html',
   styleUrls: ['./new-location.component.scss']
 })
-export class NewLocationComponent extends Page implements OnInit, OnDestroy {
+export class NewLocationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewMapComponent') panelNewMapComponent: PanelNewMapComponent;
 
   public call: Call;
@@ -40,11 +40,11 @@ export class NewLocationComponent extends Page implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.pages.newLocation.buttonsLeft;
-    this.buttonsRight = this.domain.config.pages.newLocation.buttonsRight;
+    this.buttonsLeft = this.domain.config.pagesOld.newLocation.buttonsLeft;
+    this.buttonsRight = this.domain.config.pagesOld.newLocation.buttonsRight;
 
-    if (this.domain.config.pages.newLocation.pageType) {
-      this.pageType = this.domain.config.pages.newLocation.pageType;
+    if (this.domain.config.pagesOld.newLocation.pageType) {
+      this.pageType = this.domain.config.pagesOld.newLocation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

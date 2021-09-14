@@ -11,7 +11,7 @@ import { StorageService } from '../../../../../services/storage/storage.service'
 import { DropdownFieldComponent } from '../../../../fields/dropdown-field/dropdown-field.component';
 import { SelectFieldComponent } from '../../../../fields/select-field/select-field.component';
 import { TextareaFieldComponent } from '../../../../fields/textarea-field/textarea-field.component';
-import { Page } from '../../../page';
+import { PageAbstract } from '../../../page';
 import { Call } from '../../../../../../model/call';
 import { CallList } from '../../../../../../model/call-list';
 import { Ordertype } from '../../../../../../model/order-type';
@@ -27,7 +27,7 @@ import { AuthorisationService } from '../../../../../services/authorisation/auth
   templateUrl: './order-creation.component.html',
   styleUrls: ['./order-creation.component.scss']
 })
-export class OrderCreationComponent extends Page implements OnInit, OnDestroy {
+export class OrderCreationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('actions') public actions: DropdownFieldComponent;
   @ViewChild('options') public options: DropdownFieldComponent;
   @ViewChild('ordertypesField') public ordertypesField: SelectFieldComponent;

@@ -8,7 +8,7 @@ import { DomainService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { Call } from '../../../../../model/call';
 import { CallList } from '../../../../../model/call-list';
 import { Order } from '../../../../../model/order';
@@ -20,7 +20,7 @@ import { ButtonT } from '../../../../../model/template';
   templateUrl: './orderitem-creation.component.html',
   styleUrls: ['./orderitem-creation.component.scss']
 })
-export class OrderitemCreationComponent extends Page implements OnInit, OnDestroy {
+export class OrderitemCreationComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
   public call: Call;
   public order: Order;

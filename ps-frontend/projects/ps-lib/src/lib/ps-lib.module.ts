@@ -120,6 +120,10 @@ import { PanelSettingsStatusComponent } from './components/panel/components/pane
 import { ListPanelStatusComponent } from './components/list/components/list-panel-status/list-panel-status.component';
 import { PanelSettingsActionsComponent } from './components/panel/components/panel-settings-actions/panel-settings-actions.component';
 import { ListPanelActionComponent } from './components/list/components/list-panel-action/list-panel-action.component';
+import { PanelSettingsPagesComponent } from './components/panel/components/panel-settings-pages/panel-settings-pages.component';
+import { ListPanelPagesComponent } from './components/list/components/list-panel-pages/list-panel-pages.component';
+import { CreateButtonsComponent } from './components/pages/components/create-buttons/create-buttons.component';
+import { CreateButtonComponent } from './components/pages/components/create-buttons/components/create-button/create-button.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +154,7 @@ import { ListPanelActionComponent } from './components/list/components/list-pane
     ListPanelCategoryComponent,
     ListPanelStatusComponent,
     ListPanelActionComponent,
+    ListPanelPagesComponent,
     FilterComponent,
     FilterEqualsComponent,
     FilterBetweenComponent,
@@ -187,6 +192,7 @@ import { ListPanelActionComponent } from './components/list/components/list-pane
     PanelSettingsCompaniesComponent,
     PanelSettingsStatusComponent,
     PanelSettingsActionsComponent,
+    PanelSettingsPagesComponent,
     NotesComponent,
     NotesViewerComponent,
     NotesButtonComponent,
@@ -217,7 +223,9 @@ import { ListPanelActionComponent } from './components/list/components/list-pane
     OrderHandleNoLoginComponent,
     OrderHandleComponent,
     SettingsStartComponent,
-    SettingsButtonComponent
+    SettingsButtonComponent,
+    CreateButtonsComponent,
+    CreateButtonComponent
   ],
   imports: [
     CommonModule,
@@ -254,6 +262,7 @@ import { ListPanelActionComponent } from './components/list/components/list-pane
     ListPanelCategoryComponent,
     ListPanelStatusComponent,
     ListPanelActionComponent,
+    ListPanelPagesComponent,
     MapsComponent,
     PopupConfirmComponent,
     ImageComponent,
@@ -288,6 +297,7 @@ import { ListPanelActionComponent } from './components/list/components/list-pane
     PanelSettingsCategoryComponent,
     PanelSettingsStatusComponent,
     PanelSettingsActionsComponent,
+    PanelSettingsPagesComponent,
     NotesComponent,
     NotesViewerComponent,
     NotesButtonComponent,
@@ -314,7 +324,9 @@ import { ListPanelActionComponent } from './components/list/components/list-pane
     ResetAccountComponent,
     OrderHandleNoLoginComponent,
     OrderHandleComponent,
-    SettingsStartComponent
+    SettingsStartComponent,
+    CreateButtonsComponent,
+    CreateButtonComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

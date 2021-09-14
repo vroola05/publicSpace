@@ -8,7 +8,7 @@ import { NavigationService } from '../../../../services/navigation/navigation.se
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewInformationComponent } from '../../../panel/components/panel-new-information/panel-new-information.component';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PanelNewContactComponent } from '../../../panel/components/panel-new-contact/panel-new-contact.component';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -19,7 +19,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
   templateUrl: './new-information.component.html',
   styleUrls: ['./new-information.component.scss']
 })
-export class NewInformationComponent extends Page implements OnInit, OnDestroy {
+export class NewInformationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewInformationComponent') panelNewInformationComponent: PanelNewInformationComponent;
   @ViewChild('panelNewContactComponent') panelNewContactComponent: PanelNewContactComponent;
 
@@ -43,10 +43,10 @@ export class NewInformationComponent extends Page implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.pages.newInformation.buttonsLeft;
-    this.buttonsRight = this.domain.config.pages.newInformation.buttonsRight;
-    if (this.domain.config.pages.newInformation.pageType) {
-      this.pageType = this.domain.config.pages.newInformation.pageType;
+    this.buttonsLeft = this.domain.config.pagesOld.newInformation.buttonsLeft;
+    this.buttonsRight = this.domain.config.pagesOld.newInformation.buttonsRight;
+    if (this.domain.config.pagesOld.newInformation.pageType) {
+      this.pageType = this.domain.config.pagesOld.newInformation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

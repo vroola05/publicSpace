@@ -7,7 +7,7 @@ import { DomainService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PanelNewInformationComponent } from '../../../panel/components/panel-new-information/panel-new-information.component';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -18,7 +18,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
   templateUrl: './change-information.component.html',
   styleUrls: ['./change-information.component.scss']
 })
-export class ChangeInformationComponent extends Page implements OnInit, OnDestroy {
+export class ChangeInformationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewInformationComponent') panelNewInformationComponent: PanelNewInformationComponent;
 
   public call: Call;

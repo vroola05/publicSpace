@@ -29,7 +29,7 @@ public class PageButtonEntity {
   @ManyToOne(fetch = FetchType.EAGER)
   PageButtonTypeEntity buttonType;
 
-  @OneToMany(targetEntity = PageButtonRolesEntity.class, mappedBy = "pageButton", fetch = FetchType.LAZY)
+  @OneToMany(targetEntity = PageButtonRolesEntity.class, mappedBy = "pageButton", fetch = FetchType.EAGER)
   private List<PageButtonRolesEntity> roles = new ArrayList<>();
   
 }

@@ -10,7 +10,7 @@ import { ApiService } from '../../../../services/api/api.service';
 import { PanelNewConfirmationComponent } from '../../../panel/components/panel-new-confirmation/panel-new-confirmation.component';
 import { Loader } from '../../../../services/loader/loader.service';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ToastService } from '../../../../services/toast/toast.service';
@@ -23,7 +23,7 @@ import { first } from 'rxjs/operators';
   templateUrl: './new-confirmation.component.html',
   styleUrls: ['./new-confirmation.component.scss']
 })
-export class NewConfirmationComponent extends Page implements OnInit, OnDestroy {
+export class NewConfirmationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewConfirmationComponent') panelNewConfirmationComponent: PanelNewConfirmationComponent;
 
   private postNewCallImagesSubscription: Subscription;
@@ -53,10 +53,10 @@ export class NewConfirmationComponent extends Page implements OnInit, OnDestroy 
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.pages.newConfirmation.buttonsLeft;
-    this.buttonsRight = this.domain.config.pages.newConfirmation.buttonsRight;
-    if (this.domain.config.pages.newConfirmation.pageType) {
-      this.pageType = this.domain.config.pages.newConfirmation.pageType;
+    this.buttonsLeft = this.domain.config.pagesOld.newConfirmation.buttonsLeft;
+    this.buttonsRight = this.domain.config.pagesOld.newConfirmation.buttonsRight;
+    if (this.domain.config.pagesOld.newConfirmation.pageType) {
+      this.pageType = this.domain.config.pagesOld.newConfirmation.pageType;
     }
   }
 

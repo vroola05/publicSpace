@@ -8,5 +8,4 @@ import lombok.NoArgsConstructor;
 public class PageType {
   private Long id;
   private String name;
-  
 }

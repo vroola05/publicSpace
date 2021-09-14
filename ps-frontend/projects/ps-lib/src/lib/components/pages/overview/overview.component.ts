@@ -9,7 +9,7 @@ import { Call } from '../../../../model/call';
 import { Amount } from '../../../../model/amount';
 
 import { QueryParameters } from '../../../../model/query-parameters';
-import { Page } from '../page';
+import { PageAbstract } from '../page';
 
 import { ApiService } from '../../../services/api/api.service';
 import { DomainService } from '../../../services/domain/domain.service';
@@ -26,7 +26,7 @@ import { AuthorisationService } from '../../../services/authorisation/authorisat
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent extends Page implements OnInit, OnDestroy {
+export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('tableContainer') public tableContainer: ElementRef;
   @ViewChild('headerRef') public headerRef: ElementRef;
   public pageType: PageType = PageType.overview;
@@ -60,7 +60,7 @@ export class OverviewComponent extends Page implements OnInit, OnDestroy {
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
 
-    this.overview = this.domain.config.pages.overview;
+    this.overview = this.domain.config.pagesOld.overview;
     this.filterService.setListsize(this.overview.listSize ? this.overview.listSize : 50);
 
     this.search = this.filterService.getSearch();

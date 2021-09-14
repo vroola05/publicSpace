@@ -8,7 +8,7 @@ import { DomainService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { Call } from '../../../../../model/call';
 import { CallList } from '../../../../../model/call-list';
 import { Order } from '../../../../../model/order';
@@ -32,7 +32,7 @@ import { Loader } from '../../../../services/loader/loader.service';
   templateUrl: './orderitem-information.component.html',
   styleUrls: ['./orderitem-information.component.scss']
 })
-export class OrderitemInformationComponent extends Page implements OnInit, OnDestroy {
+export class OrderitemInformationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChildren('orderItemCheckedfield') orderItemCheckedfields: QueryList<CheckboxFieldComponent>;
   @ViewChildren('orderItemAmountfield') orderItemAmountfields: QueryList<TextFieldComponent>;
 

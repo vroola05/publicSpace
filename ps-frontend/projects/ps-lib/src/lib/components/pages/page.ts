@@ -9,7 +9,7 @@ import { TransformService } from '../../services/transform/transform.service';
 
 
 @Directive()
-export abstract class Page implements OnInit, OnDestroy {
+export abstract class PageAbstract implements OnInit, OnDestroy {
   public pageType: PageType = PageType.page;
 
   constructor(

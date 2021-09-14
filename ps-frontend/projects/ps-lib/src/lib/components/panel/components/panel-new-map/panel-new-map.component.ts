@@ -53,7 +53,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       this.call.location = new Location();
     }
 
-    this.listTemplate = this.domain.config.pages.newLocation.listTemplate;
+    this.listTemplate = this.domain.config.pagesOld.newLocation.listTemplate;
   }
 
   public ngOnInit(): void {

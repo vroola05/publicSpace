@@ -9,7 +9,7 @@ import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
@@ -28,7 +28,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
   templateUrl: './assign-p-and-g.component.html',
   styleUrls: ['./assign-p-and-g.component.scss']
 })
-export class AssignPAndGComponent extends Page implements OnInit, OnDestroy {
+export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
   private sending = false;
   private type: 'user' | 'group' = 'user';

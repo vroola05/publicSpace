@@ -7,7 +7,7 @@ import { CallList } from '../../../../model/call-list';
 import { ButtonT, MailT } from '../../../../model/template';
 import { MailInfo } from '../../../../model/mailInfo';
 import { Message } from '../../../../model/message';
-import { Page } from '../page';
+import { PageAbstract } from '../page';
 
 import { NavigationService } from '../../../services/navigation/navigation.service';
 import { DomainService } from '../../../services/domain/domain.service';
@@ -25,7 +25,7 @@ import { AuthorisationService } from '../../../services/authorisation/authorisat
   templateUrl: './send-mail.component.html',
   styleUrls: ['./send-mail.component.scss']
 })
-export class SendMailComponent extends Page implements OnInit, OnDestroy {
+export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('descriptionField') public descriptionField: TextareaFieldComponent;
 
   private subscription: Subscription[] = [];

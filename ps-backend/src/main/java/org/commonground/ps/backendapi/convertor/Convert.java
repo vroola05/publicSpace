@@ -14,6 +14,7 @@ import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
@@ -31,6 +32,8 @@ import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageImpl;
+import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageType;
 import org.commonground.ps.backendapi.model.Person;
@@ -268,11 +271,57 @@ public class Convert {
   }
 
   public static Page pageEntity(PageEntity pageEntity) {
-    Page page = new Page();
+    if (pageEntity.getPageType().getName().equalsIgnoreCase("overview")) {
+      PageOverviewImpl page = new PageOverviewImpl();
+      Convert.pageGenericEntity(pageEntity, page);
+      return page;
+    } else {
+      PageImpl page = new PageImpl();
+      Convert.pageGenericEntity(pageEntity, page);
+      return page;
+    }
+  }
+
+  public static Page pageGenericEntity(PageEntity pageEntity, Page page) {
     page.setId(pageEntity.getId());
     page.setName(pageEntity.getName());
+
+    page.setId(pageEntity.getId());
+    page.setName(pageEntity.getName());
+    page.setPageType(Convert.pageTypeEntity(pageEntity.getPageType()));
+
+    List<PageButtonEntity> pageButtonEntities = pageEntity.getPageButtons();
+    page.setButtonsLeft(getButtonsLocation(pageButtonEntities, "left"));
+    page.setButtonsRight(getButtonsLocation(pageButtonEntities, "right"));
+
     return page;
   }
+
+  private static ArrayList<PageButton> getButtonsLocation(List<PageButtonEntity> pageButtonEntities, String location) {
+		ArrayList<PageButton> pageButtons = new ArrayList<>();
+		if (pageButtonEntities != null) {
+			pageButtonEntities.forEach(pageButtonEntity -> {
+				PageButton pageButton = Convert.pageButtonEntity(pageButtonEntity);
+				pageButton.setAction(Convert.actionTypeEntity(pageButtonEntity.getActionType()));
+				if (pageButtonEntity.getLocation().equalsIgnoreCase(location)) {
+					pageButtons.add(pageButton);
+			
+					List<PageButtonRolesEntity> roleEntities = pageButtonEntity.getRoles();
+					List<Role> roles = new ArrayList<>();
+					roleEntities.forEach(roleEntity -> {
+						Role role = new Role();
+						role.setRole(roleEntity.getRole().getName());
+						role.setId(roleEntity.getRole().getId());
+						role.setAllow(roleEntity.isAllow());
+						roles.add(role);
+					});
+					pageButton.setRoles(roles);
+					pageButton.setType(pageButtonEntity.getButtonType().getName());
+				}
+			});
+		}
+		return pageButtons;
+	}
 
   public static PageEntity page(Page page) {
     PageEntity pageEntity = new PageEntity();

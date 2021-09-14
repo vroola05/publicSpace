@@ -19,7 +19,7 @@ import { Loader } from '../../../../services/loader/loader.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { Status } from '../../../../../model/status';
@@ -31,7 +31,7 @@ import { Status } from '../../../../../model/status';
   templateUrl: './details-order.component.html',
   styleUrls: ['./details-order.component.scss']
 })
-export class DetailsOrderComponent extends Page implements OnInit, OnDestroy {
+export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
   public call: Call;
   public order: Order;

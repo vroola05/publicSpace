@@ -521,7 +521,6 @@ CREATE TABLE public.users (
     password_hash_function text
 );
 
-
 ALTER TABLE public.users OWNER TO postgres;
 
 --
@@ -967,7 +966,235 @@ ALTER TABLE ONLY public.session
     ADD CONSTRAINT user_sessio_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
 
 
--- Completed on 2021-08-27 21:59:25
+
+
+
+--
+-- TOC entry 231 (class 1259 OID 24849)
+-- Name: page_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.page_type (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+
+ALTER TABLE public.page_type OWNER TO postgres;
+
+--
+-- TOC entry 3139 (class 0 OID 24849)
+-- Dependencies: 231
+-- Data for Name: page_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.page_type VALUES (1, 'overview');
+INSERT INTO public.page_type VALUES (2, 'details');
+INSERT INTO public.page_type VALUES (3, 'assign');
+
+
+--
+-- TOC entry 3008 (class 2606 OID 24856)
+-- Name: page_type page_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_type
+    ADD CONSTRAINT page_type_pkey PRIMARY KEY (id);
+
+
+-- --------------------------------------
+
+
+
+
+CREATE TABLE public.page (
+    id integer NOT NULL,
+    domain_id integer NOT NULL,
+    page_type_id integer NOT NULL,
+    name text NOT NULL
+);
+
+ALTER TABLE public.page
+    OWNER to postgres;
+
+ALTER TABLE ONLY public.page
+    ADD CONSTRAINT page_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.page
+    ADD CONSTRAINT page_domain_id_fk FOREIGN KEY (domain_id) REFERENCES public.domain (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+ALTER TABLE ONLY public.page
+    ADD CONSTRAINT page_page_type_id_fk FOREIGN KEY (page_type_id)
+        REFERENCES public.action_type (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+-- ---------------------------------
+
+CREATE TABLE public.page_button (
+    id integer NOT NULL,
+    page_id integer NOT NULL,
+    location text NOT NULL,
+    button_type_id integer NOT NULL,
+    name text NOT NULL,
+    route text,
+    action_type_id integer
+);
+
+ALTER TABLE public.page_button
+    OWNER to postgres;
+
+ALTER TABLE ONLY public.page_button
+    ADD CONSTRAINT page_buttons_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.page
+    ADD CONSTRAINT page_button_action_type_id_fk FOREIGN KEY (action_type_id)
+        REFERENCES public.action_type (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+ALTER TABLE ONLY public.page_button
+    ADD CONSTRAINT page_button_type_button_type_id_fk FOREIGN KEY (button_type_id)
+        REFERENCES public.page_button_type (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+-- --------------------------------------
+
+
+CREATE TABLE public.page_button_condition (
+    id integer NOT NULL,
+    page_button_id integer NOT NULL,
+    field text NOT NULL,
+    operator text NOT NULL,
+    value text NOT NULL
+);
+
+ALTER TABLE public.page_button_condition
+    OWNER to postgres;
+
+ALTER TABLE ONLY public.page_button_condition
+    ADD CONSTRAINT page_button_condition_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.page_button_condition
+    ADD CONSTRAINT page_button_condition_id_fk FOREIGN KEY (page_button_id)
+        REFERENCES public.page_button (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION;
+
+-- --------------------------------------
+
+CREATE TABLE public.page_button_roles
+(
+    id integer NOT NULL,
+    page_button_id integer NOT NULL,
+    role_id integer NOT NULL,
+    allow boolean
+);
+
+ALTER TABLE public.page_button_roles
+    OWNER to postgres;
+
+ALTER TABLE ONLY public.page_button_roles
+    ADD CONSTRAINT page_button_roles_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.page_button_roles
+    ADD CONSTRAINT page_button_roles_page_buttons_id_fk FOREIGN KEY (page_button_id)
+        REFERENCES public.page_button (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+ALTER TABLE ONLY public.page_button_roles
+    ADD CONSTRAINT page_button_roles_roles_id_fk FOREIGN KEY (role_id)
+        REFERENCES public.roles (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+-- ---------------------------------------
+
+CREATE TABLE public.page_button_type (
+    id integer NOT NULL,
+    name text
+);
+
+
+ALTER TABLE public.page_button_type OWNER TO postgres;
+
+--
+-- TOC entry 3139 (class 0 OID 33045)
+-- Dependencies: 236
+-- Data for Name: page_button_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.page_button_type VALUES (1, 'containedPrimary');
+INSERT INTO public.page_button_type VALUES (2, 'containedSecondary');
+INSERT INTO public.page_button_type VALUES (3, 'outlinePrimary');
+INSERT INTO public.page_button_type VALUES (4, 'outlineSecondary');
+INSERT INTO public.page_button_type VALUES (5, 'blank');
+
+
+--
+-- TOC entry 3008 (class 2606 OID 33052)
+-- Name: page_button_type page_button_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_button_type
+    ADD CONSTRAINT page_button_type_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 237 (class 1259 OID 33070)
+-- Name: page_overview; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.page_overview (
+    id integer NOT NULL,
+    page_id integer NOT NULL,
+    name text NOT NULL,
+    toggle boolean,
+    route text
+);
+
+
+ALTER TABLE public.page_overview OWNER TO postgres;
+
+--
+-- TOC entry 3140 (class 0 OID 33070)
+-- Dependencies: 237
+-- Data for Name: page_overview; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 3008 (class 2606 OID 33077)
+-- Name: page_overview page_overview_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview
+    ADD CONSTRAINT page_overview_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3009 (class 2606 OID 33078)
+-- Name: page_overview page_overview_page_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview
+    ADD CONSTRAINT page_overview_page_id_fk FOREIGN KEY (page_id) REFERENCES public.page(id);
+
+
+-- Completed on 2021-09-14 16:16:51 CEST
 
 --
 -- PostgreSQL database dump complete

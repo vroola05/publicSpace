@@ -11,7 +11,7 @@ import { NavigationService } from '../../../../services/navigation/navigation.se
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { Loader } from '../../../../services/loader/loader.service';
-import { Page } from '../../page';
+import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ToastService } from '../../../../services/toast/toast.service';
@@ -28,7 +28,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
   templateUrl: './change-confirmation.component.html',
   styleUrls: ['./change-confirmation.component.scss']
 })
-export class ChangeConfirmationComponent extends Page implements OnInit, OnDestroy {
+export class ChangeConfirmationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelChangeConfirmationComponent') panelChangeConfirmationComponent: PanelChangeConfirmationComponent;
   private subscription: Subscription[] = [];
   private putChangeCallSubscription: Subscription;
