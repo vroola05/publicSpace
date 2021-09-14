@@ -7,6 +7,7 @@ import { User } from '../../../../../model/user';
 import { Group } from '../../../../../model/group';
 import { ListTemplateT } from '../../../../../model/template';
 import { first } from 'rxjs/operators';
+import { Role } from '../../../../../model/role';
 
 
 @Component({
@@ -82,9 +83,9 @@ export class PanelSettingsUsersComponent implements OnInit {
   public getRoles(): void {
     const endpointT = this.domain.getEndpoint('getRoles');
     if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((roles: string[]) => {
+      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((roles: Role[]) => {
         roles.forEach(role => {
-          this.roles.push({name: role, value: role, selected: false});
+          this.roles.push({name: role.role, value: role.role, selected: false});
         });
       });
     }

@@ -27,6 +27,13 @@ export class CreateButtonComponent implements OnInit {
     this.selectButtonType();
   }
 
+  public _roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+  @Input() set roleItems(roleItems: { name: string, value?: string, selected?: boolean, data?: any }[]) {
+    this._roleItems = roleItems;
+    //this.selectButtonType();
+  }
+  
+
   constructor() { }
 
   ngOnInit(): void {
@@ -46,14 +53,19 @@ export class CreateButtonComponent implements OnInit {
         }
       }  
     });
-    
+
   }
 
   public onButtonNameChanged($event) {
   }
+
   public onButtonTypeChanged($event) {
   }
   
   public onButtonRouteChanged($event) {
+  }
+
+  public onRolesChanged($event): void {
+    console.log($event);
   }
 }

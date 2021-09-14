@@ -1,6 +1,8 @@
 <div *ngIf="buttons">
 
     <div class="button" *ngFor="let button of buttons">
-        <lib-create-button [button]="button" [buttonTypeItems]="buttonTypeItems"></lib-create-button>
+        <lib-create-button [button]="button" 
+        [buttonTypeItems]="buttonTypeItems"
+        [roleItems]="roleItems"></lib-create-button>
     </div>
 </div>

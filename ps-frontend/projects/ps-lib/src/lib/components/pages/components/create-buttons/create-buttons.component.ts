@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Role } from '../../../../../model/role';
 import { PageButton } from '../../../../../model/page-button';
 
 import { ApiService } from '../../../../services/api/api.service';
@@ -16,6 +17,7 @@ export class CreateButtonsComponent implements OnInit {
   @Input() public buttons: PageButton[];
 
   public buttonTypeItems: { name: string, value?: string, data?: any }[] = [];
+  public roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -25,7 +27,9 @@ export class CreateButtonsComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
+
     this.getButtonTypes();
+    this.getRoles();
   }
 
   
@@ -44,4 +48,20 @@ export class CreateButtonsComponent implements OnInit {
       });
     }
   }
+
+  public getRoles(): void {
+    const endpointT = this.domainService.getEndpoint('getRoles');
+    if (this.authorisation.hasRoles(endpointT.roles)) {
+      let url = this.transform.URL(endpointT.endpoint);
+
+      this.apiService.get(url).subscribe((roles: Role[]) => {
+        const roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+        roles.forEach(role => {
+          roleItems.push({ name: role.role, value: String(role.id), data: role });
+        });
+        this.roleItems = roleItems;
+      });
+    }
+  }
+  
 }

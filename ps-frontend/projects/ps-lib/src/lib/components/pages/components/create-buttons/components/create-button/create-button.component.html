@@ -22,6 +22,16 @@
                 #buttonRouteComponent></lib-text-field>
         </div>
     </div>
+    <div class="col-md-6">
+        <h4>Rollen</h4>
+        <div class="field-wrapper">
+            <lib-select-field class="roles-list" [id]="'roles'" (changed)="onRolesChanged($event)" [search]="true" [name]="'roles'" [options]="_roleItems"
+              [style]="'filled'"></lib-select-field>
+        </div>
+    </div>
+
+    
+
 </div>
 
 

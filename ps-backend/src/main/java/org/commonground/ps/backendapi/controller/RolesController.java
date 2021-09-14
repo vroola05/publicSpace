@@ -6,6 +6,7 @@ import java.util.List;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
 import org.commonground.ps.backendapi.jpa.repositories.RolesRepository;
+import org.commonground.ps.backendapi.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,15 @@ public class RolesController extends Controller {
 
   @Secured(identifier = "getRoles")
 	@GetMapping()
-	public List<String> getRoles() {
-		List<String> roles = new ArrayList<>();
+	public List<Role> getRoles() {
+		List<Role> roles = new ArrayList<>();
 		List<RolesEntity> rolesEntities = rolesRepository.findAll();
-		rolesEntities.forEach(role -> roles.add(role.getName()));
+		rolesEntities.forEach(roleEntity -> {
+			Role role = new Role();
+			role.setId(roleEntity.getId());
+			role.setRole(roleEntity.getName());
+			roles.add(role);
+		});
 		return roles;
 	}
 }
