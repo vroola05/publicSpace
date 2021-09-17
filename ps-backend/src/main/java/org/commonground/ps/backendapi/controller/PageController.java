@@ -12,15 +12,20 @@ import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.PageService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
+import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
+import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
+import org.commonground.ps.backendapi.jpa.repositories.PageButtonRepository;
 import org.commonground.ps.backendapi.jpa.repositories.PageButtonTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.PageRepository;
 import org.commonground.ps.backendapi.jpa.repositories.PageTypeRepository;
 import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageType;
@@ -32,6 +37,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javassist.compiler.ast.NewExpr;
 
 @Validated
 @RestController
@@ -141,16 +148,11 @@ public class PageController extends Controller {
 		Page page
 	) throws BadRequestException {
 		isValid(companyId, domainId);
-		
-		Optional<PageEntity> optionalPageEntity = pageRepository.getPageById(pageId, domainId);
-		if (optionalPageEntity.isPresent()) {
-			PageEntity pageEntity = optionalPageEntity.get();
-			
-			pageEntity.setName(page.getName());
-			PageEntity a = pageRepository.save(pageEntity);
-			return Convert.pageEntity(a);
-		}
-
-		throw new BadRequestException();
+		return pageService.updatePage(domainId, pageId, page);
 	}
+
+	
+
+
+	
 }

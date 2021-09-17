@@ -12,6 +12,8 @@ public interface Page {
     void setPageType(PageType pageType);
     PageType getPageType();
 
+    List<PageButton> getButtonsLeft();
     void setButtonsLeft(List<PageButton> pageButtons);
+    List<PageButton> getButtonsRight();
     void setButtonsRight(List<PageButton> pageButtons);
 }

@@ -1,0 +1,12 @@
+<div class="row" >
+    <div class="col-md-12" *ngIf="conditions">
+        <div class="condition" *ngFor="let condition of conditions; let i = index">
+            <lib-create-condition [index]="i" [condition]="condition" (changed)="onConditionChanged($event)"></lib-create-condition>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row" >
+            <lib-btn-contained class="float-right col-md-3" [type]="'containedPrimary'" (clicked)="onAddClick($event)">Conditie toevoegen</lib-btn-contained>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "page_button_roles")
 public class PageButtonRolesEntity {
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_page_button_role_id")
+  @SequenceGenerator(name = "seq_page_button_role_id", sequenceName = "seq_page_button_role_id", allocationSize = 1)
   private Long id;
   private boolean allow;
 

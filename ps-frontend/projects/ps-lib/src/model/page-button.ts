@@ -8,8 +8,6 @@ export class PageButton {
     public name: string;
     public route: string;
     public type: string;
-    public action: ActionType;
-    public pageType: PageType;
     public roles?: Role[];
     public conditions?: PageButtonCondition[];
   }

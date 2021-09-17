@@ -1,3 +1,5 @@
+
+<h3>{{getTitle()}}</h3>
 <div class="row">
     <div class="col-md-4">
         <h4>Naam</h4>
@@ -22,17 +24,27 @@
                 #buttonRouteComponent></lib-text-field>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <h4>Rollen</h4>
         <div class="field-wrapper">
-            <lib-select-field class="roles-list" [id]="'roles'" (changed)="onRolesChanged($event)" [search]="true" [name]="'roles'" [options]="_roleItems"
+            <lib-select-field class="roles-list" [id]="'roles'" (changed)="onRolesChanged($event)" [search]="false" [name]="'roles'" [options]="_roleItems"
               [style]="'filled'"></lib-select-field>
         </div>
     </div>
-
-    
-
+    <div class="col-md-8">
+        <h4>Condities</h4>
+        <div class="field-wrapper">
+            <lib-create-conditions class="conditions-list" [conditions]="_button?.conditions" (changed)="onConditionsChanged($event)"></lib-create-conditions>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <lib-btn-contained class="float-right w-25" [type]="'containedSecondary'" (clicked)="onDeleteClick(button)">Knop verwijderen</lib-btn-contained>
+            </div>
+        </div>
+    </div>
 </div>
-
+<hr/>
 
 

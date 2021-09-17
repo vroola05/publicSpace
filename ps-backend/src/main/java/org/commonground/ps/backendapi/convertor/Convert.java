@@ -302,7 +302,10 @@ public class Convert {
 		if (pageButtonEntities != null) {
 			pageButtonEntities.forEach(pageButtonEntity -> {
 				PageButton pageButton = Convert.pageButtonEntity(pageButtonEntity);
-				pageButton.setAction(Convert.actionTypeEntity(pageButtonEntity.getActionType()));
+        ActionTypeEntity action = pageButtonEntity.getActionType();
+        if (action != null) {
+          pageButton.setAction(Convert.actionTypeEntity(pageButtonEntity.getActionType()));
+        }
 				if (pageButtonEntity.getLocation().equalsIgnoreCase(location)) {
 					pageButtons.add(pageButton);
 			

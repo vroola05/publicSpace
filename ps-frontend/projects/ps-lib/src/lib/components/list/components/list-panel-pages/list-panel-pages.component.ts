@@ -54,6 +54,14 @@ export class ListPanelPagesComponent implements OnInit {
     }
   }
 
+  public onButtonsLeftChanged($event) {
+    this._page.buttonsLeft = $event;
+  }
+  
+  public onButtonsRightChanged($event) {
+    this._page.buttonsRight = $event;
+  }
+
   public cancel(): void {
     this.onEvent.emit({
       action: 'cancel',
@@ -64,7 +72,6 @@ export class ListPanelPagesComponent implements OnInit {
 
   public onSave($event): void {
     const a = this.pageNameComponent.validate();
-    console.log($event, a);
     if (a) {
       this.transform.setVariable('page', this._page);
       this.put(this._page);
@@ -75,7 +82,7 @@ export class ListPanelPagesComponent implements OnInit {
     const endpointT = this.domainService.getEndpoint('putPage');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
-
+      console.log('page', page);
       this.apiService.put(url, page).subscribe((p: Page) => {
         this.onEvent.emit({
           action: 'save',

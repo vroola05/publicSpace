@@ -445,6 +445,21 @@ CREATE SEQUENCE public.seq_user_id
 ALTER TABLE public.seq_user_id OWNER TO postgres;
 
 --
+-- TOC entry 229 (class 1259 OID 33345)
+-- Name: seq_page_button_id; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.seq_page_button_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seq_page_button_id OWNER TO postgres;
+
+--
 -- TOC entry 209 (class 1259 OID 16648)
 -- Name: session; Type: TABLE; Schema: public; Owner: postgres
 --

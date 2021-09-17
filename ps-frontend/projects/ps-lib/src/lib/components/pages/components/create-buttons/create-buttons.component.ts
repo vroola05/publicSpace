@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Role } from '../../../../../model/role';
 import { PageButton } from '../../../../../model/page-button';
 
@@ -16,6 +16,8 @@ export class CreateButtonsComponent implements OnInit {
   
   @Input() public buttons: PageButton[];
 
+  @Output() changed: EventEmitter<PageButton[]> = new EventEmitter<PageButton[]>();
+  
   public buttonTypeItems: { name: string, value?: string, data?: any }[] = [];
   public roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
@@ -63,5 +65,55 @@ export class CreateButtonsComponent implements OnInit {
       });
     }
   }
+
+  public onButtonChanged($event: {action: string, index: number, button: PageButton}): void {
+    
+    switch($event.action) {
+      case 'delete':
+        this.buttons.splice($event.index, 1);
+        break;
+      case 'changed':
+        this.buttons[$event.index] = $event.button;
+        break;
+    }
+    this.changed.emit(this.buttons);
+  }
   
+  public onAddClick($event): void {
+    const button = new PageButton();
+    button.name = '';
+    button.route = '';
+    button.roles = [];
+    button.conditions = [];
+    this.buttons.push(button);
+    this.changed.emit(this.buttons);
+  }
+
+  public isFirstButton(i: number) : boolean {
+    return i <= 0;
+  }
+
+  public isLastButton(i: number) : boolean {
+    return i >= this.buttons.length - 1;
+  }
+
+  public moveUp(i: number): void {
+    if (this.isFirstButton(i)) {
+      return;
+    }
+
+    this.moveButton(i, i-1);
+  }
+
+  public moveDown(i: number): void {
+    if (this.isLastButton(i)) {
+      return;
+    }
+
+    this.moveButton(i, i+1);
+  }
+
+  private moveButton(oldIndex, newIndex) {
+    this.buttons.splice(newIndex, 0, this.buttons.splice(oldIndex, 1)[0]);
+  }
 }

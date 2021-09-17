@@ -1,0 +1,32 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.page-button-move {
+    display: inline-block;
+    border: none;
+    text-decoration: none;
+    background: none;
+    color: $black;
+    cursor: pointer;
+    text-align: center;
+    
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:hover,
+    &:focus {
+        color: $color-primary;
+    }
+
+    &:focus {
+        outline: 1px solid #fff;
+        outline-offset: -4px;
+    }
+
+    &:active {
+        transform: scale(0.99);
+    }
+
+    &:disabled {
+        color: $gray-secondary;
+    }
+}

@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-3">
+        <h4>Veld</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [name]="'buttonConditionField'" [placeholder]="'Veld'"
+            [value]="_condition?.field" [required]="true" [maxLength]="50" (changed)="onFieldChanged($event)"
+            #fieldComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h4>Operator</h4>
+        <div class="field-wrapper">
+            <lib-dropdown-field  [name]="'buttonConditionEq'" [placeholder]="'Operator'" [options]="_operators"
+            (changed)="onOperatorChanged($event)" #operatorComponent></lib-dropdown-field>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h4>Waarde</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [name]="'buttonConditionValue'" [placeholder]="'Waarde'"
+                [value]="_condition?.value" [required]="true" [maxLength]="50" (changed)="onValueChanged($event)"
+                #valueComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="field-wrapper">
+            <lib-btn-contained class="align-bottom" [type]="'blank'" (clicked)="onDeleteClick($event)">Verwijderen</lib-btn-contained>
+        </div>
+    </div>
+</div>

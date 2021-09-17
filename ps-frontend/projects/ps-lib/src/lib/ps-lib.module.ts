@@ -124,6 +124,8 @@ import { PanelSettingsPagesComponent } from './components/panel/components/panel
 import { ListPanelPagesComponent } from './components/list/components/list-panel-pages/list-panel-pages.component';
 import { CreateButtonsComponent } from './components/pages/components/create-buttons/create-buttons.component';
 import { CreateButtonComponent } from './components/pages/components/create-buttons/components/create-button/create-button.component';
+import { CreateConditionsComponent } from './components/pages/components/create-buttons/components/create-conditions/create-conditions.component';
+import { CreateConditionComponent } from './components/pages/components/create-buttons/components/create-condition/create-condition.component';
 
 @NgModule({
   declarations: [
@@ -225,7 +227,9 @@ import { CreateButtonComponent } from './components/pages/components/create-butt
     SettingsStartComponent,
     SettingsButtonComponent,
     CreateButtonsComponent,
-    CreateButtonComponent
+    CreateButtonComponent,
+    CreateConditionsComponent,
+    CreateConditionComponent
   ],
   imports: [
     CommonModule,
@@ -326,7 +330,9 @@ import { CreateButtonComponent } from './components/pages/components/create-butt
     OrderHandleComponent,
     SettingsStartComponent,
     CreateButtonsComponent,
-    CreateButtonComponent
+    CreateButtonComponent,
+    CreateConditionsComponent,
+    CreateConditionComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

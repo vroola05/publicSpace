@@ -143,7 +143,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
     const b = this.startDateComponent.validate();
     const c = this.endDateComponent.validate();
     const d = this.groupComponent.validate();
-    console.log(d);
+
     if (a && b && c && d) {
       this.transform.setVariable('category', this._category);
       if (this.isNew) {

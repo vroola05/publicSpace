@@ -114,6 +114,8 @@ export * from './lib/components/pages/settings/settings-start/settings-start.com
 
 export * from './lib/components/pages/components/create-buttons/create-buttons.component';
 export * from './lib/components/pages/components/create-buttons/components/create-button/create-button.component';
+export * from './lib/components/pages/components/create-buttons/components/create-conditions/create-conditions.component';
+export * from './lib/components/pages/components/create-buttons/components/create-condition/create-condition.component';
 
 // SERVICES
 export * from './lib/services/navigation/navigation.service';
