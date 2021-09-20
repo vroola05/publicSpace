@@ -51,6 +51,9 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
     if (event.keyCode === 13) {
       this.closeList();
     }
+    if (event.keyCode === 9) {
+      this.closeList();
+    }
 
     let index = 0;
     if (this._selected !== null) {
@@ -112,6 +115,10 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
       this._selected = null;
       this.value = '';
     }
+  }
+
+  public focus($event): void {
+    this.openList();
   }
 
   public openList() {

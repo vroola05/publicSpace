@@ -17,7 +17,6 @@ import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Page;
-import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.template.DomainT;
 import org.springframework.beans.factory.annotation.Autowired;

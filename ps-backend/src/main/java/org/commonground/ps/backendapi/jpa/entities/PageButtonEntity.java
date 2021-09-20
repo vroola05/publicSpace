@@ -34,7 +34,10 @@ public class PageButtonEntity {
   @ManyToOne(fetch = FetchType.EAGER)
   PageButtonTypeEntity buttonType;
 
-  @OneToMany(targetEntity = PageButtonRolesEntity.class, mappedBy = "pageButton", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(targetEntity = PageButtonRolesEntity.class, mappedBy = "pageButton", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<PageButtonRolesEntity> roles = new ArrayList<>();
   
+  @OneToMany(targetEntity = PageButtonConditionEntity.class, mappedBy = "pageButton", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<PageButtonConditionEntity> conditions = new ArrayList<>();
+
 }

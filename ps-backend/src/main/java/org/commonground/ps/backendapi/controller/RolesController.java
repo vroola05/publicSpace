@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/roles", produces = { "application/json; charset=utf-8" })
 public class RolesController extends Controller {
 
-  @Autowired
+	@Autowired
 	private RolesRepository rolesRepository;
 
-  @Secured(identifier = "getRoles")
+	@Secured(identifier = "getRoles")
 	@GetMapping()
 	public List<Role> getRoles() {
 		List<Role> roles = new ArrayList<>();

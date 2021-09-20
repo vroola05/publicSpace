@@ -100,7 +100,6 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
       this.headerData = this.domain.transformCall(call);
     },
     (error) => {
-      console.log('err', error);
       if (error.status && error.status === 406 ) {
         this.state = 2;
       }

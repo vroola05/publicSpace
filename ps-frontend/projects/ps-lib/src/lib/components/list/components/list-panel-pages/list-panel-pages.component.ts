@@ -82,7 +82,6 @@ export class ListPanelPagesComponent implements OnInit {
     const endpointT = this.domainService.getEndpoint('putPage');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
-      console.log('page', page);
       this.apiService.put(url, page).subscribe((p: Page) => {
         this.onEvent.emit({
           action: 'save',

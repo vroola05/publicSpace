@@ -67,7 +67,6 @@ export class CreateButtonsComponent implements OnInit {
   }
 
   public onButtonChanged($event: {action: string, index: number, button: PageButton}): void {
-    
     switch($event.action) {
       case 'delete':
         this.buttons.splice($event.index, 1);

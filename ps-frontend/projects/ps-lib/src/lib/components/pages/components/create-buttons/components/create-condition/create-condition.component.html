@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <h4>Veld</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [name]="'buttonConditionField'" [placeholder]="'Veld'"
-            [value]="_condition?.field" [required]="true" [maxLength]="50" (changed)="onFieldChanged($event)"
-            #fieldComponent></lib-text-field>
+            <lib-dropdown-field [name]="'buttonConditionField'" [placeholder]="'Veld'"
+            [options]="_fields" [required]="true" (changed)="onFieldChanged($event)"
+            #fieldComponent></lib-dropdown-field>
         </div>
     </div>
     <div class="col-md-3">
@@ -14,7 +14,7 @@
             (changed)="onOperatorChanged($event)" #operatorComponent></lib-dropdown-field>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <h4>Waarde</h4>
         <div class="field-wrapper">
             <lib-text-field [style]="'filled'" [name]="'buttonConditionValue'" [placeholder]="'Waarde'"
@@ -22,9 +22,9 @@
                 #valueComponent></lib-text-field>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="field-wrapper">
-            <lib-btn-contained class="align-bottom" [type]="'blank'" (clicked)="onDeleteClick($event)">Verwijderen</lib-btn-contained>
+    <div class="col-md-1">
+        <div class="delete-container">
+            <button class="button-default-style material-icons" (click)="onDeleteClick($event)">close</button>
         </div>
     </div>
 </div>

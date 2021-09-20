@@ -13,6 +13,7 @@ import org.commonground.ps.backendapi.jpa.entities.DomainTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
@@ -35,6 +36,7 @@ import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageButton;
+import org.commonground.ps.backendapi.model.PageButtonCondition;
 import org.commonground.ps.backendapi.model.PageType;
 import org.commonground.ps.backendapi.model.Person;
 import org.commonground.ps.backendapi.model.Role;
@@ -321,6 +323,19 @@ public class Convert {
 					pageButton.setRoles(roles);
 					pageButton.setType(pageButtonEntity.getButtonType().getName());
 				}
+
+         List<PageButtonConditionEntity> conditionEntities = pageButtonEntity.getConditions();
+					List<PageButtonCondition> conditions = new ArrayList<>();
+					conditionEntities.forEach(conditionEntity -> {
+						PageButtonCondition condition = new PageButtonCondition();
+						condition.setId(conditionEntity.getId());
+						condition.setField(conditionEntity.getField());
+						condition.setOperator(conditionEntity.getOperator());
+            condition.setValue(conditionEntity.getValue());
+						conditions.add(condition);
+					});
+					pageButton.setConditions(conditions);
+					pageButton.setType(pageButtonEntity.getButtonType().getName());
 			});
 		}
 		return pageButtons;

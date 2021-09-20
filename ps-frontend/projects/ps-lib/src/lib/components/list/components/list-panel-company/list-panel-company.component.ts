@@ -62,7 +62,6 @@ export class ListPanelCompanyComponent implements OnInit {
   }
 
   public onSave($event): void {
-    console.log($event)
     const a = this.companyComponent.validate();
     if (a) {
       if (this.isNew) {

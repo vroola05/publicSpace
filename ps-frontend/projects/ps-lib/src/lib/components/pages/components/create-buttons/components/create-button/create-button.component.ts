@@ -107,9 +107,15 @@ export class CreateButtonComponent implements OnInit {
     this.changed.emit({action: 'changed', index: this.index, button: this._button});
   }
   public onConditionsChanged($event): void {
-    if ($event.action === 'changed') {
-      this._button.conditions = $event.conditions;
+    switch($event.action) {
+      case 'delete':
+        this._button.conditions.splice($event.index, 1);
+        break;
+      case 'changed':
+        this._button.conditions = $event.conditions;
+        break;
     }
+  
     this.changed.emit({action: 'changed', index: this.index, button: this._button});
   }
   

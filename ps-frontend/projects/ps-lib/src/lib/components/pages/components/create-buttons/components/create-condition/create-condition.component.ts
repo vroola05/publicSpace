@@ -9,7 +9,7 @@ import { TextareaFieldComponent } from '../../../../../fields/textarea-field/tex
   styleUrls: ['./create-condition.component.scss']
 })
 export class CreateConditionComponent implements OnInit {
-  @ViewChild('fieldComponent') fieldComponent: TextareaFieldComponent;
+  @ViewChild('fieldComponent') fieldComponent: DropdownFieldComponent;
   @ViewChild('operatorComponent') operatorComponent: DropdownFieldComponent;
   @ViewChild('valueComponent') valueComponent: TextareaFieldComponent;
   
@@ -20,7 +20,26 @@ export class CreateConditionComponent implements OnInit {
   public _condition: PageButtonCondition;
   @Input() set condition(condition: PageButtonCondition) {
     this._condition = condition;
+    this.selectCondition();
+    this.selectField();
   }
+
+  public _fields: { name: string, value?: string, data?: any }[] = [
+    { name: 'call.id', value: '', data: 'call.id' },
+    { name: 'call.description', value: '', data: 'call.description' },
+    { name: 'call.dateCreated', value: '', data: 'call.dateCreated' },
+    { name: 'call.casenumber', value: '', data: 'call.casenumber' },
+    { name: 'call.status.id', value: '', data: 'call.status.id' },
+    { name: 'call.status.name', value: '', data: 'call.status.name' },
+    { name: 'call.person.name', value: '', data: 'call.person.name' },
+    { name: 'call.person.email', value: '', data: 'call.person.email' },
+    { name: 'call.person.phone', value: '', data: 'call.person.phone' },
+    { name: 'call.person.street', value: '', data: 'call.person.street' },
+    { name: 'call.person.postal', value: '', data: 'call.person.postal' },
+    { name: 'call.person.city', value: '', data: 'call.person.city' },
+    { name: 'call.mainCategory.name', value: '', data: 'call.mainCategory.name' },
+    { name: 'call.mainCategory.category.name', value: '', data: 'call.mainCategory.category.name' },
+  ];
 
   public _operators: { name: string, value?: string, data?: any }[] = [
     { name: 'Gelijk', value: 'eq', data: 'eq' },
@@ -28,7 +47,7 @@ export class CreateConditionComponent implements OnInit {
     { name: 'Kleiner', value: 'lt', data: 'lt' },
     { name: 'Kleiner of gelijk', value: 'le', data: 'le' },
     { name: 'Groter', value: 'gt', data: 'gt' },
-    { name: 'Groter of gelijk', value: 'ge', data: 'ge' },
+    { name: 'Groter of gelijk', value: 'ge', data: 'ge' }
   ];
   //'eq' | 'neq' | 'lt' | 'le' | 'gt' | 'ge'
   constructor() { }
@@ -36,8 +55,39 @@ export class CreateConditionComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public selectField() {
+    setTimeout(() => {
+      if (this.fieldComponent) {
+        if (!this._condition) {
+          this.fieldComponent.select(null);
+          return;
+        }
+        const item = this._fields.find( type => !type.data || type.data === this._condition.field);
+        if (item) {
+          this.fieldComponent.select(item);
+        }
+      }  
+    });
+
+  }
+
+  public selectCondition() {
+    setTimeout(() => {
+      if (this.operatorComponent) {
+        if (!this._condition) {
+          this.operatorComponent.select(null);
+          return;
+        }
+        const item = this._operators.find( type => !type.data || type.data === this._condition.operator);
+        if (item) {
+          this.operatorComponent.select(item);
+        }
+      }  
+    });
+  }
+
   public onFieldChanged($event) {
-    this._condition.field = $event;
+    this._condition.field = $event.data;
     this.changed.emit({action: 'changed', index: this.index, condition: this._condition});
   }
 
@@ -51,7 +101,7 @@ export class CreateConditionComponent implements OnInit {
     this.changed.emit({action: 'changed', index: this.index, condition: this._condition});
   }
 
-  public onDeleteClick(button): void {
+  public onDeleteClick($event): void {
     this.changed.emit({action: 'delete', index: this.index, condition: this._condition});
   }  
 }

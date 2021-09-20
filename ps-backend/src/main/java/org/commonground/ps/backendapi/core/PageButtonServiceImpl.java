@@ -1,28 +1,26 @@
 package org.commonground.ps.backendapi.core;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
-import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.PageButtonTypeRepository;
-import org.commonground.ps.backendapi.jpa.repositories.PageRepository;
-import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageButtonServiceImpl implements PageButtonService {
+	@Autowired
+	private PageButtonRoleService pageButtonRoleService;
 
 	@Autowired
-	private PageRepository pageRepository;
+	private PageButtonConditionService pageButtonConditionService;
 
 	@Autowired
 	private PageButtonTypeRepository pageButtonTypeRepository;
@@ -36,6 +34,7 @@ public class PageButtonServiceImpl implements PageButtonService {
 		long i = 0;
 		for (PageButton pageButton : pageButtons) {
 			if (pageButton.getId() != null) {
+				// Update
 				Optional<PageButtonEntity> buttonEntityOptional = pageEntity.getPageButtons().stream()
 						.filter(b -> b.getId() == pageButton.getId()).findFirst();
 				if (buttonEntityOptional.isPresent()) {
@@ -44,6 +43,7 @@ public class PageButtonServiceImpl implements PageButtonService {
 						pageButtonTypeEntities, actionTypeEntities);
 				}
 			} else {
+				// Insert
 				PageButtonEntity pageButtonEntity = new PageButtonEntity();
 				pageButtonEntity.setPage(pageEntity);
 				pageEntity.getPageButtons().add(convertPageButton(location, i, pageButton, pageButtonEntity,
@@ -54,7 +54,7 @@ public class PageButtonServiceImpl implements PageButtonService {
 	}
 
 	public PageButtonEntity convertPageButton(String location, long order, PageButton pageButton, PageButtonEntity pageButtonEntity,
-			List<PageButtonTypeEntity> pageButtonTypeEntities, List<ActionTypeEntity> actionTypeEntities) {
+			List<PageButtonTypeEntity> pageButtonTypeEntities, List<ActionTypeEntity> actionTypeEntities) throws BadRequestException {
 		pageButtonEntity.setName(pageButton.getName());
 		pageButtonEntity.setRoute(pageButton.getRoute());
 		pageButtonEntity.setSort(order);
@@ -63,7 +63,12 @@ public class PageButtonServiceImpl implements PageButtonService {
 				.filter(c -> c.getName().equalsIgnoreCase(pageButton.getType())).findFirst();
 		if (pageButtonTypeEntityOptional.isPresent()) {
 			pageButtonEntity.setButtonType(pageButtonTypeEntityOptional.get());
+		} else {
+			throw new BadRequestException();
 		}
+
+		pageButtonRoleService.convertPageButtonRoles(pageButton, pageButtonEntity);
+		pageButtonConditionService.convertPageButtonConditions(pageButton, pageButtonEntity);
 
 		return pageButtonEntity;
 	}
