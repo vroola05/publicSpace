@@ -1,13 +1,14 @@
 import { PageButton } from "./page-button";
-import { PageOverviewTemplate } from "./page-overview-template";
 import { PageType } from "./page-type";
 
-export class Page {
+export class PageOverviewTemplate {
     public id: number;
     public name: string;
-    public pageType: PageType;
+    public route: string;
+    public toggle?: boolean;
+    public priority?: boolean;
+    
     public buttonsLeft: PageButton[];
     public buttonsRight: PageButton[];
-    public pageOverviewTemplate?: PageOverviewTemplate[];
 }
   

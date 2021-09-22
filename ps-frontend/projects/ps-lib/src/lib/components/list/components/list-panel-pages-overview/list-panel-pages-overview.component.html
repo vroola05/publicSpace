@@ -1,0 +1,57 @@
+<div class="row list-panel">
+    <div class="col-md-6 list-panel-block">
+        <h4>Naam</h4>
+        <div class="field-wrapper">
+        <lib-text-field [style]="'filled'" [name]="'name'" [placeholder]="'Naam'"
+            [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="50" (changed)="onNameChanged($event)"
+            #nameComponent></lib-text-field>
+        </div>
+        <h4>Route</h4>
+        <div class="field-wrapper">
+        <lib-text-field [style]="'filled'" [name]="'route'" [placeholder]="'Route'"
+            [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="50" (changed)="onRouteChanged($event)"
+            #routeComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-6 list-panel-block">
+        <h4>Toggle</h4>
+        <div class="field-wrapper">
+          <lib-checkbox-field [name]="'toggle'" [placeholder]="'Toggle'" [value]="_pageOverviewTemplate?.toggle"
+          (changed)="onToggleChanged($event)">Actief</lib-checkbox-field>
+        </div>
+        <h4>Prioriteit</h4>
+        <div class="field-wrapper">
+          <lib-checkbox-field [name]="'priority'" [placeholder]="'Prioriteit'" [value]="_pageOverviewTemplate?.priority"
+          (changed)="onPriorityChanged($event)">Prioriteit</lib-checkbox-field>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row buttons">
+            <div class="col-md-6 text-left">
+                <div *ngIf="!isNew" class="row">
+                    <div class="col-md-8">
+                        <lib-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+                            (changed)="onDeleteChanged($event)">Verwijderen</lib-checkbox-field>
+                    </div>
+                    <div *ngIf="delete" class="col-md-4">
+                        <lib-btn-contained [type]="'outlineSecondary'">Verwijderen</lib-btn-contained>
+                    </div>
+        
+                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <div class="row">
+                    <div *ngIf="isNew" class="col-md-4">
+                        <lib-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</lib-btn-contained>
+                    </div>
+                    <div class="col-md-4">
+                        <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -183,6 +183,7 @@
     "postGroup": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group", "roles": ["ROLE_ADMIN"]},
     "putGroup": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group/${group.id}", "roles": ["ROLE_ADMIN"]},
     "getLocationByStreet": {"endpoint": "/location/street/${location.street}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "getActionTypes": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action/type", "roles": ["ROLE_ADMIN"]},
     "getActions": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action", "roles": ["ROLE_ADMIN"]},
     "putAction": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action/${action.id}", "roles": ["ROLE_ADMIN"]},
     "getLocationByStreetAndNumber": {"endpoint": "/location/street/${location.street}/number/${location.number}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},

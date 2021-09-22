@@ -25,8 +25,11 @@ public class PageEntity {
   @ManyToOne(fetch = FetchType.EAGER)
   PageTypeEntity pageType;
 
-  @OneToMany(targetEntity = PageButtonEntity.class, mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(targetEntity = PageButtonEntity.class, mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   @OrderBy("sort ASC")
   private List<PageButtonEntity> pageButtons = new ArrayList<>();
 
+  @OrderBy("sort ASC")
+  @OneToMany(targetEntity = PageOverviewEntity.class, mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<PageOverviewEntity> pageOverview = new ArrayList<>();
 }

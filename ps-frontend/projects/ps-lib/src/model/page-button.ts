@@ -7,6 +7,7 @@ export class PageButton {
     public id: number;
     public name: string;
     public route: string;
+    public action: ActionType;
     public type: string;
     public roles?: Role[];
     public conditions?: PageButtonCondition[];

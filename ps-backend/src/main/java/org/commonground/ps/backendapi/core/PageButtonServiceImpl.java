@@ -28,6 +28,9 @@ public class PageButtonServiceImpl implements PageButtonService {
 	@Autowired
 	private ActionTypeRepository actionTypeRepository;
 
+	@Autowired
+	private ActionService actionService;
+
 	public void updatePageButtons(String location, PageEntity pageEntity, List<PageButton> pageButtons) {
 		List<PageButtonTypeEntity> pageButtonTypeEntities = pageButtonTypeRepository.findAllByOrderByNameAsc();
 		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
@@ -65,6 +68,13 @@ public class PageButtonServiceImpl implements PageButtonService {
 			pageButtonEntity.setButtonType(pageButtonTypeEntityOptional.get());
 		} else {
 			throw new BadRequestException();
+		}
+
+		if (pageButton.getAction() != null) {
+			ActionTypeEntity actionTypeEntity = actionService.getActionTypeEntity(pageButton.getAction().getId());
+			if (actionTypeEntity != null) {
+				pageButtonEntity.setActionType(actionTypeEntity);	
+			}
 		}
 
 		pageButtonRoleService.convertPageButtonRoles(pageButton, pageButtonEntity);

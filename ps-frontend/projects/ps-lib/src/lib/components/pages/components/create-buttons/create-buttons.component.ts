@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActionType } from '../../../../../model/action-type';
 import { Role } from '../../../../../model/role';
 import { PageButton } from '../../../../../model/page-button';
 
@@ -19,6 +20,7 @@ export class CreateButtonsComponent implements OnInit {
   @Output() changed: EventEmitter<PageButton[]> = new EventEmitter<PageButton[]>();
   
   public buttonTypeItems: { name: string, value?: string, data?: any }[] = [];
+  public actionTypeItems: { name: string, value?: string, data?: any }[] = [];
   public roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
   constructor(
@@ -31,6 +33,7 @@ export class CreateButtonsComponent implements OnInit {
   public ngOnInit(): void {
 
     this.getButtonTypes();
+    this.getActionTypes();
     this.getRoles();
   }
 
@@ -47,6 +50,21 @@ export class CreateButtonsComponent implements OnInit {
           buttonTypeItems.push({ name: pageButtonType, value: null, data: pageButtonType });
         });
         this.buttonTypeItems = buttonTypeItems;
+      });
+    }
+  }
+
+  public getActionTypes(): void {
+    const endpointT = this.domainService.getEndpoint('getActionTypes');
+    if (this.authorisation.hasRoles(endpointT.roles)) {
+      let url = this.transform.URL(endpointT.endpoint);
+
+      this.apiService.get(url).subscribe((actionTypes: ActionType[]) => {
+        const actionTypeItems: { name: string, value?: string, data?: any }[] = [];
+        actionTypes.forEach(actionType => {
+          actionTypeItems.push({ name: actionType.name, value: null, data: actionType });
+        });
+        this.actionTypeItems = actionTypeItems;
       });
     }
   }

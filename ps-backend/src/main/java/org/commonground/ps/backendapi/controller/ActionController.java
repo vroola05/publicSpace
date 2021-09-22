@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
@@ -35,18 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/action", produces = {
 		"application/json; charset=utf-8" })
 public class ActionController extends Controller {
-
 	@Autowired
-	private DomainRepository domainRepository;
-
-	@Autowired
-	private ActionTypeRepository actionTypeRepository;
-
-	@Autowired
-	private ActionRepository actionRepository;
-
-	@Autowired
-	private StatusRepository statusRepository;
+	private ActionService actionService;
 
 	@Secured(admin = true)
 	@GetMapping(value = "/type")
@@ -56,12 +47,7 @@ public class ActionController extends Controller {
 
 		isValid(companyId, domainId);
 
-		List<ActionType> actionTypes = new ArrayList<>();
-		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
-		actionTypeEntities.forEach(actionTypeEntity -> {
-			actionTypes.add(Convert.actionTypeEntity(actionTypeEntity));
-		});
-		return actionTypes;
+		return actionService.getActionTypes();
 	}
 
 	@Secured(admin = true)
@@ -71,35 +57,9 @@ public class ActionController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 		isValid(companyId, domainId);
 
-		synchronizeActions(companyId, domainId);
+		actionService.synchronizeActions(companyId, domainId, getUser());
 
-		List<Action> actions = new ArrayList<>();
-		List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
-		actionEntities.forEach(actionEntity -> {
-			actions.add(Convert.actionEntity(actionEntity));
-		});
-
-		return actions;
-	}
-
-	private void synchronizeActions(Long companyId, Long domainId) {
-		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
-		List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
-		if (actionTypeEntities.size() != actionEntities.size()) {
-			List<ActionTypeEntity> newActionTypes = actionTypeEntities.stream().filter(a -> { return actionEntities.stream().noneMatch(b -> { return b.getActionType().getId() == a.getId(); }); }).collect(Collectors.toList());;
-
-			Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, getUser());
-			if (optionalDomainEntity.isPresent()) {
-				List<ActionEntity> newActionEntities = new ArrayList<>();
-				newActionTypes.forEach(actionTypeEntity -> {
-					ActionEntity actionEntity = new ActionEntity();
-					actionEntity.setActionType(actionTypeEntity);
-					actionEntity.setDomain(optionalDomainEntity.get());
-					newActionEntities.add(actionEntity);
-				});
-				actionRepository.saveAll(newActionEntities);
-			}
-		}
+		return actionService.getActionByDomainId(domainId);
 	}
 
 	@Secured(identifier = "putAction")
@@ -112,24 +72,6 @@ public class ActionController extends Controller {
 
 		isValid(companyId, domainId);
 
-		Optional<ActionEntity> optionalActionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionTypeId);
-		if (optionalActionEntity.isPresent()){
-			ActionEntity actionEntity = optionalActionEntity.get();
-			
-			if (action.getStatus() != null) {
-				Optional<StatusEntity> statusEntity = statusRepository.getStatusByDomainIdAndById(domainId, action.getStatus().getId());
-				if (statusEntity.isPresent()) {
-					actionEntity.setStatus(statusEntity.get());
-				} else {
-					actionEntity.setStatus(null);
-				}
-			} else {
-				actionEntity.setStatus(null);
-			}
-
-			return Convert.actionEntity(actionRepository.save(actionEntity));
-		}
-
-		throw new BadRequestException();
+		return actionService.updateAction(domainId, action);
 	}
 }

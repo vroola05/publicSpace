@@ -40,13 +40,11 @@ export class ListPanelPagesComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    
   }
 
   public ngOnDestroy(): void {
     this.transform.deleteVariable('page');
   }
-
   
   public onPageNameChanged($event) {
     if (this.pageNameComponent.validate()) {
@@ -60,6 +58,14 @@ export class ListPanelPagesComponent implements OnInit {
   
   public onButtonsRightChanged($event) {
     this._page.buttonsRight = $event;
+  }
+
+
+  public showPage(pageTypeName: string): boolean {
+    if (this._page && this._page.pageType && this._page.pageType.name === pageTypeName) {
+        return true;
+    }
+    return false;
   }
 
   public cancel(): void {

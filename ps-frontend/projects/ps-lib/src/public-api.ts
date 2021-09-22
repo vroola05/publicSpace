@@ -29,6 +29,7 @@ export * from './lib/components/list/components/list-panel-category/list-panel-c
 export * from './lib/components/list/components/list-panel-status/list-panel-status.component';
 export * from './lib/components/list/components/list-panel-action/list-panel-action.component';
 export * from './lib/components/list/components/list-panel-pages/list-panel-pages.component';
+export * from './lib/components/list/components/list-panel-pages-overview/list-panel-pages-overview.component';
 
 export * from './lib/components/filter/filter-equals/filter-equals.component';
 export * from './lib/components/filter/filter-between/filter-between.component';
@@ -61,6 +62,8 @@ export * from './lib/components/panel/components/panel-settings-category/panel-s
 export * from './lib/components/panel/components/panel-settings-status/panel-settings-status.component';
 export * from './lib/components/panel/components/panel-settings-actions/panel-settings-actions.component';
 export * from './lib/components/panel/components/panel-settings-pages/panel-settings-pages.component';
+
+export * from './lib/components/panel/components/panel-page-overview/panel-page-overview.component';
 
 export * from './lib/components/maps/maps.component';
 export * from './lib/components/mail/mail.component';

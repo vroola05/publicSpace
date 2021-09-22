@@ -17,6 +17,7 @@ import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
@@ -35,6 +36,7 @@ import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
+import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageButtonCondition;
 import org.commonground.ps.backendapi.model.PageType;
@@ -276,6 +278,20 @@ public class Convert {
     if (pageEntity.getPageType().getName().equalsIgnoreCase("overview")) {
       PageOverviewImpl page = new PageOverviewImpl();
       Convert.pageGenericEntity(pageEntity, page);
+
+      List<PageOverviewEntity> pageOverviewEntities = pageEntity.getPageOverview();
+      for (PageOverviewEntity pageOverviewEntity : pageOverviewEntities) {
+        PageOverviewTemplate pageOverviewTemplate = new PageOverviewTemplate();
+        pageOverviewTemplate.setId(pageOverviewEntity.getId());
+        pageOverviewTemplate.setName(pageOverviewEntity.getName());
+        pageOverviewTemplate.setRoute(pageOverviewEntity.getRoute());
+        pageOverviewTemplate.setToggle(pageOverviewEntity.getToggle());
+        pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
+        page.getPageOverviewTemplate().add(pageOverviewTemplate);
+      }
+      
+
+
       return page;
     } else {
       PageImpl page = new PageImpl();

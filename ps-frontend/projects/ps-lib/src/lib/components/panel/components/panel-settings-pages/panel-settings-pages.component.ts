@@ -8,6 +8,7 @@ import { ListTemplateT } from '../../../../../model/template';
 import { Group } from '../../../../../model/group';
 import { first } from 'rxjs/operators';
 import { Page } from '../../../../../model/page';
+import { PageType } from '../../../../../model/page-type';
 
 @Component({
   selector: 'lib-panel-settings-pages',

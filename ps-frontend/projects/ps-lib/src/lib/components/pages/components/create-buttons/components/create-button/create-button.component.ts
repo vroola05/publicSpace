@@ -4,6 +4,7 @@ import { TextareaFieldComponent } from '../../../../../fields/textarea-field/tex
 import { DropdownFieldComponent } from '../../../../../fields/dropdown-field/dropdown-field.component';
 
 import { PageButton } from '../../../../../../../model/page-button';
+import { ActionType } from '../../../../../../../model/action-type';
 
 @Component({
   selector: 'lib-create-button',
@@ -14,6 +15,7 @@ export class CreateButtonComponent implements OnInit {
   @ViewChild('buttonNameComponent') buttonNameComponent: TextareaFieldComponent;
   @ViewChild('buttonRouteComponent') buttonRouteComponent: TextareaFieldComponent;
   @ViewChild('buttonTypeComponent') buttonTypeComponent: DropdownFieldComponent;
+  @ViewChild('actionComponent') actionComponent: DropdownFieldComponent;
 
   @Output() changed: EventEmitter<{action: string, index: number, button: PageButton}> = new EventEmitter<{action: string, index: number, button: PageButton}>();
   
@@ -33,6 +35,15 @@ export class CreateButtonComponent implements OnInit {
     this._buttonTypeItems.push({ name: buttonTypeItem.name, value: buttonTypeItem.value, data: buttonTypeItem.data });
     });
     this.selectButtonType();
+  }
+
+  public _actionTypeItems: { name: string, value?: string, data?: any }[] = [];
+  @Input() set actionTypeItems(actionTypeItems: { name: string, value?: string, data?: any }[]) {
+    this._actionTypeItems = [];
+    actionTypeItems.forEach(actionTypeItem => {
+    this._actionTypeItems.push({ name: actionTypeItem.name, value: actionTypeItem.value, data: actionTypeItem.data });
+    });
+    this.selectActionType();
   }
 
   public _roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
@@ -64,7 +75,22 @@ export class CreateButtonComponent implements OnInit {
         }
       }  
     });
+  }
 
+  public selectActionType() {
+    setTimeout(() => {
+      if (this.actionComponent) {
+        if (!this._button || !this._button.action) {
+          this.actionComponent.select(null);
+          return;
+        }
+
+        const item = this._actionTypeItems.find( type => !type.data || type.data.id === this._button.action.id);
+        if (item) {
+          this.actionComponent.select(item);
+        }
+      }  
+    });
   }
 
   public selectRoles() {
@@ -87,6 +113,11 @@ export class CreateButtonComponent implements OnInit {
     this.changed.emit({action: 'changed', index: this.index, button: this._button});
   }
   
+  public onActionChanged($event) {
+    this._button.action = $event.data;
+    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+  }
+
   public onButtonRouteChanged($event) {
     this._button.route = $event;
     this.changed.emit({action: 'changed', index: this.index, button: this._button});

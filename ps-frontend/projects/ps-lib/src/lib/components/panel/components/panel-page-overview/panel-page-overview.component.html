@@ -1,0 +1,12 @@
+<h4>Overzichtspagina's'</h4>
+{{selectedPageOverviewTemplate?.name}}
+<lib-panel-settings
+  [titleNew]="'Nieuwe overzichtspagina'"
+  [data]="data"
+  [open]="open"
+  [isNew]="isNew"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  {{selectedPageOverviewTemplate?.name}}
+  <lib-list-panel-pages-overview [pageOverviewTemplate]="selectedPageOverviewTemplate" [isNew]="isNew" (onEvent)="events($event)"></lib-list-panel-pages-overview>
+</lib-panel-settings>

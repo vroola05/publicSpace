@@ -1,6 +1,5 @@
 package org.commonground.ps.backendapi.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -8,21 +7,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PageOverviewImpl implements Page {
+public class PageOverviewTemplate {
   protected Long id;
   protected String name;
-  protected PageType pageType;
+  protected String route;
+  protected boolean toggle;
+  protected boolean priority;
 
   protected List<PageButton> buttonsLeft;
   protected List<PageButton> buttonsRight;
 
-  protected List<PageOverviewTemplate> pageOverviewTemplate = new ArrayList<>();
-  @Override
   public void setButtonsLeft(List<PageButton> pageButtons) {
     buttonsLeft = pageButtons;
+    
   }
 
-  @Override
   public void setButtonsRight(List<PageButton> pageButtons) {
     buttonsRight = pageButtons;
   }

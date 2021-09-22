@@ -126,6 +126,8 @@ import { CreateButtonsComponent } from './components/pages/components/create-but
 import { CreateButtonComponent } from './components/pages/components/create-buttons/components/create-button/create-button.component';
 import { CreateConditionsComponent } from './components/pages/components/create-buttons/components/create-conditions/create-conditions.component';
 import { CreateConditionComponent } from './components/pages/components/create-buttons/components/create-condition/create-condition.component';
+import { PanelPageOverviewComponent } from './components/panel/components/panel-page-overview/panel-page-overview.component';
+import { ListPanelPagesOverviewComponent } from './components/list/components/list-panel-pages-overview/list-panel-pages-overview.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +159,7 @@ import { CreateConditionComponent } from './components/pages/components/create-b
     ListPanelStatusComponent,
     ListPanelActionComponent,
     ListPanelPagesComponent,
+    ListPanelPagesOverviewComponent,
     FilterComponent,
     FilterEqualsComponent,
     FilterBetweenComponent,
@@ -195,6 +198,7 @@ import { CreateConditionComponent } from './components/pages/components/create-b
     PanelSettingsStatusComponent,
     PanelSettingsActionsComponent,
     PanelSettingsPagesComponent,
+    PanelPageOverviewComponent,
     NotesComponent,
     NotesViewerComponent,
     NotesButtonComponent,
@@ -267,6 +271,7 @@ import { CreateConditionComponent } from './components/pages/components/create-b
     ListPanelStatusComponent,
     ListPanelActionComponent,
     ListPanelPagesComponent,
+    ListPanelPagesOverviewComponent,
     MapsComponent,
     PopupConfirmComponent,
     ImageComponent,
@@ -302,6 +307,7 @@ import { CreateConditionComponent } from './components/pages/components/create-b
     PanelSettingsStatusComponent,
     PanelSettingsActionsComponent,
     PanelSettingsPagesComponent,
+    PanelPageOverviewComponent,
     NotesComponent,
     NotesViewerComponent,
     NotesButtonComponent,
