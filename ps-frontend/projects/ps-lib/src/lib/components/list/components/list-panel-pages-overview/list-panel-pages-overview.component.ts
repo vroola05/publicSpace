@@ -17,20 +17,15 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   @ViewChild('nameComponent') nameComponent: TextareaFieldComponent;
   @ViewChild('routeComponent') routeComponent: TextareaFieldComponent;
   
-  @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
-
-  @Input() isNew = true;
-  public delete = false;
+  @Output() changed: EventEmitter<{action: string, index: number, pageOverviewTemplate: PageOverviewTemplate}> = new EventEmitter<{action: string, index: number, pageOverviewTemplate: PageOverviewTemplate}>();
 
   public _pageOverviewTemplate: PageOverviewTemplate;
-  @Input() pageOverviewTemplate(pageOverviewTemplate: any) {
-    console.log('pageOverviewTemplate',pageOverviewTemplate);
-    //this._pageOverviewTemplate = pageOverviewTemplate;
+  @Input() set pageOverviewTemplate(pageOverviewTemplate: any) {
+    this._pageOverviewTemplate = pageOverviewTemplate;
   }
+  @Input() public index: number;
 
   constructor(
-    private apiService: ApiService,
-    private domainService: DomainService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -39,44 +34,33 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   }
 
   public onNameChanged($event): void {
-    console.log(this._pageOverviewTemplate, $event);
     this._pageOverviewTemplate.name = $event;
-    this.onEvent.emit({ action: 'changed', isNew: this.isNew, data: this._pageOverviewTemplate });
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
 
   public onRouteChanged($event): void {
     this._pageOverviewTemplate.route = $event;
-    this.onEvent.emit({ action: 'changed', isNew: this.isNew, data: this._pageOverviewTemplate });
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
 
   public onToggleChanged($event): void {
     this._pageOverviewTemplate.toggle = $event;
-    this.onEvent.emit({ action: 'changed', isNew: this.isNew, data: this._pageOverviewTemplate });
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
 
   public onPriorityChanged($event): void {
     this._pageOverviewTemplate.priority = $event;
-    this.onEvent.emit({ action: 'changed', isNew: this.isNew, data: this._pageOverviewTemplate });
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
 
-  public cancel(): void {
-    this.onEvent.emit({
-      action: 'cancel',
-      isNew: this.isNew,
-      data: null
-    });
+  public onIsPersonalChanged($event): void {
+    this._pageOverviewTemplate.personal = $event;
+    console.log(this._pageOverviewTemplate);
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
+  
 
-  public onDeleteChanged($event): void {
-    this.delete = $event;
+  public onDeleteClick($event): void {
+    this.changed.emit({ action: 'delete', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
-
-  public onSave($event): void {
-    const a = this.nameComponent.validate();
-    const b = this.routeComponent.validate();
-    if (a && b) {
-        
-    }
-  }
-
 }

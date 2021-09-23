@@ -85,8 +85,7 @@ export class PanelSettingsGroupsComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const d = this.groups.find(group => { return group.id === $event.data.id});
-      this.selectedGroup = d;
+      this.selectedGroup = this.groups[$event.data.index];
       this.isNew = false;
       this.open = true;
     } else if ($event.action === 'save') {

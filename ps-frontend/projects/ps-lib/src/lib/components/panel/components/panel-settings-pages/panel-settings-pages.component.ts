@@ -94,8 +94,7 @@ export class PanelSettingsPagesComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const p = this.pages.find(page => { return page.id === $event.data.id});
-      this.selectedPage = p;
+      this.selectedPage = this.pages[$event.data.index];
       this.isNew = false;
       this.open = true;
     } else if ($event.action === 'save') {

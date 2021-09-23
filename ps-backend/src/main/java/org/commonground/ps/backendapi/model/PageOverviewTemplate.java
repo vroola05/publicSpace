@@ -13,13 +13,14 @@ public class PageOverviewTemplate {
   protected String route;
   protected boolean toggle;
   protected boolean priority;
-
+  protected boolean personal;
+  
+  protected List<PageOverviewColumn> columns;
   protected List<PageButton> buttonsLeft;
   protected List<PageButton> buttonsRight;
 
   public void setButtonsLeft(List<PageButton> pageButtons) {
     buttonsLeft = pageButtons;
-    
   }
 
   public void setButtonsRight(List<PageButton> pageButtons) {

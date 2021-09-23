@@ -17,6 +17,7 @@ import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageOverviewColumnEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
@@ -35,6 +36,7 @@ import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageImpl;
+import org.commonground.ps.backendapi.model.PageOverviewColumn;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.model.PageButton;
@@ -287,6 +289,20 @@ public class Convert {
         pageOverviewTemplate.setRoute(pageOverviewEntity.getRoute());
         pageOverviewTemplate.setToggle(pageOverviewEntity.getToggle());
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
+        pageOverviewTemplate.setPersonal(pageOverviewEntity.getIsPersonal());
+        List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
+        
+        List<PageOverviewColumnEntity> pageOverviewColumnEntities = pageOverviewEntity.getColumns();
+        for (PageOverviewColumnEntity pageOverviewColumnEntity : pageOverviewColumnEntities) {
+          PageOverviewColumn pageOverviewColumn = new PageOverviewColumn();
+          pageOverviewColumn.setId(pageOverviewColumnEntity.getId());
+          pageOverviewColumn.setName(pageOverviewColumnEntity.getName());
+          pageOverviewColumn.setTitle(pageOverviewColumnEntity.getTitle());
+          pageOverviewColumn.setType(pageOverviewColumnEntity.getType());
+          pageOverviewColumn.setFilter(pageOverviewColumnEntity.getFilter());
+          pageOverviewColumn.setCss(pageOverviewColumnEntity.getCss());
+        }
+        pageOverviewTemplate.setColumns(columns);
         page.getPageOverviewTemplate().add(pageOverviewTemplate);
       }
       

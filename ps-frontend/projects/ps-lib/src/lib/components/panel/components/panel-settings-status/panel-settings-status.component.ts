@@ -86,8 +86,7 @@ export class PanelSettingsStatusComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const s = this.status.find(status => { return status.id === $event.data.id});
-      this.selectedStatus = s;
+      this.selectedStatus = this.status[$event.data.index];
       this.isNew = false;
       this.open = true;
     } else if ($event.action === 'save') {

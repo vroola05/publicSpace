@@ -86,8 +86,7 @@ export class PanelSettingsDomainsComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const d = this.domains.find(domain => { return domain.id === $event.data.id});
-      this.selectedDomain = d;
+      this.selectedDomain = this.domains[$event.data.index];
       this.isNew = false;
       this.open = true;
     } else if ($event.action === 'save') {

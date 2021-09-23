@@ -16,42 +16,29 @@
     <div class="col-md-6 list-panel-block">
         <h4>Toggle</h4>
         <div class="field-wrapper">
-          <lib-checkbox-field [name]="'toggle'" [placeholder]="'Toggle'" [value]="_pageOverviewTemplate?.toggle"
-          (changed)="onToggleChanged($event)">Actief</lib-checkbox-field>
+          <lib-checkbox-field [name]="'toggle'" [value]="_pageOverviewTemplate?.toggle"
+          (changed)="onToggleChanged($event)">Toggle</lib-checkbox-field>
         </div>
         <h4>Prioriteit</h4>
         <div class="field-wrapper">
-          <lib-checkbox-field [name]="'priority'" [placeholder]="'Prioriteit'" [value]="_pageOverviewTemplate?.priority"
+          <lib-checkbox-field [name]="'priority'" [value]="_pageOverviewTemplate?.priority"
           (changed)="onPriorityChanged($event)">Prioriteit</lib-checkbox-field>
         </div>
+        <h4>Persoonlijk</h4>
+        <div class="field-wrapper">
+          <lib-checkbox-field [name]="'personal'" [value]="_pageOverviewTemplate?.personal"
+          (changed)="onIsPersonalChanged($event)">Persoonlijk</lib-checkbox-field>
+        </div>
     </div>
-
     <div class="col-md-12">
-        <div class="row buttons">
-            <div class="col-md-6 text-left">
-                <div *ngIf="!isNew" class="row">
-                    <div class="col-md-8">
-                        <lib-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
-                            (changed)="onDeleteChanged($event)">Verwijderen</lib-checkbox-field>
-                    </div>
-                    <div *ngIf="delete" class="col-md-4">
-                        <lib-btn-contained [type]="'outlineSecondary'">Verwijderen</lib-btn-contained>
-                    </div>
-        
-                </div>
-            </div>
-            <div class="col-md-6 text-right">
-                <div class="row">
-                    <div *ngIf="isNew" class="col-md-4">
-                        <lib-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</lib-btn-contained>
-                    </div>
-                    <div class="col-md-4">
-                        <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <lib-btn-contained class="float-right w-25" [type]="'containedSecondary'"
+                    (clicked)="onDeleteClick($event)">Verwijderen</lib-btn-contained>
             </div>
         </div>
     </div>
 </div>
+<hr />
 
 

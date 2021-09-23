@@ -26,6 +26,7 @@ export class ListPanelPagesComponent implements OnInit {
       this._page.id = page.id;
       this._page.name = page.name;
       this._page.pageType = page.pageType;
+      this._page.pageOverviewTemplate = page.pageOverviewTemplate;
       this._page.buttonsLeft = page.buttonsLeft;
       this._page.buttonsRight = page.buttonsRight;
     }
@@ -60,6 +61,9 @@ export class ListPanelPagesComponent implements OnInit {
     this._page.buttonsRight = $event;
   }
 
+  public onOverviewChanged($event) {
+    
+  }
 
   public showPage(pageTypeName: string): boolean {
     if (this._page && this._page.pageType && this._page.pageType.name === pageTypeName) {

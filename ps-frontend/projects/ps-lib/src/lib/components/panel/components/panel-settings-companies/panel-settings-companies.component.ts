@@ -86,8 +86,7 @@ export class PanelSettingsCompaniesComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const d = this.companies.find(domain => { return domain.id === $event.data.id});
-      this.selectedCompany = d;
+      this.selectedCompany = this.companies[$event.data.index];
       this.isNew = false;
       this.open = true;
     } else if ($event.action === 'save') {

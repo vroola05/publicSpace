@@ -1,12 +1,24 @@
-<h4>Overzichtspagina's'</h4>
-{{selectedPageOverviewTemplate?.name}}
-<lib-panel-settings
-  [titleNew]="'Nieuwe overzichtspagina'"
-  [data]="data"
-  [open]="open"
-  [isNew]="isNew"
-  [listTemplate]="listTemplate"
-  (onEvent)="events($event)">
-  {{selectedPageOverviewTemplate?.name}}
-  <lib-list-panel-pages-overview [pageOverviewTemplate]="selectedPageOverviewTemplate" [isNew]="isNew" (onEvent)="events($event)"></lib-list-panel-pages-overview>
-</lib-panel-settings>
+<div class="row" *ngIf="pageOverviewTemplate">
+  <div class="col-md-12">
+      <div class="row" *ngFor="let p of pageOverviewTemplate; let i = index">
+          <div class="col-md-11">
+              <div class="page" >
+                <lib-list-panel-pages-overview
+                  [pageOverviewTemplate]="p"
+                  [index]="i"
+                  (changed)="onPageOverviewTemplateChanged($event)"></lib-list-panel-pages-overview>
+              </div>
+          </div>
+          <div class="col-md-1 text-right d-flex flex-column">
+              <button class="button-default-style material-icons" [disabled]="isFirstButton(i)" (click)="moveUp(i)">keyboard_arrow_up</button>
+              <button class="button-default-style material-icons" [disabled]="isLastButton(i)" (click)="moveDown(i)">keyboard_arrow_down</button>
+          </div>
+      </div>
+      
+  </div>
+  <div class="col-md-12">
+      <lib-btn-contained class="float-right w-25" [type]="'containedPrimary'" (clicked)="onAddClick($event)">Nieuwe overzichtspagina</lib-btn-contained>
+  </div>
+</div>
+
+

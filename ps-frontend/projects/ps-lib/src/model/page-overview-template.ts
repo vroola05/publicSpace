@@ -7,7 +7,8 @@ export class PageOverviewTemplate {
     public route: string;
     public toggle?: boolean;
     public priority?: boolean;
-    
+    public personal?: boolean;
+
     public buttonsLeft: PageButton[];
     public buttonsRight: PageButton[];
 }

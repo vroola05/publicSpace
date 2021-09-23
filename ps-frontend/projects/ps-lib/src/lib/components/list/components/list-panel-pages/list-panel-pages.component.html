@@ -17,7 +17,11 @@
       </div>
     </div>
     <div class="col-md-12" *ngIf="showPage('overview')" >
-      <lib-panel-page-overview [page]="_page"></lib-panel-page-overview>
+      
+      <h4>Overzichtspagina's</h4>
+      <lib-panel-toggle [style]="'default'" [title]="['Overzichtspagina\'s']">
+        <lib-panel-page-overview [page]="_page"></lib-panel-page-overview>  
+      </lib-panel-toggle>
     </div>
     <div class="col-md-12">
       <h4>Knoppen links</h4>

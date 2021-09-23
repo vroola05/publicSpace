@@ -85,8 +85,7 @@ export class PanelSettingsMainCategoryComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const m = this.mainCategories.find(mainCategory => { return mainCategory.id === $event.data.id});
-      this.selectedMainCategory = m;
+      this.selectedMainCategory = this.mainCategories[$event.data.index]
       this.isNew = false;
       this.open = true;
     } else if ($event.action === 'save') {

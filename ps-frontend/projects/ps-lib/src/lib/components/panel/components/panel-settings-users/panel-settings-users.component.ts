@@ -142,10 +142,8 @@ export class PanelSettingsUsersComponent implements OnInit {
       this.isNew = true;
       this.open = true;
     } else if ($event.action === 'toggle') {
-      const u = this.users.find(user => { return user.username === $event.data.username});
+      const u = this.users[$event.data.index];
       this.roles.forEach(role => role.selected = u.roles.includes(role.value));
-
-      
       this.groups.forEach(group => group.selected = this.findGroup(u.groups, group.data.id));
       this.selectedUser = u;
       this.isNew = false;

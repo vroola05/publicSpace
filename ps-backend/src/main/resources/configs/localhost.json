@@ -97,7 +97,7 @@
           "route": "details/${calllist.id}",
           "priority": "priority",
           "columns": [
-            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"},
             { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
             { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
             { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-5 col-lg-5" },

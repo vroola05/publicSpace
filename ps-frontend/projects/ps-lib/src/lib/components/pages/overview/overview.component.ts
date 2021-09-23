@@ -148,8 +148,8 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     return this.overview.listTemplate.find(item => key.includes(item.id));
   }
 
-  public clicked(data: any) {
-    this.transform.setVariable('calllist', data);
+  public clicked($event: any) {
+    this.transform.setVariable('calllist', $event.data);
     this.call = null;
     if (this.listTemplate.toggle) {
       this.apiService.get(
