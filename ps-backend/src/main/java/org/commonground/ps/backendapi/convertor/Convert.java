@@ -289,7 +289,7 @@ public class Convert {
         pageOverviewTemplate.setRoute(pageOverviewEntity.getRoute());
         pageOverviewTemplate.setToggle(pageOverviewEntity.getToggle());
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
-        pageOverviewTemplate.setPersonal(pageOverviewEntity.getIsPersonal());
+        pageOverviewTemplate.setPersonal(pageOverviewEntity.getPersonal());
         List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
         
         List<PageOverviewColumnEntity> pageOverviewColumnEntities = pageOverviewEntity.getColumns();

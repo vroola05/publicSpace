@@ -21,7 +21,7 @@ public class PageOverviewEntity {
   private String route;
   private Boolean toggle;
   private Boolean priority;
-  private Boolean isPersonal;
+  private Boolean personal;
   
   private Long sort;
 

@@ -64,7 +64,7 @@ public class PageServiceImpl implements PageService {
 						pageOverviewEntity.setRoute(pageOverviewTemplate.getRoute());
 						pageOverviewEntity.setPriority(pageOverviewTemplate.isPriority());
 						pageOverviewEntity.setToggle(pageOverviewTemplate.isToggle());
-						pageOverviewEntity.setIsPersonal(pageOverviewTemplate.isPersonal());
+						pageOverviewEntity.setPersonal(pageOverviewTemplate.isPersonal());
 						pageOverviewEntity.setSort(i);
 					} else {
 						// Insert
@@ -74,7 +74,7 @@ public class PageServiceImpl implements PageService {
 						pageOverviewEntity.setRoute(pageOverviewTemplate.getRoute());
 						pageOverviewEntity.setPriority(pageOverviewTemplate.isPriority());
 						pageOverviewEntity.setToggle(pageOverviewTemplate.isToggle());
-						pageOverviewEntity.setIsPersonal(pageOverviewTemplate.isPersonal());
+						pageOverviewEntity.setPersonal(pageOverviewTemplate.isPersonal());
 						pageOverviewEntity.setSort(i);
 						pageOverviewEntities.add(pageOverviewEntity);
 					}
