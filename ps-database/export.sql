@@ -1079,7 +1079,6 @@ ALTER TABLE ONLY public.page
         ON DELETE NO ACTION
         NOT VALID;
 
-
 CREATE SEQUENCE public.seq_page_id
     INCREMENT 1
     START 1
@@ -1219,19 +1218,29 @@ CREATE TABLE public.page_overview (
     page_id integer NOT NULL,
     name text NOT NULL,
     toggle boolean,
-    route text
+    route text,
+    priority boolean,
+    isPersonal boolean,
+    sort integer NOT NULL
 );
 
-
 ALTER TABLE public.page_overview OWNER TO postgres;
+
+CREATE SEQUENCE public.seq_page_overview_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_page_overview_id
+    OWNER TO postgres;
 
 --
 -- TOC entry 3140 (class 0 OID 33070)
 -- Dependencies: 237
 -- Data for Name: page_overview; Type: TABLE DATA; Schema: public; Owner: postgres
 --
-
-
 
 --
 -- TOC entry 3008 (class 2606 OID 33077)
@@ -1250,10 +1259,61 @@ ALTER TABLE ONLY public.page_overview
 ALTER TABLE ONLY public.page_overview
     ADD CONSTRAINT page_overview_page_id_fk FOREIGN KEY (page_id) REFERENCES public.page(id);
 
+--
+-- TOC entry 237 (class 1259 OID 33070)
+-- Name: page_overview; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.page_overview_column (
+    id integer NOT NULL,
+    page_overview_id integer NOT NULL,
+    name text NOT NULL,
+    title text NOT NULL,
+    type text NOT NULL,
+    filter text NOT NULL,
+    css text NOT NULL,
+    mobile text NOT NULL,
+    sort integer NOT NULL
+);
+
+ALTER TABLE public.page_overview_column OWNER TO postgres;
+
+CREATE SEQUENCE public.seq_page_overview_column_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_page_overview_column_id
+    OWNER TO postgres;
+
+
+
+--
+-- TOC entry 3008 (class 2606 OID 33077)
+-- Name: page_overview page_overview_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview_column
+    ADD CONSTRAINT page_overview_column_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3009 (class 2606 OID 33078)
+-- Name: page_overview page_overview_page_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview_column
+    ADD CONSTRAINT page_overview_column_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page_overview(id);
+
+
 
 -- Completed on 2021-09-14 16:16:51 CEST
 
 --
 -- PostgreSQL database dump complete
 --
+
+
 
