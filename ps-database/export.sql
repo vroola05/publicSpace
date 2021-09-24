@@ -1220,7 +1220,7 @@ CREATE TABLE public.page_overview (
     toggle boolean,
     route text,
     priority boolean,
-    isPersonal boolean,
+    personal boolean,
     sort integer NOT NULL
 );
 
