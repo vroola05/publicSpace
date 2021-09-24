@@ -128,6 +128,8 @@ import { CreateConditionsComponent } from './components/pages/components/create-
 import { CreateConditionComponent } from './components/pages/components/create-buttons/components/create-condition/create-condition.component';
 import { PanelPageOverviewComponent } from './components/panel/components/panel-page-overview/panel-page-overview.component';
 import { ListPanelPagesOverviewComponent } from './components/list/components/list-panel-pages-overview/list-panel-pages-overview.component';
+import { CreateOverviewColumnsComponent } from './components/pages/components/create-overview-columns/create-overview-columns.component';
+import { CreateOverviewColumnComponent } from './components/pages/components/create-overview-column/create-overview-column.component';
 
 @NgModule({
   declarations: [
@@ -233,7 +235,9 @@ import { ListPanelPagesOverviewComponent } from './components/list/components/li
     CreateButtonsComponent,
     CreateButtonComponent,
     CreateConditionsComponent,
-    CreateConditionComponent
+    CreateConditionComponent,
+    CreateOverviewColumnsComponent,
+    CreateOverviewColumnComponent
   ],
   imports: [
     CommonModule,
@@ -338,7 +342,9 @@ import { ListPanelPagesOverviewComponent } from './components/list/components/li
     CreateButtonsComponent,
     CreateButtonComponent,
     CreateConditionsComponent,
-    CreateConditionComponent
+    CreateConditionComponent,
+    CreateOverviewColumnsComponent,
+    CreateOverviewColumnComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

@@ -64,6 +64,8 @@ export * from './lib/components/panel/components/panel-settings-actions/panel-se
 export * from './lib/components/panel/components/panel-settings-pages/panel-settings-pages.component';
 
 export * from './lib/components/panel/components/panel-page-overview/panel-page-overview.component';
+export * from './lib/components/pages/components/create-overview-columns/create-overview-columns.component';
+export * from './lib/components/pages/components/create-overview-column/create-overview-column.component';
 
 export * from './lib/components/maps/maps.component';
 export * from './lib/components/mail/mail.component';

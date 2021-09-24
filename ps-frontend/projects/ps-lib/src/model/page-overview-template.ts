@@ -1,4 +1,5 @@
 import { PageButton } from "./page-button";
+import { PageOverviewColumns } from "./page-overview-columns";
 import { PageType } from "./page-type";
 
 export class PageOverviewTemplate {
@@ -9,6 +10,7 @@ export class PageOverviewTemplate {
     public priority?: boolean;
     public personal?: boolean;
 
+    public columns?: PageOverviewColumns[];
     public buttonsLeft: PageButton[];
     public buttonsRight: PageButton[];
 }

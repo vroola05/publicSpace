@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-4">
+        <h4>Naam</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [name]="'name'" [placeholder]="'Naam'"
+                [value]="_column?.name" [required]="true" [maxLength]="50" (changed)="onNameChanged($event)"
+                #nameComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Titel</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [name]="'title'" [placeholder]="'Titel'"
+                [value]="_column?.title" [required]="true" [maxLength]="50" (changed)="onTitleChanged($event)"
+                #titleComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Type</h4>
+        <div class="field-wrapper">
+            <lib-dropdown-field [name]="'type'" [placeholder]="'Type'"
+            [options]="_types" [required]="true" (changed)="onTypeChanged($event)"
+            #typeComponent></lib-dropdown-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Filter</h4>
+        <div class="field-wrapper">
+            <lib-dropdown-field [name]="'filter'" [placeholder]="'Filter'"
+            [options]="_filters" [required]="true" (changed)="onFilterChanged($event)"
+            #filterComponent></lib-dropdown-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Css</h4>
+        <div class="field-wrapper">
+            <lib-text-field [style]="'filled'" [name]="'css'" [placeholder]="'Css'"
+                [value]="_column?.css" [required]="true" [maxLength]="50" (changed)="onCssChanged($event)"
+                #cssComponent></lib-text-field>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h4>Mobiel</h4>
+        <div class="field-wrapper">
+            <lib-dropdown-field [name]="'mobile'" [placeholder]="'Mobiel'"
+            [options]="_mobile" (changed)="onMobileChanged($event)"
+            #mobileComponent></lib-dropdown-field>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="delete-container">
+            <button class="button-default-style material-icons" (click)="onDeleteClick($event)">close</button>
+        </div>
+    </div>
+</div>

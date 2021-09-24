@@ -55,10 +55,14 @@ export class ListPanelPagesOverviewComponent implements OnInit {
 
   public onIsPersonalChanged($event): void {
     this._pageOverviewTemplate.personal = $event;
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
+  }
+
+  public onColumnsChanged($event): void {
+    this._pageOverviewTemplate.personal = $event;
     console.log(this._pageOverviewTemplate);
     this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
-  
 
   public onDeleteClick($event): void {
     this.changed.emit({ action: 'delete', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });

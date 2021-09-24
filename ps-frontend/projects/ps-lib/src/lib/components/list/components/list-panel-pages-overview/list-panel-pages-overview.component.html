@@ -30,6 +30,15 @@
           (changed)="onIsPersonalChanged($event)">Persoonlijk</lib-checkbox-field>
         </div>
     </div>
+
+    <div class="col-md-12">
+        <h4>Kolommen</h4>
+        <div class="field-wrapper">
+            <lib-create-overview-columns class="conditions-list" [columns]="_pageOverviewTemplate?.columns"
+                (changed)="onColumnsChanged($event)"></lib-create-overview-columns>
+        </div>
+    </div>
+
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
