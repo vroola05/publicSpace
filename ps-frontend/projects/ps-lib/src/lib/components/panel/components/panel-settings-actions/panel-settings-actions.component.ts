@@ -82,7 +82,6 @@ export class PanelSettingsActionsComponent implements OnInit {
   }
 
   public events($event): void {
-    console.log($event)
     if ($event.action === 'toggle') {
       this.selectedAction = this.actions[$event.data.index];
       this.open = true;

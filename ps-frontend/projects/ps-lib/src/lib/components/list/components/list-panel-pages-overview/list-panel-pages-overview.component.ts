@@ -59,9 +59,12 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   }
 
   public onColumnsChanged($event): void {
-    this._pageOverviewTemplate.personal = $event;
-    console.log(this._pageOverviewTemplate);
-    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
+    switch ($event.action) {
+      case 'changed': 
+        this._pageOverviewTemplate.columns = $event.columns;
+        this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
+        break;
+    }
   }
 
   public onDeleteClick($event): void {

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { CallList } from '../../../../../model/call-list';
 import { PageOverviewColumns } from '../../../../../model/page-overview-columns';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
@@ -6,10 +7,10 @@ import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-
 @Component({
   selector: 'lib-create-overview-column',
   templateUrl: './create-overview-column.component.html',
-  styleUrls: ['./create-overview-column.component.css']
+  styleUrls: ['./create-overview-column.component.scss']
 })
 export class CreateOverviewColumnComponent implements OnInit {
-  @ViewChild('nameComponent') nameComponent: TextareaFieldComponent;
+  @ViewChild('nameComponent') nameComponent: DropdownFieldComponent;
   @ViewChild('titleComponent') titleComponent: TextareaFieldComponent;
   @ViewChild('typeComponent') typeComponent: DropdownFieldComponent;
   @ViewChild('filterComponent') filterComponent: DropdownFieldComponent;
@@ -23,9 +24,13 @@ export class CreateOverviewColumnComponent implements OnInit {
   public _column: PageOverviewColumns;
   @Input() set column(column: PageOverviewColumns) {
     this._column = column;
+    this.selectName();
     this.selectType();
     this.selectFilter();
+    this.selectMobile();
   }
+
+  public _name: { name: string, value?: string, data?: any }[] = [];
 
   public _types: { name: string, value?: string, data?: any }[] = [
     { name: 'Text', value: '', data: 'text' },
@@ -35,6 +40,7 @@ export class CreateOverviewColumnComponent implements OnInit {
   ];
 
   public _filters: { name: string, value?: string, data?: any }[] = [
+    { name: 'Geen', value: '', data: '' },
     { name: 'Gelijk', value: '', data: 'equals' },
     { name: 'Tussen', value: '', data: 'between' },
     { name: 'Lijst', value: '', data: 'in' }
@@ -51,6 +57,27 @@ export class CreateOverviewColumnComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    const nameItems = Object.keys(new CallList());
+    if (nameItems) {
+      nameItems.forEach(nameItem => {
+        this._name.push({ name: nameItem, value: '', data: nameItem });
+      });
+    }
+  }
+
+  public selectName() {
+    setTimeout(() => {
+      if (this.nameComponent) {
+        if (!this._column) {
+          this.nameComponent.select(null);
+          return;
+        }
+        const item = this._name.find( type => !type.data || type.data === this._column.name);
+        if (item) {
+          this.nameComponent.select(item);
+        }
+      }  
+    });
   }
 
   public selectType() {
@@ -99,7 +126,7 @@ export class CreateOverviewColumnComponent implements OnInit {
   }
 
   public onNameChanged($event) {
-    this._column.name = $event;
+    this._column.name = $event.data;
     this.changed.emit({action: 'changed', index: this.index, column: this._column});
   }
 

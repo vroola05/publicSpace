@@ -300,7 +300,9 @@ public class Convert {
           pageOverviewColumn.setTitle(pageOverviewColumnEntity.getTitle());
           pageOverviewColumn.setType(pageOverviewColumnEntity.getType());
           pageOverviewColumn.setFilter(pageOverviewColumnEntity.getFilter());
+          pageOverviewColumn.setMobile(pageOverviewColumnEntity.getMobile());
           pageOverviewColumn.setCss(pageOverviewColumnEntity.getCss());
+          columns.add(pageOverviewColumn);
         }
         pageOverviewTemplate.setColumns(columns);
         page.getPageOverviewTemplate().add(pageOverviewTemplate);

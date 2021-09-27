@@ -4,7 +4,7 @@ import { PageOverviewColumns } from 'projects/ps-lib/src/model/page-overview-col
 @Component({
   selector: 'lib-create-overview-columns',
   templateUrl: './create-overview-columns.component.html',
-  styleUrls: ['./create-overview-columns.component.css']
+  styleUrls: ['./create-overview-columns.component.scss']
 })
 export class CreateOverviewColumnsComponent implements OnInit {
 

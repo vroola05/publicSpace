@@ -172,7 +172,6 @@ export class MapsComponent implements IPopup, AfterViewInit, OnInit {
   }
 
   public leafletMapReady(map: any) {
-    console.log(map);
     /*this.map = map;
 
     if (this.zoomControl) {
