@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { User } from '../../../../../model/user';
 import { Group } from '../../../../../model/group';
@@ -30,7 +30,7 @@ export class PanelSettingsUsersComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -81,7 +81,7 @@ export class PanelSettingsUsersComponent implements OnInit {
   }
 
   public getRoles(): void {
-    const endpointT = this.domain.getEndpoint('getRoles');
+    const endpointT = this.config.getEndpoint('getRoles');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((roles: Role[]) => {
         roles.forEach(role => {
@@ -92,7 +92,7 @@ export class PanelSettingsUsersComponent implements OnInit {
   }
 
   public getGroups(): void {
-    const endpointT = this.domain.getEndpoint('getGroups');
+    const endpointT = this.config.getEndpoint('getGroups');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((groups: Group[]) => {
         groups.forEach(group => {
@@ -103,7 +103,7 @@ export class PanelSettingsUsersComponent implements OnInit {
   }
 
   public getUsers(): void {
-    const endpointT = this.domain.getEndpoint('getUsers');
+    const endpointT = this.config.getEndpoint('getUsers');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((users: User[]) => {
         this.users = users;

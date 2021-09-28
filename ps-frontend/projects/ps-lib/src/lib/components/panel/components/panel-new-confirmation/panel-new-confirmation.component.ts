@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Category } from '../../../../../model/category';
 import { Call } from '../../../../../model/call';
@@ -20,7 +20,7 @@ export class PanelNewConfirmationComponent implements OnInit, OnDestroy {
   public files: File[] = [];
 
   constructor(
-    private domain: DomainService,
+    private config: ConfigService,
     private authorisation: AuthorisationService,
     private storage: StorageService,
     private popup: Popup
@@ -93,7 +93,7 @@ export class PanelNewConfirmationComponent implements OnInit, OnDestroy {
     image.name = 'Webformulier';
     image.alt = 'Inwoner';
 
-    const endpoint = this.domain.getEndpoint('getProfileImage').endpoint;
+    const endpoint = this.config.getEndpoint('getProfileImage').endpoint;
     if (endpoint && createdBy && image.name) {
       image.api = true;
       image.url = endpoint + createdBy.profilePhoto;

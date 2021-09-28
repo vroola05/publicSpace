@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 import { PopupETypes } from '../../../../model/intefaces';
 import { Note } from '../../../../model/note';
 import { ApiService } from '../../../services/api/api.service';
-import { DomainService } from '../../../services/domain/domain.service';
+import { ConfigService } from '../../../services/domain/domain.service';
 import { Popup } from '../../../services/popup/popup.service';
 import { TransformService } from '../../../services/transform/transform.service';
 import { NotesViewerComponent } from '../notes-viewer/notes-viewer.component';
@@ -32,7 +32,7 @@ export class NotesButtonComponent implements OnInit {
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
-    private domain: DomainService,
+    private config: ConfigService,
     private transform: TransformService,
     private apiService: ApiService,
     private popup: Popup
@@ -46,8 +46,8 @@ export class NotesButtonComponent implements OnInit {
   }
 
   public popupNotes($event) {
-    if (this._url && this.domain.getEndpoint('getClearNotification').endpoint) {
-      this.apiService.get(this.transform.URL(this.domain.getEndpoint('getClearNotification').endpoint)).pipe(first()).subscribe();
+    if (this._url && this.config.getEndpoint('getClearNotification').endpoint) {
+      this.apiService.get(this.transform.URL(this.config.getEndpoint('getClearNotification').endpoint)).pipe(first()).subscribe();
     }
 
     this.popup.add(this._title, NotesViewerComponent, {

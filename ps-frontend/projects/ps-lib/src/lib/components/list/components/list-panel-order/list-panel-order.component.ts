@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Call } from '../../../../../model/call';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { ButtonT, ListTemplateT } from '../../../../../model/template';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -24,14 +24,14 @@ export class ListPanelOrderComponent {
   public _call: Call;
   @Input() set call(call: Call) {
     this._call = call;
-    this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
+    this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
     this.buttonsLeft = this.createButtons(this.template.buttonsLeft);
     this.buttonsRight = this.createButtons(this.template.buttonsRight);
   }
 
   constructor(
     private navigationService: NavigationService,
-    private domain: DomainService,
+    private config: ConfigService,
     protected transform: TransformService,
     private popup: Popup
   ) { }

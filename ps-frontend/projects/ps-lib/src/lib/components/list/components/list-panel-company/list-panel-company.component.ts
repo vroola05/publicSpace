@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { Company } from '../../../../../model/company';
@@ -35,7 +35,7 @@ export class ListPanelCompanyComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -73,7 +73,7 @@ export class ListPanelCompanyComponent implements OnInit {
   }
 
   public postCompany(company: Company): void {
-    const endpointT = this.domainService.getEndpoint('postCompany');
+    const endpointT = this.config.getEndpoint('postCompany');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, company).subscribe((d: Company) => {
@@ -90,7 +90,7 @@ export class ListPanelCompanyComponent implements OnInit {
   }
 
   public putCompany(company: Company): void {
-    const endpointT = this.domainService.getEndpoint('putCompany');
+    const endpointT = this.config.getEndpoint('putCompany');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.transform.setVariable('company', company);
       let url = this.transform.URL(endpointT.endpoint);

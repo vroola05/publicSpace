@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { first } from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class ListPanelPagesComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -89,7 +89,7 @@ export class ListPanelPagesComponent implements OnInit {
   }
 
   public put(page: Page): void {
-    const endpointT = this.domainService.getEndpoint('putPage');
+    const endpointT = this.config.getEndpoint('putPage');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.put(url, page).subscribe((p: Page) => {

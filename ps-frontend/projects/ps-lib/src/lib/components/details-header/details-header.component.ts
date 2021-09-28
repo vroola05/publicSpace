@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CallList } from '../../../model/call-list';
 import { ListTemplateColumnT } from '../../../model/template';
-import { DomainService } from '../../services/domain/domain.service';
+import { ConfigService } from '../../services/domain/domain.service';
 
 @Component({
   selector: 'lib-details-header',
@@ -15,12 +15,12 @@ export class DetailsHeaderComponent implements OnInit {
   @Input() public data: CallList;
 
   constructor(
-    private domain: DomainService,
+    private config: ConfigService,
   ) { }
 
   public ngOnInit(): void {
-    if (this.domain.config.components && this.domain.config.components) {
-      this.columns = this.domain.config.components.detailsHeader;
+    if (this.config.template.components && this.config.template.components) {
+      this.columns = this.config.template.components.detailsHeader;
     }
   }
 

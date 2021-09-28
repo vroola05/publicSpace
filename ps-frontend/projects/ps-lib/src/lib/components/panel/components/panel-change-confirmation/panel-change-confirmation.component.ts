@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Category } from '../../../../../model/category';
 import { Location } from '../../../../../model/location';
@@ -32,7 +32,7 @@ export class PanelChangeConfirmationComponent implements OnInit, OnDestroy {
   private categoriesMainSubscription: Subscription;
 
   constructor(
-    private domain: DomainService,
+    private config: ConfigService,
     protected navigationService: NavigationService,
     private storage: StorageService,
     private apiService: ApiService,
@@ -73,7 +73,7 @@ export class PanelChangeConfirmationComponent implements OnInit, OnDestroy {
       this.storage.setSession('call', JSON.stringify(this.callChanged), true);
       this.changed.emit('change-information');
     } else {
-      const url = this.transform.URL(this.domain.getEndpoint('getNewInformationMainCategory').endpoint);
+      const url = this.transform.URL(this.config.getEndpoint('getNewInformationMainCategory').endpoint);
       this.categoriesMainSubscription = this.apiService.get(url)
         .subscribe((category: Category) => {
           this.storage.setSession('mainCategory', JSON.stringify(category), true);

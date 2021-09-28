@@ -217,7 +217,7 @@ export interface PagesT {
   newConfirmation?: DomainPageT;
 }
 
-export interface DomainT {
+export interface Template {
   pages?: Map<string, Page>;
   pagesOld: PagesT;
   login?: LoginT;

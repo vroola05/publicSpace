@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../model/template';
 import { Domain } from '../../../../../model/domain';
@@ -25,7 +25,7 @@ export class PanelSettingsDomainsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -54,7 +54,7 @@ export class PanelSettingsDomainsComponent implements OnInit {
   }
 
   public getDomains(): void {
-    const endpointT = this.domain.getEndpoint('getDomain');
+    const endpointT = this.config.getEndpoint('getDomain');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((domains: Domain[]) => {
         this.domains = domains;

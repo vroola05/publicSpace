@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ActionService } from '../../../../../services/action/action.service';
 import { ApiService } from '../../../../../services/api/api.service';
-import { DomainService } from '../../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../../services/domain/domain.service';
 import { MailService } from '../../../../../services/mail/mail.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
@@ -64,7 +64,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService,
     private mailService: MailService
   ) {
@@ -113,11 +113,11 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
 
     this.getCall();
 
-    this.contractortypes = this.domain.config.order.creation.contractortypes;
-    this.buttonsLeft = this.domain.config.order.creation.buttonsLeft;
-    this.buttonsRight = this.domain.config.order.creation.buttonsRight;
-    if (this.domain.config.order.creation.pageType) {
-      this.pageLayoutType = this.domain.config.order.creation.pageType;
+    this.contractortypes = this.config.template.order.creation.contractortypes;
+    this.buttonsLeft = this.config.template.order.creation.buttonsLeft;
+    this.buttonsRight = this.config.template.order.creation.buttonsRight;
+    if (this.config.template.order.creation.pageType) {
+      this.pageLayoutType = this.config.template.order.creation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });
@@ -179,20 +179,20 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
       this.phase.next('call-loaded');
       this.transform.setVariable('call', call);
       this.call = call;
-      this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
-      this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.domain.getEndpoint('postNote').endpoint);
-      this.headerData = this.domain.transformCall(call);
+      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
+      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
+      this.headerData = this.config.transformCall(call);
     }));
   }
 
   public getContractors(): void {
-    this.subscription.push(this.apiService.get(this.domain.getEndpoint('getOrderCreationContractors').endpoint)
+    this.subscription.push(this.apiService.get(this.config.getEndpoint('getOrderCreationContractors').endpoint)
       .subscribe((contractors: Contractor[]) => {
         this.contractors = contractors;
 
@@ -275,7 +275,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     if (this.ordertypeSubscription) {
       this.ordertypeSubscription.unsubscribe();
     }
-    const url = this.navigationService.transformURL(this.domain.getEndpoint('getOrderCreationOrderTypesContractor').endpoint, contractor);
+    const url = this.navigationService.transformURL(this.config.getEndpoint('getOrderCreationOrderTypesContractor').endpoint, contractor);
     this.ordertypeSubscription = this.apiService.get(url).subscribe((ordertypes: Ordertype[]) => {
       if (ordertypes) {
         ordertypes.forEach(ordertype => {

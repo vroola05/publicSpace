@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageAbstract } from '../../page';
 
 import { ApiService } from '../../../../services/api/api.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ActionService } from '../../../../services/action/action.service';
@@ -44,7 +44,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService,
     private environmentService: EnvironmentService
 
@@ -72,7 +72,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
 
   public getCompanies(): void {
     this.companyItems = [];
-    const endpointT = this.domain.getEndpoint('getCompany');
+    const endpointT = this.config.getEndpoint('getCompany');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((companies: Company[]) => {
         if (companies.length === 0) {
@@ -92,7 +92,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     if (!this.environment || !this.environment.company || !this.environment.company.id) {
       return;
     }
-    const endpointT = this.domain.getEndpoint('getDomain');
+    const endpointT = this.config.getEndpoint('getDomain');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((domains: Domain[]) => {
         domains.forEach(domain => {

@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { AuthorisationService } from '../services/authorisation/authorisation.service';
-import { DomainService } from '../services/domain/domain.service';
+import { ConfigService } from '../services/domain/domain.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +12,15 @@ export class WebInterceptor implements HttpInterceptor {
 
   public constructor(
     private authorisation: AuthorisationService,
-    private domain: DomainService) { }
+    private config: ConfigService) { }
 
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const req: { url: string, setHeaders?: {[key: string]: string} } = { url: this.domain.api + request.url};
+    const req: { url: string, setHeaders?: {[key: string]: string} } = { url: this.config.api + request.url};
     const user = this.authorisation.user;
 
     if (user && user.apikey) {
       req.setHeaders = {};
-      req.setHeaders[this.domain.config.info.apikey] = user.apikey;
+      req.setHeaders[this.config.template.info.apikey] = user.apikey;
     }
 
     request = request.clone(req);

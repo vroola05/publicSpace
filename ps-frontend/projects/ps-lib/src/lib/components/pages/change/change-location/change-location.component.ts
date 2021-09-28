@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 import { ActionService } from '../../../../services/action/action.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewMapComponent } from '../../../panel/components/panel-new-map/panel-new-map.component';
@@ -32,7 +32,7 @@ export class ChangeLocationComponent extends PageAbstract implements OnInit, OnD
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
     this.call = new Call();
@@ -40,11 +40,11 @@ export class ChangeLocationComponent extends PageAbstract implements OnInit, OnD
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.change.location.buttonsLeft;
-    this.buttonsRight = this.domain.config.change.location.buttonsRight;
+    this.buttonsLeft = this.config.template.change.location.buttonsLeft;
+    this.buttonsRight = this.config.template.change.location.buttonsRight;
 
-    if (this.domain.config.change.location.pageType) {
-      this.pageLayoutType = this.domain.config.change.location.pageType;
+    if (this.config.template.change.location.pageType) {
+      this.pageLayoutType = this.config.template.change.location.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

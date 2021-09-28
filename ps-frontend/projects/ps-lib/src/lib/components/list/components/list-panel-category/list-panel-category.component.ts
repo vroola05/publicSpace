@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { MainCategory } from '../../../../../model/main-category';
@@ -55,7 +55,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -115,7 +115,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   }
 
   public getGroups(): void {
-    const endpointT = this.domainService.getEndpoint('getGroups');
+    const endpointT = this.config.getEndpoint('getGroups');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((groups: Group[]) => {
         groups.forEach(group => {
@@ -155,7 +155,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   }
 
   public post(category: Category): void {
-    const endpointT = this.domainService.getEndpoint('postCategory');
+    const endpointT = this.config.getEndpoint('postCategory');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, category).subscribe((d: Category) => {
@@ -172,7 +172,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   }
 
   public put(category: Category): void {
-    const endpointT = this.domainService.getEndpoint('putCategory');
+    const endpointT = this.config.getEndpoint('putCategory');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
 

@@ -5,7 +5,7 @@ import { PageButton } from '../../../../../model/page-button';
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class CreateButtonsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -40,7 +40,7 @@ export class CreateButtonsComponent implements OnInit {
   
 
   public getButtonTypes(): void {
-    const endpointT = this.domainService.getEndpoint('getButtonTypes');
+    const endpointT = this.config.getEndpoint('getButtonTypes');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
 
@@ -55,7 +55,7 @@ export class CreateButtonsComponent implements OnInit {
   }
 
   public getActionTypes(): void {
-    const endpointT = this.domainService.getEndpoint('getActionTypes');
+    const endpointT = this.config.getEndpoint('getActionTypes');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
 
@@ -70,7 +70,7 @@ export class CreateButtonsComponent implements OnInit {
   }
 
   public getRoles(): void {
-    const endpointT = this.domainService.getEndpoint('getRoles');
+    const endpointT = this.config.getEndpoint('getRoles');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
 

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { User, UserExtended } from '../../../../../model/user';
 import { PasswordFieldComponent } from '../../../fields/password-field/password-field.component';
@@ -46,7 +46,7 @@ export class ListPanelUserComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -139,7 +139,7 @@ export class ListPanelUserComponent implements OnInit {
   }
 
   public postUser(userExtended: UserExtended): void {
-    const endpointT = this.domain.getEndpoint('postUser');
+    const endpointT = this.config.getEndpoint('postUser');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, userExtended).subscribe((u: User) => {
@@ -156,7 +156,7 @@ export class ListPanelUserComponent implements OnInit {
   }
 
   public putUser(user: User): void {
-    const endpointT = this.domain.getEndpoint('putUser');
+    const endpointT = this.config.getEndpoint('putUser');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.transform.setVariable('user', user);
       let url = this.transform.URL(endpointT.endpoint);

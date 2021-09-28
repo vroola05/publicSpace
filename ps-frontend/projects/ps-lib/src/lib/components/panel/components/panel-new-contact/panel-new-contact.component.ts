@@ -5,7 +5,7 @@ import { Call } from '../../../../../model/call';
 import { Person } from '../../../../../model/person';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../../../../services/api/api.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 
@@ -36,7 +36,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     private storage: StorageService,
     private authorisation: AuthorisationService
   ) {
@@ -60,9 +60,9 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    if (this.isCC && this.domain.getEndpoint('getNewInformationChannels').endpoint) {
+    if (this.isCC && this.config.getEndpoint('getNewInformationChannels').endpoint) {
       this.channelsSubscription = this.apiService.get(
-        this.domain.getEndpoint('getNewInformationChannels').endpoint)
+        this.config.getEndpoint('getNewInformationChannels').endpoint)
         .subscribe((channels: string[]) => {
           const items = [];
           channels.forEach(channel => {

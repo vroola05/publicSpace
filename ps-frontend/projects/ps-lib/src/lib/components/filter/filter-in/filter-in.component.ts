@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {DomainService} from '../../../services/domain/domain.service';
+import {ConfigService} from '../../../services/domain/domain.service';
 import {FilterService} from '../../../services/filter/filter.service';
 import {FilterType} from '../../../../model/query-parameters';
 import {KeyValueT} from '../../../../model/template';
@@ -23,12 +23,12 @@ export class FilterInComponent implements OnInit {
   public checked: boolean[] = [];
 
   constructor(
-    private domain: DomainService,
+    private config: ConfigService,
     protected filterService: FilterService) {
   }
 
   public ngOnInit(): void {
-    const filters = this.domain.config.components.filter;
+    const filters = this.config.template.components.filter;
 
     const serviceList = this.getValueFromService();
     if (this.id && filters.has(this.id)) {

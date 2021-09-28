@@ -3,7 +3,7 @@ import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 
@@ -33,7 +33,7 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
     this.call = new Call();
@@ -41,10 +41,10 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.change.information.buttonsLeft;
-    this.buttonsRight = this.domain.config.change.information.buttonsRight;
-    if (this.domain.config.change.information.pageType) {
-      this.pageLayoutType = this.domain.config.change.information.pageType;
+    this.buttonsLeft = this.config.template.change.information.buttonsLeft;
+    this.buttonsRight = this.config.template.change.information.buttonsRight;
+    if (this.config.template.change.information.pageType) {
+      this.pageLayoutType = this.config.template.change.information.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

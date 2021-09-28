@@ -3,7 +3,7 @@ import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewInformationComponent } from '../../../panel/components/panel-new-information/panel-new-information.component';
@@ -35,7 +35,7 @@ export class NewInformationComponent extends PageAbstract implements OnInit, OnD
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
     this.call = new Call();
@@ -43,10 +43,10 @@ export class NewInformationComponent extends PageAbstract implements OnInit, OnD
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.pagesOld.newInformation.buttonsLeft;
-    this.buttonsRight = this.domain.config.pagesOld.newInformation.buttonsRight;
-    if (this.domain.config.pagesOld.newInformation.pageType) {
-      this.pageLayoutType = this.domain.config.pagesOld.newInformation.pageType;
+    this.buttonsLeft = this.config.template.pagesOld.newInformation.buttonsLeft;
+    this.buttonsRight = this.config.template.pagesOld.newInformation.buttonsRight;
+    if (this.config.template.pagesOld.newInformation.pageType) {
+      this.pageLayoutType = this.config.template.pagesOld.newInformation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

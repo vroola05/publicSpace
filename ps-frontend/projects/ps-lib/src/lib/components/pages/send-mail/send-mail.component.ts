@@ -10,7 +10,7 @@ import { Message } from '../../../../model/message';
 import { PageAbstract } from '../page';
 
 import { NavigationService } from '../../../services/navigation/navigation.service';
-import { DomainService } from '../../../services/domain/domain.service';
+import { ConfigService } from '../../../services/domain/domain.service';
 import { ApiService } from '../../../services/api/api.service';
 import { ActionService } from '../../../services/action/action.service';
 import { MailService } from '../../../services/mail/mail.service';
@@ -51,7 +51,7 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService,
     private mailService: MailService,
     private loader: Loader,
@@ -63,7 +63,7 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
     super.ngOnInit();
     const identifier = this.activatedRoute.snapshot.paramMap.get('mailId');
 
-    const mailConfigs = this.domain.config.mail;
+    const mailConfigs = this.config.template.mail;
 
     this.mailConfig = mailConfigs.find(conf => conf.id === identifier);
     if (this.mailConfig && this.mailConfig.endpoint) {
@@ -90,14 +90,14 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
-      this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
-      this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.domain.getEndpoint('postNote').endpoint);
-      this.headerData = this.domain.transformCall(call);
+      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
+      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
+      this.headerData = this.config.transformCall(call);
 
       this.getMailTemplate(this.mailConfig.template);
     }));

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Location } from '../../../../../model/location';
@@ -40,7 +40,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     private navigationService: NavigationService,
     private storage: StorageService,
     private transform: TransformService
@@ -53,7 +53,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       this.call.location = new Location();
     }
 
-    this.listTemplate = this.domain.config.pagesOld.newLocation.listTemplate;
+    this.listTemplate = this.config.template.pagesOld.newLocation.listTemplate;
   }
 
   public ngOnInit(): void {
@@ -108,7 +108,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
   public clicked(location: Location) {
     this.transform.setVariable('location', location);
     this.apiService.get(
-      this.transform.URL(this.domain.getEndpoint('getLocationByCoordinates').endpoint))
+      this.transform.URL(this.config.getEndpoint('getLocationByCoordinates').endpoint))
       .pipe(first()).subscribe((result: Location) => {
         if (result) {
           result.latitude = location.latitude;
@@ -138,7 +138,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       location.street = $event.target.value;
       this.transform.setVariable('location', location);
       this.apiService.get(
-        this.transform.URL(this.domain.getEndpoint('getLocationByStreet').endpoint))
+        this.transform.URL(this.config.getEndpoint('getLocationByStreet').endpoint))
         .pipe(first()).subscribe((locations: Location[]) => {
           const options: { name: string, value: string, data: any }[] = [];
 
@@ -160,7 +160,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       this.transform.setVariable('location', location);
 
       this.searchLocationSubscription = this.apiService.get(
-        this.transform.URL(this.domain.getEndpoint('getLocationByStreetAndNumber').endpoint))
+        this.transform.URL(this.config.getEndpoint('getLocationByStreetAndNumber').endpoint))
         .subscribe(
           (location: Location) => {
             this.storeLocation(location);
@@ -179,7 +179,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
     this.callNearby = null;
     if (this.listTemplate.toggle) {
       this.apiService.get(
-        this.transform.URL(this.domain.getEndpoint('getListCall').endpoint))
+        this.transform.URL(this.config.getEndpoint('getListCall').endpoint))
         .pipe(first()).subscribe((call: Call) => {
         this.callNearby = call;
         this.transform.setVariable('call', call);

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { Call } from '../../../model/call';
 import { CallList } from '../../../model/call-list';
-import { DomainT, EndpointsT, EndpointT, KeyValueT } from '../../../model/template';
+import { Template, EndpointsT, EndpointT, KeyValueT } from '../../../model/template';
 import { AuthorisationService } from '../authorisation/authorisation.service';
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '../storage/storage.service';
@@ -12,8 +12,8 @@ import { StorageService } from '../storage/storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DomainService {
-  private _domain: BehaviorSubject<DomainT> = new BehaviorSubject<any>(null);
+export class ConfigService {
+  private _template: BehaviorSubject<Template> = new BehaviorSubject<any>(null);
   private _endpoints: Map<string, EndpointT>;
   private _api: string;
 
@@ -32,17 +32,17 @@ export class DomainService {
     return { endpoint: null };
   }
 
-  public set config(domain: DomainT) {
-    domain = this.setDefaults(domain);
-    if (domain.endpoints) {
-      this._endpoints = domain.endpoints;
+  public set template(template: Template) {
+    template = this.setDefaults(template);
+    if (template.endpoints) {
+      this._endpoints = template.endpoints;
     }
 
-    this._domain.next(domain);
+    this._template.next(template);
   }
 
-  public get config(): DomainT {
-    return this._domain.getValue();
+  public get template(): Template {
+    return this._template.getValue();
   }
 
   constructor(
@@ -50,7 +50,7 @@ export class DomainService {
     private storage: StorageService
   ) { }
 
-  public setDefaults(domain: DomainT): DomainT {
+  public setDefaults(domain: Template): Template {
     if (domain.info.favicon) {
       const favicon = document.getElementById('favicon') as HTMLLinkElement;
       if (favicon) {
@@ -92,11 +92,11 @@ export class DomainService {
   }
 
   public getLogo(): string {
-    return !this.config.info.logo ? 'assets/images/default-logo.svg' : this.config.info.logo;
+    return !this.template.info.logo ? 'assets/images/default-logo.svg' : this.template.info.logo;
   }
 
   public configObservable(): Observable<any> {
-    return this._domain.asObservable();
+    return this._template.asObservable();
   }
 
   public transformCall(call: Call): CallList {
@@ -144,9 +144,9 @@ export class DomainService {
 
     return new Promise((resolve, reject) => {
       fetch(domainUrl, opts).then((response) => {
-        response.json().then((domain: DomainT) => {
-          this.config = domain;
-          resolve(this.config);
+        response.json().then((template: Template) => {
+          this.template = template;
+          resolve(this.template);
         }).catch(() => {
           reject();
         });

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { Group } from '../../../../../model/group';
@@ -35,7 +35,7 @@ export class ListPanelGroupComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -73,7 +73,7 @@ export class ListPanelGroupComponent implements OnInit {
   }
 
   public postGroup(group: Group): void {
-    const endpointT = this.domainService.getEndpoint('postGroup');
+    const endpointT = this.config.getEndpoint('postGroup');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, group).subscribe((d: Group) => {
@@ -90,7 +90,7 @@ export class ListPanelGroupComponent implements OnInit {
   }
 
   public putGroup(group: Group): void {
-    const endpointT = this.domainService.getEndpoint('putGroup');
+    const endpointT = this.config.getEndpoint('putGroup');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.transform.setVariable('group', group);
       let url = this.transform.URL(endpointT.endpoint);

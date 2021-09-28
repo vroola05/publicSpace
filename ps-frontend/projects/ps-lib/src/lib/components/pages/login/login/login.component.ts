@@ -5,7 +5,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
 import { User } from '../../../../../model/user';
 import { Message } from '../../../../../model/message';
 
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 
 import { first } from 'rxjs/operators';
 import { StorageService } from '../../../../services/storage/storage.service';
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private navigationService: NavigationService,
     private storage: StorageService,
     private transform: TransformService
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getLogo(): string {
-    return this.domain.getLogo();
+    return this.config.getLogo();
   }
 
   public hasReset(): boolean {
@@ -82,15 +82,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public resetAccount(): void {
-    if (this.domain.config.login.resetAccount.route) {
-      this.navigationService.navigate([this.domain.config.login.resetAccount.route]);
+    if (this.config.template.login.resetAccount.route) {
+      this.navigationService.navigate([this.config.template.login.resetAccount.route]);
     }
   }
 
   public submit(): void {
     if (this.usernameComponent.validate() && this.passwordComponent.validate()) {
       this.authorisation.login(
-        this.domain.getEndpoint('postLogin').endpoint, this.username, this.password, this.rememberLogin)
+        this.config.getEndpoint('postLogin').endpoint, this.username, this.password, this.rememberLogin)
         .pipe(first()).subscribe((user: User) => {
         this.error = null;
         this.storage.removeSession('haslogin');

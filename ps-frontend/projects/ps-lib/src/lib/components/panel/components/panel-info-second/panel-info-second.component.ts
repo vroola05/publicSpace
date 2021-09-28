@@ -4,7 +4,7 @@ import { Order } from '../../../../../model/order';
 import { Group } from '../../../../../model/group';
 import { User } from '../../../../../model/user';
 import { Image } from '../../../../../model/image';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
 
@@ -24,7 +24,7 @@ export class PanelInfoSecondComponent implements OnInit {
   @Input() public urlNotes: string;
 
   constructor(
-    private domain: DomainService,
+    private config: ConfigService,
     private popup: Popup
   ) { }
 
@@ -38,7 +38,7 @@ export class PanelInfoSecondComponent implements OnInit {
     image.name = 'Webformulier';
     image.alt = 'Inwoner';
 
-    const endpoint = this.domain.getEndpoint('getProfileImage').endpoint;
+    const endpoint = this.config.getEndpoint('getProfileImage').endpoint;
     if (endpoint && user && image.name) {
       image.api = true;
       image.url = !user.profilePhoto ? '' : endpoint + user.profilePhoto;

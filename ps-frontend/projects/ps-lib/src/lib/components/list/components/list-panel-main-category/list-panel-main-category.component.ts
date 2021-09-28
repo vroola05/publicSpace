@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { MainCategory } from '../../../../../model/main-category';
@@ -35,7 +35,7 @@ export class ListPanelMainCategoryComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -73,7 +73,7 @@ export class ListPanelMainCategoryComponent implements OnInit {
   }
 
   public postGroup(mainCategory: MainCategory): void {
-    const endpointT = this.domainService.getEndpoint('postMainCategory');
+    const endpointT = this.config.getEndpoint('postMainCategory');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, mainCategory).subscribe((d: MainCategory) => {
@@ -90,7 +90,7 @@ export class ListPanelMainCategoryComponent implements OnInit {
   }
 
   public putGroup(mainCategory: MainCategory): void {
-    const endpointT = this.domainService.getEndpoint('putMainCategory');
+    const endpointT = this.config.getEndpoint('putMainCategory');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.transform.setVariable('mainCategory', mainCategory);
       let url = this.transform.URL(endpointT.endpoint);

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { Domain } from '../../../../../model/domain';
@@ -45,7 +45,7 @@ export class ListPanelDomainComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -103,7 +103,7 @@ export class ListPanelDomainComponent implements OnInit {
   }
 
   public getDomainTypes(): void {
-    const endpointT = this.domainService.getEndpoint('getDomainType');
+    const endpointT = this.config.getEndpoint('getDomainType');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((domainTypes: DomainType[]) => {
         domainTypes.forEach(domainType => {
@@ -116,7 +116,7 @@ export class ListPanelDomainComponent implements OnInit {
 
 
   public postDomain(domain: Domain): void {
-    const endpointT = this.domainService.getEndpoint('postDomain');
+    const endpointT = this.config.getEndpoint('postDomain');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, domain).subscribe((d: Domain) => {
@@ -133,7 +133,7 @@ export class ListPanelDomainComponent implements OnInit {
   }
 
   public putDomain(domain: Domain): void {
-    const endpointT = this.domainService.getEndpoint('putDomain');
+    const endpointT = this.config.getEndpoint('putDomain');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.transform.setVariable('domain', domain);
       let url = this.transform.URL(endpointT.endpoint);

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../services/action/action.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -42,7 +42,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
@@ -57,10 +57,10 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   public ngOnInit(): void {
     super.ngOnInit();
     this.getCall();
-    this.buttonsLeft = this.domain.config.order.creation.buttonsLeft;
-    this.buttonsRight = this.domain.config.order.creation.buttonsRight;
-    if (this.domain.config.order.creation.pageType) {
-      this.pageLayoutType = this.domain.config.order.creation.pageType;
+    this.buttonsLeft = this.config.template.order.creation.buttonsLeft;
+    this.buttonsRight = this.config.template.order.creation.buttonsRight;
+    if (this.config.template.order.creation.pageType) {
+      this.pageLayoutType = this.config.template.order.creation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });
@@ -72,7 +72,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   }
 
   public getOrderitems(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getOrderitems').endpoint))
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getOrderitems').endpoint))
       .subscribe((orderitems: Orderitem[]) => {
         if (orderitems) {
           orderitems.forEach(orderitem => {
@@ -97,7 +97,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       if (! this.order && this.call.orders && this.call.orders.length > 0) {
@@ -106,11 +106,11 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
         this.storage.setSession('order', JSON.stringify(this.order), true);
       }
 
-      this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
-      this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.domain.getEndpoint('postNote').endpoint);
-      this.headerData = this.domain.transformCallOrder(call);
+      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
+      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
+      this.headerData = this.config.transformCallOrder(call);
 
       this.getOrderitems();
     }));

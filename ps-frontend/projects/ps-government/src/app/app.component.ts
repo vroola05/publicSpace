@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
-import { NavigationService, DomainService, AuthorisationService, StorageService } from 'ps-lib';
+import { NavigationService, ConfigService, AuthorisationService, StorageService } from 'ps-lib';
 import { User } from '../../../ps-lib/src/model/user';
-import { DomainT } from '../../../ps-lib/src/model/template';
+import { Template } from '../../../ps-lib/src/model/template';
 import { HeaderMenuItemT } from '../../../ps-lib/src/model/template';
 import { ActivatedRoute } from '@angular/router';
 
@@ -21,13 +21,13 @@ export class AppComponent {
     private authorisation: AuthorisationService,
     private navigationService: NavigationService,
     private storage: StorageService,
-    private domain: DomainService
+    private config: ConfigService
   ) {
-    this.domain.api = environment.api;
+    this.config.api = environment.api;
 
-    this.domain.readConfig(this.domain.api + '/config').then((config: DomainT) => {
-      if (config.info.prefix) {
-        this.storage.setPrefix(config.info.prefix);
+    this.config.readConfig(this.config.api + '/config').then((template: Template) => {
+      if (template.info.prefix) {
+        this.storage.setPrefix(template.info.prefix);
       }
 
       this.authorisation.readUser();
@@ -41,7 +41,7 @@ export class AppComponent {
           this.loaded = true;
         } else {
           
-          this.navigationService.addHeaderItems(this.domain.config.components.header.headerMenu);
+          this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
 
           if (this.storage.getSession('haslogin') !== '1' && this.navigationService.getHeaderItems().length > 0) {
             this.storage.setSession('haslogin', '1');
@@ -76,7 +76,7 @@ export class AppComponent {
     this.groupsLoaded = true;
 
     const headerItems: HeaderMenuItemT[] = [];
-    const groupT: HeaderMenuItemT = this.domain.config.components.header.group;
+    const groupT: HeaderMenuItemT = this.config.template.components.header.group;
 
     this.authorisation.user.groups.forEach(group => {
       const headerItem: HeaderMenuItemT = {

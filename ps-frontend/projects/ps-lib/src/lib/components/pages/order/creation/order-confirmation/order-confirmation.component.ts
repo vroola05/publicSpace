@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { ActionService } from '../../../../../services/action/action.service';
 import { ApiService } from '../../../../../services/api/api.service';
-import { DomainService } from '../../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { PageAbstract } from '../../../page';
@@ -46,7 +46,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService,
     private loader: Loader
   ) {
@@ -62,10 +62,10 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
     super.ngOnInit();
     this.getCall();
 
-    this.buttonsLeft = this.domain.config.order.confirmation.buttonsLeft;
-    this.buttonsRight = this.domain.config.order.confirmation.buttonsRight;
-    if (this.domain.config.order.confirmation.pageType) {
-      this.pageLayoutType = this.domain.config.order.confirmation.pageType;
+    this.buttonsLeft = this.config.template.order.confirmation.buttonsLeft;
+    this.buttonsRight = this.config.template.order.confirmation.buttonsRight;
+    if (this.config.template.order.confirmation.pageType) {
+      this.pageLayoutType = this.config.template.order.confirmation.pageType;
     }
 
     this.action.register('extra', () => { this.extra(); });
@@ -78,14 +78,14 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
 
   public getCall(): void {
     this.subscription.push(this.apiService.get(
-      this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+      this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
         this.transform.setVariable('call', call);
         this.call = call;
-        this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
-        this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
-        this.postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
-        this.postUrlNote = this.transform.URL(this.domain.getEndpoint('postNote').endpoint);
-        this.headerData = this.domain.transformCall(call);
+        this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+        this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+        this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
+        this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
+        this.headerData = this.config.transformCall(call);
     }));
   }
 
@@ -170,7 +170,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
 
   public save() {
     const loaderId = this.loader.add('Bezig met opslaan!');
-    const url = this.transform.URL(this.domain.getEndpoint('postOrders').endpoint);
+    const url = this.transform.URL(this.config.getEndpoint('postOrders').endpoint);
     this.subscription.push(this.apiService.post(url, this.orders).subscribe((message: Message) => {
       this.storage.clearProcessData();
       this.navigationService.navigateHome();
@@ -183,7 +183,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
   }
 
   public assign(): void {
-    const url = this.transform.URL(this.domain.getEndpoint('putAssignUser').endpoint);
+    const url = this.transform.URL(this.config.getEndpoint('putAssignUser').endpoint);
     this.subscription.push(this.apiService.put(url, this.orders).subscribe((message: Message) => {
       this.save();
     },

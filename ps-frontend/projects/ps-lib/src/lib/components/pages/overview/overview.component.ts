@@ -12,7 +12,7 @@ import { QueryParameters } from '../../../../model/query-parameters';
 import { PageAbstract } from '../page';
 
 import { ApiService } from '../../../services/api/api.service';
-import { DomainService } from '../../../services/domain/domain.service';
+import { ConfigService } from '../../../services/domain/domain.service';
 import { NavigationService } from '../../../services/navigation/navigation.service';
 import { FilterService } from '../../../services/filter/filter.service';
 import { StorageService } from '../../../services/storage/storage.service';
@@ -53,14 +53,14 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private filterService: FilterService,
     private notification: NotificationService,
     private apiService: ApiService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
 
-    this.overview = this.domain.config.pagesOld.overview;
+    this.overview = this.config.template.pagesOld.overview;
     this.filterService.setListsize(this.overview.listSize ? this.overview.listSize : 50);
 
     this.search = this.filterService.getSearch();
@@ -113,7 +113,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.title = 'Zoek in (' + headerMenuItem.name + ')';
     this.listTemplate = this.getListConfig(headerMenuItem.id);
 
-    const url = this.transform.URL(this.domain.getEndpoint('getCallList').endpoint);
+    const url = this.transform.URL(this.config.getEndpoint('getCallList').endpoint);
     this.getList(url,
       this.filterService.getQueryParameters()).pipe(first()).subscribe((callList) => {
         if (callList) {
@@ -153,7 +153,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.call = null;
     if (this.listTemplate.toggle) {
       this.apiService.get(
-        this.transform.URL(this.domain.getEndpoint('getCallByCallListId').endpoint)).pipe(first()).subscribe((call: Call) => {
+        this.transform.URL(this.config.getEndpoint('getCallByCallListId').endpoint)).pipe(first()).subscribe((call: Call) => {
         this.transform.setVariable('call', call);
         this.call = call;
       });

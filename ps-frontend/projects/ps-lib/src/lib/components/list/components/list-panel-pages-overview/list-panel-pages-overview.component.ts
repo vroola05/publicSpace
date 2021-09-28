@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { PageOverviewTemplate } from '../../../../../model/page-overview-template';
@@ -37,7 +37,7 @@ export class ListPanelPagesOverviewComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -49,7 +49,7 @@ export class ListPanelPagesOverviewComponent implements OnInit {
 
 
   public getStatus(): void {
-    const endpointT = this.domainService.getEndpoint('getStatus');
+    const endpointT = this.config.getEndpoint('getStatus');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
 

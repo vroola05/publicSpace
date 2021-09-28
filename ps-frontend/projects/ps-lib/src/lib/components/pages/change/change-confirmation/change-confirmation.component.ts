@@ -6,7 +6,7 @@ import { Message } from '../../../../../model/message';
 import { PopupETypes } from '../../../../../model/intefaces';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ApiService } from '../../../../services/api/api.service';
@@ -48,7 +48,7 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     private loader: Loader,
     private popup: Popup,
     private toast: ToastService
@@ -59,10 +59,10 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.change.confirmation.buttonsLeft;
-    this.buttonsRight = this.domain.config.change.confirmation.buttonsRight;
-    if (this.domain.config.change.confirmation.pageType) {
-      this.pageLayoutType = this.domain.config.change.confirmation.pageType;
+    this.buttonsLeft = this.config.template.change.confirmation.buttonsLeft;
+    this.buttonsRight = this.config.template.change.confirmation.buttonsRight;
+    if (this.config.template.change.confirmation.pageType) {
+      this.pageLayoutType = this.config.template.change.confirmation.pageType;
     }
 
     this.getCall();
@@ -76,7 +76,7 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
     }));
@@ -116,7 +116,7 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
         call.location = callChanged.location;
       }
       this.loaderId = this.loader.add('Bezig met opslaan!');
-      const url = this.transform.URL(this.domain.getEndpoint('putCall').endpoint);
+      const url = this.transform.URL(this.config.getEndpoint('putCall').endpoint);
       this.putChangeCallSubscription = this.apiService.put(url, call)
         .subscribe((message: Message) => {
           this.storage.clearProcessData();

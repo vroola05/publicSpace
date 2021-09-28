@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
 import { Message } from '../../../../../model/message';
 import { Login } from '../../../../../model/login';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -26,7 +26,7 @@ export class ResetAccountComponent implements OnInit, AfterViewInit {
 
   constructor(
     private api: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     private transform: TransformService,
     private navigationService: NavigationService
   ) { }
@@ -55,12 +55,12 @@ export class ResetAccountComponent implements OnInit, AfterViewInit {
     }
   }
   public getLogo(): string {
-    return this.domain.getLogo();
+    return this.config.getLogo();
   }
 
   public backToLogin(): void {
-    if (this.domain.config.login.resetAccount.route) {
-      this.navigationService.navigate([this.domain.config.login.login.route]);
+    if (this.config.template.login.resetAccount.route) {
+      this.navigationService.navigate([this.config.template.login.login.route]);
     }
   }
 
@@ -68,7 +68,7 @@ export class ResetAccountComponent implements OnInit, AfterViewInit {
     this.transform.setVariable('user', new Login(this.username, ''));
 
     if (this.usernameComponent.validate()) {
-      this.api.get(this.transform.URL(this.domain.getEndpoint('getLoginReset').endpoint)).pipe(first()).subscribe((message: Message) => {
+      this.api.get(this.transform.URL(this.config.getEndpoint('getLoginReset').endpoint)).pipe(first()).subscribe((message: Message) => {
         this.send = true;
         this.usernameComponent.value = '';
         this.username = '';

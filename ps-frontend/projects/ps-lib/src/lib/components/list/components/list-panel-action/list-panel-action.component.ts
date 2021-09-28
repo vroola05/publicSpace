@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { Action } from '../../../../../model/action';
@@ -38,7 +38,7 @@ export class ListPanelActionComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -73,7 +73,7 @@ export class ListPanelActionComponent implements OnInit {
   }
 
   public getStatus(): void {
-    const endpointT = this.domainService.getEndpoint('getStatus');
+    const endpointT = this.config.getEndpoint('getStatus');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.statusItems.push({ name: 'Geen...', value: '-1', data: null });
       this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((statusses: Status[]) => {
@@ -102,7 +102,7 @@ export class ListPanelActionComponent implements OnInit {
   }
 
   public put(action: Action): void {
-    const endpointT = this.domainService.getEndpoint('putAction');
+    const endpointT = this.config.getEndpoint('putAction');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
 

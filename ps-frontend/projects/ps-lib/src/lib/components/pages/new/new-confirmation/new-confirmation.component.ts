@@ -3,7 +3,7 @@ import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ApiService } from '../../../../services/api/api.service';
@@ -43,7 +43,7 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     private loader: Loader,
     private toast: ToastService
   ) {
@@ -53,10 +53,10 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.domain.config.pagesOld.newConfirmation.buttonsLeft;
-    this.buttonsRight = this.domain.config.pagesOld.newConfirmation.buttonsRight;
-    if (this.domain.config.pagesOld.newConfirmation.pageType) {
-      this.pageLayoutType = this.domain.config.pagesOld.newConfirmation.pageType;
+    this.buttonsLeft = this.config.template.pagesOld.newConfirmation.buttonsLeft;
+    this.buttonsRight = this.config.template.pagesOld.newConfirmation.buttonsRight;
+    if (this.config.template.pagesOld.newConfirmation.pageType) {
+      this.pageLayoutType = this.config.template.pagesOld.newConfirmation.pageType;
     }
   }
 
@@ -74,7 +74,7 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
       if (callData) {
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const call = JSON.parse(callData) as Call;
-        this.apiService.post(this.domain.getEndpoint('postCall').endpoint, call)
+        this.apiService.post(this.config.getEndpoint('postCall').endpoint, call)
           .pipe(first()).subscribe((newCall: Call) => {
 
           this.call = newCall;
@@ -104,7 +104,7 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
   }
 
   public uploadImages(files: File[]) {
-    const postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
+    const postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
 
     const imageObservables: Observable<any>[] = [];
     for (const file of files) {

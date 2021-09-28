@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../../services/action/action.service';
 import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
@@ -48,7 +48,7 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService,
     private loader: Loader
   ) {
@@ -58,8 +58,8 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   public ngOnInit(): void {
     super.ngOnInit();
 
-    this.buttonsLeft = this.domain.config.order.handleNoLogin.buttonsLeft;
-    this.buttonsRight = this.domain.config.order.handleNoLogin.buttonsRight;
+    this.buttonsLeft = this.config.template.order.handleNoLogin.buttonsLeft;
+    this.buttonsRight = this.config.template.order.handleNoLogin.buttonsRight;
 
     this.action.register('reject', () => { this.reject(); });
     this.action.register('accept', () => { this.accept(); });
@@ -82,7 +82,7 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getNoLoginDetailCall').endpoint)).subscribe((call: Call) => {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getNoLoginDetailCall').endpoint)).subscribe((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       if (this.call.orders) {
@@ -91,13 +91,13 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
       }
 
       if (this.noLogin()) {
-        this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getNoLoginImages').endpoint);
-        this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getNoLoginImage').endpoint);
+        this.getUrlImages = this.transform.URL(this.config.getEndpoint('getNoLoginImages').endpoint);
+        this.getUrlImage = this.transform.URL(this.config.getEndpoint('getNoLoginImage').endpoint);
       } else  {
-        this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
-        this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
+        this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+        this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
       }
-      this.headerData = this.domain.transformCall(call);
+      this.headerData = this.config.transformCall(call);
     },
     (error) => {
       if (error.status && error.status === 406 ) {
@@ -131,7 +131,7 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
     if (!this.sending && this.explanationField.validate()) {
       this.sending = true;
       const loaderId = this.loader.add('Bezig met opslaan!');
-      const url = this.transform.URL(this.domain.getEndpoint('putNoLoginOrder').endpoint);
+      const url = this.transform.URL(this.config.getEndpoint('putNoLoginOrder').endpoint);
       this.subscription.push(this.apiService.put(url, this.explanation).subscribe((message: Message) => {
         this.storage.clearProcessData();
         this.transform.clearVariable();

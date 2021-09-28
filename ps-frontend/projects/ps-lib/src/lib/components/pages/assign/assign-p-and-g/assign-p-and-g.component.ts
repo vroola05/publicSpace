@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ActionService } from '../../../../services/action/action.service';
 import { ApiService } from '../../../../services/api/api.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
@@ -64,7 +64,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     private loader: Loader,
     private toast: ToastService
   ) {
@@ -75,10 +75,10 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
     super.ngOnInit();
     this.getCall();
 
-    this.buttonsLeft = this.domain.config.assign.buttonsLeft;
-    this.buttonsRight = this.domain.config.assign.buttonsRight;
-    if (this.domain.config.assign.pageType) {
-      this.pageLayoutType = this.domain.config.assign.pageType;
+    this.buttonsLeft = this.config.template.assign.buttonsLeft;
+    this.buttonsRight = this.config.template.assign.buttonsRight;
+    if (this.config.template.assign.pageType) {
+      this.pageLayoutType = this.config.template.assign.pageType;
     }
 
     this.action.register('submit-group', () => { this.submitGroup(); });
@@ -92,11 +92,11 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
 
   public getCall(): void {
     this.subscription.push(this.apiService.get(this.transform.URL(
-      this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+      this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       this.getTeams();
-      this.headerData = this.domain.transformCall(call);
+      this.headerData = this.config.transformCall(call);
     }));
   }
   public onTabChanged($event): void {
@@ -107,7 +107,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
 
   public getPersons() {
     this.items = [];
-    const url = this.transform.URL(this.domain.getEndpoint('getAssignUsersOfGroup').endpoint);
+    const url = this.transform.URL(this.config.getEndpoint('getAssignUsersOfGroup').endpoint);
     this.subscription.push(this.apiService.get(url)
       .subscribe((users: User[]) => {
         const items = [];
@@ -120,7 +120,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
 
   public getTeams() {
     this.items = [];
-    const url = this.transform.URL(this.domain.getEndpoint('getAssignGroups').endpoint);
+    const url = this.transform.URL(this.config.getEndpoint('getAssignGroups').endpoint);
     this.subscription.push(this.apiService.get(url)
       .subscribe((groups: Group[]) => {
         const tabs = [];
@@ -146,7 +146,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
     const image = new Image();
     if (user && user.name) {
       image.api = true;
-      image.url = (user.profilePhoto && user.profilePhoto !== '') ? this.domain.getEndpoint('getProfileImage').endpoint + user.profilePhoto : '';
+      image.url = (user.profilePhoto && user.profilePhoto !== '') ? this.config.getEndpoint('getProfileImage').endpoint + user.profilePhoto : '';
       image.name = 'Medewerker';
       image.alt = user.name;
     }
@@ -170,7 +170,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
         this.sending = true;
 
         const loaderId = this.loader.add('Bezig met opslaan!');
-        const url = this.transform.URL(this.domain.getEndpoint('putAssignUser').endpoint);
+        const url = this.transform.URL(this.config.getEndpoint('putAssignUser').endpoint);
         this.subscription.push(this.apiService.put(url, {}).subscribe((message: Message) => {
           this.loader.remove(loaderId);
           this.sending = false;
@@ -193,7 +193,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
       if (group && group.id) {
         this.sending = true;
         const loaderId = this.loader.add('Bezig met opslaan!');
-        const url = this.transform.URL(this.domain.getEndpoint('putAssignGroup').endpoint);
+        const url = this.transform.URL(this.config.getEndpoint('putAssignGroup').endpoint);
         this.subscription.push(this.apiService.put(url, {}).subscribe((message: Message) => {
           this.loader.remove(loaderId);
           this.sending = false;

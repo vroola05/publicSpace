@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Category } from '../../../../../model/category';
@@ -29,7 +29,7 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private domain: DomainService,
+    private config: ConfigService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private navigationService: NavigationService,
@@ -40,7 +40,7 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.transform.setVariable('environment', { company: this.authorisation.user.company, domain: this.authorisation.user.domain });
-    this.apiService.get(this.transform.URL(this.domain.getEndpoint('getMainCategories').endpoint))
+    this.apiService.get(this.transform.URL(this.config.getEndpoint('getMainCategories').endpoint))
       .pipe(first()).subscribe((mainCategories: MainCategory[]) => {
         if (mainCategories && mainCategories.length > 0) {
           const items = [];
@@ -103,7 +103,7 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
 
 
       this.apiService.get(
-        this.transform.URL(this.domain.getEndpoint('getCategories').endpoint))
+        this.transform.URL(this.config.getEndpoint('getCategories').endpoint))
         .pipe(first()).subscribe((categories: Category[]) => {
           if (categories && categories.length > 0) {
             const items = [];

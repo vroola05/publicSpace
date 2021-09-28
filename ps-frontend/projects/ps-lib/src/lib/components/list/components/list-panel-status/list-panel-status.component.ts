@@ -3,7 +3,7 @@ import { Status } from '../../../../../model/status';
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
@@ -34,7 +34,7 @@ export class ListPanelStatusComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private domainService: DomainService,
+    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -72,7 +72,7 @@ export class ListPanelStatusComponent implements OnInit {
   }
 
   public postStatus(status: Status): void {
-    const endpointT = this.domainService.getEndpoint('postStatus');
+    const endpointT = this.config.getEndpoint('postStatus');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.post(url, status).subscribe((d: Status) => {
@@ -89,7 +89,7 @@ export class ListPanelStatusComponent implements OnInit {
   }
 
   public putStatus(status: Status): void {
-    const endpointT = this.domainService.getEndpoint('putStatus');
+    const endpointT = this.config.getEndpoint('putStatus');
     if (this.authorisation.hasRoles(endpointT.roles)) {
       this.transform.setVariable('status', status);
       let url = this.transform.URL(endpointT.endpoint);

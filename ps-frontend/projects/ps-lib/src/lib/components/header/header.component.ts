@@ -4,7 +4,7 @@ import { NavigationService } from '../../services/navigation/navigation.service'
 import { Observable, Subscription } from 'rxjs';
 import { User } from '../../../model/user';
 import { ApiService } from '../../services/api/api.service';
-import { DomainService } from '../../services/domain/domain.service';
+import { ConfigService } from '../../services/domain/domain.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PageLayoutType } from '../../../model/intefaces';
 import { HeaderMenuItemT } from '../../../model/template';
@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private navigationService: NavigationService,
     private authorisation: AuthorisationService,
     private apiService: ApiService,
-    private domain: DomainService
+    private config: ConfigService
   ) {
 
   }
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.user = this.authorisation.user;
     if (this.user && this.user.profilePhoto) {
       this.getImage(
-        this.domain.getEndpoint('getProfileImage').endpoint + this.user.profilePhoto).subscribe((blob) => {
+        this.config.getEndpoint('getProfileImage').endpoint + this.user.profilePhoto).subscribe((blob) => {
         this.blobToImage(blob);
       });
     }

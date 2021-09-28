@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../services/action/action.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { DomainService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/domain/domain.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -47,7 +47,7 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private domain: DomainService,
+    private config: ConfigService,
     private apiService: ApiService,
     private loader: Loader
   ) {
@@ -70,10 +70,10 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
   public ngOnInit(): void {
     super.ngOnInit();
     this.getCall();
-    this.buttonsLeft = this.domain.config.order.confirmation.buttonsLeft;
-    this.buttonsRight = this.domain.config.order.confirmation.buttonsRight;
-    if (this.domain.config.order.confirmation.pageType) {
-      this.pageLayoutType = this.domain.config.order.confirmation.pageType;
+    this.buttonsLeft = this.config.template.order.confirmation.buttonsLeft;
+    this.buttonsRight = this.config.template.order.confirmation.buttonsRight;
+    if (this.config.template.order.confirmation.pageType) {
+      this.pageLayoutType = this.config.template.order.confirmation.pageType;
     }
 
     this.action.register('save', () => { this.save(); });
@@ -85,15 +85,15 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.domain.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
 
-      this.getUrlImages = this.transform.URL(this.domain.getEndpoint('getImages').endpoint);
-      this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.domain.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.domain.getEndpoint('postNote').endpoint);
-      this.headerData = this.domain.transformCallOrder(call);
+      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
+      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
+      this.headerData = this.config.transformCallOrder(call);
 
     }));
   }
@@ -112,7 +112,7 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
 
       this.order.isExecuted = isExecuted;
       this.subscription.push(
-        this.apiService.put(this.transform.URL(this.domain.getEndpoint('putOrder').endpoint), this.order).subscribe((message: Message) => {
+        this.apiService.put(this.transform.URL(this.config.getEndpoint('putOrder').endpoint), this.order).subscribe((message: Message) => {
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
           this.loader.remove(loaderId);
