@@ -1,4 +1,4 @@
-<lib-panel *ngIf="state === 0 && call" [data]="call" [buttonsLeft]="buttonsLeft" [pageType]="pageType"
+<lib-panel *ngIf="state === 0 && call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType"
   [buttonsRight]="buttonsRight" [title]="'Melding informatie'">
   <lib-panel-title>
     <div class="row details-main">
@@ -27,7 +27,7 @@
     </div>
   </lib-panel-title>
 </lib-panel>
-<lib-panel *ngIf="state === 1" [pageType]="pageType" [title]="'Opdracht is afgesloten'">
+<lib-panel *ngIf="state === 1" [pageLayoutType]="pageLayoutType" [title]="'Opdracht is afgesloten'">
   <lib-panel-title [title]="'Opdracht is afgesloten'">
     <div class="row details-main">
       <div class="col-sm-12 details-main-header">
@@ -36,7 +36,7 @@
     </div>
   </lib-panel-title>
 </lib-panel>
-<lib-panel *ngIf="state === 2" [pageType]="pageType" [title]="'Ongeldige pagina'">
+<lib-panel *ngIf="state === 2" [pageLayoutType]="pageLayoutType" [title]="'Ongeldige pagina'">
   <lib-panel-title [title]="'Ongeldige pagina'">
     <div class="row details-main">
       <div class="col-sm-12 details-main-header">

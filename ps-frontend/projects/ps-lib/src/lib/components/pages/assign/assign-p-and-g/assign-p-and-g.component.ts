@@ -78,7 +78,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
     this.buttonsLeft = this.domain.config.assign.buttonsLeft;
     this.buttonsRight = this.domain.config.assign.buttonsRight;
     if (this.domain.config.assign.pageType) {
-      this.pageType = this.domain.config.assign.pageType;
+      this.pageLayoutType = this.domain.config.assign.pageType;
     }
 
     this.action.register('submit-group', () => { this.submitGroup(); });

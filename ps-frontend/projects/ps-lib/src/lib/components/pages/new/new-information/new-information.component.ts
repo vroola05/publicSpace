@@ -46,7 +46,7 @@ export class NewInformationComponent extends PageAbstract implements OnInit, OnD
     this.buttonsLeft = this.domain.config.pagesOld.newInformation.buttonsLeft;
     this.buttonsRight = this.domain.config.pagesOld.newInformation.buttonsRight;
     if (this.domain.config.pagesOld.newInformation.pageType) {
-      this.pageType = this.domain.config.pagesOld.newInformation.pageType;
+      this.pageLayoutType = this.domain.config.pagesOld.newInformation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

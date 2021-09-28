@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.commonground.ps.backendapi.exception.ForbiddenException;
 import org.commonground.ps.backendapi.model.security.UserPrincipal;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.model.template.EndpointT;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,8 +38,8 @@ public class SecuredMethodAspect {
       }
     }
     
-    DomainT domainT = (DomainT)userPrincipal.getDetails();
-    HashMap<String, EndpointT> endpointsT = domainT.getEndpoints();
+    Template template = (Template)userPrincipal.getDetails();
+    HashMap<String, EndpointT> endpointsT = template.getEndpoints();
     if (endpointsT.containsKey(identifier)) {
       EndpointT endpointT = endpointsT.get(identifier);
 

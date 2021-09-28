@@ -1309,6 +1309,68 @@ ALTER TABLE ONLY public.page_overview_column
 
 
 
+
+
+--
+-- TOC entry 244 (class 1259 OID 33106)
+-- Name: page_overview_status; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.page_overview_status (
+    id integer NOT NULL,
+    page_overview_id integer NOT NULL,
+    status_id integer NOT NULL
+);
+
+
+ALTER TABLE public.page_overview_status OWNER TO postgres;
+
+--
+-- TOC entry 3160 (class 0 OID 33106)
+-- Dependencies: 244
+-- Data for Name: page_overview_status; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+--
+-- TOC entry 3027 (class 2606 OID 33110)
+-- Name: page_overview_status page_overview_status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview_status
+    ADD CONSTRAINT page_overview_status_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3028 (class 2606 OID 33111)
+-- Name: page_overview_status overview_status_page_overview_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview_status
+    ADD CONSTRAINT overview_status_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page(id);
+
+
+--
+-- TOC entry 3029 (class 2606 OID 33116)
+-- Name: page_overview_status overview_status_status_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.page_overview_status
+    ADD CONSTRAINT overview_status_status_id_fk FOREIGN KEY (status_id) REFERENCES public.status(id);
+
+
+
+CREATE SEQUENCE public.seq_page_overview_column_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_page_overview_column_id
+    OWNER TO postgres;
+
+
 -- Completed on 2021-09-14 16:16:51 CEST
 
 --

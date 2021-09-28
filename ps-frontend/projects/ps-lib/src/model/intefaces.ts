@@ -23,7 +23,7 @@ export enum ContractorType {
   noJurisdiction = 'noJurisdiction'
 }
 
-export enum PageType {
+export enum PageLayoutType {
   overview = 'overview',
   page = 'page',
   pageStickyButtons = 'pageStickyButtons'

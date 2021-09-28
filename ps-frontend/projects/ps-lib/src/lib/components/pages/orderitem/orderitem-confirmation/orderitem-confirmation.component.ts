@@ -73,7 +73,7 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
     this.buttonsLeft = this.domain.config.order.confirmation.buttonsLeft;
     this.buttonsRight = this.domain.config.order.confirmation.buttonsRight;
     if (this.domain.config.order.confirmation.pageType) {
-      this.pageType = this.domain.config.order.confirmation.pageType;
+      this.pageLayoutType = this.domain.config.order.confirmation.pageType;
     }
 
     this.action.register('save', () => { this.save(); });

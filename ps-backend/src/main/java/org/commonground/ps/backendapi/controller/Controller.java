@@ -3,7 +3,7 @@ package org.commonground.ps.backendapi.controller;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.security.UserPrincipal;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class Controller {
@@ -12,9 +12,9 @@ public class Controller {
 		return userPrincipal.getPrincipal();
 	}
 
-	public DomainT getDomain() {
+	public Template getTemplate() {
 		UserPrincipal userPrincipal = (UserPrincipal)SecurityContextHolder.getContext().getAuthentication();
-		return (DomainT)userPrincipal.getDetails();
+		return (Template)userPrincipal.getDetails();
 	}
 
 	public void isValid(Long companyId) throws NotFoundException {

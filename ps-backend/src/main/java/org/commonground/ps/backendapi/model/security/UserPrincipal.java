@@ -3,7 +3,7 @@ package org.commonground.ps.backendapi.model.security;
 import java.util.Collection;
 
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,7 +13,7 @@ public class UserPrincipal implements Authentication {
   private boolean isAuthenticated = false;
   private String name;
   private User user;
-  private DomainT domain;
+  private Template template;
   private Collection<? extends GrantedAuthority> grantedAuthority;
 
   public void setName(String name) {
@@ -40,13 +40,13 @@ public class UserPrincipal implements Authentication {
     return null;
   }
 
-  public void setDetails(DomainT domain) {
-    this.domain = domain;
+  public void setDetails(Template template) {
+    this.template = template;
   }
 
   @Override
   public Object getDetails() {
-    return this.domain;
+    return this.template;
   }
 
   public void setPrincipal(User user) {

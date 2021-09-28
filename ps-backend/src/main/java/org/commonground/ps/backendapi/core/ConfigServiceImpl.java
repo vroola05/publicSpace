@@ -18,13 +18,13 @@ import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.Status;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConfigServiceImpl implements ConfigService {
-  private static HashMap<String, DomainT> configs = new HashMap<>();;
+  private static HashMap<String, Template> configs = new HashMap<>();;
 
   @Autowired
 	private DomainRepository domainRepository;
@@ -35,28 +35,28 @@ public class ConfigServiceImpl implements ConfigService {
   @Autowired
 	private PageService pageService;
 
-  public DomainT get(String domain) throws SecurityException {
+  public Template get(String domain) throws SecurityException {
     if(!ConfigService.isValidDomain(domain)) {
       throw new SecurityException("Not a valid domain.");
     }
 
-    DomainT domainT = configs.get(domain);
+    Template domainT = configs.get(domain);
     if (domainT != null) {
       return domainT;
     }
     return getFromStore(domain);
   }
 
-  private DomainT getFromStore(String domain) throws SecurityException {
+  private Template getFromStore(String domain) throws SecurityException {
     String file = "/configs/" + domain.replaceAll("/", "-") + ".json";
     ObjectMapper mapper = new ObjectMapper();
-    TypeReference<DomainT> typeReference = new TypeReference<DomainT>() {
+    TypeReference<Template> typeReference = new TypeReference<Template>() {
     };
 
     try {
       if (TypeReference.class.getResource(file) != null) {
         InputStream inputStream = TypeReference.class.getResourceAsStream(file);
-        DomainT config = mapper.readValue(inputStream, typeReference);
+        Template config = mapper.readValue(inputStream, typeReference);
 
         Optional<DomainEntity> domainEntity = domainRepository.getDomainByDomain(domain);
         if (domainEntity.isPresent()) {

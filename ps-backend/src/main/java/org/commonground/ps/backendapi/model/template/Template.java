@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DomainT {
+public class Template {
   private InfoT info;
   private HashMap<String, EndpointT> endpoints = new HashMap<>();
   private ComponentT components;

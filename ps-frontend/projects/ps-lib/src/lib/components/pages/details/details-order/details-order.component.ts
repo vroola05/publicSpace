@@ -66,7 +66,7 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
     this.buttonsLeft = this.domain.config.details.buttonsLeft;
     this.buttonsRight = this.domain.config.details.buttonsRight;
     if (this.domain.config.details.pageType) {
-      this.pageType = this.domain.config.details.pageType;
+      this.pageLayoutType = this.domain.config.details.pageType;
     }
 
     this.action.register('reject-order', () => { this.reject(); });

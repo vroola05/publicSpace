@@ -6,7 +6,7 @@ import { User } from '../../../model/user';
 import { ApiService } from '../../services/api/api.service';
 import { DomainService } from '../../services/domain/domain.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PageType } from '../../../model/intefaces';
+import { PageLayoutType } from '../../../model/intefaces';
 import { HeaderMenuItemT } from '../../../model/template';
 
 @Component({
@@ -15,8 +15,8 @@ import { HeaderMenuItemT } from '../../../model/template';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @Input() public pageType: PageType = PageType.overview;
-  public pt = PageType;
+  @Input() public pageLayoutType: PageLayoutType = PageLayoutType.overview;
+  public plt = PageLayoutType;
 
   public headerItems: Array<HeaderMenuItemT>;
   public opened = false;
@@ -77,9 +77,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  public show(pageTypes: PageType[]): boolean {
+  public show(pageTypes: PageLayoutType[]): boolean {
     for (const pageType of pageTypes) {
-      if (pageType === this.pageType) {
+      if (pageType === this.pageLayoutType) {
         return true;
       }
     }

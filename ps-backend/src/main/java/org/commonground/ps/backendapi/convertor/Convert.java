@@ -19,6 +19,7 @@ import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewColumnEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
+import org.commonground.ps.backendapi.jpa.entities.PageOverviewStatusEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
@@ -46,6 +47,7 @@ import org.commonground.ps.backendapi.model.Person;
 import org.commonground.ps.backendapi.model.Role;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.constants.PageTypes;
 
 public class Convert {
   
@@ -277,7 +279,7 @@ public class Convert {
   }
 
   public static Page pageEntity(PageEntity pageEntity) {
-    if (pageEntity.getPageType().getName().equalsIgnoreCase("overview")) {
+    if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
       PageOverviewImpl page = new PageOverviewImpl();
       Convert.pageGenericEntity(pageEntity, page);
 
@@ -292,6 +294,14 @@ public class Convert {
         pageOverviewTemplate.setPersonal(pageOverviewEntity.getPersonal());
         List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
         
+        List<Status> statusses = new ArrayList<Status>();
+        List<PageOverviewStatusEntity> statusEntities = pageOverviewEntity.getStatusses();
+        for (PageOverviewStatusEntity pageOverviewStatusEntity: statusEntities) {
+          System.out.println(pageOverviewStatusEntity.getStatus().getName());
+          statusses.add(Convert.statusEntity(pageOverviewStatusEntity.getStatus()));
+        }
+        pageOverviewTemplate.setStatusses(statusses);
+
         List<PageOverviewColumnEntity> pageOverviewColumnEntities = pageOverviewEntity.getColumns();
         for (PageOverviewColumnEntity pageOverviewColumnEntity : pageOverviewColumnEntities) {
           PageOverviewColumn pageOverviewColumn = new PageOverviewColumn();

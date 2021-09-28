@@ -84,7 +84,7 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
     this.buttonsLeft = this.domain.config.order.information.buttonsLeft;
     this.buttonsRight = this.domain.config.order.information.buttonsRight;
     if (this.domain.config.order.information.pageType) {
-      this.pageType = this.domain.config.order.information.pageType;
+      this.pageLayoutType = this.domain.config.order.information.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

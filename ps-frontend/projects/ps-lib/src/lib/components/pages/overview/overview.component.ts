@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { CallList } from '../../../../model/call-list';
 import { OverviewPageT, HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
-import { PageType } from '../../../../model/intefaces';
+import { PageLayoutType } from '../../../../model/intefaces';
 import { Call } from '../../../../model/call';
 import { Amount } from '../../../../model/amount';
 
@@ -29,7 +29,7 @@ import { AuthorisationService } from '../../../services/authorisation/authorisat
 export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('tableContainer') public tableContainer: ElementRef;
   @ViewChild('headerRef') public headerRef: ElementRef;
-  public pageType: PageType = PageType.overview;
+  public pageLayoutType: PageLayoutType = PageLayoutType.overview;
   public title = '';
   public overview: OverviewPageT;
   private type: string;
@@ -114,7 +114,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.listTemplate = this.getListConfig(headerMenuItem.id);
 
     const url = this.transform.URL(this.domain.getEndpoint('getCallList').endpoint);
-    /*this.getList(url,
+    this.getList(url,
       this.filterService.getQueryParameters()).pipe(first()).subscribe((callList) => {
         if (callList) {
           this.endOfList = callList.length < this.filterService.getListsize();
@@ -125,7 +125,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
           }
         }
         this.pageChanged = true;
-      });*/
+      });
   }
 
   public getList(url: string, queryParameters: QueryParameters): Observable<CallList[]> {

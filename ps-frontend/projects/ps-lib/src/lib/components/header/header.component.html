@@ -1,13 +1,13 @@
 <div class="ps-header-mobile" [ngClass]="{'opened': opened}">
   <div class="btn-container-left">
-    <lib-btn-icon *ngIf="show([pt.page, pt.pageStickyButtons]) && hasBack()" class="ps-header-btn btn-open" [icon]="'arrow_back'" (clicked)="changed('back')"></lib-btn-icon>
-    <lib-btn-icon *ngIf="show([pt.overview])" class="ps-header-btn btn-open" [icon]="'menu'" (clicked)="changed('open')"></lib-btn-icon>
+    <lib-btn-icon *ngIf="show([plt.page, plt.pageStickyButtons]) && hasBack()" class="ps-header-btn btn-open" [icon]="'arrow_back'" (clicked)="changed('back')"></lib-btn-icon>
+    <lib-btn-icon *ngIf="show([plt.overview])" class="ps-header-btn btn-open" [icon]="'menu'" (clicked)="changed('open')"></lib-btn-icon>
   </div>
   <div class="title-container">
       {{title}}
   </div>
   <div class="btn-container-right">
-    <lib-btn-icon *ngIf="show([pt.overview])" class="ps-header-btn btn-new" [icon]="'add'" (clicked)="changed('new')"></lib-btn-icon>
+    <lib-btn-icon *ngIf="show([plt.overview])" class="ps-header-btn btn-new" [icon]="'add'" (clicked)="changed('new')"></lib-btn-icon>
   </div>
 </div>
 

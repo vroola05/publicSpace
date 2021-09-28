@@ -10,13 +10,17 @@ import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageOverviewColumn;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageOverviewServiceImpl implements PageOverviewService {
 
+	@Autowired
+	private StatusService statusService;
+
 	@Override
-	public void updatePageOverviewPages(Page page, PageEntity pageEntity) {
+	public void updatePageOverviewPages(Long domainId, Page page, PageEntity pageEntity) {
 		PageOverviewImpl pageOverview = (PageOverviewImpl) page;
 		List<PageOverviewTemplate> pageOverviewTemplates = pageOverview.getPageOverviewTemplate();
 		List<PageOverviewEntity> pageOverviewEntities = pageEntity.getPageOverview();
@@ -28,12 +32,12 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 			if (pageOverviewTemplate.getId() != null && pageOverviewEntityOptional.isPresent()) {
 				// Update
 				PageOverviewEntity pageOverviewEntity = pageOverviewEntityOptional.get();
-				updatePageOverviewPage(i, pageOverviewTemplate, pageOverviewEntity);
+				updatePageOverviewPage(domainId, i, pageOverviewTemplate, pageOverviewEntity);
 			} else {
 				// Insert
 				PageOverviewEntity pageOverviewEntity = new PageOverviewEntity();
 				pageOverviewEntity.setPage(pageEntity);
-				updatePageOverviewPage(i, pageOverviewTemplate, pageOverviewEntity);
+				updatePageOverviewPage(domainId, i, pageOverviewTemplate, pageOverviewEntity);
 				pageOverviewEntities.add(pageOverviewEntity);
 			}
 			i++;
@@ -45,7 +49,7 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 
 	}
 
-	public void updatePageOverviewPage(long sort, PageOverviewTemplate pageOverviewTemplate, PageOverviewEntity pageOverviewEntity) {
+	public void updatePageOverviewPage(Long domainId, long sort, PageOverviewTemplate pageOverviewTemplate, PageOverviewEntity pageOverviewEntity) {
 		pageOverviewEntity.setId(pageOverviewTemplate.getId());
 		pageOverviewEntity.setName(pageOverviewTemplate.getName());
 		pageOverviewEntity.setRoute(pageOverviewTemplate.getRoute());
@@ -54,6 +58,8 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 		pageOverviewEntity.setPersonal(pageOverviewTemplate.isPersonal());
 		pageOverviewEntity.setSort(sort);
 		
+		statusService.convertPageOverviewStatusses(domainId, pageOverviewTemplate, pageOverviewEntity);
+
 		List<PageOverviewColumnEntity> pageOverviewColumnEntities = pageOverviewEntity.getColumns();
 
 		long i = 0;
@@ -76,8 +82,8 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 		}
 
 		// Remove
-		//pageOverviewColumnEntities.removeIf(pageOverviewColumnEntity -> pageOverviewTemplate.getColumns().stream()
-		//		.noneMatch(p -> p.getId() == pageOverviewEntity.getId()));
+		pageOverviewColumnEntities.removeIf(pageOverviewColumnEntity -> pageOverviewTemplate.getColumns().stream()
+				.noneMatch(p -> p.getId() == pageOverviewColumnEntity.getId()));
 	}
 
 	public void updatePageOverviewColumn(long sort, PageOverviewColumn pageOverviewColumn, PageOverviewColumnEntity pageOverviewColumnEntity) {

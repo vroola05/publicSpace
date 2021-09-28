@@ -44,7 +44,7 @@ export class NewLocationComponent extends PageAbstract implements OnInit, OnDest
     this.buttonsRight = this.domain.config.pagesOld.newLocation.buttonsRight;
 
     if (this.domain.config.pagesOld.newLocation.pageType) {
-      this.pageType = this.domain.config.pagesOld.newLocation.pageType;
+      this.pageLayoutType = this.domain.config.pagesOld.newLocation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

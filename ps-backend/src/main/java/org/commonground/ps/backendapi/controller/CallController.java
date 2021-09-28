@@ -1,6 +1,7 @@
 package org.commonground.ps.backendapi.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +18,12 @@ import org.commonground.ps.backendapi.model.QueryParametersFieldFilterType;
 import org.commonground.ps.backendapi.model.QueryParametersFilterValue;
 import org.commonground.ps.backendapi.model.QueryParameters;
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.constants.PageTypes;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.model.template.StatusT;
+import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageOverviewImpl;
+import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.util.ActionEnum;
 import org.commonground.ps.backendapi.validators.PostCallValidator;
 import org.commonground.ps.backendapi.validators.QueryParametersValidator;
@@ -40,7 +45,7 @@ import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.jpa.repositories.builder.CallListBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,21 +79,29 @@ public class CallController extends Controller {
 
 
 	@Secured(identifier = "getCallList")
-	@PostMapping(value = "/list/{type}", consumes = "application/json", produces = "application/json")
-	public List<CallList> all(@PathVariable @NotNull(message = "Waarde is verplicht") String type,
+	@PostMapping(value = "/list/{id}", consumes = "application/json", produces = "application/json")
+	public List<CallList> all(@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @QueryParametersValidator @RequestBody QueryParameters queryParameters) {
 		User user = getUser();
-		DomainT domainT = getDomain();
+		Template domainT = getTemplate();
+		PageOverviewImpl pageOverwiew = (PageOverviewImpl)domainT.getPages().get(PageTypes.OVERVIEW.name);
+		Optional<PageOverviewTemplate> pageOverviewTemplateOptional = pageOverwiew.getPageOverviewTemplate().stream().filter(t -> t.getId() == id).findFirst();
+		if (!pageOverviewTemplateOptional.isPresent()) {
+			return null;
+		}
+		PageOverviewTemplate pageOverviewTemplate = pageOverviewTemplateOptional.get();
 
 		CallListBuilder cb = new CallListBuilder();
 
 		cb.with(new QueryParametersFieldFilter("companyId", QueryParametersFieldFilterType.NUMBER, QueryParametersFieldFilterOperator.EQUAL, new QueryParametersFilterValue(user.getCompany().getId())));
 
-		Optional<StatusT> status = domainT.getInfo().getStatusses().stream().filter(s -> s.getPath().equals(type)).findFirst();
-		if (status.isPresent()) {
-			cb.sortBy("priority", Sort.Direction.DESC);
-			cb.with(new QueryParametersFieldFilter("statusId", QueryParametersFieldFilterType.NUMBER, QueryParametersFieldFilterOperator.EQUAL, new QueryParametersFilterValue(status.get().getId())));
-		}
+		cb.sortBy("priority", Sort.Direction.DESC);
+
+		List<QueryParametersFilterValue> statusList = new ArrayList<QueryParametersFilterValue>();
+		pageOverviewTemplate.getStatusses().forEach(status -> {
+			statusList.add(new QueryParametersFilterValue(status.getId()));
+		});
+		cb.with(new QueryParametersFieldFilter("statusId", QueryParametersFieldFilterType.NUMBER, statusList));
 
 		cb.sortBy("dateCreated", Sort.Direction.DESC);
 
@@ -99,7 +112,7 @@ public class CallController extends Controller {
 			}
 		}
 
-		Page<CallList> v = callListRepository.findAll(cb.build(), cb.getPage(queryParameters.getOffset(), queryParameters.getSize()));
+		org.springframework.data.domain.Page<CallList> v = callListRepository.findAll(cb.build(), cb.getPage(queryParameters.getOffset(), queryParameters.getSize()));
 		return v.getContent();
 	}
 

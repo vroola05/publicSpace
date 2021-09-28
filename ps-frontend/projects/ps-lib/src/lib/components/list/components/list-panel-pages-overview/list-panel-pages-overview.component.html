@@ -2,32 +2,37 @@
     <div class="col-md-6 list-panel-block">
         <h4>Naam</h4>
         <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [name]="'name'" [placeholder]="'Naam'"
-            [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="50" (changed)="onNameChanged($event)"
-            #nameComponent></lib-text-field>
+            <lib-text-field [style]="'filled'" [name]="'name'" [placeholder]="'Naam'"
+                [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="50"
+                (changed)="onNameChanged($event)" #nameComponent></lib-text-field>
         </div>
         <h4>Route</h4>
         <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [name]="'route'" [placeholder]="'Route'"
-            [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="50" (changed)="onRouteChanged($event)"
-            #routeComponent></lib-text-field>
+            <lib-text-field [style]="'filled'" [name]="'route'" [placeholder]="'Route'"
+                [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="50"
+                (changed)="onRouteChanged($event)" #routeComponent></lib-text-field>
+        </div>
+        <h4>Status</h4>
+        <div class="field-wrapper">
+            <lib-select-field class="statusses-list" (changed)="onStatussesChanged($event)" [search]="false"
+                [name]="'statusses'" [options]="_statusItems" [style]="'filled'"></lib-select-field>
         </div>
     </div>
     <div class="col-md-6 list-panel-block">
         <h4>Toggle</h4>
         <div class="field-wrapper">
-          <lib-checkbox-field [name]="'toggle'" [value]="_pageOverviewTemplate?.toggle"
-          (changed)="onToggleChanged($event)">Toggle</lib-checkbox-field>
+            <lib-checkbox-field [name]="'toggle'" [value]="_pageOverviewTemplate?.toggle"
+                (changed)="onToggleChanged($event)">Toggle</lib-checkbox-field>
         </div>
         <h4>Prioriteit</h4>
         <div class="field-wrapper">
-          <lib-checkbox-field [name]="'priority'" [value]="_pageOverviewTemplate?.priority"
-          (changed)="onPriorityChanged($event)">Prioriteit</lib-checkbox-field>
+            <lib-checkbox-field [name]="'priority'" [value]="_pageOverviewTemplate?.priority"
+                (changed)="onPriorityChanged($event)">Prioriteit</lib-checkbox-field>
         </div>
         <h4>Persoonlijk</h4>
         <div class="field-wrapper">
-          <lib-checkbox-field [name]="'personal'" [value]="_pageOverviewTemplate?.personal"
-          (changed)="onIsPersonalChanged($event)">Persoonlijk</lib-checkbox-field>
+            <lib-checkbox-field [name]="'personal'" [value]="_pageOverviewTemplate?.personal"
+                (changed)="onIsPersonalChanged($event)">Persoonlijk</lib-checkbox-field>
         </div>
     </div>
 
@@ -49,5 +54,3 @@
     </div>
 </div>
 <hr />
-
-

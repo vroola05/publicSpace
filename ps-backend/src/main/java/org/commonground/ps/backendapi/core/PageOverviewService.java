@@ -5,5 +5,5 @@ import org.commonground.ps.backendapi.model.Page;
 
 public interface PageOverviewService {
 
-  public void updatePageOverviewPages(Page page, PageEntity pageEntity);
+  public void updatePageOverviewPages(Long domainId, Page page, PageEntity pageEntity);
 }

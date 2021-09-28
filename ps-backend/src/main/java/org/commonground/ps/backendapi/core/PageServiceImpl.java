@@ -9,6 +9,7 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.repositories.PageRepository;
 import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.constants.PageTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,8 @@ public class PageServiceImpl implements PageService {
 					page.getButtonsLeft().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId()) && 
 					page.getButtonsRight().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId()));
 			
-			if (pageEntity.getPageType().getName().equalsIgnoreCase("overview")) {
-				pageOverviewService.updatePageOverviewPages(page, pageEntity);
+			if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
+				pageOverviewService.updatePageOverviewPages(domainId, page, pageEntity);
 			}
 
 			return Convert.pageEntity(pageRepository.save(pageEntity));

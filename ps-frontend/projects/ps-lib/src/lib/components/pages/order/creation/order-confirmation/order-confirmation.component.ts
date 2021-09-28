@@ -65,7 +65,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
     this.buttonsLeft = this.domain.config.order.confirmation.buttonsLeft;
     this.buttonsRight = this.domain.config.order.confirmation.buttonsRight;
     if (this.domain.config.order.confirmation.pageType) {
-      this.pageType = this.domain.config.order.confirmation.pageType;
+      this.pageLayoutType = this.domain.config.order.confirmation.pageType;
     }
 
     this.action.register('extra', () => { this.extra(); });

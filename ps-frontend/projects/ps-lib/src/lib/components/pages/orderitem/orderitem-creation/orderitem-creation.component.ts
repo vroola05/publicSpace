@@ -60,7 +60,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
     this.buttonsLeft = this.domain.config.order.creation.buttonsLeft;
     this.buttonsRight = this.domain.config.order.creation.buttonsRight;
     if (this.domain.config.order.creation.pageType) {
-      this.pageType = this.domain.config.order.creation.pageType;
+      this.pageLayoutType = this.domain.config.order.creation.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

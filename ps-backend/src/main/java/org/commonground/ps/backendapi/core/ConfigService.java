@@ -1,9 +1,9 @@
 package org.commonground.ps.backendapi.core;
 
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 
 public interface ConfigService {
-  public DomainT get(String domain) throws SecurityException;
+  public Template get(String domain) throws SecurityException;
   public static boolean isValidDomain(String domain) {
     return domain.matches("^([a-z0-9\\-]+)(\\.[a-z0-9\\-]+)*(/[a-z0-9\\-]+)*$");
   }

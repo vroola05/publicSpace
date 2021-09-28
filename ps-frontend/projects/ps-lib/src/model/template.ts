@@ -1,4 +1,4 @@
-import { ButtonTypes, ContractorType, PageType } from './intefaces';
+import { ButtonTypes, ContractorType, PageLayoutType } from './intefaces';
 import { Page } from './page';
 import { Status } from './status';
 
@@ -10,7 +10,7 @@ export interface KeyValueT {
 export interface DomainPageT {
   buttonsLeft?: ButtonT[];
   buttonsRight?: ButtonT[];
-  pageType?: PageType;
+  pageType?: PageLayoutType;
 }
 
 export interface LoginT {
@@ -54,7 +54,7 @@ export interface OrderCreationPageT {
   contractortypes?: ContractortypesT[];
   buttonsLeft?: ButtonT[];
   buttonsRight?: ButtonT[];
-  pageType?: PageType;
+  pageType?: PageLayoutType;
 }
 
 export interface OrderT {

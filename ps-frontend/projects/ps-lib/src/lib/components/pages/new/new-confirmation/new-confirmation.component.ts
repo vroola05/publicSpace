@@ -56,7 +56,7 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
     this.buttonsLeft = this.domain.config.pagesOld.newConfirmation.buttonsLeft;
     this.buttonsRight = this.domain.config.pagesOld.newConfirmation.buttonsRight;
     if (this.domain.config.pagesOld.newConfirmation.pageType) {
-      this.pageType = this.domain.config.pagesOld.newConfirmation.pageType;
+      this.pageLayoutType = this.domain.config.pagesOld.newConfirmation.pageType;
     }
   }
 

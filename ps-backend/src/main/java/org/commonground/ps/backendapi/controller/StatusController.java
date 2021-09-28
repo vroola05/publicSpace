@@ -41,8 +41,9 @@ public class StatusController extends Controller {
 
 	@Secured(identifier = "getStatus")
 	@GetMapping()
-	public List<Status> getStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
+	public List<Status> getStatus(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
 		isValid(companyId, domainId);
 

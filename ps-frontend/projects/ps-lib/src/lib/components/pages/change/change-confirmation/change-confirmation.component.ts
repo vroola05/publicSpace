@@ -62,7 +62,7 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
     this.buttonsLeft = this.domain.config.change.confirmation.buttonsLeft;
     this.buttonsRight = this.domain.config.change.confirmation.buttonsRight;
     if (this.domain.config.change.confirmation.pageType) {
-      this.pageType = this.domain.config.change.confirmation.pageType;
+      this.pageLayoutType = this.domain.config.change.confirmation.pageType;
     }
 
     this.getCall();

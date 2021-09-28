@@ -31,4 +31,7 @@ public class PageOverviewEntity {
 
   @OneToMany(targetEntity = PageOverviewColumnEntity.class, mappedBy = "pageOverview", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<PageOverviewColumnEntity> columns = new ArrayList<>();
+
+  @OneToMany(targetEntity = PageOverviewStatusEntity.class, mappedBy = "pageOverview", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<PageOverviewStatusEntity> statusses = new ArrayList<>();
 }

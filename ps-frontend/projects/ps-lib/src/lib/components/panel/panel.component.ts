@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ButtonT } from '../../../model/template';
-import { PageType } from '../../../model/intefaces';
+import { PageLayoutType } from '../../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { TransformService } from '../../services/transform/transform.service';
@@ -13,7 +13,7 @@ import { TransformService } from '../../services/transform/transform.service';
 export class PanelComponent implements OnInit {
   public title = '';
 
-  @Input() public pageType: PageType = PageType.page;
+  @Input() public pageLayoutType: PageLayoutType = PageLayoutType.page;
   @Input() public buttonsLeft: ButtonT[] = [];
   @Input() public buttonsRight: ButtonT[] = [];
   @Input() public data: any;

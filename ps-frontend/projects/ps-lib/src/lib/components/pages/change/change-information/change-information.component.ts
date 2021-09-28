@@ -44,7 +44,7 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
     this.buttonsLeft = this.domain.config.change.information.buttonsLeft;
     this.buttonsRight = this.domain.config.change.information.buttonsRight;
     if (this.domain.config.change.information.pageType) {
-      this.pageType = this.domain.config.change.information.pageType;
+      this.pageLayoutType = this.domain.config.change.information.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

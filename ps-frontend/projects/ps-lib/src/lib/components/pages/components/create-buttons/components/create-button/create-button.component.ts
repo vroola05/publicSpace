@@ -17,8 +17,8 @@ export class CreateButtonComponent implements OnInit {
   @ViewChild('buttonTypeComponent') buttonTypeComponent: DropdownFieldComponent;
   @ViewChild('actionComponent') actionComponent: DropdownFieldComponent;
 
-  @Output() changed: EventEmitter<{action: string, index: number, button: PageButton}> = new EventEmitter<{action: string, index: number, button: PageButton}>();
-  
+  @Output() changed: EventEmitter<{ action: string, index: number, button: PageButton }> = new EventEmitter<{ action: string, index: number, button: PageButton }>();
+
   @Input() public index: number;
 
   public _button: PageButton;
@@ -32,7 +32,7 @@ export class CreateButtonComponent implements OnInit {
   @Input() set buttonTypeItems(buttonTypeItems: { name: string, value?: string, data?: any }[]) {
     this._buttonTypeItems = [];
     buttonTypeItems.forEach(buttonTypeItem => {
-    this._buttonTypeItems.push({ name: buttonTypeItem.name, value: buttonTypeItem.value, data: buttonTypeItem.data });
+      this._buttonTypeItems.push({ name: buttonTypeItem.name, value: buttonTypeItem.value, data: buttonTypeItem.data });
     });
     this.selectButtonType();
   }
@@ -41,7 +41,7 @@ export class CreateButtonComponent implements OnInit {
   @Input() set actionTypeItems(actionTypeItems: { name: string, value?: string, data?: any }[]) {
     this._actionTypeItems = [];
     actionTypeItems.forEach(actionTypeItem => {
-    this._actionTypeItems.push({ name: actionTypeItem.name, value: actionTypeItem.value, data: actionTypeItem.data });
+      this._actionTypeItems.push({ name: actionTypeItem.name, value: actionTypeItem.value, data: actionTypeItem.data });
     });
     this.selectActionType();
   }
@@ -54,7 +54,7 @@ export class CreateButtonComponent implements OnInit {
     });
     this.selectRoles();
   }
-  
+
 
   constructor() { }
 
@@ -68,12 +68,12 @@ export class CreateButtonComponent implements OnInit {
           this.buttonTypeComponent.select(null);
           return;
         }
-      
-        const item = this._buttonTypeItems.find( type => !type.data || type.data === this._button.type);
+
+        const item = this._buttonTypeItems.find(type => !type.data || type.data === this._button.type);
         if (item) {
           this.buttonTypeComponent.select(item);
         }
-      }  
+      }
     });
   }
 
@@ -85,42 +85,42 @@ export class CreateButtonComponent implements OnInit {
           return;
         }
 
-        const item = this._actionTypeItems.find( type => !type.data || type.data.id === this._button.action.id);
+        const item = this._actionTypeItems.find(type => !type.data || type.data.id === this._button.action.id);
         if (item) {
           this.actionComponent.select(item);
         }
-      }  
+      }
     });
   }
 
   public selectRoles() {
     setTimeout(() => {
-    if (this._button.roles) {
-      this._roleItems.forEach(roleItem => {
-        roleItem.selected = this.hasRole(roleItem.data.id);
-      });
-    }
-  });
+      if (this._button.roles) {
+        this._roleItems.forEach(roleItem => {
+          roleItem.selected = this.hasRole(roleItem.data.id);
+        });
+      }
+    });
   }
 
   public onButtonNameChanged($event) {
     this._button.name = $event;
-    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+    this.changed.emit({ action: 'changed', index: this.index, button: this._button });
   }
 
   public onButtonTypeChanged($event) {
     this._button.type = $event.data;
-    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+    this.changed.emit({ action: 'changed', index: this.index, button: this._button });
   }
-  
+
   public onActionChanged($event) {
     this._button.action = $event.data;
-    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+    this.changed.emit({ action: 'changed', index: this.index, button: this._button });
   }
 
   public onButtonRouteChanged($event) {
     this._button.route = $event;
-    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+    this.changed.emit({ action: 'changed', index: this.index, button: this._button });
   }
 
   public onRolesChanged($event): void {
@@ -135,10 +135,11 @@ export class CreateButtonComponent implements OnInit {
         this._button.roles.splice(index, 1);
       }
     }
-    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+    this.changed.emit({ action: 'changed', index: this.index, button: this._button });
   }
+
   public onConditionsChanged($event): void {
-    switch($event.action) {
+    switch ($event.action) {
       case 'delete':
         this._button.conditions.splice($event.index, 1);
         break;
@@ -146,10 +147,10 @@ export class CreateButtonComponent implements OnInit {
         this._button.conditions = $event.conditions;
         break;
     }
-  
-    this.changed.emit({action: 'changed', index: this.index, button: this._button});
+
+    this.changed.emit({ action: 'changed', index: this.index, button: this._button });
   }
-  
+
   public hasRole(id: number): boolean {
     const item = this._button.roles.find(r => r.id === id);
     if (item) {
@@ -159,7 +160,7 @@ export class CreateButtonComponent implements OnInit {
   }
 
   public onDeleteClick(button): void {
-    this.changed.emit({action: 'delete', index: this.index, button: this._button});
+    this.changed.emit({ action: 'delete', index: this.index, button: this._button });
   }
 
   public getTitle(): string {

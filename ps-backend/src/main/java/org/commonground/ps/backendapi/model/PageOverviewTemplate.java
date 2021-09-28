@@ -15,6 +15,7 @@ public class PageOverviewTemplate {
   protected boolean priority;
   protected boolean personal;
   
+  private List<Status> statusses;
   protected List<PageOverviewColumn> columns;
   protected List<PageButton> buttonsLeft;
   protected List<PageButton> buttonsRight;

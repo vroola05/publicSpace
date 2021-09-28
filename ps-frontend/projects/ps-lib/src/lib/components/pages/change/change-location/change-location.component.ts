@@ -44,7 +44,7 @@ export class ChangeLocationComponent extends PageAbstract implements OnInit, OnD
     this.buttonsRight = this.domain.config.change.location.buttonsRight;
 
     if (this.domain.config.change.location.pageType) {
-      this.pageType = this.domain.config.change.location.pageType;
+      this.pageLayoutType = this.domain.config.change.location.pageType;
     }
 
     this.action.register('next', () => { this.next(); });

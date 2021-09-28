@@ -40,6 +40,7 @@ export class AppComponent {
           this.navigationService.navigate(['login']);
           this.loaded = true;
         } else {
+          
           this.navigationService.addHeaderItems(this.domain.config.components.header.headerMenu);
 
           if (this.storage.getSession('haslogin') !== '1' && this.navigationService.getHeaderItems().length > 0) {

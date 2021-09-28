@@ -8,7 +8,7 @@ import org.commonground.ps.backendapi.core.ConfigService;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,7 +26,7 @@ public class ConfigController {
 	ConfigService configService;
 
 	@GetMapping()
-	public DomainT get(@RequestHeader("${sec.header.config}") String referer) throws NotFoundException {
+	public Template get(@RequestHeader("${sec.header.config}") String referer) throws NotFoundException {
 		try {
 			URL url = new URL(referer);
 			List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());

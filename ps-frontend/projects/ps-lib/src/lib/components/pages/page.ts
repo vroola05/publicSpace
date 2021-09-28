@@ -1,6 +1,6 @@
 import { OnDestroy, OnInit, Directive } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PageType, StatusTypes } from '../../../model/intefaces';
+import { PageLayoutType, StatusTypes } from '../../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { AuthorisationService } from '../../services/authorisation/authorisation.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
@@ -10,7 +10,7 @@ import { TransformService } from '../../services/transform/transform.service';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {
-  public pageType: PageType = PageType.page;
+  public pageLayoutType: PageLayoutType = PageLayoutType.page;
 
   constructor(
     protected router: Router,

@@ -64,7 +64,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     this.buttonsLeft = this.domain.config.details.buttonsLeft;
     this.buttonsRight = this.domain.config.details.buttonsRight;
     if (this.domain.config.details.pageType) {
-      this.pageType = this.domain.config.details.pageType;
+      this.pageLayoutType = this.domain.config.details.pageType;
     }
 
     this.action.register('abort-call', () => { this.abortCall(); });

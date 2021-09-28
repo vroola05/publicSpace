@@ -13,7 +13,7 @@ import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.SessionRepository;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.security.UserPrincipal;
-import org.commonground.ps.backendapi.model.template.DomainT;
+import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,12 +69,12 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
             throw new SecurityException("Wrong domain: " + (String) authentication.getPrincipal());
           }
 
-          DomainT domainT = configService.get(domain);
+          Template template = configService.get(domain);
 
           UserPrincipal userPrincipal = new UserPrincipal();
           userPrincipal.setName((String) authentication.getPrincipal());
           userPrincipal.setPrincipal(user);
-          userPrincipal.setDetails(domainT);
+          userPrincipal.setDetails(template);
           userPrincipal.setAuthorities(getAuthorities(user.getRoles()));
           userPrincipal.setAuthenticated(true);
           return userPrincipal;

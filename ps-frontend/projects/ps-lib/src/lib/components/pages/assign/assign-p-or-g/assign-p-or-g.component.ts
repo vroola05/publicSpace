@@ -80,7 +80,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     this.buttonsLeft = this.domain.config.assign.buttonsLeft;
     this.buttonsRight = this.domain.config.assign.buttonsRight;
     if (this.domain.config.assign.pageType) {
-      this.pageType = this.domain.config.assign.pageType;
+      this.pageLayoutType = this.domain.config.assign.pageType;
     }
 
     this.tabs.push({name: 'Medewerker', value: 'user', selected: false});

@@ -165,7 +165,7 @@
   "endpoints": {
     "postLogin": { "endpoint": "/login", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "getRoles": { "endpoint": "/roles", "roles": ["ROLE_ADMIN"] },
-    "getCallList": { "endpoint": "/call/list/${path.type}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "getCallList": { "endpoint": "/call/list/1", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "getCallById": { "endpoint": "/call/${path.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "getCallByCallListId": { "endpoint": "/call/${calllist.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "postCall": { "endpoint": "/call", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
