@@ -5,7 +5,7 @@ import { PageButton } from '../../../../../model/page-button';
 
 import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
 @Component({

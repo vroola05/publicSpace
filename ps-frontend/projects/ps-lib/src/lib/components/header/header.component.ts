@@ -4,7 +4,7 @@ import { NavigationService } from '../../services/navigation/navigation.service'
 import { Observable, Subscription } from 'rxjs';
 import { User } from '../../../model/user';
 import { ApiService } from '../../services/api/api.service';
-import { ConfigService } from '../../services/domain/domain.service';
+import { ConfigService } from '../../services/config/config.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PageLayoutType } from '../../../model/intefaces';
 import { HeaderMenuItemT } from '../../../model/template';

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Location } from '../../../../../model/location';

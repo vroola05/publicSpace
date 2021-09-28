@@ -5,7 +5,7 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
 import { User } from '../../../../../model/user';
 import { Message } from '../../../../../model/message';
 
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 
 import { first } from 'rxjs/operators';
 import { StorageService } from '../../../../services/storage/storage.service';

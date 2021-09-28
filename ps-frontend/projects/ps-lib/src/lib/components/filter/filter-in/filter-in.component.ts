@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {ConfigService} from '../../../services/domain/domain.service';
+import {ConfigService} from '../../../services/config/config.service';
 import {FilterService} from '../../../services/filter/filter.service';
 import {FilterType} from '../../../../model/query-parameters';
 import {KeyValueT} from '../../../../model/template';

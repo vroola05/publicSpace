@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Call } from '../../../../../model/call';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { ButtonT, ListTemplateT } from '../../../../../model/template';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';

@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 import { PopupETypes } from '../../../../model/intefaces';
 import { Note } from '../../../../model/note';
 import { ApiService } from '../../../services/api/api.service';
-import { ConfigService } from '../../../services/domain/domain.service';
+import { ConfigService } from '../../../services/config/config.service';
 import { Popup } from '../../../services/popup/popup.service';
 import { TransformService } from '../../../services/transform/transform.service';
 import { NotesViewerComponent } from '../notes-viewer/notes-viewer.component';

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CallList } from '../../../model/call-list';
 import { ListTemplateColumnT } from '../../../model/template';
-import { ConfigService } from '../../services/domain/domain.service';
+import { ConfigService } from '../../services/config/config.service';
 
 @Component({
   selector: 'lib-details-header',

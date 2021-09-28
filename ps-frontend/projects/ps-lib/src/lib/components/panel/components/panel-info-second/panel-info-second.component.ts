@@ -4,7 +4,7 @@ import { Order } from '../../../../../model/order';
 import { Group } from '../../../../../model/group';
 import { User } from '../../../../../model/user';
 import { Image } from '../../../../../model/image';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
 

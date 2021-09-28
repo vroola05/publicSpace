@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Category } from '../../../../../model/category';

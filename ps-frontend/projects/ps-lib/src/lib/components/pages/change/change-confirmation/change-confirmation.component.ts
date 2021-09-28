@@ -6,7 +6,7 @@ import { Message } from '../../../../../model/message';
 import { PopupETypes } from '../../../../../model/intefaces';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ApiService } from '../../../../services/api/api.service';

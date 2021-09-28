@@ -10,7 +10,7 @@ import { Message } from '../../../../model/message';
 import { PageAbstract } from '../page';
 
 import { NavigationService } from '../../../services/navigation/navigation.service';
-import { ConfigService } from '../../../services/domain/domain.service';
+import { ConfigService } from '../../../services/config/config.service';
 import { ApiService } from '../../../services/api/api.service';
 import { ActionService } from '../../../services/action/action.service';
 import { MailService } from '../../../services/mail/mail.service';

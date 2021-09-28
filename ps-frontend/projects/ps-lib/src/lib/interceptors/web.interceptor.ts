@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { AuthorisationService } from '../services/authorisation/authorisation.service';
-import { ConfigService } from '../services/domain/domain.service';
+import { ConfigService } from '../services/config/config.service';
 
 @Injectable({
   providedIn: 'root'

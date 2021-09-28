@@ -59,7 +59,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { ActionService } from './services/action/action.service';
 import { ApiService } from './services/api/api.service';
 import { AuthorisationService } from './services/authorisation/authorisation.service';
-import { ConfigService } from './services/domain/domain.service';
+import { ConfigService } from './services/config/config.service';
 import { FilterService } from './services/filter/filter.service';
 import { Loader } from './services/loader/loader.service';
 import { MailService } from './services/mail/mail.service';

@@ -129,7 +129,7 @@ export * from './lib/services/storage/storage.service';
 export * from './lib/services/api/api.service';
 export * from './lib/services/action/action.service';
 export * from './lib/services/loader/loader.service';
-export * from './lib/services/domain/domain.service';
+export * from './lib/services/config/config.service';
 export * from './lib/services/filter/filter.service';
 export * from './lib/services/popup/popup.service';
 export * from './lib/services/mail/mail.service';

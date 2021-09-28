@@ -3,7 +3,7 @@ import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewInformationComponent } from '../../../panel/components/panel-new-information/panel-new-information.component';

@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
 import { Message } from '../../../../../model/message';
 import { Login } from '../../../../../model/login';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { TransformService } from '../../../../services/transform/transform.service';

@@ -5,7 +5,7 @@ import { Call } from '../../../../../model/call';
 import { Person } from '../../../../../model/person';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../../../../services/api/api.service';
-import { ConfigService } from '../../../../services/domain/domain.service';
+import { ConfigService } from '../../../../services/config/config.service';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 
