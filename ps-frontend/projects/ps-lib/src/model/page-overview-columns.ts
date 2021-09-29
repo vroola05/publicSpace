@@ -2,12 +2,12 @@ import { PageButton } from "./page-button";
 import { PageType } from "./page-type";
 
 export class PageOverviewColumns {
-    public id: number;
+    public id?: number;
     public name: string;
     public title: string;
     public type: string;
-    public filter: string;
+    public filter?: string;
     public css: string;
-    public mobile: string;
+    public mobile?: string;
 }
   

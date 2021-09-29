@@ -40,8 +40,7 @@ export class AppComponent {
           this.navigationService.navigate(['login']);
           this.loaded = true;
         } else {
-          
-          this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
+          //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
 
           if (this.storage.getSession('haslogin') !== '1' && this.navigationService.getHeaderItems().length > 0) {
             this.storage.setSession('haslogin', '1');
@@ -76,7 +75,7 @@ export class AppComponent {
     this.groupsLoaded = true;
 
     const headerItems: HeaderMenuItemT[] = [];
-    const groupT: HeaderMenuItemT = this.config.template.components.header.group;
+    /*const groupT: HeaderMenuItemT = this.config.template.components.header.group;
 
     this.authorisation.user.groups.forEach(group => {
       const headerItem: HeaderMenuItemT = {
@@ -89,6 +88,6 @@ export class AppComponent {
       };
       headerItems.push(headerItem);
     });
-    this.navigationService.addHeaderItems(headerItems);
+    this.navigationService.addHeaderItems(headerItems);*/
   }
 }

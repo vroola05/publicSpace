@@ -157,8 +157,7 @@ public class CallController extends Controller {
 			callEntity.setCompany(companyEntity.get());
 			callEntity.setCategory(categoryEntity.get());
 			callEntity.setStatus(statusEntity.get());
-			
-			System.out.println(categoryEntity.get().getGroup().getName());
+
 			LocationEntity locationEntity = Convert.location(call.getLocation());
 			locationEntity.setCall(callEntity);
 			callEntity.setLocation(locationEntity);

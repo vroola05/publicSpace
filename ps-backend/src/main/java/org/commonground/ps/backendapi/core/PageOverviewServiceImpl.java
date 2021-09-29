@@ -52,6 +52,7 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 	public void updatePageOverviewPage(Long domainId, long sort, PageOverviewTemplate pageOverviewTemplate, PageOverviewEntity pageOverviewEntity) {
 		pageOverviewEntity.setId(pageOverviewTemplate.getId());
 		pageOverviewEntity.setName(pageOverviewTemplate.getName());
+		pageOverviewEntity.setIcon(pageOverviewTemplate.getIcon());
 		pageOverviewEntity.setRoute(pageOverviewTemplate.getRoute());
 		pageOverviewEntity.setPriority(pageOverviewTemplate.isPriority());
 		pageOverviewEntity.setToggle(pageOverviewTemplate.isToggle());

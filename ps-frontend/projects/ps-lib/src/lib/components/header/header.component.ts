@@ -51,14 +51,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.headerItems = this.config.headers;
+  
     this.subscriptions.push(this.navigationService.getSelectedHeaderItem().subscribe((selected: HeaderMenuItemT) => {
       this.setSelected(selected);
     }));
 
+/*
     this.subscriptions.push(this.navigationService.getHeaderItemsAsObservable().subscribe((headerItems: Array<HeaderMenuItemT>) => {
       this.headerItems = headerItems.filter(headerItem => headerItem.menuType === 'main');
       this.setSelected(this.navigationService.headerItem);
-    }));
+    }));*/
 
     this.user = this.authorisation.user;
     if (this.user && this.user.profilePhoto) {

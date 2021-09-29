@@ -3,11 +3,13 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { CallList } from '../../../../model/call-list';
-import { OverviewPageT, HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
+import { HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
 import { PageLayoutType } from '../../../../model/intefaces';
 import { Call } from '../../../../model/call';
-import { Amount } from '../../../../model/amount';
+import { PageOverviewTemplate } from '../../../../model/page-overview-template';
 
+import { PageTypes } from '../../../../model/intefaces';
+import { Page } from '../../../../model/page';
 import { QueryParameters } from '../../../../model/query-parameters';
 import { PageAbstract } from '../page';
 
@@ -31,8 +33,9 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   @ViewChild('headerRef') public headerRef: ElementRef;
   public pageLayoutType: PageLayoutType = PageLayoutType.overview;
   public title = '';
-  public overview: OverviewPageT;
-  private type: string;
+  public page: Page;
+  public pageTemplate: PageOverviewTemplate;
+  private id: number;
   private subscriptions: Subscription[] = [];
   private subscriptionLoadList: Subscription;
 
@@ -60,20 +63,33 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
 
-    this.overview = this.config.template.pagesOld.overview;
-    this.filterService.setListsize(this.overview.listSize ? this.overview.listSize : 50);
+    if (this.config.template.pages.has(PageTypes.overview)) {
+      this.page = this.config.template.pages.get(PageTypes.overview)
+    }
+
+    //this.filterService.setListsize(this.overview.listSize ? this.overview.listSize : 50);
 
     this.search = this.filterService.getSearch();
   }
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.type = this.activatedRoute.snapshot.paramMap.get('type');
+    this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
-    this.subscriptions.push(this.navigationService.getHeaderItemsAsObservable()
-      .subscribe((headerItems: Array<HeaderMenuItemT>) => {
-      this.loadList(false);
-    }));
+    this.pageTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
+    
+    this.listTemplate = {
+      id: String(this.pageTemplate.id),
+      toggle: this.pageTemplate.toggle,
+      route: this.pageTemplate.route,
+      buttonsLeft: this.pageTemplate.buttonsLeft,
+      buttonsRight: this.pageTemplate.buttonsRight,
+      priority: this.pageTemplate.priority,
+      notification: '',
+      columns: this.pageTemplate.columns
+    }
+
+    this.loadList(false);
 
     this.subscriptions.push(this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -86,7 +102,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
         this.pageChanged = true;
 
         this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
-        this.type = this.activatedRoute.snapshot.paramMap.get('type');
+        this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
         this.setPosition(0);
         this.loadList(false);
       }
@@ -99,19 +115,17 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   }
 
   public loadList(append: boolean) {
-    this.navigationService.getHeaderItems().forEach((headerMenuItem: HeaderMenuItemT) => {
-      if (this.type === headerMenuItem.id) {
-        this.setMenu(append, headerMenuItem);
-        return;
-      }
-    });
+    this.setMenu(append,this.config.headers.find(header => header.id === this.id));
+    
   }
 
   public setMenu(append: boolean, headerMenuItem: HeaderMenuItemT): void {
+    if (!headerMenuItem)
+      return;
+
     this.navigationService.headerItem = headerMenuItem;
     this.navigationService.title = headerMenuItem.name;
     this.title = 'Zoek in (' + headerMenuItem.name + ')';
-    this.listTemplate = this.getListConfig(headerMenuItem.id);
 
     const url = this.transform.URL(this.config.getEndpoint('getCallList').endpoint);
     this.getList(url,
@@ -142,10 +156,6 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   public loadMoreItems(): void {
     this.filterService.addOffset();
     this.loadList(true);
-  }
-
-  private getListConfig(key: string): ListTemplateT {
-    return this.overview.listTemplate.find(item => key.includes(item.id));
   }
 
   public clicked($event: any) {

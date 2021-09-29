@@ -288,6 +288,7 @@ public class Convert {
         PageOverviewTemplate pageOverviewTemplate = new PageOverviewTemplate();
         pageOverviewTemplate.setId(pageOverviewEntity.getId());
         pageOverviewTemplate.setName(pageOverviewEntity.getName());
+        pageOverviewTemplate.setIcon(pageOverviewEntity.getIcon());
         pageOverviewTemplate.setRoute(pageOverviewEntity.getRoute());
         pageOverviewTemplate.setToggle(pageOverviewEntity.getToggle());
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
@@ -297,7 +298,6 @@ public class Convert {
         List<Status> statusses = new ArrayList<Status>();
         List<PageOverviewStatusEntity> statusEntities = pageOverviewEntity.getStatusses();
         for (PageOverviewStatusEntity pageOverviewStatusEntity: statusEntities) {
-          System.out.println(pageOverviewStatusEntity.getStatus().getName());
           statusses.add(Convert.statusEntity(pageOverviewStatusEntity.getStatus()));
         }
         pageOverviewTemplate.setStatusses(statusses);

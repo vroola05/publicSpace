@@ -76,10 +76,10 @@ export class NavigationService {
     this.headerItems.next([]);
   }
 
-  public addHeaderItems(headerItems: HeaderMenuItemT[]): void {
+  /*public addHeaderItems(headerItems: HeaderMenuItemT[]): void {
     const buttons = this.transform.filterRolesAndConditions(this.headerItems.getValue().concat(headerItems)) as HeaderMenuItemT[];
     this.headerItems.next(buttons);
-  }
+  }*/
 
   public getHeaderItemsAsObservable(): Observable<HeaderMenuItemT[]> {
     return this.headerItems.asObservable();

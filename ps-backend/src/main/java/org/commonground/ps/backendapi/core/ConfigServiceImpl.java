@@ -40,9 +40,9 @@ public class ConfigServiceImpl implements ConfigService {
       throw new SecurityException("Not a valid domain.");
     }
 
-    Template domainT = configs.get(domain);
-    if (domainT != null) {
-      return domainT;
+    Template template = configs.get(domain);
+    if (template != null) {
+      return template;
     }
     return getFromStore(domain);
   }

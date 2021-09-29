@@ -1,5 +1,8 @@
+import { ActionType } from './action-type';
 import { ButtonTypes, ContractorType, PageLayoutType } from './intefaces';
 import { Page } from './page';
+import { PageButton } from './page-button';
+import { PageOverviewColumns } from './page-overview-columns';
 import { Status } from './status';
 
 export interface KeyValueT {
@@ -79,14 +82,14 @@ export interface ConditionT {
 export interface ButtonT {
   name?: string;
   route?: string;
-  action?: string;
+  action?: ActionType;
   type?: ButtonTypes;
   roles?: RoleT[];
   conditions?: ConditionT[];
 }
 
 export interface HeaderMenuItemT extends ButtonT {
-  id?: string;
+  id?: number;
   icon?: string;
   api: string;
   notification?: string;
@@ -98,11 +101,11 @@ export interface ListTemplateT {
   id?: string;
   toggle?: boolean;
   route?: string;
-  buttonsLeft?: ButtonT[];
-  buttonsRight?: ButtonT[];
-  priority?: string;
+  buttonsLeft?: PageButton[];
+  buttonsRight?: PageButton[];
+  priority?: boolean;
   notification?: string;
-  columns: ListTemplateColumnT[];
+  columns: PageOverviewColumns[];
 }
 
 export interface ListTemplateColumnT {

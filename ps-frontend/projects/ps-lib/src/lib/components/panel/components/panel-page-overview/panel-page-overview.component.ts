@@ -32,6 +32,7 @@ export class PanelPageOverviewComponent implements OnInit {
     const selectedPageOverviewTemplate = new PageOverviewTemplate();
     selectedPageOverviewTemplate.name = '';
     selectedPageOverviewTemplate.route = '';
+    selectedPageOverviewTemplate.icon = '';
     selectedPageOverviewTemplate.toggle = false;
     selectedPageOverviewTemplate.priority = true;
     selectedPageOverviewTemplate.personal = false;

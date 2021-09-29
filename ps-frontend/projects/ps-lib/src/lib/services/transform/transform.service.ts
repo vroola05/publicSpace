@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PageButton } from '../../../model/page-button';
 import { ButtonT, ConditionT } from '../../../model/template';
 import { AuthorisationService } from '../authorisation/authorisation.service';
 
@@ -28,7 +29,7 @@ export class TransformService {
     this.variables.clear();
   }
 
-  public filterRolesAndConditions(buttons: ButtonT[]): ButtonT[] {
+  public filterRolesAndConditions(buttons: PageButton[]): PageButton[] {
     if (!buttons) {
       return buttons;
     } else {

@@ -315,7 +315,7 @@ ALTER TABLE public.seq_category_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_company_id
-    START WITH 1
+    START WITH 2
     INCREMENT BY 1
     MINVALUE 0
     NO MAXVALUE
@@ -420,7 +420,7 @@ ALTER TABLE public.seq_session_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_status_id
-    START WITH 7
+    START WITH 4
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -571,106 +571,6 @@ CREATE TABLE public.users (
 
 ALTER TABLE public.users OWNER TO postgres;
 
---
--- TOC entry 3149 (class 0 OID 16640)
--- Dependencies: 208
--- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.roles VALUES (1, 'ROLE_USER', true, true);
-INSERT INTO public.roles VALUES (2, 'ROLE_ADMIN', true, NULL);
-INSERT INTO public.roles VALUES (3, 'ROLE_VIEWER', NULL, NULL);
-
---
--- TOC entry 3167 (class 0 OID 25098)
--- Dependencies: 226
--- Data for Name: domain_type; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.domain_type VALUES (1, 'Gemeente');
-INSERT INTO public.domain_type VALUES (2, 'Aannemer');
-
---
--- TOC entry 3168 (class 0 OID 33312)
--- Dependencies: 227
--- Data for Name: action_type; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.action_type VALUES (0, 'Toewijzen persoon');
-INSERT INTO public.action_type VALUES (1, 'Toewijzen groep');
-INSERT INTO public.action_type VALUES (11, 'Opdracht annuleren');
-INSERT INTO public.action_type VALUES (10, 'Opdracht afkeuren');
-INSERT INTO public.action_type VALUES (9, 'Opdracht goedkeuren');
-INSERT INTO public.action_type VALUES (8, 'Opdracht gereedmelden');
-INSERT INTO public.action_type VALUES (7, 'Opdracht weigeren');
-INSERT INTO public.action_type VALUES (6, 'Opdracht accepteren');
-INSERT INTO public.action_type VALUES (5, 'Opdracht aanmaken');
-INSERT INTO public.action_type VALUES (4, 'Melding afbreken');
-INSERT INTO public.action_type VALUES (3, 'Melding afsluiten');
-INSERT INTO public.action_type VALUES (2, 'Melding aanmaken');
-
---
--- TOC entry 3145 (class 0 OID 16608)
--- Dependencies: 204
--- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.company VALUES (1, 'System Admin');
-
---
--- TOC entry 3146 (class 0 OID 16616)
--- Dependencies: 205
--- Data for Name: domain; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.domain VALUES (1, 1, 'localhost', 1);
-
-
---
--- TOC entry 3164 (class 0 OID 16842)
--- Dependencies: 223
--- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.groups VALUES (1, 'Beheerder', 1);
-
---
--- TOC entry 3160 (class 0 OID 16802)
--- Dependencies: 219
--- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.status VALUES (1, 'Nieuwe melding', 1, 'fiber_new', 'Nieuwe meldingen');
-INSERT INTO public.status VALUES (2, 'In behandeling', 1, 'event', 'In behandelingen');
-INSERT INTO public.status VALUES (3, 'Opdracht verstuurd naar aannemer', 1, 'watch_later', 'Opdracht verstuurd');
-INSERT INTO public.status VALUES (4, 'Gereed gemeld', 1, 'done', 'Gereed gemeld');
-INSERT INTO public.status VALUES (5, 'Afgesloten', 1, 'list_alt', 'Afgesloten meldingen');
-INSERT INTO public.status VALUES (6, 'Afgebroken', 1, 'list_alt', 'Afgebroken meldingen');
-
---
--- TOC entry 3142 (class 0 OID 16583)
--- Dependencies: 201
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.users VALUES (1, 1, 'admin', 'u7J6I+gpok5RuD7faTL8Bj0D5MyIF4/fRHLXver+aieI46fIepGEp8Z5qOBFj4z2sNvMY+U/X3VKsKdkux6X3Q==', 'Administrator', 'fake@this-is-no-organisation.com', true, 'kCPK1vNqTSFoo79Djocy', 1000, 512, 'PBKDF2WithHmacSHA1');
-
---
--- TOC entry 3166 (class 0 OID 16857)
--- Dependencies: 225
--- Data for Name: user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.user_groups VALUES (1, 1);
-
---
--- TOC entry 3151 (class 0 OID 16656)
--- Dependencies: 210
--- Data for Name: user_roles; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.user_roles VALUES (1, 1);
-INSERT INTO public.user_roles VALUES (1, 2);
 
 --
 -- TOC entry 2957 (class 2606 OID 16660)
@@ -1031,17 +931,6 @@ CREATE TABLE public.page_type (
 ALTER TABLE public.page_type OWNER TO postgres;
 
 --
--- TOC entry 3139 (class 0 OID 24849)
--- Dependencies: 231
--- Data for Name: page_type; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.page_type VALUES (1, 'overview');
-INSERT INTO public.page_type VALUES (2, 'details');
-INSERT INTO public.page_type VALUES (3, 'assign');
-
-
---
 -- TOC entry 3008 (class 2606 OID 24856)
 -- Name: page_type page_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
@@ -1081,7 +970,7 @@ ALTER TABLE ONLY public.page
 
 CREATE SEQUENCE public.seq_page_id
     INCREMENT 1
-    START 1
+    START 4
     MINVALUE 0
     MAXVALUE 9223372036854775807
     CACHE 1;
@@ -1089,7 +978,26 @@ CREATE SEQUENCE public.seq_page_id
 ALTER SEQUENCE public.seq_page_id
     OWNER TO postgres;
 
--- ---------------------------------
+
+--
+-- TOC entry 237 (class 1259 OID 33070)
+-- Name: page_button_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.page_button_type (
+    id integer NOT NULL,
+    name text
+);
+
+ALTER TABLE public.page_button_type OWNER TO postgres;
+
+ALTER TABLE ONLY public.page_button_type
+    ADD CONSTRAINT page_button_type_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 237 (class 1259 OID 33070)
+-- Name: page_button; Type: TABLE; Schema: public; Owner: postgres
+--
 
 CREATE TABLE public.page_button (
     id integer NOT NULL,
@@ -1108,7 +1016,7 @@ ALTER TABLE public.page_button
 ALTER TABLE ONLY public.page_button
     ADD CONSTRAINT page_buttons_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.page
+ALTER TABLE ONLY public.page_button
     ADD CONSTRAINT page_button_action_type_id_fk FOREIGN KEY (action_type_id)
         REFERENCES public.action_type (id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -1176,38 +1084,6 @@ ALTER TABLE ONLY public.page_button_roles
         ON DELETE NO ACTION
         NOT VALID;
 
--- ---------------------------------------
-
-CREATE TABLE public.page_button_type (
-    id integer NOT NULL,
-    name text
-);
-
-
-ALTER TABLE public.page_button_type OWNER TO postgres;
-
---
--- TOC entry 3139 (class 0 OID 33045)
--- Dependencies: 236
--- Data for Name: page_button_type; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.page_button_type VALUES (1, 'containedPrimary');
-INSERT INTO public.page_button_type VALUES (2, 'containedSecondary');
-INSERT INTO public.page_button_type VALUES (3, 'outlinePrimary');
-INSERT INTO public.page_button_type VALUES (4, 'outlineSecondary');
-INSERT INTO public.page_button_type VALUES (5, 'blank');
-
-
---
--- TOC entry 3008 (class 2606 OID 33052)
--- Name: page_button_type page_button_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.page_button_type
-    ADD CONSTRAINT page_button_type_pkey PRIMARY KEY (id);
-
-
 --
 -- TOC entry 237 (class 1259 OID 33070)
 -- Name: page_overview; Type: TABLE; Schema: public; Owner: postgres
@@ -1217,6 +1093,7 @@ CREATE TABLE public.page_overview (
     id integer NOT NULL,
     page_id integer NOT NULL,
     name text NOT NULL,
+    icon text NOT NULL,
     toggle boolean,
     route text,
     priority boolean,
@@ -1226,38 +1103,21 @@ CREATE TABLE public.page_overview (
 
 ALTER TABLE public.page_overview OWNER TO postgres;
 
+ALTER TABLE ONLY public.page_overview
+    ADD CONSTRAINT page_overview_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.page_overview
+    ADD CONSTRAINT page_overview_page_id_fk FOREIGN KEY (page_id) REFERENCES public.page(id);
+
 CREATE SEQUENCE public.seq_page_overview_id
     INCREMENT 1
-    START 1
+    START 4
     MINVALUE 0
     MAXVALUE 9223372036854775807
     CACHE 1;
 
 ALTER SEQUENCE public.seq_page_overview_id
     OWNER TO postgres;
-
---
--- TOC entry 3140 (class 0 OID 33070)
--- Dependencies: 237
--- Data for Name: page_overview; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
---
--- TOC entry 3008 (class 2606 OID 33077)
--- Name: page_overview page_overview_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.page_overview
-    ADD CONSTRAINT page_overview_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3009 (class 2606 OID 33078)
--- Name: page_overview page_overview_page_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.page_overview
-    ADD CONSTRAINT page_overview_page_id_fk FOREIGN KEY (page_id) REFERENCES public.page(id);
 
 --
 -- TOC entry 237 (class 1259 OID 33070)
@@ -1278,6 +1138,12 @@ CREATE TABLE public.page_overview_column (
 
 ALTER TABLE public.page_overview_column OWNER TO postgres;
 
+ALTER TABLE ONLY public.page_overview_column
+    ADD CONSTRAINT page_overview_column_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.page_overview_column
+    ADD CONSTRAINT page_overview_column_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page_overview(id);
+
 CREATE SEQUENCE public.seq_page_overview_column_id
     INCREMENT 1
     START 1
@@ -1287,29 +1153,6 @@ CREATE SEQUENCE public.seq_page_overview_column_id
 
 ALTER SEQUENCE public.seq_page_overview_column_id
     OWNER TO postgres;
-
-
-
---
--- TOC entry 3008 (class 2606 OID 33077)
--- Name: page_overview page_overview_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.page_overview_column
-    ADD CONSTRAINT page_overview_column_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3009 (class 2606 OID 33078)
--- Name: page_overview page_overview_page_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.page_overview_column
-    ADD CONSTRAINT page_overview_column_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page_overview(id);
-
-
-
-
 
 --
 -- TOC entry 244 (class 1259 OID 33106)
@@ -1322,57 +1165,28 @@ CREATE TABLE public.page_overview_status (
     status_id integer NOT NULL
 );
 
-
 ALTER TABLE public.page_overview_status OWNER TO postgres;
-
---
--- TOC entry 3160 (class 0 OID 33106)
--- Dependencies: 244
--- Data for Name: page_overview_status; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
---
--- TOC entry 3027 (class 2606 OID 33110)
--- Name: page_overview_status page_overview_status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.page_overview_status
     ADD CONSTRAINT page_overview_status_pkey PRIMARY KEY (id);
 
-
---
--- TOC entry 3028 (class 2606 OID 33111)
--- Name: page_overview_status overview_status_page_overview_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
 ALTER TABLE ONLY public.page_overview_status
     ADD CONSTRAINT overview_status_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page(id);
-
-
---
--- TOC entry 3029 (class 2606 OID 33116)
--- Name: page_overview_status overview_status_status_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
 
 ALTER TABLE ONLY public.page_overview_status
     ADD CONSTRAINT overview_status_status_id_fk FOREIGN KEY (status_id) REFERENCES public.status(id);
 
-
-
-CREATE SEQUENCE public.seq_page_overview_column_id
+CREATE SEQUENCE public.seq_page_overview_status_id
     INCREMENT 1
     START 1
     MINVALUE 0
     MAXVALUE 9223372036854775807
     CACHE 1;
 
-ALTER SEQUENCE public.seq_page_overview_column_id
+ALTER SEQUENCE public.seq_page_overview_status_id
     OWNER TO postgres;
 
-
 -- Completed on 2021-09-14 16:16:51 CEST
-
 --
 -- PostgreSQL database dump complete
 --

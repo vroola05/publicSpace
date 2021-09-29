@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import moment from 'moment';
 
 import { Call } from '../../../model/call';
 import { CallList } from '../../../model/call-list';
-import { Template, EndpointsT, EndpointT, KeyValueT } from '../../../model/template';
-import { AuthorisationService } from '../authorisation/authorisation.service';
+import { Template, EndpointT, KeyValueT, HeaderMenuItemT } from '../../../model/template';
+import { PageTypes } from '../../../model/intefaces';
+
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '../storage/storage.service';
+import { Page } from 'projects/ps-lib/src/model/page';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,11 @@ export class ConfigService {
   private _template: BehaviorSubject<Template> = new BehaviorSubject<any>(null);
   private _endpoints: Map<string, EndpointT>;
   private _api: string;
+
+  private _headers: HeaderMenuItemT[] = [];
+  public get headers(): HeaderMenuItemT[] {
+    return this._headers;
+  }
 
   public get api(): string {
     return this._api;
@@ -33,7 +40,7 @@ export class ConfigService {
   }
 
   public set template(template: Template) {
-    template = this.setDefaults(template);
+    template = this.setInitialize(template);
     if (template.endpoints) {
       this._endpoints = template.endpoints;
     }
@@ -50,45 +57,72 @@ export class ConfigService {
     private storage: StorageService
   ) { }
 
-  public setDefaults(domain: Template): Template {
-    if (domain.info.favicon) {
+  public setInitialize(template: Template): Template {
+    if (template.info.favicon) {
       const favicon = document.getElementById('favicon') as HTMLLinkElement;
       if (favicon) {
-        favicon.href = domain.info.favicon;
+        favicon.href = template.info.favicon;
       }
     }
-    if (domain.info.favicon32) {
+    if (template.info.favicon32) {
       const favicon = document.getElementById('favicon32') as HTMLLinkElement;
       if (favicon) {
-        favicon.href = domain.info.favicon32;
+        favicon.href = template.info.favicon32;
       }
     }
-    if (domain.info.favicon512) {
+    if (template.info.favicon512) {
       const favicon = document.getElementById('favicon512') as HTMLLinkElement;
       if (favicon) {
-        favicon.href = domain.info.favicon512;
+        favicon.href = template.info.favicon512;
       }
     }
 
-    if (domain.endpoints) {
+    if (template.endpoints) {
       const endpoints = new Map<string, EndpointT>();
-      for (const filter in domain.endpoints) {
-        if (domain.endpoints[filter]) {
-          endpoints.set(filter, domain.endpoints[filter]);
+      for (const filter in template.endpoints) {
+        if (template.endpoints[filter]) {
+          endpoints.set(filter, template.endpoints[filter]);
         }
       }
-      domain.endpoints = endpoints;
+      template.endpoints = endpoints;
     }
-    if (domain.components.filter) {
+    if (template.components.filter) {
       const filters = new Map<string, Array<KeyValueT>>();
-      for (const filter in domain.components.filter) {
-        if (domain.components.filter[filter]) {
-          filters.set(filter, domain.components.filter[filter]);
+      for (const filter in template.components.filter) {
+        if (template.components.filter[filter]) {
+          filters.set(filter, template.components.filter[filter]);
         }
       }
-      domain.components.filter = filters;
+      template.components.filter = filters;
     }
-    return domain;
+
+    if (template.pages) {
+      const pages = new Map<string, Page>();
+      for (const page in template.pages) {
+        if (template.pages[page]) {
+          pages.set(page, template.pages[page]);
+        }
+      }
+      template.pages = pages;
+    }
+    
+    if (template.pages.has(PageTypes.overview)) {
+      const header: HeaderMenuItemT[] = [];
+      template.pages.get(PageTypes.overview).pageOverviewTemplate.forEach(pageOverviewTemplate => {
+        header.push({
+          name: pageOverviewTemplate.name,
+          id: pageOverviewTemplate.id,
+          icon: pageOverviewTemplate.icon,
+          menuType: 'main',
+          api: null
+        });
+
+      });
+      this._headers = header;
+      console.log(this._headers);
+    }
+    
+    return template;
   }
 
   public getLogo(): string {

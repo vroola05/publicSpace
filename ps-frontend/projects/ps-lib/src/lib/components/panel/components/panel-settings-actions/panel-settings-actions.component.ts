@@ -34,20 +34,20 @@ export class PanelSettingsActionsComponent implements OnInit {
       toggle: true,
       columns: [
         {
-          id: 'id',
-          name: 'Id',
+          name: 'id',
+          title: 'Id',
           type: 'number',
           css: 'col-sm-12 col-md-1 col-lg-1 bold'
         },
         {
-          id: 'action',
-          name: 'Actie',
+          name: 'action',
+          title: 'Actie',
           type: 'string',
           css: 'col-sm-12 col-md-5 col-lg-5'
         },
         {
-          id: 'status',
-          name: 'Status',
+          name: 'status',
+          title: 'Status',
           type: 'string',
           css: 'col-sm-12 col-md-6 col-lg-6'
         }

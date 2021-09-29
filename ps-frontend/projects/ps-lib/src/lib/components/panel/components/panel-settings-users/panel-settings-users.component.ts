@@ -39,26 +39,26 @@ export class PanelSettingsUsersComponent implements OnInit {
       toggle: true,
       columns: [
         {
-          id: 'name',
-          name: 'Naam',
+          name: 'name',
+          title: 'Naam',
           type: 'string',
           css: 'col-sm-12 col-md-2 col-lg-2 bold'
         },
         {
-          id: 'username',
-          name: 'Gebruikersnaam',
+          name: 'username',
+          title: 'Gebruikersnaam',
           type: 'string',
           css: 'col-sm-12 col-md-2 col-lg-2'
         },
         {
-          id: 'roles',
-          name: 'Rollen',
+          name: 'roles',
+          title: 'Rollen',
           type: 'string',
           css: 'col-sm-12 col-md-4 col-lg-4'
         },
         {
-          id: 'groups',
-          name: 'Groepen',
+          name: 'groups',
+          title: 'Groepen',
           type: 'string',
           css: 'col-sm-12 col-md-4 col-lg-4'
         }

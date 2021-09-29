@@ -34,14 +34,14 @@ export class PanelSettingsMainCategoryComponent implements OnInit {
       toggle: true,
       columns: [
         {
-          id: 'id',
-          name: 'Id',
+          name: 'id',
+          title: 'Id',
           type: 'number',
           css: 'col-sm-12 col-md-1 col-lg-1 bold'
         },
         {
-          id: 'name',
-          name: 'Naam',
+          name: 'name',
+          title: 'Naam',
           type: 'string',
           css: 'col-sm-12 col-md-11 col-lg-11'
         }

@@ -6,6 +6,7 @@ import { ConfigService } from '../../../../services/config/config.service';
 import { ButtonT, ListTemplateT } from '../../../../../model/template';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
+import { PageButton } from '../../../../../model/page-button';
 
 @Component({
   selector: 'lib-list-panel',
@@ -35,7 +36,7 @@ export class ListPanelComponent {
     private popup: Popup
   ) { }
 
-  public createButtons(input: ButtonT[]): ButtonT[] {
+  public createButtons(input: PageButton[]): PageButton[] {
     input = this.transform.filterRolesAndConditions(input);
     const output = [];
     if (input) {

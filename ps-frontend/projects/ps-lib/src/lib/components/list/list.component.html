@@ -2,12 +2,12 @@
   <div class="row d-sm-none d-md-flex ps-table-header" #headerRef>
     <span class="col ps-table-header-cell {{column.css}}" [ngClass]="{'filter': column.filter}"
       *ngFor="let column of columns">
-      <span *ngIf="!column.filter">{{column.name}}</span>
-      <lib-filter-in *ngIf="column.filter == 'in'" [id]="column.id" [type]="column.type" [title]="column.name" (changed)="_filterChanged($event)">
+      <span *ngIf="!column.filter">{{column.title}}</span>
+      <lib-filter-in *ngIf="column.filter == 'in'" [id]="column.name" [type]="column.type" [title]="column.title" (changed)="_filterChanged($event)">
       </lib-filter-in>
-      <lib-filter-equals *ngIf="column.filter == 'equals'" [id]="column.id" [type]="column.type" [title]="column.name" (changed)="_filterChanged($event)">
+      <lib-filter-equals *ngIf="column.filter == 'equals'" [id]="column.name" [type]="column.type" [title]="column.title" (changed)="_filterChanged($event)">
       </lib-filter-equals>
-      <lib-filter-between *ngIf="column.filter == 'between'" [id]="column.id" [type]="column.type" [title]="column.name" (changed)="_filterChanged($event)">
+      <lib-filter-between *ngIf="column.filter == 'between'" [id]="column.name" [type]="column.type" [title]="column.title" (changed)="_filterChanged($event)">
       </lib-filter-between>
     </span>
   </div>

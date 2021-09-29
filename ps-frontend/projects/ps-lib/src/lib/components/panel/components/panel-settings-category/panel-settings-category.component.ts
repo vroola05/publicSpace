@@ -39,32 +39,32 @@ export class PanelSettingsCategoryComponent implements OnInit {
       toggle: true,
       columns: [
         {
-          id: 'id',
-          name: 'Id',
+          name: 'id',
+          title: 'Id',
           type: 'number',
           css: 'col-sm-12 col-md-1 col-lg-1 bold'
         },
         {
-          id: 'name',
-          name: 'Naam',
+          name: 'name',
+          title: 'Naam',
           type: 'string',
           css: 'col-sm-12 col-md-6 col-lg-6'
         },
         {
-          id: 'startDate',
-          name: 'Startdatum',
+          name: 'startDate',
+          title: 'Startdatum',
           type: 'date',
           css: 'col-sm-12 col-md-2 col-lg-2'
         },
         {
-          id: 'endDate',
-          name: 'Einddatum',
+          name: 'endDate',
+          title: 'Einddatum',
           type: 'date',
           css: 'col-sm-12 col-md-2 col-lg-2'
         },
         {
-          id: 'active',
-          name: 'Actief',
+          name: 'active',
+          title: 'Actief',
           type: 'boolean',
           css: 'col-sm-12 col-md-1 col-lg-1'
         }

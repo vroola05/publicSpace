@@ -25,8 +25,8 @@
         (positionChanged)="setPosition($event)"
         (filterChanged)="filterChanged($event)">
 
-        <lib-list-panel *ngIf="!overview.panelType || overview.panelType === 'call'" [template]="listTemplate" [call]="call"></lib-list-panel>
-        <lib-list-panel-order *ngIf="overview.panelType === 'order'" [template]="listTemplate" [call]="call"></lib-list-panel-order>
+        <!--lib-list-panel *ngIf="!overview.panelType || overview.panelType === 'call'" [template]="listTemplate" [call]="call"></lib-list-panel>
+        <lib-list-panel-order *ngIf="overview.panelType === 'order'" [template]="listTemplate" [call]="call"></lib-list-panel-order-->
       </lib-list>
     </div>
     <div *ngIf="!endOfList" class="overview-load-more">

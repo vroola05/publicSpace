@@ -78,6 +78,11 @@ export class ListPanelPagesOverviewComponent implements OnInit {
     this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
 
+  public onIconChanged($event): void {
+    this._pageOverviewTemplate.icon = $event;
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
+  }
+
   public onRouteChanged($event): void {
     this._pageOverviewTemplate.route = $event;
     this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });

@@ -4,6 +4,7 @@ import { PageLayoutType } from '../../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { TransformService } from '../../services/transform/transform.service';
+import { PageButton } from '../../../model/page-button';
 
 @Component({
   selector: 'lib-panel',
@@ -14,8 +15,8 @@ export class PanelComponent implements OnInit {
   public title = '';
 
   @Input() public pageLayoutType: PageLayoutType = PageLayoutType.page;
-  @Input() public buttonsLeft: ButtonT[] = [];
-  @Input() public buttonsRight: ButtonT[] = [];
+  @Input() public buttonsLeft: PageButton[] = [];
+  @Input() public buttonsRight: PageButton[] = [];
   @Input() public data: any;
 
   constructor(
@@ -27,7 +28,7 @@ export class PanelComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public onClick(button: ButtonT) {
+  public onClick(button: PageButton) {
     if (button.action) {
       this.action.call(button.action);
     }
@@ -36,7 +37,7 @@ export class PanelComponent implements OnInit {
     }
   }
 
-  public filterRolesAndConditions(buttons: ButtonT[]): ButtonT[] {
+  public filterRolesAndConditions(buttons: PageButton[]): PageButton[] {
     return this.transform.filterRolesAndConditions(buttons);
   }
 

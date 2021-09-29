@@ -29,8 +29,8 @@ import {
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Public space' } },
-  { path: 'overview/:type', component: OverviewComponent, data: { title: 'Overzicht' } },
-  { path: 'overview/group/:type', component: OverviewComponent, data: { title: 'Overzicht' } },
+  { path: 'overview/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
+  { path: 'overview/group/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   {
     path: 'settings', component: SettingsStartComponent, data: { title: 'Instellingen' },
     children: [

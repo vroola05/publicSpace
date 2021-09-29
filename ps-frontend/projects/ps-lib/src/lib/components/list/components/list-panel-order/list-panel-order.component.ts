@@ -6,6 +6,7 @@ import { ConfigService } from '../../../../services/config/config.service';
 import { ButtonT, ListTemplateT } from '../../../../../model/template';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
+import { PageButton } from '../../../../../model/page-button';
 
 
 @Component({
@@ -16,8 +17,8 @@ import { TransformService } from '../../../../services/transform/transform.servi
 export class ListPanelOrderComponent {
   public getUrlImage = '';
 
-  public buttonsLeft: ButtonT[] = [];
-  public buttonsRight: ButtonT[] = [];
+  public buttonsLeft: PageButton[] = [];
+  public buttonsRight: PageButton[] = [];
 
   @Input() template: ListTemplateT;
 
@@ -36,7 +37,7 @@ export class ListPanelOrderComponent {
     private popup: Popup
   ) { }
 
-  public createButtons(input: ButtonT[]): ButtonT[] {
+  public createButtons(input: PageButton[]): PageButton[] {
     input = this.transform.filterRolesAndConditions(input);
     const output = [];
     if (input) {

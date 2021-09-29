@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -10,13 +11,14 @@ import lombok.NoArgsConstructor;
 public class PageOverviewTemplate {
   protected Long id;
   protected String name;
+  protected String icon;
   protected String route;
   protected boolean toggle;
   protected boolean priority;
   protected boolean personal;
   
-  private List<Status> statusses;
-  protected List<PageOverviewColumn> columns;
+  private List<Status> statusses = new ArrayList<>();
+  protected List<PageOverviewColumn> columns = new ArrayList<>();
   protected List<PageButton> buttonsLeft;
   protected List<PageButton> buttonsRight;
 

@@ -18,6 +18,7 @@ public class PageOverviewEntity {
   @SequenceGenerator(name = "seq_page_overview_id", sequenceName = "seq_page_overview_id", allocationSize = 1)
   private Long id;
   private String name;
+  private String icon;
   private String route;
   private Boolean toggle;
   private Boolean priority;

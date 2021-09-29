@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActionType } from '../../../model/action-type';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class ActionService {
     }
   }
 
-  public call(name: string) {
-    if (name && name.length && this.actions[name]) {
-      this.actions[name]();
+  public call(action: ActionType) {
+    if (action && this.actions[action.id]) {
+      this.actions[action.id]();
     } else {
       console.error('Action not found: ' + name);
     }
