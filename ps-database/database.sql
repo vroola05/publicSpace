@@ -57,21 +57,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 228 (class 1259 OID 33325)
--- Name: action; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.action (
-    id integer NOT NULL,
-    action_type_id integer NOT NULL,
-    domain_id integer NOT NULL,
-    status_id integer
-);
-
-
-ALTER TABLE public.action OWNER TO postgres;
-
---
 -- TOC entry 227 (class 1259 OID 33312)
 -- Name: action_type; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -81,47 +66,22 @@ CREATE TABLE public.action_type (
     name text NOT NULL
 );
 
-
 ALTER TABLE public.action_type OWNER TO postgres;
 
+
 --
--- TOC entry 202 (class 1259 OID 16591)
--- Name: call; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 226 (class 1259 OID 25098)
+-- Name: domain_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.call (
+CREATE TABLE public.domain_type (
     id integer NOT NULL,
-    description text NOT NULL,
-    date_created timestamp with time zone DEFAULT now() NOT NULL,
-    date_ended timestamp with time zone,
-    category_id integer NOT NULL,
-    casenumber text NOT NULL,
-    priority boolean DEFAULT false NOT NULL,
-    notification text,
-    company_id integer NOT NULL,
-    status_id integer
+    name text NOT NULL
 );
 
-
-ALTER TABLE public.call OWNER TO postgres;
-
---
--- TOC entry 203 (class 1259 OID 16600)
--- Name: category; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.category (
-    id integer NOT NULL,
-    main_category_id integer NOT NULL,
-    name text NOT NULL,
-    start_date date,
-    end_date date,
-    active boolean DEFAULT true,
-    group_id integer NOT NULL
-);
+ALTER TABLE public.domain_type OWNER TO postgres;
 
 
-ALTER TABLE public.category OWNER TO postgres;
 
 --
 -- TOC entry 204 (class 1259 OID 16608)
@@ -133,8 +93,10 @@ CREATE TABLE public.company (
     name text NOT NULL
 );
 
-
 ALTER TABLE public.company OWNER TO postgres;
+
+ALTER TABLE ONLY public.company
+    ADD CONSTRAINT company_pkey PRIMARY KEY (id);
 
 --
 -- TOC entry 205 (class 1259 OID 16616)
@@ -151,18 +113,23 @@ CREATE TABLE public.domain (
 
 ALTER TABLE public.domain OWNER TO postgres;
 
+ALTER TABLE ONLY public.domain
+    ADD CONSTRAINT domain_pkey PRIMARY KEY (id);
+
 --
--- TOC entry 226 (class 1259 OID 25098)
--- Name: domain_type; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 208 (class 1259 OID 16640)
+-- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.domain_type (
+CREATE TABLE public.roles (
     id integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    read boolean,
+    write boolean
 );
 
+ALTER TABLE public.roles OWNER TO postgres;
 
-ALTER TABLE public.domain_type OWNER TO postgres;
 
 --
 -- TOC entry 223 (class 1259 OID 16842)
@@ -177,6 +144,173 @@ CREATE TABLE public.groups (
 
 
 ALTER TABLE public.groups OWNER TO postgres;
+
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 201 (class 1259 OID 16583)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    domain_id integer NOT NULL,
+    username text NOT NULL,
+    password text,
+    name text NOT NULL,
+    email text NOT NULL,
+    admin boolean DEFAULT false NOT NULL,
+    password_salt text,
+    password_iteration_count integer,
+    password_key_length integer,
+    password_hash_function text
+);
+
+ALTER TABLE public.users OWNER TO postgres;
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT user_domain_fk FOREIGN KEY (domain_id) REFERENCES public.domain(id) NOT VALID;
+
+--
+-- TOC entry 210 (class 1259 OID 16656)
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_roles (
+    user_id integer NOT NULL,
+    role_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_roles OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 16857)
+-- Name: user_groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.user_groups (
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.user_groups OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16802)
+-- Name: status; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.status (
+    id integer NOT NULL,
+    name text NOT NULL,
+    domain_id integer NOT NULL,
+    icon text,
+    title text
+);
+
+ALTER TABLE public.status OWNER TO postgres;
+
+ALTER TABLE ONLY public.status
+    ADD CONSTRAINT status_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.status
+    ADD CONSTRAINT status_domain_fk FOREIGN KEY (domain_id) REFERENCES public.domain(id) NOT VALID;
+
+
+--
+-- TOC entry 207 (class 1259 OID 16632)
+-- Name: main_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.main_category (
+    id integer NOT NULL,
+    name text NOT NULL,
+    company_id integer NOT NULL
+);
+
+
+ALTER TABLE public.main_category OWNER TO postgres;
+
+ALTER TABLE ONLY public.main_category
+    ADD CONSTRAINT main_catergory_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.main_category
+    ADD CONSTRAINT main_category_company_fk FOREIGN KEY (company_id) REFERENCES public.company(id) NOT VALID;
+
+--
+-- TOC entry 203 (class 1259 OID 16600)
+-- Name: category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.category (
+    id integer NOT NULL,
+    main_category_id integer NOT NULL,
+    name text NOT NULL,
+    start_date date,
+    end_date date,
+    active boolean DEFAULT true,
+    group_id integer NOT NULL
+);
+
+ALTER TABLE public.category OWNER TO postgres;
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pk PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_group_fk FOREIGN KEY (group_id) REFERENCES public.groups(id) NOT VALID;
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_main_category_fk FOREIGN KEY (main_category_id) REFERENCES public.main_category(id) NOT VALID;
+
+
+--
+-- TOC entry 202 (class 1259 OID 16591)
+-- Name: call; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.call (
+    id integer NOT NULL,
+    description text NOT NULL,
+    date_created timestamp with time zone DEFAULT now() NOT NULL,
+    date_ended timestamp with time zone,
+    category_id integer NOT NULL,
+    casenumber text NOT NULL,
+    priority boolean DEFAULT false NOT NULL,
+    notification text,
+    company_id integer NOT NULL,
+    status_id integer,
+    user_id integer,
+    group_id integer
+);
+
+
+ALTER TABLE public.call OWNER TO postgres;
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_category_fk FOREIGN KEY (category_id) REFERENCES public.category(id);
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_comany_fk FOREIGN KEY (company_id) REFERENCES public.company(id) NOT VALID;
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_status_fk FOREIGN KEY (status_id) REFERENCES public.status(id) NOT VALID;
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_group_fk FOREIGN KEY (group_id) REFERENCES public.groups(id) NOT VALID;
 
 --
 -- TOC entry 206 (class 1259 OID 16624)
@@ -200,20 +334,6 @@ CREATE TABLE public.location (
 ALTER TABLE public.location OWNER TO postgres;
 
 --
--- TOC entry 207 (class 1259 OID 16632)
--- Name: main_category; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.main_category (
-    id integer NOT NULL,
-    name text NOT NULL,
-    company_id integer NOT NULL
-);
-
-
-ALTER TABLE public.main_category OWNER TO postgres;
-
---
 -- TOC entry 200 (class 1259 OID 16575)
 -- Name: person; Type: TABLE; Schema: public; Owner: postgres
 --
@@ -235,19 +355,19 @@ CREATE TABLE public.person (
 ALTER TABLE public.person OWNER TO postgres;
 
 --
--- TOC entry 208 (class 1259 OID 16640)
--- Name: roles; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 228 (class 1259 OID 33325)
+-- Name: action; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.roles (
+CREATE TABLE public.action (
     id integer NOT NULL,
-    name text NOT NULL,
-    read boolean,
-    write boolean
+    action_type_id integer NOT NULL,
+    domain_id integer NOT NULL,
+    status_id integer
 );
 
+ALTER TABLE public.action OWNER TO postgres;
 
-ALTER TABLE public.roles OWNER TO postgres;
 
 --
 -- TOC entry 229 (class 1259 OID 33345)
@@ -508,69 +628,6 @@ CREATE TABLE public.session (
 
 ALTER TABLE public.session OWNER TO postgres;
 
---
--- TOC entry 219 (class 1259 OID 16802)
--- Name: status; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.status (
-    id integer NOT NULL,
-    name text NOT NULL,
-    domain_id integer NOT NULL,
-    icon text,
-    title text
-);
-
-
-ALTER TABLE public.status OWNER TO postgres;
-
---
--- TOC entry 225 (class 1259 OID 16857)
--- Name: user_groups; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.user_groups (
-    user_id integer NOT NULL,
-    group_id integer NOT NULL
-);
-
-
-ALTER TABLE public.user_groups OWNER TO postgres;
-
---
--- TOC entry 210 (class 1259 OID 16656)
--- Name: user_roles; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.user_roles (
-    user_id integer NOT NULL,
-    role_id integer NOT NULL
-);
-
-
-ALTER TABLE public.user_roles OWNER TO postgres;
-
---
--- TOC entry 201 (class 1259 OID 16583)
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.users (
-    id integer NOT NULL,
-    domain_id integer NOT NULL,
-    username text NOT NULL,
-    password text,
-    name text NOT NULL,
-    email text NOT NULL,
-    admin boolean DEFAULT false NOT NULL,
-    password_salt text,
-    password_iteration_count integer,
-    password_key_length integer,
-    password_hash_function text
-);
-
-ALTER TABLE public.users OWNER TO postgres;
-
 
 --
 -- TOC entry 2957 (class 2606 OID 16660)
@@ -579,16 +636,6 @@ ALTER TABLE public.users OWNER TO postgres;
 
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT "Person_pkey" PRIMARY KEY (id);
-
-
---
--- TOC entry 2959 (class 2606 OID 16662)
--- Name: users User_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
-
 
 --
 -- TOC entry 2987 (class 2606 OID 33319)
@@ -609,42 +656,6 @@ ALTER TABLE ONLY public.action
 
 
 --
--- TOC entry 2961 (class 2606 OID 16664)
--- Name: call call_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.call
-    ADD CONSTRAINT call_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2963 (class 2606 OID 16666)
--- Name: category category_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.category
-    ADD CONSTRAINT category_pk PRIMARY KEY (id);
-
-
---
--- TOC entry 2965 (class 2606 OID 16668)
--- Name: company company_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.company
-    ADD CONSTRAINT company_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2967 (class 2606 OID 16670)
--- Name: domain domain_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.domain
-    ADD CONSTRAINT domain_pkey PRIMARY KEY (id);
-
-
---
 -- TOC entry 2985 (class 2606 OID 25105)
 -- Name: domain_type domain_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
@@ -654,30 +665,12 @@ ALTER TABLE ONLY public.domain_type
 
 
 --
--- TOC entry 2981 (class 2606 OID 16849)
--- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.groups
-    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
-
-
---
 -- TOC entry 2969 (class 2606 OID 16672)
 -- Name: location location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.location
     ADD CONSTRAINT location_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2971 (class 2606 OID 16674)
--- Name: main_category main_catergory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.main_category
-    ADD CONSTRAINT main_catergory_pkey PRIMARY KEY (id);
 
 
 --
@@ -696,16 +689,6 @@ ALTER TABLE ONLY public.roles
 
 ALTER TABLE ONLY public.session
     ADD CONSTRAINT session_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2979 (class 2606 OID 16809)
--- Name: status status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.status
-    ADD CONSTRAINT status_pkey PRIMARY KEY (id);
-
 
 --
 -- TOC entry 2983 (class 2606 OID 16861)
@@ -750,52 +733,6 @@ ALTER TABLE ONLY public.action
 
 ALTER TABLE ONLY public.action
     ADD CONSTRAINT action_status_id_fk FOREIGN KEY (status_id) REFERENCES public.status(id) NOT VALID;
-
-
---
--- TOC entry 2992 (class 2606 OID 16683)
--- Name: call call_category_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.call
-    ADD CONSTRAINT call_category_fk FOREIGN KEY (category_id) REFERENCES public.category(id);
-
-
---
--- TOC entry 2993 (class 2606 OID 16738)
--- Name: call call_comany_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.call
-    ADD CONSTRAINT call_comany_fk FOREIGN KEY (company_id) REFERENCES public.company(id) NOT VALID;
-
-
---
--- TOC entry 2994 (class 2606 OID 16810)
--- Name: call call_status_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.call
-    ADD CONSTRAINT call_status_fk FOREIGN KEY (status_id) REFERENCES public.status(id) NOT VALID;
-
-
---
--- TOC entry 2996 (class 2606 OID 16872)
--- Name: category category_group_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.category
-    ADD CONSTRAINT category_group_fk FOREIGN KEY (id) REFERENCES public.groups(id) NOT VALID;
-
-
---
--- TOC entry 2995 (class 2606 OID 16698)
--- Name: category category_main_category_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.category
-    ADD CONSTRAINT category_main_category_fk FOREIGN KEY (main_category_id) REFERENCES public.main_category(id) NOT VALID;
-
 
 --
 -- TOC entry 2997 (class 2606 OID 16703)
@@ -851,14 +788,6 @@ ALTER TABLE ONLY public.location
     ADD CONSTRAINT location_call_fk FOREIGN KEY (call_id) REFERENCES public.call(id) NOT VALID;
 
 
---
--- TOC entry 3000 (class 2606 OID 16765)
--- Name: main_category main_category_company_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.main_category
-    ADD CONSTRAINT main_category_company_fk FOREIGN KEY (company_id) REFERENCES public.company(id) NOT VALID;
-
 
 --
 -- TOC entry 2990 (class 2606 OID 16777)
@@ -885,25 +814,6 @@ ALTER TABLE ONLY public.user_roles
 
 ALTER TABLE ONLY public.user_roles
     ADD CONSTRAINT roles_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- TOC entry 3004 (class 2606 OID 16883)
--- Name: status status_domain_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.status
-    ADD CONSTRAINT status_domain_fk FOREIGN KEY (domain_id) REFERENCES public.domain(id) NOT VALID;
-
-
---
--- TOC entry 2991 (class 2606 OID 16718)
--- Name: users user_domain_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT user_domain_fk FOREIGN KEY (domain_id) REFERENCES public.domain(id) NOT VALID;
-
 
 --
 -- TOC entry 3001 (class 2606 OID 16723)

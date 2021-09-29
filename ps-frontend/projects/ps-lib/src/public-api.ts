@@ -28,8 +28,8 @@ export * from './lib/components/list/components/list-panel-user/list-panel-user.
 export * from './lib/components/list/components/list-panel-category/list-panel-category.component';
 export * from './lib/components/list/components/list-panel-status/list-panel-status.component';
 export * from './lib/components/list/components/list-panel-action/list-panel-action.component';
-export * from './lib/components/list/components/list-panel-pages/list-panel-pages.component';
-export * from './lib/components/list/components/list-panel-pages-overview/list-panel-pages-overview.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages-overview/list-panel-pages-overview.component';
 
 export * from './lib/components/filter/filter-equals/filter-equals.component';
 export * from './lib/components/filter/filter-between/filter-between.component';
@@ -52,20 +52,20 @@ export * from './lib/components/panel/components/panel-supervisor/panel-supervis
 export * from './lib/components/panel/components/panel-person/panel-person.component';
 export * from './lib/components/panel/components/panel-person-simple/panel-person-simple.component';
 
-export * from './lib/components/panel/components/panel-settings/panel-settings.component';
-export * from './lib/components/panel/components/panel-settings-companies/panel-settings-companies.component';
-export * from './lib/components/panel/components/panel-settings-domains/panel-settings-domains.component';
-export * from './lib/components/panel/components/panel-settings-users/panel-settings-users.component';
-export * from './lib/components/panel/components/panel-settings-groups/panel-settings-groups.component';
-export * from './lib/components/panel/components/panel-settings-main-category/panel-settings-main-category.component';
-export * from './lib/components/panel/components/panel-settings-category/panel-settings-category.component';
-export * from './lib/components/panel/components/panel-settings-status/panel-settings-status.component';
-export * from './lib/components/panel/components/panel-settings-actions/panel-settings-actions.component';
-export * from './lib/components/panel/components/panel-settings-pages/panel-settings-pages.component';
+export * from './lib/components/pages/settings/components/panel-settings/panel-settings.component';
+export * from './lib/components/pages/settings/components/panel-settings-companies/panel-settings-companies.component';
+export * from './lib/components/pages/settings/components/panel-settings-domains/panel-settings-domains.component';
+export * from './lib/components/pages/settings/components/panel-settings-users/panel-settings-users.component';
+export * from './lib/components/pages/settings/components/panel-settings-groups/panel-settings-groups.component';
+export * from './lib/components/pages/settings/components/panel-settings-main-category/panel-settings-main-category.component';
+export * from './lib/components/pages/settings/components/panel-settings-category/panel-settings-category.component';
+export * from './lib/components/pages/settings/components/panel-settings-status/panel-settings-status.component';
+export * from './lib/components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
 
 export * from './lib/components/panel/components/panel-page-overview/panel-page-overview.component';
-export * from './lib/components/pages/components/create-overview-columns/create-overview-columns.component';
-export * from './lib/components/pages/components/create-overview-column/create-overview-column.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
 
 export * from './lib/components/maps/maps.component';
 export * from './lib/components/mail/mail.component';
@@ -117,10 +117,10 @@ export * from './lib/components/pages/send-mail/send-mail.component';
 
 export * from './lib/components/pages/settings/settings-start/settings-start.component';
 
-export * from './lib/components/pages/components/create-buttons/create-buttons.component';
-export * from './lib/components/pages/components/create-buttons/components/create-button/create-button.component';
-export * from './lib/components/pages/components/create-buttons/components/create-conditions/create-conditions.component';
-export * from './lib/components/pages/components/create-buttons/components/create-condition/create-condition.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-buttons/create-buttons.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-button/create-button.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-conditions/create-conditions.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-condition/create-condition.component';
 
 // SERVICES
 export * from './lib/services/navigation/navigation.service';

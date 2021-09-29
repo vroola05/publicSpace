@@ -87,32 +87,42 @@ public class CallController extends Controller {
 		PageOverviewImpl pageOverwiew = (PageOverviewImpl)domainT.getPages().get(PageTypes.OVERVIEW.name);
 		Optional<PageOverviewTemplate> pageOverviewTemplateOptional = pageOverwiew.getPageOverviewTemplate().stream().filter(t -> t.getId() == id).findFirst();
 		if (!pageOverviewTemplateOptional.isPresent()) {
-			return null;
+			throw new BadRequestException();
 		}
 		PageOverviewTemplate pageOverviewTemplate = pageOverviewTemplateOptional.get();
 
 		CallListBuilder cb = new CallListBuilder();
 
+		// Attach the company
 		cb.with(new QueryParametersFieldFilter("companyId", QueryParametersFieldFilterType.NUMBER, QueryParametersFieldFilterOperator.EQUAL, new QueryParametersFilterValue(user.getCompany().getId())));
 
-		cb.sortBy("priority", Sort.Direction.DESC);
+		if (pageOverviewTemplate.isPersonal()) {
+			cb.with(new QueryParametersFieldFilter("userId", QueryParametersFieldFilterType.NUMBER, QueryParametersFieldFilterOperator.EQUAL, new QueryParametersFilterValue(user.getId())));
+		}
 
+		// Check for priority
+		if (pageOverviewTemplate.isPriority()) {
+			cb.sortBy("priority", Sort.Direction.DESC);
+		}
+
+		cb.sortBy("dateCreated", Sort.Direction.DESC);
+
+		// Attach stattusses
 		List<QueryParametersFilterValue> statusList = new ArrayList<QueryParametersFilterValue>();
 		pageOverviewTemplate.getStatusses().forEach(status -> {
 			statusList.add(new QueryParametersFilterValue(status.getId()));
 		});
 		cb.with(new QueryParametersFieldFilter("statusId", QueryParametersFieldFilterType.NUMBER, statusList));
 
-		cb.sortBy("dateCreated", Sort.Direction.DESC);
-
+		// Add additional filters
 		List<QueryParametersFieldFilter> filters = queryParameters.getFilters();
 		if (filters != null) {
 			for (QueryParametersFieldFilter filter: filters) {
 				cb.with(filter);
 			}
 		}
-
-		org.springframework.data.domain.Page<CallList> v = callListRepository.findAll(cb.build(), cb.getPage(queryParameters.getOffset(), queryParameters.getSize()));
+		
+		org.springframework.data.domain.Page<CallList> v = callListRepository.findAll(cb.build(), cb.getPage(queryParameters.getOffset(), queryParameters.getSize() <= 0 ? 50 : queryParameters.getSize()));
 		return v.getContent();
 	}
 

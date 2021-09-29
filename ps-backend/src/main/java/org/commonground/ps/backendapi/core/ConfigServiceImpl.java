@@ -47,6 +47,12 @@ public class ConfigServiceImpl implements ConfigService {
     return getFromStore(domain);
   }
 
+
+  @Override
+  public void update(String domain) throws SecurityException {
+    getFromStore(domain);
+  }
+
   private Template getFromStore(String domain) throws SecurityException {
     String file = "/configs/" + domain.replaceAll("/", "-") + ".json";
     ObjectMapper mapper = new ObjectMapper();

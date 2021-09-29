@@ -7,3 +7,5 @@ psql -h localhost -U postgres -f insert-static-tables.sql
 # Insert inital domain
 psql -h localhost -U postgres -f insert-domain-tables.sql
 psql -h localhost -U postgres -f insert-domain-initial-setup-tables.sql
+
+psql -h localhost -U postgres -f insert-test-data.sql

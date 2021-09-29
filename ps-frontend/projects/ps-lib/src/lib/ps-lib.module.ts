@@ -99,37 +99,37 @@ import { OrderHandleNoLoginComponent } from './components/pages/order/handling/o
 import { OrderHandleComponent } from './components/pages/order/handling/order-handle/order-handle.component';
 import { SettingsStartComponent } from './components/pages/settings/settings-start/settings-start.component';
 import { SettingsButtonComponent } from './components/pages/settings/components/settings-button/settings-button.component';
-import { PanelSettingsUsersComponent } from './components/panel/components/panel-settings-users/panel-settings-users.component';
+import { PanelSettingsUsersComponent } from './components/pages/settings/components/panel-settings-users/panel-settings-users.component';
 import { RouterModule } from '@angular/router';
 import { EnvironmentService } from './services/environment/environment.service';
 
-import { PanelSettingsComponent } from './components/panel/components/panel-settings/panel-settings.component';
-import { PanelSettingsCompaniesComponent } from './components/panel/components/panel-settings-companies/panel-settings-companies.component';
-import { PanelSettingsDomainsComponent } from './components/panel/components/panel-settings-domains/panel-settings-domains.component';
+import { PanelSettingsComponent } from './components/pages/settings/components/panel-settings/panel-settings.component';
+import { PanelSettingsCompaniesComponent } from './components/pages/settings/components/panel-settings-companies/panel-settings-companies.component';
+import { PanelSettingsDomainsComponent } from './components/pages/settings/components/panel-settings-domains/panel-settings-domains.component';
 import { ListPanelDomainComponent } from './components/list/components/list-panel-domain/list-panel-domain.component';
 import { ListPanelUserComponent } from './components/list/components/list-panel-user/list-panel-user.component';
 import { ListPanelCompanyComponent } from './components/list/components/list-panel-company/list-panel-company.component';
-import { PanelSettingsGroupsComponent } from './components/panel/components/panel-settings-groups/panel-settings-groups.component';
+import { PanelSettingsGroupsComponent } from './components/pages/settings/components/panel-settings-groups/panel-settings-groups.component';
 import { ListPanelGroupComponent } from './components/list/components/list-panel-group/list-panel-group.component';
-import { PanelSettingsMainCategoryComponent } from './components/panel/components/panel-settings-main-category/panel-settings-main-category.component';
+import { PanelSettingsMainCategoryComponent } from './components/pages/settings/components/panel-settings-main-category/panel-settings-main-category.component';
 import { ListPanelMainCategoryComponent } from './components/list/components/list-panel-main-category/list-panel-main-category.component';
-import { PanelSettingsCategoryComponent } from './components/panel/components/panel-settings-category/panel-settings-category.component';
+import { PanelSettingsCategoryComponent } from './components/pages/settings/components/panel-settings-category/panel-settings-category.component';
 import { ListPanelCategoryComponent } from './components/list/components/list-panel-category/list-panel-category.component';
 import { DateFieldComponent } from './components/fields/date-field/date-field.component';
-import { PanelSettingsStatusComponent } from './components/panel/components/panel-settings-status/panel-settings-status.component';
+import { PanelSettingsStatusComponent } from './components/pages/settings/components/panel-settings-status/panel-settings-status.component';
 import { ListPanelStatusComponent } from './components/list/components/list-panel-status/list-panel-status.component';
-import { PanelSettingsActionsComponent } from './components/panel/components/panel-settings-actions/panel-settings-actions.component';
+import { PanelSettingsActionsComponent } from './components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 import { ListPanelActionComponent } from './components/list/components/list-panel-action/list-panel-action.component';
-import { PanelSettingsPagesComponent } from './components/panel/components/panel-settings-pages/panel-settings-pages.component';
-import { ListPanelPagesComponent } from './components/list/components/list-panel-pages/list-panel-pages.component';
-import { CreateButtonsComponent } from './components/pages/components/create-buttons/create-buttons.component';
-import { CreateButtonComponent } from './components/pages/components/create-buttons/components/create-button/create-button.component';
-import { CreateConditionsComponent } from './components/pages/components/create-buttons/components/create-conditions/create-conditions.component';
-import { CreateConditionComponent } from './components/pages/components/create-buttons/components/create-condition/create-condition.component';
+import { PanelSettingsPagesComponent } from './components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
+import { ListPanelPagesComponent } from './components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
+import { CreateButtonsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/create-buttons.component';
+import { CreateButtonComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-button/create-button.component';
+import { CreateConditionsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-conditions/create-conditions.component';
+import { CreateConditionComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-condition/create-condition.component';
 import { PanelPageOverviewComponent } from './components/panel/components/panel-page-overview/panel-page-overview.component';
-import { ListPanelPagesOverviewComponent } from './components/list/components/list-panel-pages-overview/list-panel-pages-overview.component';
-import { CreateOverviewColumnsComponent } from './components/pages/components/create-overview-columns/create-overview-columns.component';
-import { CreateOverviewColumnComponent } from './components/pages/components/create-overview-column/create-overview-column.component';
+import { ListPanelPagesOverviewComponent } from './components/pages/settings/components/panel-settings-pages/components/list-panel-pages-overview/list-panel-pages-overview.component';
+import { CreateOverviewColumnsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';
+import { CreateOverviewColumnComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
 
 @NgModule({
   declarations: [

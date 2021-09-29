@@ -15,11 +15,11 @@
     <div class="row ps-table-row" [ngClass]="{'selected': selected(rowIndex), 'priority': isPrio(row)}">
       <div (click)="onClick($event, rowIndex)" class="col ps-table-cell {{column.css}} {{column.mobile}}"
         *ngFor="let column of columns">
-        <div *ngIf="column.type=='text'" class="ps-table-cell-element col-text">{{getValue(column.id, row)}}</div>
-        <span *ngIf="column.type=='date'" class="ps-table-cell-element">{{date(column.id, row)}}</span>
-        <span *ngIf="column.type=='date-as-days'" class="ps-table-cell-element">{{dateAsDays(column.id, row)}}</span>
-        <span *ngIf="column.type=='string' || column.type=='number'" class="ps-table-cell-element">{{getValue(column.id, row)}}</span>
-        <span *ngIf="column.type=='boolean'" class="ps-table-cell-element">{{boolean(column.id, row)}}</span>
+        <div *ngIf="column.type=='text'" class="ps-table-cell-element col-text">{{getValue(column.name, row)}}</div>
+        <span *ngIf="column.type=='date'" class="ps-table-cell-element">{{date(column.name, row)}}</span>
+        <span *ngIf="column.type=='date-as-days'" class="ps-table-cell-element">{{dateAsDays(column.name, row)}}</span>
+        <span *ngIf="column.type=='string' || column.type=='number'" class="ps-table-cell-element">{{getValue(column.name, row)}}</span>
+        <span *ngIf="column.type=='boolean'" class="ps-table-cell-element">{{boolean(column.name, row)}}</span>
       </div>
     </div>
     <div class="row ps-table-panel-row" [ngClass]="{'selected': selected(rowIndex)}">

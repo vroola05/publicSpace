@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.commonground.ps.backendapi.core.ConfigService;
 import org.commonground.ps.backendapi.core.PageService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
@@ -22,6 +23,7 @@ import org.commonground.ps.backendapi.jpa.repositories.PageTypeRepository;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
+import org.commonground.ps.backendapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +52,9 @@ public class PageController extends Controller {
 
 	@Autowired
 	private PageButtonTypeRepository pageButtonTypeRepository;
+
+	@Autowired
+	ConfigService configService;
 
 	@Secured(identifier = "getPages")
 	@GetMapping()
@@ -129,7 +134,7 @@ public class PageController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
-		@Valid @RequestBody PageOverviewImpl page) throws BadRequestException {
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
 		return putPage(companyId, domainId, pageId, page);
 	}
 
@@ -140,7 +145,12 @@ public class PageController extends Controller {
 		Page page
 	) throws BadRequestException {
 		isValid(companyId, domainId);
-		return pageService.updatePage(domainId, pageId, page);
+		User user = getUser();
+		
+		Page result = pageService.updatePage(domainId, pageId, page);
+
+		configService.update(user.getDomain().getDomain());
+		return result;
 	}
 
 	

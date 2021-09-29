@@ -38,4 +38,8 @@ public class CallEntity {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "status_id", referencedColumnName = "id")
   private StatusEntity status;
+
+  @ManyToOne(fetch=FetchType.LAZY)
+  @JoinColumn(name="user_id", referencedColumnName = "id")
+  private UserEntity user;
 }
