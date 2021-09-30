@@ -62,10 +62,7 @@ export class CreateConditionComponent implements OnInit {
           this.fieldComponent.select(null);
           return;
         }
-        const item = this._fields.find( type => !type.data || type.data === this._condition.field);
-        if (item) {
-          this.fieldComponent.select(item);
-        }
+        this.fieldComponent.select(this._fields.find( type => !type.data || type.data === this._condition.field));
       }  
     });
 
@@ -78,10 +75,7 @@ export class CreateConditionComponent implements OnInit {
           this.operatorComponent.select(null);
           return;
         }
-        const item = this._operators.find( type => !type.data || type.data === this._condition.operator);
-        if (item) {
-          this.operatorComponent.select(item);
-        }
+        this.operatorComponent.select(this._operators.find( type => !type.data || type.data === this._condition.operator));
       }  
     });
   }

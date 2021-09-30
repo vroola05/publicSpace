@@ -42,9 +42,9 @@ export class AppComponent {
         } else {
           //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
 
-          if (this.storage.getSession('haslogin') !== '1' && this.navigationService.getHeaderItems().length > 0) {
+          if (this.storage.getSession('haslogin') !== '1' && this.config.headers.length > 0) {
             this.storage.setSession('haslogin', '1');
-            this.navigationService.navigate(['/overview/' + this.navigationService.getHeaderItems()[0].id]);
+            this.navigationService.navigate(['/overview/' + this.config.headers[0].id]);
           }
           this.loaded = true;
           this.setNavigationGroups();

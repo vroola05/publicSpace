@@ -18,6 +18,11 @@
                 [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="50"
                 (changed)="onRouteChanged($event)" #routeComponent></lib-text-field>
         </div>
+        <h4>Lijst grootte</h4>
+        <div class="field-wrapper">
+            <lib-dropdown-field [name]="'size'" [placeholder]="'Lijst grootte'" [options]="_sizes" [required]="true"
+                (changed)="onSizeChanged($event)" #sizeComponent></lib-dropdown-field>
+        </div>
         <h4>Status</h4>
         <div class="field-wrapper">
             <lib-select-field class="statusses-list" (changed)="onStatussesChanged($event)" [search]="false"

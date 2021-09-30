@@ -106,11 +106,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
         this.groupComponent.select(null);
         return;
       }
-
-      const item = this.groupItems.find( type => !type.data || type.data.id === this._category.group.id);
-      if (item) {
-        this.groupComponent.select(item);
-      }
+      this.groupComponent.select(this.groupItems.find( type => !type.data || type.data.id === this._category.group.id));
     }
   }
 

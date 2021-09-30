@@ -67,8 +67,6 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
       this.page = this.config.template.pages.get(PageTypes.overview)
     }
 
-    //this.filterService.setListsize(this.overview.listSize ? this.overview.listSize : 50);
-
     this.search = this.filterService.getSearch();
   }
 
@@ -78,6 +76,8 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
 
     this.pageTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
     
+    this.filterService.setListsize(this.pageTemplate.size ? this.pageTemplate.size : 50);
+
     this.listTemplate = {
       id: String(this.pageTemplate.id),
       toggle: this.pageTemplate.toggle,

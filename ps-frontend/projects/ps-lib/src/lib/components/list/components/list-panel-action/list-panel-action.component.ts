@@ -57,12 +57,8 @@ export class ListPanelActionComponent implements OnInit {
       this.statusComponent.select(null);
       return;
     }
-
     if ( this.statusComponent) {
-      const item = this.statusItems.find( type => !type.data || type.data.id === this._action.status.id);
-      if (item) {
-        this.statusComponent.select(item);
-      }
+      this.statusComponent.select(this.statusItems.find( type => !type.data || type.data.id === this._action.status.id));
     }
   }
 

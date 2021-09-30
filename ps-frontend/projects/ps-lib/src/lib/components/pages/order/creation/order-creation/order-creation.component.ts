@@ -140,14 +140,11 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     if (this.orders && this.orders[this.index] && this.orders[this.index].contractor) {
       setTimeout(() => {
         if (this.actions) {
-          const item = this.actionItems.find(action => {
+          this.actions.select(this.actionItems.find(action => {
             return (this.orders[this.index].contractor.contractorGroup
               && action.value === this.orders[this.index].contractor.contractorGroup)
               || action.value === '' + this.orders[this.index].contractor.id;
-          });
-          if (item) {
-            this.actions.select(item);
-          }
+          }));
         }
       });
     }
@@ -157,10 +154,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     if (this.orders && this.orders[this.index] && this.orders[this.index].contractor) {
       setTimeout(() => {
         if (this.options) {
-          const item = this.optionItems.find(action => action.value === '' + this.orders[this.index].contractor.id);
-          if (item) {
-            this.options.select(item);
-          }
+          this.options.select(this.optionItems.find(action => action.value === '' + this.orders[this.index].contractor.id));
         }
       });
     }

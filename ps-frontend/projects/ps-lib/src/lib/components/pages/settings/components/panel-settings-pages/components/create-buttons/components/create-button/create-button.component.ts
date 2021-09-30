@@ -68,11 +68,7 @@ export class CreateButtonComponent implements OnInit {
           this.buttonTypeComponent.select(null);
           return;
         }
-
-        const item = this._buttonTypeItems.find(type => !type.data || type.data === this._button.type);
-        if (item) {
-          this.buttonTypeComponent.select(item);
-        }
+        this.buttonTypeComponent.select(this._buttonTypeItems.find(type => !type.data || type.data === this._button.type));
       }
     });
   }
@@ -85,10 +81,7 @@ export class CreateButtonComponent implements OnInit {
           return;
         }
 
-        const item = this._actionTypeItems.find(type => !type.data || type.data.id === this._button.action.id);
-        if (item) {
-          this.actionComponent.select(item);
-        }
+        this.actionComponent.select(this._actionTypeItems.find(type => !type.data || type.data.id === this._button.action.id));
       }
     });
   }

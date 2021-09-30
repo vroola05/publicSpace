@@ -16,6 +16,7 @@ public class PageOverviewTemplate {
   protected boolean toggle;
   protected boolean priority;
   protected boolean personal;
+  protected Long size;
   
   private List<Status> statusses = new ArrayList<>();
   protected List<PageOverviewColumn> columns = new ArrayList<>();

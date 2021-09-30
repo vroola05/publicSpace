@@ -1005,6 +1005,7 @@ CREATE TABLE public.page_overview (
     name text NOT NULL,
     icon text NOT NULL,
     toggle boolean,
+    size integer NOT NULL,
     route text,
     priority boolean,
     personal boolean,

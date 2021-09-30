@@ -7,7 +7,9 @@ import { TransformService } from '../../../../../../../services/transform/transf
 
 import { PageOverviewTemplate } from '../../../../../../../../model/page-overview-template';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
+import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { Status } from 'projects/ps-lib/src/model/status';
+
 
 @Component({
   selector: 'lib-list-panel-pages-overview',
@@ -17,8 +19,9 @@ import { Status } from 'projects/ps-lib/src/model/status';
 export class ListPanelPagesOverviewComponent implements OnInit {
   @ViewChild('nameComponent') nameComponent: TextareaFieldComponent;
   @ViewChild('routeComponent') routeComponent: TextareaFieldComponent;
-  
-  @Output() changed: EventEmitter<{action: string, index: number, pageOverviewTemplate: PageOverviewTemplate}> = new EventEmitter<{action: string, index: number, pageOverviewTemplate: PageOverviewTemplate}>();
+  @ViewChild('sizeComponent') sizeComponent: DropdownFieldComponent;
+
+  @Output() changed: EventEmitter<{ action: string, index: number, pageOverviewTemplate: PageOverviewTemplate }> = new EventEmitter<{ action: string, index: number, pageOverviewTemplate: PageOverviewTemplate }>();
 
   public _pageOverviewTemplate: PageOverviewTemplate;
   @Input() set pageOverviewTemplate(pageOverviewTemplate: any) {
@@ -33,7 +36,15 @@ export class ListPanelPagesOverviewComponent implements OnInit {
       this._statusItems.push({ name: roleItem.name, value: roleItem.value, selected: roleItem.selected, data: roleItem.data });
     });
     this.selectStatusses();
+    this.selectSize();
   }
+
+  public _sizes: { name: string, value?: string, data?: any }[] = [
+    { name: '25', value: '', data: 25 },
+    { name: '50', value: '', data: 50 },
+    { name: '75', value: '', data: 75 },
+    { name: '100', value: '', data: 100 }
+  ];
 
   constructor(
     private apiService: ApiService,
@@ -65,12 +76,24 @@ export class ListPanelPagesOverviewComponent implements OnInit {
 
   public selectStatusses() {
     setTimeout(() => {
-    if (this._pageOverviewTemplate.statusses) {
-      this._statusItems.forEach(statusItem => {
-        statusItem.selected = this.hasStatus(statusItem.data.id);
-      });
-    }
-  });
+      if (this._pageOverviewTemplate.statusses) {
+        this._statusItems.forEach(statusItem => {
+          statusItem.selected = this.hasStatus(statusItem.data.id);
+        });
+      }
+    });
+  }
+
+  public selectSize() {
+    setTimeout(() => {
+      if (this.sizeComponent) {
+        if (!this._pageOverviewTemplate) {
+          this.sizeComponent.select(null);
+          return;
+        }
+        this.sizeComponent.select(this._sizes.find( type => !type.data || type.data === this._pageOverviewTemplate.size));
+      }  
+    });
   }
 
   public onNameChanged($event): void {
@@ -116,6 +139,11 @@ export class ListPanelPagesOverviewComponent implements OnInit {
     this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }
 
+  public onSizeChanged($event) {
+    this._pageOverviewTemplate.size = $event.data;
+    this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
+  }
+
   public onPriorityChanged($event): void {
     this._pageOverviewTemplate.priority = $event;
     this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
@@ -128,7 +156,7 @@ export class ListPanelPagesOverviewComponent implements OnInit {
 
   public onColumnsChanged($event): void {
     switch ($event.action) {
-      case 'changed': 
+      case 'changed':
         this._pageOverviewTemplate.columns = $event.columns;
         this.changed.emit({ action: 'changed', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
         break;

@@ -57,6 +57,7 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 		pageOverviewEntity.setPriority(pageOverviewTemplate.isPriority());
 		pageOverviewEntity.setToggle(pageOverviewTemplate.isToggle());
 		pageOverviewEntity.setPersonal(pageOverviewTemplate.isPersonal());
+		pageOverviewEntity.setSize(pageOverviewTemplate.getSize());
 		pageOverviewEntity.setSort(sort);
 		
 		statusService.convertPageOverviewStatusses(domainId, pageOverviewTemplate, pageOverviewEntity);

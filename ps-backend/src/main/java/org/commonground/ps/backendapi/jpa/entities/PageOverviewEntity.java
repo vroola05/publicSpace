@@ -23,7 +23,7 @@ public class PageOverviewEntity {
   private Boolean toggle;
   private Boolean priority;
   private Boolean personal;
-  
+  private Long size;
   private Long sort;
 
   @ManyToOne(fetch = FetchType.LAZY)

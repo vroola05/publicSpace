@@ -293,6 +293,7 @@ public class Convert {
         pageOverviewTemplate.setToggle(pageOverviewEntity.getToggle());
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
         pageOverviewTemplate.setPersonal(pageOverviewEntity.getPersonal());
+        pageOverviewTemplate.setSize(pageOverviewEntity.getSize());
         List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
         
         List<Status> statusses = new ArrayList<Status>();

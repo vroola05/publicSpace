@@ -10,6 +10,7 @@ export class PageOverviewTemplate {
     public toggle?: boolean;
     public priority?: boolean;
     public personal?: boolean;
+    public size: number;
 
     public statusses?: Status[] = [];
     public columns?: PageOverviewColumns[] = [];

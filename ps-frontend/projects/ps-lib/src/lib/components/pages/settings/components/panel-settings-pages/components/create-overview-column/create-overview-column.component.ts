@@ -72,10 +72,7 @@ export class CreateOverviewColumnComponent implements OnInit {
           this.nameComponent.select(null);
           return;
         }
-        const item = this._name.find( type => !type.data || type.data === this._column.name);
-        if (item) {
-          this.nameComponent.select(item);
-        }
+        this.nameComponent.select(this._name.find( type => !type.data || type.data === this._column.name));
       }  
     });
   }
@@ -87,10 +84,7 @@ export class CreateOverviewColumnComponent implements OnInit {
           this.typeComponent.select(null);
           return;
         }
-        const item = this._types.find( type => !type.data || type.data === this._column.type);
-        if (item) {
-          this.typeComponent.select(item);
-        }
+        this.typeComponent.select(this._types.find( type => !type.data || type.data === this._column.type));
       }  
     });
   }
@@ -102,10 +96,7 @@ export class CreateOverviewColumnComponent implements OnInit {
           this.filterComponent.select(null);
           return;
         }
-        const item = this._filters.find( type => !type.data || type.data === this._column.filter);
-        if (item) {
-          this.filterComponent.select(item);
-        }
+        this.filterComponent.select(this._filters.find( type => !type.data || type.data === this._column.filter));
       }  
     });
   }
@@ -117,10 +108,7 @@ export class CreateOverviewColumnComponent implements OnInit {
           this.mobileComponent.select(null);
           return;
         }
-        const item = this._mobile.find( type => !type.data || type.data === this._column.mobile);
-        if (item) {
-          this.mobileComponent.select(item);
-        }
+        this.mobileComponent.select(this._mobile.find( type => !type.data || type.data === this._column.mobile));
       }  
     });
   }

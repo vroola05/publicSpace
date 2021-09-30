@@ -6,3 +6,5 @@ set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f insert-static
 # Insert inital domain
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f insert-domain-tables.sql
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f insert-domain-initial-setup-tables.sql
+
+set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f insert-test-data.sql

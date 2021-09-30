@@ -106,7 +106,7 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
   }
 
   public select(option: {name: string, value?: string, data?: any}): void {
-    if (option !== null && this._options.length > 0 && this._options.indexOf(option) >= 0) {
+    if (option && this._options.length > 0 && this._options.indexOf(option) >= 0) {
       this._selected = option;
       this.value = option.name;
       this.changed.emit(this._selected);

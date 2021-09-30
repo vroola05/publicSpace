@@ -60,12 +60,8 @@ export class ListPanelDomainComponent implements OnInit {
       this.domainTypeComponent.select(null);
       return;
     }
-
     if ( this.domainTypeComponent) {
-      const item = this.domainTypeItems.find( type => type.data.id === this._domain.domainType.id);
-      if (item) {
-        this.domainTypeComponent.select(item);
-      }
+      this.domainTypeComponent.select(this.domainTypeItems.find( type => type.data.id === this._domain.domainType.id));
     }
   }
 
