@@ -8,6 +8,7 @@ import { PageButtonCondition } from '../../../../../../../../../../model/page-bu
 })
 export class CreateConditionsComponent implements OnInit {
   @Input() public conditions: PageButtonCondition[] = [];
+  @Input() public prefix: string = '';
 
   @Output() changed: EventEmitter<{action: string, conditions: PageButtonCondition[]}> = new EventEmitter<{action: string, conditions: PageButtonCondition[]}>();
   
@@ -16,6 +17,9 @@ export class CreateConditionsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
+  }
   
   public onConditionChanged($event: {action: string, index: number, condition: PageButtonCondition}): void {
     switch($event.action) {

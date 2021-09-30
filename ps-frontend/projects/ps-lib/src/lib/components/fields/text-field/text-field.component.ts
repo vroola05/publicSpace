@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FieldAbstract } from '../field-abstract';
+import { ValidationService } from '../../../services/validation/validation.service'
 
 @Component({
   selector: 'lib-text-field',
@@ -11,8 +12,8 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
   @Input() icon = '';
   @Input() type: 'text' | 'number' | 'time' = 'text';
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
     this.value = '';
   }
 

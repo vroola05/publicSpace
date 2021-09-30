@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FieldAbstract } from '../field-abstract';
 import { setupTestingRouter } from '@angular/router/testing';
+import { ValidationService } from '../../../services/validation/validation.service';
 
 @Component({
   selector: 'lib-checkbox-field',
@@ -10,8 +11,8 @@ import { setupTestingRouter } from '@angular/router/testing';
 export class CheckboxFieldComponent extends FieldAbstract implements OnInit, OnDestroy {
   @Input() type: 'checkbox' | 'radio' = 'checkbox';
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
   }
 
   public ngOnInit(): void {

@@ -2,6 +2,7 @@ package org.commonground.ps.backendapi.model;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,11 +15,13 @@ public class PageImpl implements Page {
   @NotNull(message = "Waarde is verplicht")
   protected Long id;
   @NotNull(message = "Waarde is verplicht")
-  @Size(min = 1, max = 10, message = "Waarde is minimaal 1 en maximaal 50 tekens")
+  @Size(min = 1, max = 100, message = "Waarde is minimaal 1 en maximaal 100 tekens")
   protected String name;
   protected PageType pageType;
   
+  @Valid
   protected List<PageButton> buttonsLeft;
+  @Valid
   protected List<PageButton> buttonsRight;
   
 

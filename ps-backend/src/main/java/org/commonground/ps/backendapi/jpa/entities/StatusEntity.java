@@ -22,8 +22,6 @@ public class StatusEntity {
   @SequenceGenerator(name = "seq_status_id", sequenceName = "seq_status_id", allocationSize = 1)
   private Long id;
   private String name;
-  private String icon;
-  private String title;
 
   @ManyToOne(fetch = FetchType.EAGER)
   private DomainEntity domain;

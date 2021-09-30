@@ -11,19 +11,13 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Optional;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.commonground.ps.backendapi.core.ConfigService;
-import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
-import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
-import org.commonground.ps.backendapi.model.Domain;
 import org.commonground.ps.backendapi.model.Group;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented

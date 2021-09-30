@@ -1,6 +1,7 @@
 import { Input, OnInit, OnDestroy, Output, EventEmitter, Directive } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FieldError } from '../../../model/field-error';
+import { ValidationService } from '../../services/validation/validation.service';
 
 
 @Directive()
@@ -9,6 +10,7 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   public errors: FieldError[] = [];
+  @Input() form = 'default';
   @Input() style: 'default' | 'small' | 'filled' = 'default';
   @Input() id = '';
   @Input() name = '';
@@ -23,13 +25,24 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
   @Output() typing: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(protected validation: ValidationService) { }
 
   public ngOnInit(): void {
-
+    this.validation.register(this.form, this);
+    if (this.id && this.id.length > 0) {
+      this.subscriptions.push(this.validation.errorsAsObservable().subscribe(errors => {
+        this.errors = [];
+        errors.forEach(err => {
+          if (err.field === this.id) {
+            this.addError(err.value);
+          }
+        });
+      }));
+    }
   }
 
   public ngOnDestroy(): void {
+    this.validation.unregister(this.form,this);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -78,7 +91,7 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
       return false;
     }
     if (this.maxLength && value && value.length > this.maxLength ) {
-      this.errors.push({message: `De maximaal aantal tekens is ${this.maxLength}. Het huidig aantal tekens is ${value.length}`});
+      this.errors.push({message: `Het maximaal aantal tekens is ${this.maxLength}. Het huidig aantal tekens is ${value.length}`});
       return false;
     }
 

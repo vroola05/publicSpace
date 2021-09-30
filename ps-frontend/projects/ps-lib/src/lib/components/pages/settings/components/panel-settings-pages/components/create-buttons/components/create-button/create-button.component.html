@@ -3,31 +3,31 @@
     <div class="col-md-4">
         <h4>Naam</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [id]="'buttonName'" [name]="'buttonName'" [placeholder]="'Naam'"
-                [value]="_button?.name" [required]="true" [maxLength]="50" (changed)="onButtonNameChanged($event)"
+            <lib-text-field [style]="'filled'" [form]="'pages'" [id]="getId('name')" [name]="'buttonName'" [placeholder]="'Naam'"
+                [value]="_button?.name" [required]="true" [maxLength]="100" (changed)="onButtonNameChanged($event)"
                 #buttonNameComponent></lib-text-field>
         </div>
     </div>
     <div class="col-md-4">
         <h4>Type</h4>
         <div class="field-wrapper">
-            <lib-dropdown-field [id]="'byttonType'" [name]="'byttonType'" [placeholder]="'Type'"
-                [options]="_buttonTypeItems" (changed)="onButtonTypeChanged($event)" #buttonTypeComponent>
+            <lib-dropdown-field [id]="getId('type')" [form]="'pages'" [name]="'byttonType'" [placeholder]="'Type'"
+                [options]="_buttonTypeItems" [required]="true" (changed)="onButtonTypeChanged($event)" #buttonTypeComponent>
             </lib-dropdown-field>
         </div>
     </div>
     <div class="col-md-4">
         <h4>Route</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [id]="'buttonRoute'" [name]="'buttonRoute'" [placeholder]="'Route'"
-                [value]="_button?.route" [required]="true" [maxLength]="50" (changed)="onButtonRouteChanged($event)"
+            <lib-text-field [style]="'filled'" [form]="'pages'" [id]="getId('route')" [name]="'buttonRoute'" [placeholder]="'Route'"
+                [value]="_button?.route" [maxLength]="512" (changed)="onButtonRouteChanged($event)"
                 #buttonRouteComponent></lib-text-field>
         </div>
     </div>
     <div class="col-md-4">
         <h4>Actie</h4>
         <div class="field-wrapper">
-            <lib-dropdown-field [id]="'action'" [name]="'action'" [placeholder]="'Actie'" [options]="_actionTypeItems"
+            <lib-dropdown-field [id]="getId('action')" [form]="'pages'" [name]="'action'" [placeholder]="'Actie'" [options]="_actionTypeItems"
                 (changed)="onActionChanged($event)" #actionComponent>
             </lib-dropdown-field>
         </div>
@@ -35,14 +35,14 @@
     <div class="col-md-4">
         <h4>Rollen</h4>
         <div class="field-wrapper">
-            <lib-select-field class="roles-list" [id]="'roles'" (changed)="onRolesChanged($event)" [search]="false"
+            <lib-select-field class="roles-list" [id]="getId('role')" [form]="'pages'" (changed)="onRolesChanged($event)" [search]="false"
                 [name]="'roles'" [options]="_roleItems" [style]="'filled'"></lib-select-field>
         </div>
     </div>
     <div class="col-md-12">
         <h4>Condities</h4>
         <div class="field-wrapper">
-            <lib-create-conditions class="conditions-list" [conditions]="_button?.conditions"
+            <lib-create-conditions class="conditions-list" [prefix]="getId('conditions')" [conditions]="_button?.conditions"
                 (changed)="onConditionsChanged($event)"></lib-create-conditions>
         </div>
     </div>

@@ -6,6 +6,7 @@
                 <lib-list-panel-pages-overview
                   [pageOverviewTemplate]="p"
                   [index]="i"
+                  [prefix]="getId('[' + i + ']')"
                   (changed)="onPageOverviewTemplateChanged($event)"></lib-list-panel-pages-overview>
               </div>
           </div>

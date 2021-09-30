@@ -26,9 +26,9 @@ INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (3, 1, 3, 'Me
 -- Data for Name: page_overview; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (1, 1, 'Nieuwe meldingen', 'fiber_new', true, '', 50, true, false, 0);
-INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (2, 1, 'In behandeling', 'event', false, '', 50, true, true, 1);
-INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (3, 1, 'Zoek een melding', 'search', false, '', 50, false, false, 2);
+INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (1, 1, 'Nieuwe meldingen', 'fiber_new', true, 'details/${calllist.id}', 50, true, false, 0);
+INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (2, 1, 'In behandeling', 'event', false, 'details/${calllist.id}', 50, true, true, 1);
+INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (3, 1, 'Zoek een melding', 'search', false, 'details/${calllist.id}', 50, false, false, 2);
 
 --
 -- TOC entry 3160 (class 0 OID 37463)

@@ -20,6 +20,7 @@ export class CreateOverviewColumnComponent implements OnInit {
   @Output() changed: EventEmitter<{action: string, index: number, column: PageOverviewColumns}> = new EventEmitter<{action: string, index: number, column: PageOverviewColumns}>();
   
   @Input() public index: number;
+  @Input() public prefix: string = '';
 
   public _column: PageOverviewColumns;
   @Input() set column(column: PageOverviewColumns) {
@@ -63,6 +64,10 @@ export class CreateOverviewColumnComponent implements OnInit {
         this._name.push({ name: nameItem, value: '', data: nameItem });
       });
     }
+  }
+
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
   }
 
   public selectName() {

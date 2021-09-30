@@ -27,7 +27,9 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   @Input() set pageOverviewTemplate(pageOverviewTemplate: any) {
     this._pageOverviewTemplate = pageOverviewTemplate;
   }
+
   @Input() public index: number;
+  @Input() public prefix: string = '';
 
   public _statusItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
   @Input() set statusItems(statusItems: { name: string, value?: string, selected?: boolean, data?: any }[]) {
@@ -58,6 +60,9 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
+  }
 
   public getStatus(): void {
     const endpointT = this.config.getEndpoint('getStatus');
@@ -67,7 +72,7 @@ export class ListPanelPagesOverviewComponent implements OnInit {
       this.apiService.get(url).subscribe((statusses: Status[]) => {
         const roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
         statusses.forEach(status => {
-          roleItems.push({ name: status.title, value: String(status.id), data: status });
+          roleItems.push({ name: status.name, value: String(status.id), data: status });
         });
         this.statusItems = roleItems;
       });

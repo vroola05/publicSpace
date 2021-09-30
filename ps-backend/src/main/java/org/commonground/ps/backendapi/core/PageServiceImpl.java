@@ -35,19 +35,22 @@ public class PageServiceImpl implements PageService {
 	}
 
 	public Page updatePage(Long domainId, Long pageId, Page page) throws BadRequestException {
-	Optional<PageEntity> optionalPageEntity = pageRepository.getPageById(pageId, domainId);
+		Optional<PageEntity> optionalPageEntity = pageRepository.getPageById(pageId, domainId);
 		if (optionalPageEntity.isPresent()) {
 			PageEntity pageEntity = optionalPageEntity.get();
 			pageEntity.setName(page.getName());
 
-			pageButtonService.updatePageButtons("left", pageEntity, page.getButtonsLeft());
-			pageButtonService.updatePageButtons("right", pageEntity, page.getButtonsRight());
-
 			// Remove page buttons
 			pageEntity.getPageButtons()
 				.removeIf(pageButtonEntity -> 
-					page.getButtonsLeft().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId()) && 
-					page.getButtonsRight().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId()));
+					page.getButtonsLeft().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
+					&& page.getButtonsRight().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
+				);
+
+			pageButtonService.updatePageButtons("left", pageEntity, page.getButtonsLeft());
+			pageButtonService.updatePageButtons("right", pageEntity, page.getButtonsRight());
+
+			
 			
 			if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
 				pageOverviewService.updatePageOverviewPages(domainId, page, pageEntity);

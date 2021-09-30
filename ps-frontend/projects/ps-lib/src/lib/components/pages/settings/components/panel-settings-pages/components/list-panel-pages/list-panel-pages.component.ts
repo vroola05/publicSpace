@@ -4,8 +4,8 @@ import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { ValidationService } from '../../../../../../../services/validation/validation.service';
 
-import { first } from 'rxjs/operators';
 import { Page } from '../../../../../../../../model/page';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
 
@@ -35,8 +35,10 @@ export class ListPanelPagesComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private config: ConfigService,
+    private validation: ValidationService,
     protected authorisation: AuthorisationService,
-    protected transform: TransformService
+    protected transform: TransformService,
+    
   ) {
   }
 
@@ -46,7 +48,7 @@ export class ListPanelPagesComponent implements OnInit {
   public ngOnDestroy(): void {
     this.transform.deleteVariable('page');
   }
-  
+
   public onPageNameChanged($event) {
     if (this.pageNameComponent.validate()) {
       this._page.name = $event;
@@ -81,8 +83,7 @@ export class ListPanelPagesComponent implements OnInit {
   }
 
   public onSave($event): void {
-    const a = this.pageNameComponent.validate();
-    if (a) {
+    if (this.validation.validate('pages')) {
       this.transform.setVariable('page', this._page);
       this.put(this._page);
     }
@@ -93,6 +94,7 @@ export class ListPanelPagesComponent implements OnInit {
     if (this.authorisation.hasRoles(endpointT.roles)) {
       let url = this.transform.URL(endpointT.endpoint);
       this.apiService.put(url, page).subscribe((p: Page) => {
+        this.validation.errors = [];
         this.onEvent.emit({
           action: 'save',
           isNew: false,
@@ -108,13 +110,7 @@ export class ListPanelPagesComponent implements OnInit {
   public setErrors(response: any): void {
     if(response && response.error && response.error.errors) {
       const errors = response.error.errors as {field: string, value: string}[];
-      errors.forEach(error => {
-        switch(error.field) {
-          case 'status':
-            
-            break;
-        }
-      });
+      this.validation.errors = errors;
     }
   }
 }

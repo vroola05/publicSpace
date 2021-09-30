@@ -16,6 +16,8 @@ export class CreateConditionComponent implements OnInit {
   @Output() changed: EventEmitter<{action: string, index: number, condition: PageButtonCondition}> = new EventEmitter<{action: string, index: number, condition: PageButtonCondition}>();
   
   @Input() public index: number;
+  
+  @Input() public prefix: string = '';
 
   public _condition: PageButtonCondition;
   @Input() set condition(condition: PageButtonCondition) {
@@ -49,10 +51,14 @@ export class CreateConditionComponent implements OnInit {
     { name: 'Groter', value: 'gt', data: 'gt' },
     { name: 'Groter of gelijk', value: 'ge', data: 'ge' }
   ];
-  //'eq' | 'neq' | 'lt' | 'le' | 'gt' | 'ge'
+  
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
   }
 
   public selectField() {

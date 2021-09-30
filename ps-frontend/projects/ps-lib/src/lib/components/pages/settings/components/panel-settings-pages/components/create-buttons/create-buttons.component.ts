@@ -15,10 +15,12 @@ import { TransformService } from '../../../../../../../services/transform/transf
 })
 export class CreateButtonsComponent implements OnInit {
   
+  @Input() public prefix: string = '';
   @Input() public buttons: PageButton[];
 
   @Output() changed: EventEmitter<PageButton[]> = new EventEmitter<PageButton[]>();
   
+
   public buttonTypeItems: { name: string, value?: string, data?: any }[] = [];
   public actionTypeItems: { name: string, value?: string, data?: any }[] = [];
   public roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
@@ -37,7 +39,9 @@ export class CreateButtonsComponent implements OnInit {
     this.getRoles();
   }
 
-  
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
+  }
 
   public getButtonTypes(): void {
     const endpointT = this.config.getEndpoint('getButtonTypes');

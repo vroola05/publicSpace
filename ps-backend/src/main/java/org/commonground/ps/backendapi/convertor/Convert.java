@@ -226,8 +226,6 @@ public class Convert {
 
     status.setId(statusEntity.getId());
     status.setName(statusEntity.getName());
-    status.setIcon(statusEntity.getIcon());
-    status.setTitle(statusEntity.getTitle());
 
     return status;
   }
@@ -237,8 +235,6 @@ public class Convert {
 
     statusEntity.setId(status.getId());
     statusEntity.setName(status.getName());
-    statusEntity.setIcon(status.getIcon());
-    statusEntity.setTitle(status.getTitle());
 
     return statusEntity;
   }

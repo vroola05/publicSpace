@@ -2,25 +2,25 @@
     <div class="col-md-6 list-panel-block">
         <h4>Naam</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [name]="'name'" [placeholder]="'Naam'"
-                [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="50"
+            <lib-text-field [style]="'filled'" [id]="getId('name')" [name]="'name'" [placeholder]="'Naam'"
+                [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="100"
                 (changed)="onNameChanged($event)" #nameComponent></lib-text-field>
         </div>
         <h4>Icoon</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [name]="'icon'" [placeholder]="'Icoon'"
-                [value]="_pageOverviewTemplate?.icon" [required]="true" [maxLength]="50"
+            <lib-text-field [style]="'filled'" [id]="getId('icon')" [name]="'icon'" [placeholder]="'Icoon'"
+                [value]="_pageOverviewTemplate?.icon" [required]="true" [maxLength]="80"
                 (changed)="onIconChanged($event)" #iconComponent></lib-text-field>
         </div>
         <h4>Route</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [name]="'route'" [placeholder]="'Route'"
-                [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="50"
+            <lib-text-field [style]="'filled'" [id]="getId('route')" [name]="'route'" [placeholder]="'Route'"
+                [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="1000"
                 (changed)="onRouteChanged($event)" #routeComponent></lib-text-field>
         </div>
         <h4>Lijst grootte</h4>
         <div class="field-wrapper">
-            <lib-dropdown-field [name]="'size'" [placeholder]="'Lijst grootte'" [options]="_sizes" [required]="true"
+            <lib-dropdown-field [id]="getId('size')" [name]="'size'" [placeholder]="'Lijst grootte'" [options]="_sizes" [required]="true"
                 (changed)="onSizeChanged($event)" #sizeComponent></lib-dropdown-field>
         </div>
         <h4>Status</h4>
@@ -50,7 +50,7 @@
     <div class="col-md-12">
         <h4>Kolommen</h4>
         <div class="field-wrapper">
-            <lib-create-overview-columns class="conditions-list" [columns]="_pageOverviewTemplate?.columns"
+            <lib-create-overview-columns class="conditions-list" [prefix]="getId('columns')" [columns]="_pageOverviewTemplate?.columns"
                 (changed)="onColumnsChanged($event)"></lib-create-overview-columns>
         </div>
     </div>

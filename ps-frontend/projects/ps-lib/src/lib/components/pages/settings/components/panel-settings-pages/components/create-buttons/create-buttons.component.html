@@ -8,6 +8,7 @@
                     [actionTypeItems]="actionTypeItems"
                     [roleItems]="roleItems"
                     [index]="i"
+                    [prefix]="getId('[' +i + ']')"
                     (changed)="onButtonChanged($event)"></lib-create-button>
                 </div>
             </div>

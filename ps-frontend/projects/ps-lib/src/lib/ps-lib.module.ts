@@ -117,7 +117,7 @@ import { PanelSettingsCategoryComponent } from './components/pages/settings/comp
 import { ListPanelCategoryComponent } from './components/list/components/list-panel-category/list-panel-category.component';
 import { DateFieldComponent } from './components/fields/date-field/date-field.component';
 import { PanelSettingsStatusComponent } from './components/pages/settings/components/panel-settings-status/panel-settings-status.component';
-import { ListPanelStatusComponent } from './components/list/components/list-panel-status/list-panel-status.component';
+import { ListPanelStatusComponent } from './components/pages/settings/components/panel-settings-status/components/list-panel-status/list-panel-status.component';
 import { PanelSettingsActionsComponent } from './components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 import { ListPanelActionComponent } from './components/list/components/list-panel-action/list-panel-action.component';
 import { PanelSettingsPagesComponent } from './components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
@@ -126,10 +126,11 @@ import { CreateButtonsComponent } from './components/pages/settings/components/p
 import { CreateButtonComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-button/create-button.component';
 import { CreateConditionsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-conditions/create-conditions.component';
 import { CreateConditionComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-condition/create-condition.component';
-import { PanelPageOverviewComponent } from './components/panel/components/panel-page-overview/panel-page-overview.component';
+import { PanelPageOverviewComponent } from './components/pages/settings/components/panel-settings-pages/components/panel-page-overview/panel-page-overview.component';
 import { ListPanelPagesOverviewComponent } from './components/pages/settings/components/panel-settings-pages/components/list-panel-pages-overview/list-panel-pages-overview.component';
 import { CreateOverviewColumnsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';
 import { CreateOverviewColumnComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
+import { ValidationService } from './services/validation/validation.service';
 
 @NgModule({
   declarations: [
@@ -368,7 +369,8 @@ export class PsLibModule {static forRoot(): ModuleWithProviders<PsLibModule> {
       ToastService,
       NotificationService,
       TransformService,
-      EnvironmentService
+      EnvironmentService,
+      ValidationService
     ]
   };
 }}

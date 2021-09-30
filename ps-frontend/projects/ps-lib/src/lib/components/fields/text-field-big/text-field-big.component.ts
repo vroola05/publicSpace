@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
+import { ValidationService } from '../../../services/validation/validation.service';
 import { FieldAbstract } from '../field-abstract';
 
 @Component({
@@ -10,8 +11,8 @@ export class TextFieldBigComponent extends FieldAbstract implements OnInit, OnDe
   @ViewChild('fieldRef') public fieldRef: ElementRef;
   @Input() icon = '';
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
     this.value = '';
   }
 

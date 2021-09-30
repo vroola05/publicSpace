@@ -119,7 +119,6 @@ export class ConfigService {
 
       });
       this._headers = header;
-      console.log(this._headers);
     }
     
     return template;

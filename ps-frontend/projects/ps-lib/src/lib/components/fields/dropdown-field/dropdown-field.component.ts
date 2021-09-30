@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ValidationService } from '../../../services/validation/validation.service';
 import { FieldAbstract } from '../field-abstract';
 
 @Component({
@@ -30,8 +31,8 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
     return this._selected;
   }
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
     this.value = '';
   }
 

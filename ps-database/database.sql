@@ -210,9 +210,7 @@ ALTER TABLE public.user_groups OWNER TO postgres;
 CREATE TABLE public.status (
     id integer NOT NULL,
     name text NOT NULL,
-    domain_id integer NOT NULL,
-    icon text,
-    title text
+    domain_id integer NOT NULL
 );
 
 ALTER TABLE public.status OWNER TO postgres;

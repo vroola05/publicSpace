@@ -9,6 +9,7 @@ import { PageOverviewColumns } from 'projects/ps-lib/src/model/page-overview-col
 export class CreateOverviewColumnsComponent implements OnInit {
 
   @Input() public columns: PageOverviewColumns[] = [];
+  @Input() public prefix: string = '';
 
   @Output() changed: EventEmitter<{action: string, columns: PageOverviewColumns[]}> = new EventEmitter<{action: string, columns: PageOverviewColumns[]}>();
   
@@ -17,6 +18,9 @@ export class CreateOverviewColumnsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
+  }
   
   public onColumnsChanged($event: {action: string, index: number, columns: PageOverviewColumns}): void {
     switch($event.action) {

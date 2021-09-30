@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ButtonTypes } from '../../../../model/intefaces';
+import { ValidationService } from '../../../services/validation/validation.service';
 import { FieldAbstract } from '../field-abstract';
 
 @Component({
@@ -13,8 +14,8 @@ export class FileFieldComponent extends FieldAbstract implements OnInit, OnDestr
   public buttonTypes = ButtonTypes;
   @Input() files: File[] = [];
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
     this.value = '';
   }
 

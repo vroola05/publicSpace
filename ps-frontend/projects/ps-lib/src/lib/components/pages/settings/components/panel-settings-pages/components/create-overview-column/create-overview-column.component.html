@@ -4,14 +4,14 @@
             <div class="col-md-4">
                 <h4>Naam</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'name'" [placeholder]="'Naam'" [options]="_name" [required]="true"
+                    <lib-dropdown-field [id]="getId('name')" [name]="'name'" [placeholder]="'Naam'" [options]="_name" [required]="true"
                         (changed)="onNameChanged($event)" #nameComponent></lib-dropdown-field>
                 </div>
             </div>
             <div class="col-md-4">
                 <h4>Titel</h4>
                 <div class="field-wrapper">
-                    <lib-text-field [style]="'filled'" [name]="'title'" [placeholder]="'Titel'" [value]="_column?.title"
+                    <lib-text-field [style]="'filled'" [id]="getId('title')" [name]="'title'" [placeholder]="'Titel'" [value]="_column?.title"
                         [required]="true" [maxLength]="50" (changed)="onTitleChanged($event)" #titleComponent>
                     </lib-text-field>
                 </div>
@@ -19,21 +19,21 @@
             <div class="col-md-4">
                 <h4>Type</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'type'" [placeholder]="'Type'" [options]="_types" [required]="true"
+                    <lib-dropdown-field [name]="'type'" [id]="getId('type')" [placeholder]="'Type'" [options]="_types" [required]="true"
                         (changed)="onTypeChanged($event)" #typeComponent></lib-dropdown-field>
                 </div>
             </div>
             <div class="col-md-4">
                 <h4>Filter</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'filter'" [placeholder]="'Filter'" [options]="_filters"
+                    <lib-dropdown-field [name]="'filter'" [id]="getId('filter')" [placeholder]="'Filter'" [options]="_filters"
                         [required]="true" (changed)="onFilterChanged($event)" #filterComponent></lib-dropdown-field>
                 </div>
             </div>
             <div class="col-md-4">
                 <h4>Css</h4>
                 <div class="field-wrapper">
-                    <lib-text-field [style]="'filled'" [name]="'css'" [placeholder]="'Css'" [value]="_column?.css"
+                    <lib-text-field [style]="'filled'" [id]="getId('css')" [name]="'css'" [placeholder]="'Css'" [value]="_column?.css"
                         [required]="true" [maxLength]="50" (changed)="onCssChanged($event)" #cssComponent>
                     </lib-text-field>
                 </div>
@@ -41,7 +41,7 @@
             <div class="col-md-4">
                 <h4>Mobiel</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'mobile'" [placeholder]="'Mobiel'" [options]="_mobile"
+                    <lib-dropdown-field [name]="'mobile'" [id]="getId('mobile')" [placeholder]="'Mobiel'" [options]="_mobile"
                         (changed)="onMobileChanged($event)" #mobileComponent></lib-dropdown-field>
                 </div>
             </div>

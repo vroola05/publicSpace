@@ -2,7 +2,7 @@
     <div class="col-md-4">
         <h4>Veld</h4>
         <div class="field-wrapper">
-            <lib-dropdown-field [name]="'buttonConditionField'" [placeholder]="'Veld'"
+            <lib-dropdown-field [form]="'pages'" [id]="getId('field')" [name]="'buttonConditionField'" [placeholder]="'Veld'"
             [options]="_fields" [required]="true" (changed)="onFieldChanged($event)"
             #fieldComponent></lib-dropdown-field>
         </div>
@@ -10,15 +10,15 @@
     <div class="col-md-3">
         <h4>Operator</h4>
         <div class="field-wrapper">
-            <lib-dropdown-field  [name]="'buttonConditionEq'" [placeholder]="'Operator'" [options]="_operators"
+            <lib-dropdown-field [name]="'buttonConditionEq'" [form]="'pages'" [id]="getId('operator')" [placeholder]="'Operator'" [required]="true" [options]="_operators"
             (changed)="onOperatorChanged($event)" #operatorComponent></lib-dropdown-field>
         </div>
     </div>
     <div class="col-md-4">
         <h4>Waarde</h4>
         <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [name]="'buttonConditionValue'" [placeholder]="'Waarde'"
-                [value]="_condition?.value" [required]="true" [maxLength]="50" (changed)="onValueChanged($event)"
+            <lib-text-field [style]="'filled'" [name]="'buttonConditionValue'" [form]="'pages'" [id]="getId('value')" [placeholder]="'Waarde'"
+                [value]="_condition?.value" [required]="true" [maxLength]="1000" (changed)="onValueChanged($event)"
                 #valueComponent></lib-text-field>
         </div>
     </div>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ValidationService } from '../../../services/validation/validation.service';
 import { FieldAbstract } from '../field-abstract';
 
 @Component({
@@ -31,8 +32,8 @@ export class SelectFieldComponent extends FieldAbstract implements OnInit, OnDes
     return this._options.filter(option => option.selected);
   }
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
   }
 
   public ngOnInit(): void {

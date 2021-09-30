@@ -19,6 +19,7 @@ export class CreateButtonComponent implements OnInit {
 
   @Output() changed: EventEmitter<{ action: string, index: number, button: PageButton }> = new EventEmitter<{ action: string, index: number, button: PageButton }>();
 
+  @Input() public prefix: string = '';
   @Input() public index: number;
 
   public _button: PageButton;
@@ -59,6 +60,10 @@ export class CreateButtonComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
   }
 
   public selectButtonType() {

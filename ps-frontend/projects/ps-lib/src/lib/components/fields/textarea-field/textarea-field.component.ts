@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ValidationService } from '../../../services/validation/validation.service';
 import { FieldAbstract } from '../field-abstract';
 
 @Component({
@@ -9,8 +10,8 @@ import { FieldAbstract } from '../field-abstract';
 export class TextareaFieldComponent extends FieldAbstract implements OnInit, OnDestroy {
   @ViewChild('fieldRef') public fieldRef: ElementRef;
 
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
     this.value = '';
   }
 

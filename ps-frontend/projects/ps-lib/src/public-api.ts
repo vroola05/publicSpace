@@ -26,7 +26,7 @@ export * from './lib/components/list/components/list-panel/list-panel.component'
 export * from './lib/components/list/components/list-panel-order/list-panel-order.component';
 export * from './lib/components/list/components/list-panel-user/list-panel-user.component';
 export * from './lib/components/list/components/list-panel-category/list-panel-category.component';
-export * from './lib/components/list/components/list-panel-status/list-panel-status.component';
+export * from './lib/components/pages/settings/components/panel-settings-status/components/list-panel-status/list-panel-status.component';
 export * from './lib/components/list/components/list-panel-action/list-panel-action.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages-overview/list-panel-pages-overview.component';
@@ -63,7 +63,7 @@ export * from './lib/components/pages/settings/components/panel-settings-status/
 export * from './lib/components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
 
-export * from './lib/components/panel/components/panel-page-overview/panel-page-overview.component';
+export * from './lib/components/pages/settings/components/panel-settings-pages/components/panel-page-overview/panel-page-overview.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
 
@@ -136,6 +136,7 @@ export * from './lib/services/mail/mail.service';
 export * from './lib/services/toast/toast.service';
 export * from './lib/services/notification/notification.service';
 export * from './lib/services/transform/transform.service';
+export * from './lib/services/validation/validation.service';
 
 // PIPES
 export * from './lib/pipes/truncate/truncate.pipe';

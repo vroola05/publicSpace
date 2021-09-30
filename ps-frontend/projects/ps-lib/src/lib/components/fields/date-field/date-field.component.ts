@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@ang
 import { FieldAbstract } from '../field-abstract';
 import moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { ValidationService } from '../../../services/validation/validation.service';
 
 @Component({
   selector: 'lib-date-field',
@@ -12,8 +13,8 @@ export class DateFieldComponent extends FieldAbstract implements OnInit, OnDestr
   @ViewChild('fieldRef') public fieldRef: ElementRef;
   @Input() icon = '';
   
-  constructor() {
-    super();
+  constructor(protected validation: ValidationService) {
+    super(validation);
     this.value = '';
   }
 

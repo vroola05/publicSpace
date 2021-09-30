@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Page } from '../../../../../model/page';
-import { PageOverviewTemplate } from '../../../../../model/page-overview-template';
-import { ListTemplateT } from '../../../../../model/template';
+import { Page } from '../../../../../../../../model/page';
+import { PageOverviewTemplate } from '../../../../../../../../model/page-overview-template';
+import { ListTemplateT } from '../../../../../../../../model/template';
 
 @Component({
   selector: 'lib-panel-page-overview',
@@ -20,12 +20,19 @@ export class PanelPageOverviewComponent implements OnInit {
     this.pageOverviewTemplate = this._page.pageOverviewTemplate;
   }
 
+  @Input() public prefix: string = '';
+  
+  //pageOverviewTemplate[2].size
   @Output() changed: EventEmitter<{ action: string, data: any }> = new EventEmitter();
 
   constructor() {
   }
 
   ngOnInit(): void {
+  }
+
+  public getId(id: string): string {
+    return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);
   }
 
   public createNewPageOverviewTemplate(): void {
