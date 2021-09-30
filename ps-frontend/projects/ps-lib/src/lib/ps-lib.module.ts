@@ -110,7 +110,7 @@ import { ListPanelDomainComponent } from './components/list/components/list-pane
 import { ListPanelUserComponent } from './components/list/components/list-panel-user/list-panel-user.component';
 import { ListPanelCompanyComponent } from './components/list/components/list-panel-company/list-panel-company.component';
 import { PanelSettingsGroupsComponent } from './components/pages/settings/components/panel-settings-groups/panel-settings-groups.component';
-import { ListPanelGroupComponent } from './components/list/components/list-panel-group/list-panel-group.component';
+import { ListPanelGroupComponent } from './components/pages/settings/components/panel-settings-groups/components/list-panel-group/list-panel-group.component';
 import { PanelSettingsMainCategoryComponent } from './components/pages/settings/components/panel-settings-main-category/panel-settings-main-category.component';
 import { ListPanelMainCategoryComponent } from './components/list/components/list-panel-main-category/list-panel-main-category.component';
 import { PanelSettingsCategoryComponent } from './components/pages/settings/components/panel-settings-category/panel-settings-category.component';

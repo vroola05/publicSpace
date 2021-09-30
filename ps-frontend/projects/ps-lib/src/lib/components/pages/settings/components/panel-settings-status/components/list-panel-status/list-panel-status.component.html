@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <h4>Status</h4>
         <div class="field-wrapper">
-          <lib-text-field [style]="'filled'" [id]="'status'" [name]="'status'" [placeholder]="'Status'"
+          <lib-text-field [style]="'filled'" [form]="'status'" [id]="'name'" [name]="'name'" [placeholder]="'Status'"
             [value]="_status?.name" [required]="true" [maxLength]="50" (changed)="onStatusChanged($event)"
             #statusComponent></lib-text-field>
         </div>

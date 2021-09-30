@@ -64,8 +64,8 @@ export class ListPanelStatusComponent implements OnInit {
   }
 
   public onSave($event): void {
-    const a = this.statusComponent.validate();
-    if (a) {
+    this.validation.clear();
+    if (this.validation.validate('status')) {
       if (this.isNew) {
         this.postStatus(this._status);
       } else {
@@ -114,13 +114,6 @@ export class ListPanelStatusComponent implements OnInit {
     if(response && response.error && response.error.errors) {
       const errors = response.error.errors as {field: string, value: string}[];
       this.validation.errors = errors;
-      /*errors.forEach(error => {
-        switch(error.field) {
-          case 'name':
-            this.statusComponent.addError(error.value);
-            break;
-        }
-      });*/
     }
   }
 }

@@ -4,8 +4,8 @@
       <div class="col-md-12">
         <h4>Groep</h4>
         <div class="field-wrapper">
-          <lib-text-field [style]="'filled'" [id]="'group'" [name]="'group'" [placeholder]="'Groep'"
-            [value]="_group?.name" [required]="true" [maxLength]="50" (changed)="onGroupChanged($event)"
+          <lib-text-field [style]="'filled'" [form]="'group'" [id]="'name'" [name]="'group'" [placeholder]="'Groep'"
+            [value]="_group?.name" [required]="true" [maxLength]="100" (changed)="onGroupChanged($event)"
             #groupComponent></lib-text-field>
         </div>
 

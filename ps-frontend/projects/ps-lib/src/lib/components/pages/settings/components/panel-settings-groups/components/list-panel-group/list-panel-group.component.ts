@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../services/api/api.service';
-import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../services/config/config.service';
-import { TransformService } from '../../../../services/transform/transform.service';
+import { ApiService } from '../../../../../../../services/api/api.service';
+import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
+import { ConfigService } from '../../../../../../../services/config/config.service';
+import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { ValidationService } from '../../../../../../../services/validation/validation.service';
 
-import { Group } from '../../../../../model/group';
+import { Group } from '../../../../../../../../model/group';
 
-import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
+import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
 
 @Component({
   selector: 'lib-list-panel-group',
@@ -36,6 +37,7 @@ export class ListPanelGroupComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private config: ConfigService,
+    private validation: ValidationService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -62,8 +64,8 @@ export class ListPanelGroupComponent implements OnInit {
   }
 
   public onSave($event): void {
-    const a = this.groupComponent.validate();
-    if (a) {
+    this.validation.clear();
+    if (this.validation.validate('group')) {
       if (this.isNew) {
         this.postGroup(this._group);
       } else {
@@ -111,13 +113,7 @@ export class ListPanelGroupComponent implements OnInit {
   public setErrors(response: any): void {
     if(response && response.error && response.error.errors) {
       const errors = response.error.errors as {field: string, value: string}[];
-      errors.forEach(error => {
-        switch(error.field) {
-          case 'name':
-            this.groupComponent.addError(error.value);
-            break;
-        }
-      });
+      this.validation.errors = errors;
     }
   }
 }

@@ -23,12 +23,12 @@ export class ApiService {
     responseType?: 'json';
     withCredentials?: boolean;
   },
-  multipart = false): Observable<any> {
+    multipart = false): Observable<any> {
     let opts = {};
     if (!multipart) {
       opts = {
         headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         })
       };
     }
@@ -52,12 +52,12 @@ export class ApiService {
     responseType?: 'json';
     withCredentials?: boolean;
   },
-  multipart = false): Observable<any> {
+    multipart = false): Observable<any> {
     let opts = {};
     if (!multipart) {
       opts = {
         headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         })
       };
     }

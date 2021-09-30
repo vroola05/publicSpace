@@ -40,6 +40,10 @@ export class ValidationService {
     this._errors.next(errors);
   }
 
+  public clear() {
+    this._errors.next([]);
+  }
+
   public errorsAsObservable(): Observable<{field: string, value: string}[]> {
     return this._errors.asObservable();
   }
