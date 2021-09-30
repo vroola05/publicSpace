@@ -6,9 +6,9 @@
 -- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.status VALUES (1, 'Nieuwe melding', 1, 'fiber_new', 'Nieuwe meldingen');
-INSERT INTO public.status VALUES (2, 'In behandeling', 1, 'event', 'In behandelingen');
-INSERT INTO public.status VALUES (3, 'Afgesloten', 1, 'list_alt', 'Afgesloten meldingen');
+INSERT INTO public.status VALUES (1, 'Nieuwe melding', 1);
+INSERT INTO public.status VALUES (2, 'In behandeling', 1);
+INSERT INTO public.status VALUES (3, 'Afgesloten', 1);
 
 --
 -- TOC entry 3149 (class 0 OID 16640)
