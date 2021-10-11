@@ -4,7 +4,6 @@ import { TextareaFieldComponent } from '../../../../../../../../fields/textarea-
 import { DropdownFieldComponent } from '../../../../../../../../fields/dropdown-field/dropdown-field.component';
 
 import { PageButton } from '../../../../../../../../../../model/page-button';
-import { ActionType } from '../../../../../../../../../../model/action-type';
 
 @Component({
   selector: 'lib-create-button',

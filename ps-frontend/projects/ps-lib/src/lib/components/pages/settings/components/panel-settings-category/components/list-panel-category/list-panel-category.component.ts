@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 
 import { MainCategory } from '../../../../../../../../model/main-category';
@@ -11,7 +10,6 @@ import { Category } from '../../../../../../../../model/category';
 import { TextFieldComponent } from '../../../../../../fields/text-field/text-field.component';
 import { DateFieldComponent } from '../../../../../../fields/date-field/date-field.component';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
-import { first } from 'rxjs/operators';
 import { Group } from 'projects/ps-lib/src/model/group';
 
 @Component({
@@ -54,8 +52,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   public groupItems: { name: string, value?: string, data?: any }[] = [];
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -101,7 +98,6 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
 
   public selectGroup() {
     if ( this.groupComponent) {
-
       if (!this._category || !this._category.group) {
         this.groupComponent.select(null);
         return;
@@ -111,15 +107,12 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   }
 
   public getGroups(): void {
-    const endpointT = this.config.getEndpoint('getGroups');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((groups: Group[]) => {
-        groups.forEach(group => {
-          this.groupItems.push({ name: group.name, value: String(group.id), data: group });
-        });
-        this.selectGroup();
+    this.endpoints.get('getGroups').then((groups: Group[]) => {
+      groups.forEach(group => {
+        this.groupItems.push({ name: group.name, value: String(group.id), data: group });
       });
-    }
+      this.selectGroup();
+    });
   }
 
   public cancel(): void {
@@ -151,38 +144,29 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
   }
 
   public post(category: Category): void {
-    const endpointT = this.config.getEndpoint('postCategory');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, category).subscribe((d: Category) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.post('postCategory', category).then((d: Category) => {
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch(response => {
+      this.setErrors(response);
+    });
   }
 
   public put(category: Category): void {
-    const endpointT = this.config.getEndpoint('putCategory');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-
-      this.apiService.put(url, category).subscribe((d: Category) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.put('putCategory', category).then((d: Category) => {
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch(response => {
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

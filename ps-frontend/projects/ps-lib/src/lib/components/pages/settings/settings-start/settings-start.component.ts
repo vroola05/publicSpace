@@ -1,22 +1,19 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { PageAbstract } from '../../page';
 
-import { ApiService } from '../../../../services/api/api.service';
-import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ActionService } from '../../../../services/action/action.service';
-import { NotificationService } from '../../../../services/notification/notification.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Domain } from '../../../../../model/domain';
 import { Company } from '../../../../../model/company';
 import { EnvironmentService } from '../../../../services/environment/environment.service';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
-import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { Environment } from '../../../../../model/intefaces';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 
 @Component({
   selector: 'lib-settings-start',
@@ -44,9 +41,8 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
-    private apiService: ApiService,
-    private environmentService: EnvironmentService
+    private environmentService: EnvironmentService,
+    private endpoints: EndpointService
 
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
@@ -72,19 +68,17 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
 
   public getCompanies(): void {
     this.companyItems = [];
-    const endpointT = this.config.getEndpoint('getCompany');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((companies: Company[]) => {
-        if (companies.length === 0) {
-          this.initCompany = true;
-        } else {
-          companies.forEach(company => {
-            this.companyItems.push({ name: company.name, value: String(company.id), data: company });
-          });
-          this.companyComponent.select(this.companyComponent.options.find(option => option.value === String(this.environment.company.id)));
-        }
-      });
-    }
+
+    this.endpoints.get('getCompany').then((companies: Company[]) => {
+      if (companies.length === 0) {
+        this.initCompany = true;
+      } else {
+        companies.forEach(company => {
+          this.companyItems.push({ name: company.name, value: String(company.id), data: company });
+        });
+        this.companyComponent.select(this.companyComponent.options.find(option => option.value === String(this.environment.company.id)));
+      }
+    });
   }
 
   public getDomains(): void {
@@ -92,15 +86,13 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     if (!this.environment || !this.environment.company || !this.environment.company.id) {
       return;
     }
-    const endpointT = this.config.getEndpoint('getDomain');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((domains: Domain[]) => {
-        domains.forEach(domain => {
-          this.domainItems.push({ name: domain.domain, value: String(domain.id), data: domain });
-        });
-        this.domainComponent.select(this.domainComponent.options.find(option => option.value === String(this.environment.domain.id)));
+
+    this.endpoints.get('getDomain').then((domains: Domain[]) => {
+      domains.forEach(domain => {
+        this.domainItems.push({ name: domain.domain, value: String(domain.id), data: domain });
       });
-    }
+      this.domainComponent.select(this.domainComponent.options.find(option => option.value === String(this.environment.domain.id)));
+    });
   }
 
   public onCompanyChanged($event): void {

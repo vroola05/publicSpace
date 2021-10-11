@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../services/action/action.service';
-import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { PageAbstract } from '../../page';
 import { Call } from '../../../../../model/call';
 import { CallList } from '../../../../../model/call-list';
@@ -23,9 +23,6 @@ import { TextFieldComponent } from '../../../fields/text-field/text-field.compon
 import { CheckboxFieldComponent } from '../../../fields/checkbox-field/checkbox-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
 import { Loader } from '../../../../services/loader/loader.service';
-
-
-
 
 @Component({
   selector: 'lib-orderitem-information',
@@ -47,10 +44,7 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
   private subscription: Subscription[] = [];
   public call: Call;
   public order: Order;
-  public getUrlImages: string;
   public getUrlImage: string;
-  public postUrlImage: string;
-  public postUrlNote: string;
   public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
@@ -65,9 +59,9 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
     protected storage: StorageService,
     protected action: ActionService,
     protected transform: TransformService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     private config: ConfigService,
-    private apiService: ApiService,
     private loader: Loader
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
@@ -138,7 +132,7 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
 
@@ -148,13 +142,9 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
         this.storage.setSession('order', JSON.stringify(this.order), true);
       }
 
-      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
       this.headerData = this.config.transformCallOrder(call);
-
-    }));
+    });
   }
 
   public onOrderitemChecked($event): void {
@@ -337,16 +327,16 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
       this.order.status.id = StatusTypes.ORDER_DONE;
 
       this.order.isExecuted = isExecuted;
-      this.subscription.push(
-        this.apiService.put(this.transform.URL(this.config.getEndpoint('putOrder').endpoint), this.order).subscribe((message: Message) => {
-          this.storage.clearProcessData();
-          this.navigationService.navigateHome();
-          this.loader.remove(loaderId);
-        },
-        () => {
-          this.loader.remove(loaderId);
-          this.sending = false;
-        }));
+
+      this.endpoints.put('putOrder', this.order).then((message: Message) => {
+        this.storage.clearProcessData();
+        this.navigationService.navigateHome();
+        this.loader.remove(loaderId);
+      })
+      .catch(() => {
+        this.loader.remove(loaderId);
+        this.sending = false;
+      });
     }
   }
 

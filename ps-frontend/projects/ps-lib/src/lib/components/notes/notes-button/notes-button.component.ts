@@ -1,11 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { first } from 'rxjs/operators';
 import { PopupETypes } from '../../../../model/intefaces';
 import { Note } from '../../../../model/note';
-import { ApiService } from '../../../services/api/api.service';
-import { ConfigService } from '../../../services/config/config.service';
+import { EndpointService } from '../../../services/endpoint/endpoint.service';
 import { Popup } from '../../../services/popup/popup.service';
-import { TransformService } from '../../../services/transform/transform.service';
 import { NotesViewerComponent } from '../notes-viewer/notes-viewer.component';
 
 @Component({
@@ -32,9 +29,7 @@ export class NotesButtonComponent implements OnInit {
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
-    private config: ConfigService,
-    private transform: TransformService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private popup: Popup
   ) { }
 
@@ -46,8 +41,8 @@ export class NotesButtonComponent implements OnInit {
   }
 
   public popupNotes($event) {
-    if (this._url && this.config.getEndpoint('getClearNotification').endpoint) {
-      this.apiService.get(this.transform.URL(this.config.getEndpoint('getClearNotification').endpoint)).pipe(first()).subscribe();
+    if (this._url) {
+      this.endpoints.get('getClearNotification').then(() => {});
     }
 
     this.popup.add(this._title, NotesViewerComponent, {

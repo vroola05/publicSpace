@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { ListTemplateT } from '../../../../../../model/template';
-import { first } from 'rxjs/operators';
 import { MainCategory } from '../../../../../../model/main-category';
 import { DropdownFieldComponent } from '../../../../fields/dropdown-field/dropdown-field.component';
 import { Category } from '../../../../../../model/category';
@@ -30,8 +28,7 @@ export class PanelSettingsCategoryComponent implements OnInit {
   public open = false;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -81,21 +78,16 @@ export class PanelSettingsCategoryComponent implements OnInit {
   }
 
   public getMainCategories(): void {
-    const endpointT = this.config.getEndpoint('getMainCategories');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((mainCategories: MainCategory[]) => {
-        mainCategories.forEach(mainCategory => {
-          this.mainCategoryItems.push({ name: mainCategory.name, value: String(mainCategory.id), data: mainCategory });
-        });
+    this.endpoints.get('getMainCategories').then((mainCategories: MainCategory[]) => {
+      mainCategories.forEach(mainCategory => {
+        this.mainCategoryItems.push({ name: mainCategory.name, value: String(mainCategory.id), data: mainCategory });
       });
-    }
+    });
   }
 
   public getCategories(): void {
-    const endpointT = this.config.getEndpoint('getCategoriesFull');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((categories: Category[]) => {
-        this.categories = categories;
+    this.endpoints.get('getCategoriesFull').then((categories: Category[]) => {
+      this.categories = categories;
 
         let data = [];
         categories.forEach(category => {
@@ -108,8 +100,7 @@ export class PanelSettingsCategoryComponent implements OnInit {
           });
         });
         this.data = data;
-      });
-    }
+    });
   }
 
   public onMainCategoryChanged($event): void {

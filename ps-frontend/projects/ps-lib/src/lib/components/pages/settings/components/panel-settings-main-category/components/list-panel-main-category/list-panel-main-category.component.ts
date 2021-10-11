@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 
 import { MainCategory } from '../../../../../../../../model/main-category';
 
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
+
 
 @Component({
   selector: 'lib-list-panel-main-category',
@@ -34,8 +34,7 @@ export class ListPanelMainCategoryComponent implements OnInit {
   }
   
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -73,39 +72,35 @@ export class ListPanelMainCategoryComponent implements OnInit {
   }
 
   public postGroup(mainCategory: MainCategory): void {
-    const endpointT = this.config.getEndpoint('postMainCategory');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, mainCategory).subscribe((d: MainCategory) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.transform.setVariable('mainCategory', mainCategory);
+    this.endpoints.post('postMainCategory', mainCategory).then((d: MainCategory) => {
+      this.transform.deleteVariable('mainCategory');
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('mainCategory');
+      this.setErrors(response);
+    });
   }
 
   public putGroup(mainCategory: MainCategory): void {
-    const endpointT = this.config.getEndpoint('putMainCategory');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.transform.setVariable('mainCategory', mainCategory);
-      let url = this.transform.URL(endpointT.endpoint);
+    this.transform.setVariable('mainCategory', mainCategory);
+    this.endpoints.put('putMainCategory', mainCategory).then((d: MainCategory) => {
       this.transform.deleteVariable('mainCategory');
-      this.apiService.put(url, mainCategory).subscribe((d: MainCategory) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('mainCategory');
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

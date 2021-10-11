@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Message } from '../../../model/message';
-import { ApiService } from '../api/api.service';
+import { EndpointService } from '../../services/endpoint/endpoint.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class MailService {
   private descriptor: string;
 
   constructor(
-    private apiService: ApiService
+    private endpoints: EndpointService
   ) { }
 
   public clear(): void {
@@ -46,20 +46,25 @@ export class MailService {
     if (!url) {
       this.textObserver.next(null);
     }
-
-    let observable: Observable<any>;
     if (method === 'post') {
-      observable = this.apiService.post(url, data);
+      this.endpoints.post(url, data).then((message: Message) => {
+        this.template = this.replaceLinebreaks(message.message);
+        this.setText(this.text);
+      })
+      .catch((err) => {
+        this.template = '';
+        this.setText(this.text);
+      });
     } else {
-      observable = this.apiService.get(url);
+      this.endpoints.get(url).then((message: Message) => {
+        this.template = this.replaceLinebreaks(message.message);
+        this.setText(this.text);
+      })
+      .catch((err) => {
+        this.template = '';
+        this.setText(this.text);
+      })
     }
-    observable.pipe(first()).subscribe((message: Message) => {
-      this.template = this.replaceLinebreaks(message.message);
-      this.setText(this.text);
-    }, (err) => {
-      this.template = '';
-      this.setText(this.text);
-    });
   }
 
   private replaceLinebreaks(value: string): string {

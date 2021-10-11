@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 
 import { PageOverviewTemplate } from '../../../../../../../../model/page-overview-template';
@@ -49,8 +48,7 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   ];
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -65,18 +63,13 @@ export class ListPanelPagesOverviewComponent implements OnInit {
   }
 
   public getStatus(): void {
-    const endpointT = this.config.getEndpoint('getStatus');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-
-      this.apiService.get(url).subscribe((statusses: Status[]) => {
-        const roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
-        statusses.forEach(status => {
-          roleItems.push({ name: status.name, value: String(status.id), data: status });
-        });
-        this.statusItems = roleItems;
+    this.endpoints.get('getStatus').then((statusses: Status[]) => {
+      const roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+      statusses.forEach(status => {
+        roleItems.push({ name: status.name, value: String(status.id), data: status });
       });
-    }
+      this.statusItems = roleItems;
+    });
   }
 
   public selectStatusses() {

@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../../services/action/action.service';
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../../services/config/config.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { PageAbstract } from '../../../page';
 
 import { Call } from '../../../../../../model/call';
@@ -33,7 +33,6 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
   public order: Order;
   private sending = false;
   public explanation = '';
-  public getUrlImages: string;
   public getUrlImage: string;
   public headerData: CallList;
   public buttonsLeft: ButtonT[];
@@ -48,7 +47,7 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private config: ConfigService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private loader: Loader
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
@@ -73,7 +72,7 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       if (this.call.orders) {
@@ -82,12 +81,9 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
         this.transform.setVariable('order', this.order);
       }
 
-      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
       this.headerData = this.config.transformCall(call);
-    },
-    (error) => {
-    }));
+    });
   }
 
   public getDays(date: Date): string {
@@ -129,16 +125,15 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
       this.order.status.id = StatusTypes.ORDER_DONE;
 
       this.order.isExecuted = isExecuted;
-      this.subscription.push(
-        this.apiService.put(this.transform.URL(this.config.getEndpoint('putOrder').endpoint), this.order).subscribe((message: Message) => {
-          this.storage.clearProcessData();
-          this.navigationService.navigateHome();
-          this.loader.remove(loaderId);
-        },
-        () => {
-          this.loader.remove(loaderId);
-          this.sending = false;
-        }));
+      this.endpoints.put('putOrder', this.order).then((message: Message) => {
+        this.storage.clearProcessData();
+        this.navigationService.navigateHome();
+        this.loader.remove(loaderId);
+      })
+      .catch(() => {
+        this.loader.remove(loaderId);
+        this.sending = false;
+      });
     }
   }
 }

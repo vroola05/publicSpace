@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ConfigService } from '../../../../services/config/config.service';
-import { ApiService } from '../../../../services/api/api.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Location } from '../../../../../model/location';
 import { Call } from '../../../../../model/call';
@@ -11,8 +11,7 @@ import { ListTemplateT } from '../../../../../model/template';
 import { Subscription } from 'rxjs';
 import { TextFieldPrefillComponent } from '../../../fields/text-field-prefill/text-field-prefill.component';
 import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
-import { NavigationService } from '../../../../services/navigation/navigation.service';
-import { first } from 'rxjs/operators';
+
 import { TransformService } from '../../../../services/transform/transform.service';
 
 
@@ -39,9 +38,8 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
   public callList: CallList[] = [];
 
   constructor(
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private config: ConfigService,
-    private navigationService: NavigationService,
     private storage: StorageService,
     private transform: TransformService
   ) {
@@ -107,15 +105,13 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public clicked(location: Location) {
     this.transform.setVariable('location', location);
-    this.apiService.get(
-      this.transform.URL(this.config.getEndpoint('getLocationByCoordinates').endpoint))
-      .pipe(first()).subscribe((result: Location) => {
-        if (result) {
-          result.latitude = location.latitude;
-          result.longitude = location.longitude;
-          this.storeLocation(result);
-        }
-      });
+    this.endpoints.get('getLocationByCoordinates').then((result: Location) => {
+      if (result) {
+        result.latitude = location.latitude;
+        result.longitude = location.longitude;
+        this.storeLocation(result);
+      }
+    });
 
     /*if (this.listTemplate != null) {
       this.apiService.get(
@@ -137,17 +133,17 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       const location = new Location();
       location.street = $event.target.value;
       this.transform.setVariable('location', location);
-      this.apiService.get(
-        this.transform.URL(this.config.getEndpoint('getLocationByStreet').endpoint))
-        .pipe(first()).subscribe((locations: Location[]) => {
-          const options: { name: string, value: string, data: any }[] = [];
 
-          locations.forEach(location => {
-            options.push({ name: `${location.street}`, value: '', data: location });
-          });
 
-          this.streetComponent.setItems(options);
+      this.endpoints.get('getLocationByStreet').then((locations: Location[]) => {
+        const options: { name: string, value: string, data: any }[] = [];
+
+        locations.forEach(location => {
+          options.push({ name: `${location.street}`, value: '', data: location });
         });
+
+        this.streetComponent.setItems(options);
+      });
     }
   }
 
@@ -159,16 +155,12 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       location.number = this.number ? this.number : '';
       this.transform.setVariable('location', location);
 
-      this.searchLocationSubscription = this.apiService.get(
-        this.transform.URL(this.config.getEndpoint('getLocationByStreetAndNumber').endpoint))
-        .subscribe(
-          (location: Location) => {
-            this.storeLocation(location);
-          },
-          () => {
-            this.errors.push({ message: 'Het adres is niet gevonden!' });
-          }
-        );
+      this.endpoints.get('getLocationByStreetAndNumber').then((location: Location) => {
+        this.storeLocation(location);
+      })
+      .catch(() => {
+        this.errors.push({ message: 'Het adres is niet gevonden!' });
+      });
     } else {
       this.errors.push({ message: 'De straat is verplicht!' });
     }
@@ -178,14 +170,11 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
     this.transform.setVariable('calllist', $event);
     this.callNearby = null;
     if (this.listTemplate.toggle) {
-      this.apiService.get(
-        this.transform.URL(this.config.getEndpoint('getListCall').endpoint))
-        .pipe(first()).subscribe((call: Call) => {
+      this.endpoints.get('getListCall').then((call: Call) => {
         this.callNearby = call;
         this.transform.setVariable('call', call);
       });
     }
-
   }
 
   public validate(): boolean {

@@ -5,14 +5,13 @@ import { Subscription } from 'rxjs';
 import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
 import { CallList } from '../../../../../model/call-list';
-import { ButtonT } from '../../../../../model/template';
 import { PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Note } from '../../../../../model/note';
 import { Message } from '../../../../../model/message';
 
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
-import { ConfigService } from '../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { ActionService } from '../../../../services/action/action.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { Loader } from '../../../../services/loader/loader.service';
@@ -22,7 +21,9 @@ import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/p
 import { PageAbstract } from '../../page';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
+import { Page } from '../../../../../model/page';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -32,14 +33,10 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
 })
 export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
+  public page: Page;
   public call: Call;
-  public getUrlImages: string;
   public getUrlImage: string;
-  public postUrlImage: string;
-  public postUrlNote: string;
   public headerData: CallList;
-  public buttonsLeft: ButtonT[];
-  public buttonsRight: ButtonT[];
 
   constructor(
     protected router: Router,
@@ -51,6 +48,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     protected authorisation: AuthorisationService,
     private config: ConfigService,
     private apiService: ApiService,
+    private endpoints: EndpointService,
     private loader: Loader,
     private popup: Popup,
     private toast: ToastService
@@ -60,12 +58,14 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
 
   public ngOnInit(): void {
     super.ngOnInit();
+
     this.getCall();
-    this.buttonsLeft = this.config.template.details.buttonsLeft;
-    this.buttonsRight = this.config.template.details.buttonsRight;
-    if (this.config.template.details.pageType) {
+
+    this.page = this.config.getPage(PageTypes.overview);
+
+    /*if (this.config.template.details.pageType) {
       this.pageLayoutType = this.config.template.details.pageType;
-    }
+    }*/
 
     this.action.register('abort-call', () => { this.abortCall(); });
     this.action.register('close-call', () => { this.closeCall(); });
@@ -77,15 +77,14 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getCallById').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
-      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
+    });
+    /*this.apiService.get(this.transform.URL(this.config.getEndpoint('getCallById').endpoint)).pipe(first()).subscribe((call: Call) => {
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
       this.headerData = this.config.transformCall(call);
-    }));
+    });*/
   }
 
   public onOrderChanged($event): void {

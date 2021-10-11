@@ -14,7 +14,6 @@ import { NavigationService } from '../../../../services/navigation/navigation.se
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ConfigService } from '../../../../services/config/config.service';
 import { ActionService } from '../../../../services/action/action.service';
-import { ApiService } from '../../../../services/api/api.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { ToastService } from '../../../../services/toast/toast.service';
@@ -22,6 +21,7 @@ import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/p
 import { PageAbstract } from '../../page';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { Status } from '../../../../../model/status';
 
 
@@ -35,10 +35,7 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
   private subscription: Subscription[] = [];
   public call: Call;
   public order: Order;
-  public getUrlImages: string;
   public getUrlImage: string;
-  public postUrlImage: string;
-  public postUrlNote: string;
   public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
@@ -52,7 +49,7 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private config: ConfigService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private loader: Loader,
     private popup: Popup,
     private toast: ToastService
@@ -78,7 +75,7 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       if (this.call.orders && this.call.orders.length > 0) {
@@ -86,12 +83,9 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
         this.transform.setVariable('order', this.order);
       }
 
-      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
       this.headerData = this.config.transformCallOrder(call);
-    }));
+    });
   }
 
   public reject(): void {
@@ -104,12 +98,10 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
         this.order.status = new Status();
         this.order.status.id = StatusTypes.ORDER_REJECTED;
 
-        const url = this.transform.URL(this.config.getEndpoint('putOrderStatus').endpoint);
-        this.apiService.put(url, note).subscribe((mesage: Message) => {
+        this.endpoints.put('putOrderStatus', note).then((mesage: Message) => {
           this.toast.success('Opdracht is geweigerd!', 5);
           this.cancel();
         });
-
       } else {
         this.toast.error('Het is verplicht een omschrijving te geven.', 5);
       }

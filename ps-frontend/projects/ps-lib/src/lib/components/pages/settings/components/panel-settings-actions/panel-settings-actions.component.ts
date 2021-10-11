@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
 import { Action } from '../../../../../../model/action';
-import { first } from 'rxjs/operators';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 
 
 @Component({
@@ -24,8 +22,7 @@ export class PanelSettingsActionsComponent implements OnInit {
   public selectedAction: Action;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -60,13 +57,10 @@ export class PanelSettingsActionsComponent implements OnInit {
   }
 
   public getActions(): void {
-    const endpointT = this.config.getEndpoint('getActions');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((actions: Action[]) => {
-        this.actions = actions;
-        this.addListActions(actions);
-      });
-    }
+    this.endpoints.get('getActions').then((actions: Action[]) => {
+      this.actions = actions;
+      this.addListActions(actions);
+    });
   }
 
   public addListActions(actions: Action[]) {

@@ -1,12 +1,10 @@
-import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { ApiService } from '../../../../../services/api/api.service';
+import { Component, OnInit } from '@angular/core';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { User } from '../../../../../../model/user';
 import { Group } from '../../../../../../model/group';
 import { ListTemplateT } from '../../../../../../model/template';
-import { first } from 'rxjs/operators';
 import { Role } from '../../../../../../model/role';
 
 
@@ -29,8 +27,7 @@ export class PanelSettingsUsersComponent implements OnInit {
   public open = false;
   
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -81,35 +78,26 @@ export class PanelSettingsUsersComponent implements OnInit {
   }
 
   public getRoles(): void {
-    const endpointT = this.config.getEndpoint('getRoles');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((roles: Role[]) => {
-        roles.forEach(role => {
-          this.roles.push({name: role.role, value: role.role, selected: false});
-        });
+    this.endpoints.get('getRoles').then((roles: Role[]) => {
+      roles.forEach(role => {
+        this.roles.push({name: role.role, value: role.role, selected: false});
       });
-    }
+    });
   }
 
   public getGroups(): void {
-    const endpointT = this.config.getEndpoint('getGroups');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((groups: Group[]) => {
-        groups.forEach(group => {
-          this.groups.push({name: group.name, value: String(group.id), data: group, selected: false});
-        });
+    this.endpoints.get('getGroups').then((groups: Group[]) => {
+      groups.forEach(group => {
+        this.groups.push({name: group.name, value: String(group.id), data: group, selected: false});
       });
-    }
+    });
   }
 
   public getUsers(): void {
-    const endpointT = this.config.getEndpoint('getUsers');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((users: User[]) => {
-        this.users = users;
+    this.endpoints.get('getUsers').then((users: User[]) => {
+      this.users = users;
         this.addListUsers(users);
-      });
-    }
+    });
   }
 
   public addListUsers(users: User[]) {

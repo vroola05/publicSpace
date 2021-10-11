@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { ListTemplateT } from '../../../../../../model/template';
 import { Domain } from '../../../../../../model/domain';
-import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'lib-panel-settings-domains',
@@ -24,8 +22,7 @@ export class PanelSettingsDomainsComponent implements OnInit {
   public selectedDomain: Domain;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -54,13 +51,10 @@ export class PanelSettingsDomainsComponent implements OnInit {
   }
 
   public getDomains(): void {
-    const endpointT = this.config.getEndpoint('getDomain');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((domains: Domain[]) => {
-        this.domains = domains;
-        this.addListDomains(domains);
-      });
-    }
+    this.endpoints.get('getDomain').then((domains: Domain[]) => {
+      this.domains = domains;
+      this.addListDomains(domains);
+    });
   }
 
   public addListDomains(domains: Domain[]) {

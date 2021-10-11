@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
-import { first } from 'rxjs/operators';
 
 import { Status } from '../../../../../../model/status';
 
@@ -25,8 +23,7 @@ export class PanelSettingsStatusComponent implements OnInit {
   public selectedStatus: Status;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -55,13 +52,10 @@ export class PanelSettingsStatusComponent implements OnInit {
   }
 
   public getStatus(): void {
-    const endpointT = this.config.getEndpoint('getStatus');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((status: Status[]) => {
-        this.status = status;
-        this.addListStatus(status);
-      });
-    }
+    this.endpoints.get('getStatus').then((status: Status[]) => {
+      this.status = status;
+      this.addListStatus(status);
+    });
   }
 
   public addListStatus(status: Status[]) {

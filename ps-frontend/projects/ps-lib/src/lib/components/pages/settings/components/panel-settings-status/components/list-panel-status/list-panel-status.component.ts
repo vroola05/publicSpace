@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 
 import { Status } from '../../../../../../../../model/status';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 import { ValidationService } from '../../../../../../../services/validation/validation.service';
 
@@ -35,8 +34,7 @@ export class ListPanelStatusComponent implements OnInit {
   }
   
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     private validation: ValidationService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
@@ -75,39 +73,35 @@ export class ListPanelStatusComponent implements OnInit {
   }
 
   public postStatus(status: Status): void {
-    const endpointT = this.config.getEndpoint('postStatus');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, status).subscribe((d: Status) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.transform.setVariable('status', status);
+    this.endpoints.post('postStatus', status).then((s: Status[]) => {
+      this.transform.deleteVariable('status');
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('status');
+      this.setErrors(response);
+    });
   }
 
   public putStatus(status: Status): void {
-    const endpointT = this.config.getEndpoint('putStatus');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.transform.setVariable('status', status);
-      let url = this.transform.URL(endpointT.endpoint);
+    this.transform.setVariable('status', status);
+    this.endpoints.put('putStatus', status).then((s: Status[]) => {
       this.transform.deleteVariable('status');
-      this.apiService.put(url, status).subscribe((d: Status) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('status');
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

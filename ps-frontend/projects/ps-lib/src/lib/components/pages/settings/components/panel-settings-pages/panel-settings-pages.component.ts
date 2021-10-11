@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
-import { first } from 'rxjs/operators';
 import { Page } from '../../../../../../model/page';
 
 @Component({
@@ -24,8 +22,7 @@ export class PanelSettingsPagesComponent implements OnInit {
   public selectedPage: Page;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -60,13 +57,10 @@ export class PanelSettingsPagesComponent implements OnInit {
   }
 
   public getPages(): void {
-    const endpointT = this.config.getEndpoint('getPages');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((pages: Page[]) => {
-        this.pages = pages;
-        this.addListPages(pages);
-      });
-    }
+    this.endpoints.get('getPages').then((pages: Page[]) => {
+      this.pages = pages;
+      this.addListPages(pages);
+    });
   }
 
   public addListPages(pages: Page[]) {

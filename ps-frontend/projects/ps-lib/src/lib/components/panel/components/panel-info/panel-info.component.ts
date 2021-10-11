@@ -18,7 +18,6 @@ export class PanelInfoComponent implements OnInit {
   @Input() public urlImages: string;
   @Input() public urlImage: string;
   @Input() public urlImageUpload: string;
-  @Input() public urlNotes: string;
 
   constructor(
     private config: ConfigService,

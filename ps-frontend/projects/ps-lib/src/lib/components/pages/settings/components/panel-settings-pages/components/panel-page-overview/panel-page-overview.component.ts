@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { Page } from '../../../../../../../../model/page';
 import { PageOverviewTemplate } from '../../../../../../../../model/page-overview-template';
-import { ListTemplateT } from '../../../../../../../../model/template';
 
 @Component({
   selector: 'lib-panel-page-overview',

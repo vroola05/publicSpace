@@ -17,11 +17,6 @@ export class NotesComponent implements OnInit {
     this.openend = new Array(notes.length);
   }
 
-  public _url: string;
-  @Input() set url(url: string) {
-    this._url = url;
-  }
-
   public _title: string;
   @Input() set title(title: string) {
     this._title = title;

@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ConfigService } from '../../../../services/config/config.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Category } from '../../../../../model/category';
 import { Location } from '../../../../../model/location';
 import { Call } from '../../../../../model/call';
 import { MapsComponent } from '../../../maps/maps.component';
 import { Popup } from '../../../../services/popup/popup.service';
-import { ApiService } from '../../../../services/api/api.service';
 import { Subscription } from 'rxjs';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 
@@ -32,10 +31,9 @@ export class PanelChangeConfirmationComponent implements OnInit, OnDestroy {
   private categoriesMainSubscription: Subscription;
 
   constructor(
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected navigationService: NavigationService,
     private storage: StorageService,
-    private apiService: ApiService,
     protected transform: TransformService,
     private popup: Popup
   ) {
@@ -73,15 +71,14 @@ export class PanelChangeConfirmationComponent implements OnInit, OnDestroy {
       this.storage.setSession('call', JSON.stringify(this.callChanged), true);
       this.changed.emit('change-information');
     } else {
-      const url = this.transform.URL(this.config.getEndpoint('getNewInformationMainCategory').endpoint);
-      this.categoriesMainSubscription = this.apiService.get(url)
-        .subscribe((category: Category) => {
-          this.storage.setSession('mainCategory', JSON.stringify(category), true);
 
-          this.callChanged.mainCategory = this._call.mainCategory;
-          this.storage.setSession('call', JSON.stringify(this.callChanged), true);
-          this.changed.emit('change-information');
-        });
+      this.endpoints.get('getNewInformationMainCategory').then((category: Category) => {
+        this.storage.setSession('mainCategory', JSON.stringify(category), true);
+
+        this.callChanged.mainCategory = this._call.mainCategory;
+        this.storage.setSession('call', JSON.stringify(this.callChanged), true);
+        this.changed.emit('change-information');
+      });
     }
   }
 

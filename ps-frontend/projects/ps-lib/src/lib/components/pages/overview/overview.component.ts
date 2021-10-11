@@ -1,20 +1,17 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { CallList } from '../../../../model/call-list';
 import { HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
 import { PageLayoutType } from '../../../../model/intefaces';
 import { Call } from '../../../../model/call';
 import { PageOverviewTemplate } from '../../../../model/page-overview-template';
 
-import { PageTypes } from '../../../../model/intefaces';
 import { Page } from '../../../../model/page';
 import { QueryParameters } from '../../../../model/query-parameters';
 import { PageAbstract } from '../page';
 
-import { ApiService } from '../../../services/api/api.service';
-import { ConfigService } from '../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../services/config/config.service';
 import { NavigationService } from '../../../services/navigation/navigation.service';
 import { FilterService } from '../../../services/filter/filter.service';
 import { StorageService } from '../../../services/storage/storage.service';
@@ -22,6 +19,7 @@ import { ActionService } from '../../../services/action/action.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TransformService } from '../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
+import { EndpointService } from '../../../services/endpoint/endpoint.service';
 
 @Component({
   selector: 'lib-overview',
@@ -37,7 +35,6 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   public pageTemplate: PageOverviewTemplate;
   private id: number;
   private subscriptions: Subscription[] = [];
-  private subscriptionLoadList: Subscription;
 
   public callList: CallList[] = [];
   public call: Call;
@@ -59,14 +56,12 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     private config: ConfigService,
     private filterService: FilterService,
     private notification: NotificationService,
-    private apiService: ApiService
+    private endpoints: EndpointService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
 
-    if (this.config.template.pages.has(PageTypes.overview)) {
-      this.page = this.config.template.pages.get(PageTypes.overview)
-    }
-
+    this.page = this.config.getPage(PageTypes.overview);
+    
     this.search = this.filterService.getSearch();
   }
 
@@ -126,26 +121,21 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.navigationService.headerItem = headerMenuItem;
     this.navigationService.title = headerMenuItem.name;
     this.title = 'Zoek in (' + headerMenuItem.name + ')';
-
-    const url = this.transform.URL(this.config.getEndpoint('getCallList').endpoint);
-    this.getList(url,
-      this.filterService.getQueryParameters()).pipe(first()).subscribe((callList) => {
-        if (callList) {
-          this.endOfList = callList.length < this.filterService.getListsize();
-          if (append) {
-            this.callList = this.callList.concat(callList);
-          } else {
-            this.callList = callList;
-          }
-        }
-        this.pageChanged = true;
-      });
+    this.getList(append, this.filterService.getQueryParameters());
   }
 
-  public getList(url: string, queryParameters: QueryParameters): Observable<CallList[]> {
-    return this.apiService.post(url, queryParameters).pipe(map((callList: CallList[]) => {
-      return callList.map(this.addLocationInfo);
-    }));
+  public getList(append: boolean, queryParameters: QueryParameters): void {
+    this.endpoints.post('getCallList', queryParameters).then((callList: CallList[]) => {
+      if (callList) {
+        this.endOfList = callList.length < this.filterService.getListsize();
+        if (append) {
+          this.callList = this.callList.concat(callList);
+        } else {
+          this.callList = callList;
+        }
+      }
+      this.pageChanged = true;
+    });
   }
 
   public filterChanged($event) {
@@ -162,8 +152,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.transform.setVariable('calllist', $event.data);
     this.call = null;
     if (this.listTemplate.toggle) {
-      this.apiService.get(
-        this.transform.URL(this.config.getEndpoint('getCallByCallListId').endpoint)).pipe(first()).subscribe((call: Call) => {
+      this.endpoints.get('getCallByCallListId').then((call: Call) => {
         this.transform.setVariable('call', call);
         this.call = call;
       });
@@ -186,24 +175,5 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     if (this.tableContainer && this.tableContainer.nativeElement) {
       this.tableContainer.nativeElement.scrollTop = $event;
     }
-  }
-
-  private addLocationInfo(callList: CallList): CallList {
-    if (!(callList)) {
-      return callList;
-    }
-
-    if (!callList.street && !callList.number) {
-      callList.location = '-';
-      return callList;
-    }
-
-    if (!callList.postal) {
-      callList.postal = '';
-    }
-
-    callList.location =
-      `${callList.street} ${callList.number}, ${callList.postal} ${callList.city}`;
-    return callList;
   }
 }

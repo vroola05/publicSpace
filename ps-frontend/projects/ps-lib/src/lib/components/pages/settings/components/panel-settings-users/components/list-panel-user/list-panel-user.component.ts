@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { User, UserExtended } from '../../../../../../../../model/user';
 import { PasswordFieldComponent } from '../../../../../../fields/password-field/password-field.component';
 import { SelectFieldComponent } from '../../../../../../fields/select-field/select-field.component';
@@ -45,7 +45,7 @@ export class ListPanelUserComponent implements OnInit {
   @Input() groups: {name: string, value?: string, selected?: boolean, data?: any}[] = [];
   
   constructor(
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
@@ -139,39 +139,32 @@ export class ListPanelUserComponent implements OnInit {
   }
 
   public postUser(userExtended: UserExtended): void {
-    const endpointT = this.config.getEndpoint('postUser');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, userExtended).subscribe((u: User) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.post('postUser', userExtended).then((u: User) => {
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.setErrors(response);
+    });
   }
 
   public putUser(user: User): void {
-    const endpointT = this.config.getEndpoint('putUser');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.transform.setVariable('user', user);
-      let url = this.transform.URL(endpointT.endpoint);
+    this.transform.setVariable('user', user);
+    this.endpoints.put('putUser', user).then((u: User) => {
       this.transform.deleteVariable('user');
-      this.apiService.put(url, user).subscribe((u: User) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('user');
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

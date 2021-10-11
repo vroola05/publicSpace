@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 
 import { Company } from '../../../../../../../../model/company';
 
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
+
 
 @Component({
   selector: 'lib-list-panel-company',
@@ -34,13 +34,16 @@ export class ListPanelCompanyComponent implements OnInit {
   }
   
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
 
   public ngOnInit(): void {
+  }
+
+  public ngOnDestroy(): void {
+    this.transform.deleteVariable('company');
   }
 
   public onCompanyChanged($event) {
@@ -64,6 +67,7 @@ export class ListPanelCompanyComponent implements OnInit {
   public onSave($event): void {
     const a = this.companyComponent.validate();
     if (a) {
+      this.transform.setVariable('company', this._company);
       if (this.isNew) {
         this.postCompany(this._company);
       } else {
@@ -73,39 +77,29 @@ export class ListPanelCompanyComponent implements OnInit {
   }
 
   public postCompany(company: Company): void {
-    const endpointT = this.config.getEndpoint('postCompany');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, company).subscribe((d: Company) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.post('postCompany', company).then((d: Company) => {
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.setErrors(response);
+    });
   }
 
   public putCompany(company: Company): void {
-    const endpointT = this.config.getEndpoint('putCompany');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.transform.setVariable('company', company);
-      let url = this.transform.URL(endpointT.endpoint);
-      this.transform.deleteVariable('company');
-      this.apiService.put(url, company).subscribe((d: Company) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.put('putCompany', company).then((d: Company) => {
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

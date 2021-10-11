@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../services/action/action.service';
-import { ApiService } from '../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { PageAbstract } from '../../page';
 import { Call } from '../../../../../model/call';
 import { CallList } from '../../../../../model/call-list';
@@ -24,10 +24,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   private subscription: Subscription[] = [];
   public call: Call;
   public order: Order;
-  public getUrlImages: string;
   public getUrlImage: string;
-  public postUrlImage: string;
-  public postUrlNote: string;
   public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
@@ -43,7 +40,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private config: ConfigService,
-    private apiService: ApiService
+    private endpoints: EndpointService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
 
@@ -72,20 +69,19 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   }
 
   public getOrderitems(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getOrderitems').endpoint))
-      .subscribe((orderitems: Orderitem[]) => {
-        if (orderitems) {
-          orderitems.forEach(orderitem => {
-            this.orderitems.push(
-              {
-                name: orderitem.quotationNumber + ' - ' + orderitem.name + ' (' + orderitem.unit + ')',
-                value: '' + orderitem.id, data: orderitem,
-                selected: this.orderitemSelected(orderitem.quotationId)
-              }
-            );
-          });
-        }
-    }));
+    this.endpoints.get('getOrderitems').then((orderitems: Orderitem[]) => {
+      if (orderitems) {
+        orderitems.forEach(orderitem => {
+          this.orderitems.push(
+            {
+              name: orderitem.quotationNumber + ' - ' + orderitem.name + ' (' + orderitem.unit + ')',
+              value: '' + orderitem.id, data: orderitem,
+              selected: this.orderitemSelected(orderitem.quotationId)
+            }
+          );
+        });
+      }
+    });
   }
 
   public orderitemSelected(id: number): boolean {
@@ -97,7 +93,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       if (! this.order && this.call.orders && this.call.orders.length > 0) {
@@ -106,14 +102,11 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
         this.storage.setSession('order', JSON.stringify(this.order), true);
       }
 
-      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
       this.headerData = this.config.transformCallOrder(call);
 
       this.getOrderitems();
-    }));
+    });
   }
 
   public getSelectedOrderitems(): Orderitem[] {

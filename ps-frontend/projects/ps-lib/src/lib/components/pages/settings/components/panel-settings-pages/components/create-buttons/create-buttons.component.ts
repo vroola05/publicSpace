@@ -3,10 +3,9 @@ import { ActionType } from '../../../../../../../../model/action-type';
 import { Role } from '../../../../../../../../model/role';
 import { PageButton } from '../../../../../../../../model/page-button';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 
 @Component({
   selector: 'lib-create-buttons',
@@ -26,8 +25,7 @@ export class CreateButtonsComponent implements OnInit {
   public roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }
@@ -44,48 +42,33 @@ export class CreateButtonsComponent implements OnInit {
   }
 
   public getButtonTypes(): void {
-    const endpointT = this.config.getEndpoint('getButtonTypes');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-
-      this.apiService.get(url).subscribe((pageButtonTypes: string[]) => {
-        const buttonTypeItems: { name: string, value?: string, data?: any }[] = [];
-        pageButtonTypes.forEach(pageButtonType => {
-          buttonTypeItems.push({ name: pageButtonType, value: null, data: pageButtonType });
-        });
-        this.buttonTypeItems = buttonTypeItems;
+    this.endpoints.get('getButtonTypes').then((pageButtonTypes: string[]) => {
+      const buttonTypeItems: { name: string, value?: string, data?: any }[] = [];
+      pageButtonTypes.forEach(pageButtonType => {
+        buttonTypeItems.push({ name: pageButtonType, value: null, data: pageButtonType });
       });
-    }
+      this.buttonTypeItems = buttonTypeItems;
+    });
   }
 
   public getActionTypes(): void {
-    const endpointT = this.config.getEndpoint('getActionTypes');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-
-      this.apiService.get(url).subscribe((actionTypes: ActionType[]) => {
-        const actionTypeItems: { name: string, value?: string, data?: any }[] = [];
+    this.endpoints.get('getActionTypes').then((actionTypes: ActionType[]) => {
+      const actionTypeItems: { name: string, value?: string, data?: any }[] = [];
         actionTypes.forEach(actionType => {
           actionTypeItems.push({ name: actionType.name, value: null, data: actionType });
         });
         this.actionTypeItems = actionTypeItems;
-      });
-    }
+    });
   }
 
   public getRoles(): void {
-    const endpointT = this.config.getEndpoint('getRoles');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-
-      this.apiService.get(url).subscribe((roles: Role[]) => {
-        const roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+    this.endpoints.get('getRoles').then((roles: Role[]) => {
+      const roleItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
         roles.forEach(role => {
           roleItems.push({ name: role.role, value: String(role.id), data: role });
         });
         this.roleItems = roleItems;
-      });
-    }
+    });
   }
 
   public onButtonChanged($event: {action: string, index: number, button: PageButton}): void {

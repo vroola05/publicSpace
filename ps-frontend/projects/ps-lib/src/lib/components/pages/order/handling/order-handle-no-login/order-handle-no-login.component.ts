@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../../services/action/action.service';
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../../services/config/config.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { PageAbstract } from '../../../page';
 
 import { Call } from '../../../../../../model/call';
@@ -33,7 +33,6 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   public order: Order;
   private sending = false;
   public explanation = '';
-  public getUrlImages: string;
   public getUrlImage: string;
   public headerData: CallList;
   public buttonsLeft: ButtonT[];
@@ -49,7 +48,7 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private config: ConfigService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private loader: Loader
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
@@ -82,7 +81,7 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getNoLoginDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getNoLoginDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       if (this.call.orders) {
@@ -91,19 +90,17 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
       }
 
       if (this.noLogin()) {
-        this.getUrlImages = this.transform.URL(this.config.getEndpoint('getNoLoginImages').endpoint);
         this.getUrlImage = this.transform.URL(this.config.getEndpoint('getNoLoginImage').endpoint);
       } else  {
-        this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
         this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
       }
       this.headerData = this.config.transformCall(call);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       if (error.status && error.status === 406 ) {
         this.state = 2;
       }
-    }));
+    });
   }
 
   public getDays(date: Date): string {
@@ -131,17 +128,17 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
     if (!this.sending && this.explanationField.validate()) {
       this.sending = true;
       const loaderId = this.loader.add('Bezig met opslaan!');
-      const url = this.transform.URL(this.config.getEndpoint('putNoLoginOrder').endpoint);
-      this.subscription.push(this.apiService.put(url, this.explanation).subscribe((message: Message) => {
+
+      this.endpoints.put('putNoLoginOrder', this.explanation).then((message: Message) => {
         this.storage.clearProcessData();
         this.transform.clearVariable();
         this.loader.remove(loaderId);
         this.state = 1;
-      },
-      () => {
+      })
+      .catch(() => {
         this.loader.remove(loaderId);
         this.sending = false;
-      }));
+      });
     }
   }
 

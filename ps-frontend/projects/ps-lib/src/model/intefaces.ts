@@ -23,15 +23,6 @@ export enum ContractorType {
   noJurisdiction = 'noJurisdiction'
 }
 
-export enum PageTypes {
-  overview = 'overview',
-  details = 'details',
-  assign = 'assign',
-  newLocation = 'newLocation',
-  newInformation = 'newInformation',
-  newConfirm = 'newConfirm',
-}
-
 export enum PageLayoutType {
   overview = 'overview',
   page = 'page',

@@ -3,8 +3,10 @@ import { Popup } from '../../../services/popup/popup.service';
 import { Document } from '../../../../model/document';
 import { Image } from '../../../../model/image';
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
-import { ApiService } from '../../../services/api/api.service';
 import { Loader } from '../../../services/loader/loader.service';
+import { EndpointService } from '../../../services/endpoint/endpoint.service';
+import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
+import { ConfigService } from '../../../services/config/config.service';
 
 @Component({
   selector: 'lib-image-button',
@@ -14,13 +16,13 @@ import { Loader } from '../../../services/loader/loader.service';
 export class ImageButtonComponent implements OnInit {
   @ViewChild('inputUpload') public inputUpload: ElementRef;
 
-  @Input() urlImages: string;
   @Input() urlImage: string;
-  @Input() urlImageUpload: string;
   @Input() documents: Document[];
 
   constructor(
-    private apiService: ApiService,
+    private endpoints: EndpointService,
+    private authorisation: AuthorisationService,
+    private config: ConfigService,
     private popup: Popup,
     private loader: Loader) {
 
@@ -43,7 +45,7 @@ export class ImageButtonComponent implements OnInit {
   }
 
   public hasUploadUrl(): boolean {
-    return this.urlImageUpload && this.urlImageUpload !== '';
+    return this.authorisation.hasRoles(this.config.getEndpoint('postImage').roles);
   }
 
   public getImage(): Image {
@@ -64,28 +66,25 @@ export class ImageButtonComponent implements OnInit {
   }
 
   public uploadPhoto($event): void {
-    if (this.hasUploadUrl()) {
-      const file = $event.target.files[0];
-      if (file) {
-        const extension = this.getFileExtension(file.name).toLowerCase();
-        if (extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png' && extension !== 'gif') {
-          return;
-        }
-        const loader = this.loader.add('Bezig met uploaden!');
-        const formData: FormData = new FormData();
-        formData.append('file', file, file.name);
-        this.apiService.post(this.urlImageUpload, formData, {}, true).subscribe(result => {
-          this.loader.remove(loader);
-          if (this.urlImages) {
-            this.apiService.get(this.urlImages).subscribe(documents => {
-              this.documents = documents;
-            });
-          }
-        },
-        () => {
-          this.loader.remove(loader);
-        });
+    const file = $event.target.files[0];
+    if (file) {
+      const extension = this.getFileExtension(file.name).toLowerCase();
+      if (extension !== 'jpg' && extension !== 'jpeg' && extension !== 'png' && extension !== 'gif') {
+        return;
       }
+      const loader = this.loader.add('Bezig met uploaden!');
+      const formData: FormData = new FormData();
+      formData.append('file', file, file.name);
+
+      this.endpoints.post('postImage', formData, {}, true).then(result => {
+          this.loader.remove(loader);
+          this.endpoints.get('getImages').then(documents => {
+            this.documents = documents;
+          });
+      })
+      .catch(() => {
+        this.loader.remove(loader);
+      });
     }
   }
 

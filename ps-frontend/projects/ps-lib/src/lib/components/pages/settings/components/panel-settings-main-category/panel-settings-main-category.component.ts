@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
-import { first } from 'rxjs/operators';
 import { MainCategory } from '../../../../../../model/main-category';
 
 @Component({
@@ -24,8 +22,7 @@ export class PanelSettingsMainCategoryComponent implements OnInit {
   public selectedMainCategory: MainCategory;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -54,13 +51,10 @@ export class PanelSettingsMainCategoryComponent implements OnInit {
   }
 
   public getMainCategories(): void {
-    const endpointT = this.config.getEndpoint('getMainCategories');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((mainCategories: MainCategory[]) => {
-        this.mainCategories = mainCategories;
-        this.addListMainCategories(mainCategories);
-      });
-    }
+    this.endpoints.get('getMainCategories').then((mainCategories: MainCategory[]) => {
+      this.mainCategories = mainCategories;
+      this.addListMainCategories(mainCategories);
+    });
   }
 
   public addListMainCategories(mainCategories: MainCategory[]) {

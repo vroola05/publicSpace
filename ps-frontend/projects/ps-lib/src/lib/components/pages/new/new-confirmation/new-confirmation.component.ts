@@ -16,7 +16,7 @@ import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { first } from 'rxjs/operators';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 
 @Component({
   selector: 'lib-new-confirmation',
@@ -43,6 +43,7 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private apiService: ApiService,
+    private endpoints: EndpointService,
     private config: ConfigService,
     private loader: Loader,
     private toast: ToastService
@@ -74,8 +75,7 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
       if (callData) {
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const call = JSON.parse(callData) as Call;
-        this.apiService.post(this.config.getEndpoint('postCall').endpoint, call)
-          .pipe(first()).subscribe((newCall: Call) => {
+        this.endpoints.post('postCall', call).then((newCall: Call) => {
 
           this.call = newCall;
           const files = this.storage.getVariable('files') as File[];
@@ -85,8 +85,8 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
           } else {
             this.submitted();
           }
-        },
-        () => {
+        })
+        .catch(() => {
           this.loader.remove(this.loaderId);
           this.sending = false;
           this.toast.error('Er is iets foutgegaan bij het opslaan van de melding!');

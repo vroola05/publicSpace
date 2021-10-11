@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 import { ValidationService } from '../../../../../../../services/validation/validation.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 
 import { Page } from '../../../../../../../../model/page';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
@@ -33,12 +32,10 @@ export class ListPanelPagesComponent implements OnInit {
   }
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     private validation: ValidationService,
     protected authorisation: AuthorisationService,
-    protected transform: TransformService,
-    
+    protected transform: TransformService
   ) {
   }
 
@@ -90,21 +87,17 @@ export class ListPanelPagesComponent implements OnInit {
   }
 
   public put(page: Page): void {
-    const endpointT = this.config.getEndpoint('putPage');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.put(url, page).subscribe((p: Page) => {
-        this.validation.errors = [];
-        this.onEvent.emit({
-          action: 'save',
-          isNew: false,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.put('putPage', page).then((p: Page) => {
+      this.validation.errors = [];
+      this.onEvent.emit({
+        action: 'save',
+        isNew: false,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

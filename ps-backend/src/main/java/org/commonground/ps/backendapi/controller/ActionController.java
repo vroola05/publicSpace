@@ -2,24 +2,13 @@ package org.commonground.ps.backendapi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
-import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
-import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
-import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
-import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
-import org.commonground.ps.backendapi.jpa.repositories.ActionRepository;
-import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
-import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
-import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.springframework.beans.factory.annotation.Autowired;

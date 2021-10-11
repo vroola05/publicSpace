@@ -1,15 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 
 import { Domain } from '../../../../../../../../model/domain';
 import { DomainType } from '../../../../../../../../model/domain-type';
 
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
-import { first } from 'rxjs/operators';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 
 @Component({
@@ -44,8 +42,7 @@ export class ListPanelDomainComponent implements OnInit {
   }
   
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -99,52 +96,45 @@ export class ListPanelDomainComponent implements OnInit {
   }
 
   public getDomainTypes(): void {
-    const endpointT = this.config.getEndpoint('getDomainType');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((domainTypes: DomainType[]) => {
-        domainTypes.forEach(domainType => {
-          this.domainTypeItems.push({ name: domainType.name, value: String(domainType.id), data: domainType });
-        });
-        this.selectDomainType();
+    this.endpoints.get('getDomainType').then((domainTypes: DomainType[]) => {
+      domainTypes.forEach(domainType => {
+        this.domainTypeItems.push({ name: domainType.name, value: String(domainType.id), data: domainType });
       });
-    }
+      this.selectDomainType();
+    });
   }
 
 
   public postDomain(domain: Domain): void {
-    const endpointT = this.config.getEndpoint('postDomain');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, domain).subscribe((d: Domain) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.transform.setVariable('domain', domain);
+    this.endpoints.post('postDomain', domain).then((d: Domain) => {
+      this.transform.deleteVariable('domain');
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('domain');
+      this.setErrors(response);
+    });
   }
 
   public putDomain(domain: Domain): void {
-    const endpointT = this.config.getEndpoint('putDomain');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.transform.setVariable('domain', domain);
-      let url = this.transform.URL(endpointT.endpoint);
+    this.transform.setVariable('domain', domain);
+    this.endpoints.put('putDomain', domain).then((d: Domain) => {
       this.transform.deleteVariable('domain');
-      this.apiService.put(url, domain).subscribe((d: Domain) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('domain');
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { ListTemplateT } from '../../../../../../model/template';
 import { Company } from '../../../../../../model/company';
-import { first } from 'rxjs/operators';
-
 
 @Component({
   selector: 'lib-panel-settings-companies',
@@ -25,8 +22,7 @@ export class PanelSettingsCompaniesComponent implements OnInit {
   public selectedCompany: Company;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -55,13 +51,10 @@ export class PanelSettingsCompaniesComponent implements OnInit {
   }
 
   public getCompanies(): void {
-    const endpointT = this.config.getEndpoint('getCompany');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((companies: Company[]) => {
-        this.companies = companies;
-        this.addListCompanies(companies);
-      });
-    }
+    this.endpoints.get('getCompany').then((companies: Company[]) => {
+      this.companies = companies;
+      this.addListCompanies(companies);
+    });
   }
 
   public addListCompanies(companies: Company[]) {

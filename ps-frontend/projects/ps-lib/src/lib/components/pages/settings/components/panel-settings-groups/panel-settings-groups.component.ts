@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiService } from '../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../services/config/config.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
 import { Group } from '../../../../../../model/group';
-import { first } from 'rxjs/operators';
+
 
 @Component({
   selector: 'lib-panel-settings-groups',
@@ -24,8 +23,7 @@ export class PanelSettingsGroupsComponent implements OnInit {
   public selectedGroup: Group;
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -54,13 +52,10 @@ export class PanelSettingsGroupsComponent implements OnInit {
   }
 
   public getGroups(): void {
-    const endpointT = this.config.getEndpoint('getGroups');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((groups: Group[]) => {
-        this.groups = groups;
+    this.endpoints.get('getGroups').then((groups: Group[]) => {
+      this.groups = groups;
         this.addListGroups(groups);
-      });
-    }
+    });
   }
 
   public addListGroups(groups: Group[]) {

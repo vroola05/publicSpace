@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 import { ValidationService } from '../../../../../../../services/validation/validation.service';
 
 import { Group } from '../../../../../../../../model/group';
 
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
+
 
 @Component({
   selector: 'lib-list-panel-group',
@@ -35,8 +35,7 @@ export class ListPanelGroupComponent implements OnInit {
   }
   
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     private validation: ValidationService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
@@ -75,39 +74,35 @@ export class ListPanelGroupComponent implements OnInit {
   }
 
   public postGroup(group: Group): void {
-    const endpointT = this.config.getEndpoint('postGroup');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-      this.apiService.post(url, group).subscribe((d: Group) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.transform.setVariable('group', group);
+    this.endpoints.put('postGroup', group).then((d: Group) => {
+      this.transform.deleteVariable('group');
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('group');
+      this.setErrors(response);
+    });
   }
 
   public putGroup(group: Group): void {
-    const endpointT = this.config.getEndpoint('putGroup');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      this.transform.setVariable('group', group);
-      let url = this.transform.URL(endpointT.endpoint);
+    this.transform.setVariable('group', group);
+    this.endpoints.put('putGroup', group).then((d: Group) => {
       this.transform.deleteVariable('group');
-      this.apiService.put(url, group).subscribe((d: Group) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
       });
-    }
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('group');
+      this.setErrors(response);
+    });
   }
 
   public setErrors(response: any): void {

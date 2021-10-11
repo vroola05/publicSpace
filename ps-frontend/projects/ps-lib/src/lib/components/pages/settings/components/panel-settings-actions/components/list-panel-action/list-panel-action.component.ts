@@ -1,16 +1,13 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../../../../services/api/api.service';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 
 import { Action } from '../../../../../../../../model/action';
 import { Status } from '../../../../../../../../model/status';
 
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
-import { first } from 'rxjs/operators';
-
 
 @Component({
   selector: 'lib-list-panel-action',
@@ -37,8 +34,7 @@ export class ListPanelActionComponent implements OnInit {
   }
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
@@ -69,16 +65,13 @@ export class ListPanelActionComponent implements OnInit {
   }
 
   public getStatus(): void {
-    const endpointT = this.config.getEndpoint('getStatus');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
+    this.endpoints.get('getStatus').then((statusses: Status[]) => {
       this.statusItems.push({ name: 'Geen...', value: '-1', data: null });
-      this.apiService.get(this.transform.URL(endpointT.endpoint)).pipe(first()).subscribe((statusses: Status[]) => {
-        statusses.forEach(status => {
-          this.statusItems.push({ name: status.name, value: String(status.id), data: status });
-        });
-        this.selectStatus();
+      statusses.forEach(status => {
+        this.statusItems.push({ name: status.name, value: String(status.id), data: status });
       });
-    }
+      this.selectStatus();
+    });
   }
 
   public cancel(): void {
@@ -98,21 +91,16 @@ export class ListPanelActionComponent implements OnInit {
   }
 
   public put(action: Action): void {
-    const endpointT = this.config.getEndpoint('putAction');
-    if (this.authorisation.hasRoles(endpointT.roles)) {
-      let url = this.transform.URL(endpointT.endpoint);
-
-      this.apiService.put(url, action).subscribe((a: Action) => {
-        this.onEvent.emit({
-          action: 'save',
-          isNew: false,
-          data: null
-        });
-      },
-      (response) => {
-        this.setErrors(response);
+    this.endpoints.put('putAction', action).then((a: Action) => {
+      this.onEvent.emit({
+        action: 'save',
+        isNew: false,
+        data: null
       });
-    }
+    })
+    .catch(error => {
+      this.setErrors(error);
+    });
   }
 
   public setErrors(response: any): void {

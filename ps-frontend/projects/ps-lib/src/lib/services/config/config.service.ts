@@ -4,12 +4,19 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { Call } from '../../../model/call';
 import { CallList } from '../../../model/call-list';
 import { Template, EndpointT, KeyValueT, HeaderMenuItemT } from '../../../model/template';
-import { PageTypes } from '../../../model/intefaces';
 
 import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '../storage/storage.service';
 import { Page } from 'projects/ps-lib/src/model/page';
 
+export enum PageTypes {
+  overview = 'overview',
+  details = 'details',
+  assign = 'assign',
+  newLocation = 'newLocation',
+  newInformation = 'newInformation',
+  newConfirm = 'newConfirm',
+}
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +37,13 @@ export class ConfigService {
 
   public set api(api: string) {
     this._api = api;
+  }
+
+  public getPage(page: string): Page {
+    if (this.template.pages.has(page)) {
+      return this.template.pages.get(page);
+    }
+    return null;
   }
 
   public getEndpoint(identifier: string): EndpointT {

@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ActionService } from '../../../../../services/action/action.service';
-import { ApiService } from '../../../../../services/api/api.service';
 import { ConfigService } from '../../../../../services/config/config.service';
 import { MailService } from '../../../../../services/mail/mail.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
@@ -21,6 +20,7 @@ import { ButtonT, ContractortypesT } from '../../../../../../model/template';
 import { ContractorType } from '../../../../../../model/intefaces';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
+import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 
 @Component({
   selector: 'lib-order-creation',
@@ -42,10 +42,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   private phaseSubscription: Subscription;
   private ordertypeSubscription: Subscription;
   public call: Call;
-  public getUrlImages: string;
   public getUrlImage: string;
-  public postUrlImage: string;
-  public postUrlNote: string;
   public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
@@ -64,8 +61,8 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
+    private endpoints: EndpointService,
     private config: ConfigService,
-    private apiService: ApiService,
     private mailService: MailService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
@@ -173,21 +170,17 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.phase.next('call-loaded');
       this.transform.setVariable('call', call);
       this.call = call;
-      this.getUrlImages = this.transform.URL(this.config.getEndpoint('getImages').endpoint);
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.postUrlImage = this.transform.URL(this.config.getEndpoint('postImage').endpoint);
-      this.postUrlNote = this.transform.URL(this.config.getEndpoint('postNote').endpoint);
       this.headerData = this.config.transformCall(call);
-    }));
+    });
   }
 
   public getContractors(): void {
-    this.subscription.push(this.apiService.get(this.config.getEndpoint('getOrderCreationContractors').endpoint)
-      .subscribe((contractors: Contractor[]) => {
+    this.endpoints.get('getOrderCreationContractors').then((contractors: Contractor[]) => {
         this.contractors = contractors;
 
         this.actionItems = [];
@@ -202,7 +195,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
         });
 
         this.phase.next('contractors-loaded');
-      }));
+      });
   }
 
   public hasActionItems(): boolean {
@@ -269,8 +262,8 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     if (this.ordertypeSubscription) {
       this.ordertypeSubscription.unsubscribe();
     }
-    const url = this.navigationService.transformURL(this.config.getEndpoint('getOrderCreationOrderTypesContractor').endpoint, contractor);
-    this.ordertypeSubscription = this.apiService.get(url).subscribe((ordertypes: Ordertype[]) => {
+
+    this.endpoints.get('getOrderCreationOrderTypesContractor').then((ordertypes: Ordertype[]) => {
       if (ordertypes) {
         ordertypes.forEach(ordertype => {
           this.ordertypes.push({ name: ordertype.name, value: '' + ordertype.id, data: ordertype });

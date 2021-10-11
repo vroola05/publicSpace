@@ -4,8 +4,7 @@ import { StorageService } from '../../../../services/storage/storage.service';
 import { Call } from '../../../../../model/call';
 import { Person } from '../../../../../model/person';
 import { Subscription } from 'rxjs';
-import { ApiService } from '../../../../services/api/api.service';
-import { ConfigService } from '../../../../services/config/config.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 
@@ -35,8 +34,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   public validatorsEmail = [{pattern: '/^[^\s@]+@[^\s@]+\.[^\s@]+$/', text: 'Geen geldig emailadres!'}];
 
   constructor(
-    private apiService: ApiService,
-    private config: ConfigService,
+    private endpoints: EndpointService,
     private storage: StorageService,
     private authorisation: AuthorisationService
   ) {
@@ -60,16 +58,14 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    if (this.isCC && this.config.getEndpoint('getNewInformationChannels').endpoint) {
-      this.channelsSubscription = this.apiService.get(
-        this.config.getEndpoint('getNewInformationChannels').endpoint)
-        .subscribe((channels: string[]) => {
-          const items = [];
-          channels.forEach(channel => {
-            items.push({name: channel, value: channel});
-          });
-          this.channelComponent.setItems(items);
+    if (this.isCC) {
+      this.endpoints.get('getNewInformationChannels').then((channels: string[]) => {
+        const items = [];
+        channels.forEach(channel => {
+          items.push({name: channel, value: channel});
         });
+        this.channelComponent.setItems(items);
+      });
     }
   }
 
