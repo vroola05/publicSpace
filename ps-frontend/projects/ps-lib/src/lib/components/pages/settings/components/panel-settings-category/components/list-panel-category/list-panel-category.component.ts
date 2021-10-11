@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../services/api/api.service';
-import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../services/config/config.service';
-import { TransformService } from '../../../../services/transform/transform.service';
+import { ApiService } from '../../../../../../../services/api/api.service';
+import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
+import { ConfigService } from '../../../../../../../services/config/config.service';
+import { TransformService } from '../../../../../../../services/transform/transform.service';
 
-import { MainCategory } from '../../../../../model/main-category';
-import { Category } from '../../../../../model/category';
+import { MainCategory } from '../../../../../../../../model/main-category';
+import { Category } from '../../../../../../../../model/category';
 
-import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
-import { DateFieldComponent } from '../../../fields/date-field/date-field.component';
-import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
+import { TextFieldComponent } from '../../../../../../fields/text-field/text-field.component';
+import { DateFieldComponent } from '../../../../../../fields/date-field/date-field.component';
+import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { first } from 'rxjs/operators';
 import { Group } from 'projects/ps-lib/src/model/group';
 

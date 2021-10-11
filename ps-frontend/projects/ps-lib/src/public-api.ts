@@ -24,10 +24,10 @@ export * from './lib/components/header/components/header-button/header-button.co
 export * from './lib/components/list/list.component';
 export * from './lib/components/list/components/list-panel/list-panel.component';
 export * from './lib/components/list/components/list-panel-order/list-panel-order.component';
-export * from './lib/components/list/components/list-panel-user/list-panel-user.component';
-export * from './lib/components/list/components/list-panel-category/list-panel-category.component';
+export * from './lib/components/pages/settings/components/panel-settings-users/components/list-panel-user/list-panel-user.component';
+export * from './lib/components/pages/settings/components/panel-settings-category/components/list-panel-category/list-panel-category.component';
 export * from './lib/components/pages/settings/components/panel-settings-status/components/list-panel-status/list-panel-status.component';
-export * from './lib/components/list/components/list-panel-action/list-panel-action.component';
+export * from './lib/components/pages/settings/components/panel-settings-actions/components/list-panel-action/list-panel-action.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages-overview/list-panel-pages-overview.component';
 

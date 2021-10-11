@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 
-import { ApiService } from '../../../../services/api/api.service';
-import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../services/config/config.service';
-import { TransformService } from '../../../../services/transform/transform.service';
+import { ApiService } from '../../../../../../../services/api/api.service';
+import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
+import { ConfigService } from '../../../../../../../services/config/config.service';
+import { TransformService } from '../../../../../../../services/transform/transform.service';
 
-import { Action } from '../../../../../model/action';
-import { Status } from '../../../../../model/status';
+import { Action } from '../../../../../../../../model/action';
+import { Status } from '../../../../../../../../model/status';
 
-import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
+import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { first } from 'rxjs/operators';
 
 
