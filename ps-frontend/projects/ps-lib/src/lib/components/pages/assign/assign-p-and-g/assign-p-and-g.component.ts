@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { ApiService } from '../../../../services/api/api.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { ConfigService } from '../../../../services/config/config.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
@@ -63,7 +63,7 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private config: ConfigService,
     private loader: Loader,
     private toast: ToastService
@@ -91,13 +91,12 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(
-      this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       this.getTeams();
       this.headerData = this.config.transformCall(call);
-    }));
+    });
   }
   public onTabChanged($event): void {
     this.transform.deleteVariable('user');
@@ -107,28 +106,24 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
 
   public getPersons() {
     this.items = [];
-    const url = this.transform.URL(this.config.getEndpoint('getAssignUsersOfGroup').endpoint);
-    this.subscription.push(this.apiService.get(url)
-      .subscribe((users: User[]) => {
-        const items = [];
+    this.endpoints.get('getAssignUsersOfGroup').then((users: User[]) => {
+      const items = [];
         users.forEach(user => {
           items.push({ selected: false, image: this.getImageOfUser(user), data: user });
         });
         this.items = items;
-      }));
+    });
   }
 
   public getTeams() {
     this.items = [];
-    const url = this.transform.URL(this.config.getEndpoint('getAssignGroups').endpoint);
-    this.subscription.push(this.apiService.get(url)
-      .subscribe((groups: Group[]) => {
-        const tabs = [];
+    this.endpoints.get('getAssignGroups').then((groups: Group[]) => {
+      const tabs = [];
         groups.forEach(group => {
           tabs.push({ name: group.name, value: group.name, data: group, selected: false });
         });
         this.tabs = tabs;
-      }));
+    });
   }
 
   public onItemChanged($event): void {
@@ -170,17 +165,16 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
         this.sending = true;
 
         const loaderId = this.loader.add('Bezig met opslaan!');
-        const url = this.transform.URL(this.config.getEndpoint('putAssignUser').endpoint);
-        this.subscription.push(this.apiService.put(url, {}).subscribe((message: Message) => {
+        this.endpoints.put('putAssignUser', {}).then((message: Message) => {
           this.loader.remove(loaderId);
           this.sending = false;
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
-        },
-          () => {
-            this.loader.remove(loaderId);
-            this.sending = false;
-          }));
+        })
+        .catch(() => {
+          this.loader.remove(loaderId);
+          this.sending = false;
+        });
       } else {
         this.toast.error('Er is geen gebruiker geselecteerd.', 5, true);
       }
@@ -193,17 +187,17 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
       if (group && group.id) {
         this.sending = true;
         const loaderId = this.loader.add('Bezig met opslaan!');
-        const url = this.transform.URL(this.config.getEndpoint('putAssignGroup').endpoint);
-        this.subscription.push(this.apiService.put(url, {}).subscribe((message: Message) => {
+
+        this.endpoints.put('putAssignGroup', {}).then((message: Message) => {
           this.loader.remove(loaderId);
           this.sending = false;
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
-        },
-          () => {
-            this.loader.remove(loaderId);
-            this.sending = false;
-          }));
+        })
+        .catch(() => {
+          this.loader.remove(loaderId);
+          this.sending = false;
+        });
       } else {
         this.toast.error('Er is geen groep geselecteerd.', 5, true);
       }

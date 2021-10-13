@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthorisationService } from '../../../../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../../../../services/config/config.service';
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { User, UserExtended } from '../../../../../../../../model/user';
@@ -46,7 +45,6 @@ export class ListPanelUserComponent implements OnInit {
   
   constructor(
     private endpoints: EndpointService,
-    private config: ConfigService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) { }

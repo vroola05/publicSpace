@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApiService } from '../../../../services/api/api.service';
 import { ConfigService } from '../../../../services/config/config.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
@@ -20,6 +19,7 @@ import { Message } from '../../../../../model/message';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { ActionService } from '../../../../services/action/action.service';
 
 @Component({
@@ -65,7 +65,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private config: ConfigService,
     private loader: Loader,
     private toast: ToastService
@@ -93,11 +93,11 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
       this.headerData = this.config.transformCall(call);
-    }));
+    });
   }
 
   public clearSelection(): void {
@@ -117,28 +117,24 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public getPersons() {
     this.items = [];
-    const url = this.transform.URL(this.config.getEndpoint('getAssignUsersOfGroup').endpoint);
-    this.subscription.push(this.apiService.get(url )
-      .subscribe((users: User[]) => {
-        const items = [];
-        users.forEach(user => {
-          items.push({selected: false, image: this.getImageOfUser(user), data: user});
-        });
-        this.items = items;
-      }));
+    this.endpoints.get('getAssignUsersOfGroup').then((users: User[]) => {
+      const items = [];
+      users.forEach(user => {
+        items.push({selected: false, image: this.getImageOfUser(user), data: user});
+      });
+      this.items = items;
+    });
   }
 
   public getTeams() {
     this.items = [];
-    const url = this.transform.URL(this.config.getEndpoint('getAssignGroups').endpoint);
-    this.subscription.push(this.apiService.get(url)
-      .subscribe((groups: Group[]) => {
-        const items = [];
+    this.endpoints.get('getAssignGroups').then((groups: Group[]) => {
+      const items = [];
         groups.forEach(group => {
           items.push({selected: false, image: this.getImageOfGroup(group), data: group});
         });
         this.items = items;
-      }));
+    });
   }
 
   public onTyping($event): void {
@@ -198,17 +194,16 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
         this.sending = true;
 
         const loaderId = this.loader.add('Bezig met opslaan!');
-        const url = this.transform.URL(this.config.getEndpoint('putAssignUser').endpoint);
-        this.subscription.push(this.apiService.put(url, {}).subscribe((message: Message) => {
+        this.endpoints.put('putAssignUser', {}).then((message: Message) => {
           this.loader.remove(loaderId);
           this.sending = false;
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
-        },
-        () => {
+        })
+        .catch(() => {
           this.loader.remove(loaderId);
           this.sending = false;
-        }));
+        });
       } else {
         this.toast.error('Er is geen gebruiker geselecteerd.', 5, true);
       }
@@ -222,17 +217,16 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
         this.sending = true;
 
         const loaderId = this.loader.add('Bezig met opslaan!');
-        const url = this.transform.URL(this.config.getEndpoint('putAssignGroup').endpoint);
-        this.subscription.push(this.apiService.put(url, {}).subscribe((message: Message) => {
+        this.endpoints.put('putAssignGroup', {}).then((message: Message) => {
           this.loader.remove(loaderId);
           this.sending = false;
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
-        },
-        () => {
+        })
+        .catch(() => {
           this.loader.remove(loaderId);
           this.sending = false;
-        }));
+        });
       } else {
         this.toast.error('Er is geen groep geselecteerd.', 5, true);
       }

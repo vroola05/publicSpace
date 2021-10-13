@@ -13,7 +13,6 @@ import { NavigationService } from '../../../../services/navigation/navigation.se
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { ActionService } from '../../../../services/action/action.service';
-import { ApiService } from '../../../../services/api/api.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { ToastService } from '../../../../services/toast/toast.service';
@@ -23,7 +22,6 @@ import { TransformService } from '../../../../services/transform/transform.servi
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { Page } from '../../../../../model/page';
-import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -47,7 +45,6 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private config: ConfigService,
-    private apiService: ApiService,
     private endpoints: EndpointService,
     private loader: Loader,
     private popup: Popup,
@@ -80,11 +77,8 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     this.endpoints.get('getCallById').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
+      //this.headerData = this.config.transformCall(call);
     });
-    /*this.apiService.get(this.transform.URL(this.config.getEndpoint('getCallById').endpoint)).pipe(first()).subscribe((call: Call) => {
-      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCall(call);
-    });*/
   }
 
   public onOrderChanged($event): void {
@@ -120,13 +114,14 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   public updateStatus(order: Order, status: number, note: Note) {
     const item = this.findOrder(order);
     if (item) {
+      /*
       const url = this.navigationService.transformURL(this.config.getEndpoint('putOrderStatus').endpoint, {
         id: this.call.id,
         orderId: order.id,
         status
       });
-
-      this.apiService.put(url, note).subscribe((mesage: Message) => {
+      */
+      this.endpoints.put('putOrderStatus', note).then((mesage: Message) => {
         this.toast.success('De status is aangepast!', 5);
         this.getCall();
       });
@@ -143,14 +138,14 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     }, [{type: PopupETypes.ok, event: (text: string) => {
         if (text && text.length > 0) {
           const loaderId = this.loader.add('Bezig met opslaan!');
-          const url = this.transform.URL(this.config.getEndpoint('postCallAbort').endpoint);
-          this.apiService.post(url, text).subscribe((mesage: Message) => {
+
+          this.endpoints.put('postCallAbort', text).then((mesage: Message) => {
             this.loader.remove(loaderId);
             this.cancel();
-          },
-          (error => {
+          })
+          .catch(error => {
             this.loader.remove(loaderId);
-          }));
+          });
         }
       }}]);
   }
@@ -162,14 +157,14 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
           const loaderId = this.loader.add('Bezig met opslaan!');
           const note = new Note();
           note.description = text;
-          const url = this.transform.URL(this.config.getEndpoint('postCallClose').endpoint);
-          this.apiService.post(url, note).subscribe((mesage: Message) => {
+
+          this.endpoints.post('postCallClose', note).then((mesage: Message) => {
             this.loader.remove(loaderId);
             this.cancel();
-          },
-          (error => {
+          })
+          .catch(error => {
             this.loader.remove(loaderId);
-          }));
+          });
         }
       }}]);
   }

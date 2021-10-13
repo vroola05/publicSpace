@@ -4,12 +4,10 @@ import { Call } from '../../../../../model/call';
 import { Note } from '../../../../../model/note';
 import { Message } from '../../../../../model/message';
 import { PopupETypes } from '../../../../../model/intefaces';
-
 import { ActionService } from '../../../../services/action/action.service';
 import { ConfigService } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
-import { ApiService } from '../../../../services/api/api.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +17,7 @@ import { Popup } from '../../../../services/popup/popup.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
 import { PanelChangeConfirmationComponent } from '../../../panel/components/panel-change-confirmation/panel-change-confirmation.component';
 import { TransformService } from '../../../../services/transform/transform.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 
 
@@ -47,7 +46,7 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private apiService: ApiService,
+    private endpoints: EndpointService,
     private config: ConfigService,
     private loader: Loader,
     private popup: Popup,
@@ -76,10 +75,10 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
   }
 
   public getCall(): void {
-    this.subscription.push(this.apiService.get(this.transform.URL(this.config.getEndpoint('getDetailCall').endpoint)).subscribe((call: Call) => {
+    this.endpoints.get('getDetailCall').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
-    }));
+    });
   }
 
   public onChanged($event): void {
@@ -116,13 +115,11 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
         call.location = callChanged.location;
       }
       this.loaderId = this.loader.add('Bezig met opslaan!');
-      const url = this.transform.URL(this.config.getEndpoint('putCall').endpoint);
-      this.putChangeCallSubscription = this.apiService.put(url, call)
-        .subscribe((message: Message) => {
-          this.storage.clearProcessData();
-          this.navigationService.navigateHome();
-          this.loader.remove(this.loaderId);
-        });
+      this.endpoints.put('putCall', call).then((message: Message) => {
+        this.storage.clearProcessData();
+        this.navigationService.navigateHome();
+        this.loader.remove(this.loaderId);
+      });
     }
   }
 
