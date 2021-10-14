@@ -3,8 +3,10 @@ package org.commonground.ps.backendapi.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.commonground.ps.backendapi.core.LocationService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.model.Location;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/location", produces = { "application/json; charset=utf-8" })
 public class LocationController {
   
+  
+  @Autowired
+	private LocationService locationService;
+
   @Secured(identifier = "getLocationByStreet")
 	@GetMapping("/street/{street}")
 	public List<Location> getLocationByStreet(@PathVariable String street) {
@@ -44,14 +50,15 @@ public class LocationController {
   @Secured(identifier = "getLocationByCoordinates")
 	@GetMapping("/latitude/{latitude}/longitude/{longitude}")
 	public Location getLocationByCoordinates(@PathVariable Double latitude, @PathVariable Double longitude) {
-    Location location = new Location();
+    System.out.println("Bladiblablalbvla: " + latitude +" - "+ longitude);
+    /*Location location = new Location();
     location.setStreet("Stationstraat");
     location.setNumber("1");
     location.setPostal("1234AA");
     location.setCity("Jeruzalem");
     location.setLatitude(31.772386);
-    location.setLongitude(35.203788);
+    location.setLongitude(35.203788);*/
 
-    return location;
+    return locationService.byLatLong(latitude, longitude);
   }
 }
