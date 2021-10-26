@@ -107,8 +107,8 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
     this.transform.setVariable('location', location);
     this.endpoints.get('getLocationByCoordinates').then((result: Location) => {
       if (result) {
-        result.latitude = location.latitude;
-        result.longitude = location.longitude;
+        result.x = location.x;
+        result.y = location.y;
         this.storeLocation(result);
       }
     });

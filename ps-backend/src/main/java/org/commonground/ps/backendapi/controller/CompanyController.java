@@ -14,6 +14,9 @@ import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
 import org.commonground.ps.backendapi.model.Company;
 import org.commonground.ps.backendapi.validators.PostCompanyValidator;
 import org.commonground.ps.backendapi.validators.PutCompanyValidator;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +62,16 @@ public class CompanyController extends Controller {
 		if (optionalCompanyEntity.isPresent() && id == company.getId()) {
 			CompanyEntity companyEntity = optionalCompanyEntity.get();
 			companyEntity.setName(company.getName());
+			companyEntity.setSrid(company.getSrid());
+
+			GeometryFactory geometryFactory = new GeometryFactory();
+			Coordinate coordinate = new Coordinate();
+
+			coordinate.x = company.getX();
+			coordinate.y = company.getY();
+			Point point = geometryFactory.createPoint(coordinate);
+			point.setSRID(company.getSrid());
+			companyEntity.setCenter(point);
 			return Convert.companyEntity(companyRepository.save(companyEntity));
 		}
 

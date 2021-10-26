@@ -2,6 +2,8 @@ export PGPASSWORD=postgresPassword
 psql -h localhost -U postgres -f database.sql
 
 psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION postgis;"
+psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION fuzzystrmatch;"
+
 psql -h localhost -U postgres -f geo.sql
 
 # Insert required tables

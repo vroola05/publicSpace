@@ -9,6 +9,7 @@ import { Company } from '../../../../../../../../model/company';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
 
 
+
 @Component({
   selector: 'lib-list-panel-company',
   templateUrl: './list-panel-company.component.html',
@@ -16,6 +17,11 @@ import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/
 })
 export class ListPanelCompanyComponent implements OnInit {
   @ViewChild('companyComponent') companyComponent: TextareaFieldComponent;
+  @ViewChild('codeComponent') codeComponent: TextareaFieldComponent;
+  
+  @ViewChild('sridComponent') sridComponent: TextareaFieldComponent;
+  @ViewChild('latitudeComponent') latitudeComponent: TextareaFieldComponent;
+  @ViewChild('longitudeComponent') longitudeComponent: TextareaFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
 
@@ -30,13 +36,17 @@ export class ListPanelCompanyComponent implements OnInit {
     if (company) {
       this._company.id = company.id;
       this._company.name = company.name;
+      this._company.code = company.code;
+      this._company.srid = company.srid;
+      this._company.x = company.x;
+      this._company.y = company.y;
     }
   }
   
   constructor(
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
-    protected transform: TransformService
+    protected transform: TransformService,
   ) { }
 
   public ngOnInit(): void {
@@ -49,6 +59,30 @@ export class ListPanelCompanyComponent implements OnInit {
   public onCompanyChanged($event) {
     if (this.companyComponent.validate()) {
       this._company.name = $event;
+    }
+  }
+
+  public onCodeChanged($event) {
+    if (this.codeComponent.validate()) {
+      this._company.code = $event;
+    }
+  }
+
+  public onSridChanged($event) {
+    if (this.sridComponent.validate()) {
+      this._company.srid = $event;
+    }
+  }
+
+  public onXChanged($event) {
+    if (this.latitudeComponent.validate()) {
+      this._company.x = $event;
+    }
+  }
+
+  public onYChanged($event) {
+    if (this.longitudeComponent.validate()) {
+      this._company.y = $event;
     }
   }
 

@@ -90,7 +90,10 @@ ALTER TABLE public.domain_type OWNER TO postgres;
 
 CREATE TABLE public.company (
     id integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    code integer NOT NULL,
+    srid integer NOT NULL,
+    center geometry NOT NULL
 );
 
 ALTER TABLE public.company OWNER TO postgres;
@@ -130,7 +133,6 @@ CREATE TABLE public.roles (
 
 ALTER TABLE public.roles OWNER TO postgres;
 
-
 --
 -- TOC entry 223 (class 1259 OID 16842)
 -- Name: groups; Type: TABLE; Schema: public; Owner: postgres
@@ -142,9 +144,7 @@ CREATE TABLE public.groups (
     domain_id integer NOT NULL
 );
 
-
 ALTER TABLE public.groups OWNER TO postgres;
-
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);

@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
@@ -17,10 +19,9 @@ public class LocationServiceDatabase implements LocationService {
 	private GeoAddressRepository geoAddressRepository;
 
 	@Override
-	public Location byLatLong(Double latitude, Double longitude) {
-		System.out.println("Bladibla: " + latitude +" - "+ longitude);
+	public Location byXY(Double x, Double y) {
 		Location location = new Location();
-		Optional<GeoAddressEntity> geoAddressEntityOptional = geoAddressRepository.getAddressByLatitudeLongitude(latitude, longitude);
+		Optional<GeoAddressEntity> geoAddressEntityOptional = geoAddressRepository.getAddressByLatitudeLongitude(x, y);
 		if (geoAddressEntityOptional.isPresent()) {
 			GeoAddressEntity geoAddressEntity = geoAddressEntityOptional.get();
 			location.setStreet(geoAddressEntity.getStreet());
@@ -28,15 +29,23 @@ public class LocationServiceDatabase implements LocationService {
 			location.setLetter(geoAddressEntity.getLetter());
 			location.setPostal(geoAddressEntity.getPostal());
 			location.setCity(geoAddressEntity.getCity());
-			location.setLatitude(geoAddressEntity.getLatitude());
-			location.setLongitude(geoAddressEntity.getLongitude());
-
-			//Point point = geoAddressEntity.getLocation();
-			//double[] latLon = Geo.toLatLong(point.getX(), point.getY());
-			//location.setLatitude(latLon[0]);
-			//location.setLongitude(latLon[1]);
+			if (geoAddressEntity.getGeo() != null && geoAddressEntity.getGeo().getCoordinate() != null) {
+				location.setX(geoAddressEntity.getGeo().getCoordinate().x);
+				location.setY(geoAddressEntity.getGeo().getCoordinate().y);
+			}
 		}
 		return location;
 	}
 
+	@Override
+	public List<Location> byStreet(String street) {
+		ArrayList<Location> locations = new ArrayList<>();
+		/*List<String> geoAddressEntities = geoAddressRepository.searchStreet(street);
+		for(String geoAddressEntity : geoAddressEntities) {
+			Location location = new Location();
+			location.setStreet(geoAddressEntity.getStreet());
+			locations.add(location);
+		}*/
+		return locations;
+	}
 }

@@ -8,6 +8,6 @@ export class Location {
   public description?: string;
   public district?: string;
   public area?: number;
-  public latitude?: number;
-  public longitude?: number;
+  public x?: number;
+  public y?: number;
 }

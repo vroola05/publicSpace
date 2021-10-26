@@ -8,13 +8,49 @@
             [value]="_company?.name" [required]="true" [maxLength]="50" (changed)="onCompanyChanged($event)"
             #companyComponent></lib-text-field>
         </div>
-
+        <h4>Gemeentecode</h4>
+        <div class="field-wrapper">
+          <lib-text-field [style]="'filled'" [id]="'code'" [name]="'code'" [placeholder]="'Gemeentecode'"
+            [value]="_company?.code" [required]="true" [maxLength]="50" (changed)="onCodeChanged($event)"
+            #codeComponent></lib-text-field>
+        </div>
       </div>
     </div>
   </div>
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Centerpunt gemeente</h3>
+
+            <h4>SRID</h4>
+            <div class="field-wrapper">
+              <lib-text-field [style]="'filled'" [id]="'srid'" [name]="'srid'" [placeholder]="'SRID'"
+                [value]="_company?.srid" [required]="true" [maxLength]="50" (changed)="onSridChanged($event)"
+                #sridComponent></lib-text-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <h4>X coördinaat</h4>
+            <div class="field-wrapper">
+              <lib-text-field [style]="'filled'" [id]="'xCoordinate'" [name]="'xCoordinate'" [placeholder]="'X coördinaat'"
+                [value]="_company?.x" [required]="true" [maxLength]="50" (changed)="onXChanged($event)"
+                #latitudeComponent></lib-text-field>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h4>Y coördinaat</h4>
+            <div class="field-wrapper">
+              <lib-text-field [style]="'filled'" [id]="'yCoordinate'" [name]="'yCoordinate'" [placeholder]="'Y coördinaat'"
+                [value]="_company?.y" [required]="true" [maxLength]="50" (changed)="onYChanged($event)"
+                #longitudeComponent></lib-text-field>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

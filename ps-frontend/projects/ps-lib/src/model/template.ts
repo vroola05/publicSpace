@@ -1,4 +1,5 @@
 import { ActionType } from './action-type';
+import { Company } from './company';
 import { ButtonTypes, ContractorType, PageLayoutType } from './intefaces';
 import { Page } from './page';
 import { PageButton } from './page-button';
@@ -235,4 +236,5 @@ export interface Template {
   //endpoints?: EndpointsT;
   endpoints?: Map<string, EndpointT>;
   info: InfoT;
+  company: Company;
 }

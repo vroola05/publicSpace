@@ -29,8 +29,8 @@ public class LocationController {
     location.setStreet("Stationstraat");
     location.setCity("Jeruzalem");
     locations.add(location);
-
-    return locations;
+    
+    return locationService.byStreet(street);
   }
 
   @Secured(identifier = "getLocationByStreetAndNumber")
@@ -41,24 +41,15 @@ public class LocationController {
     location.setNumber("1");
     location.setPostal("1234AA");
     location.setCity("Jeruzalem");
-    location.setLatitude(31.772386);
-    location.setLongitude(35.203788);
+    location.setX(31.772386);
+    location.setY(35.203788);
 
     return location;
   }
 
   @Secured(identifier = "getLocationByCoordinates")
-	@GetMapping("/latitude/{latitude}/longitude/{longitude}")
-	public Location getLocationByCoordinates(@PathVariable Double latitude, @PathVariable Double longitude) {
-    System.out.println("Bladiblablalbvla: " + latitude +" - "+ longitude);
-    /*Location location = new Location();
-    location.setStreet("Stationstraat");
-    location.setNumber("1");
-    location.setPostal("1234AA");
-    location.setCity("Jeruzalem");
-    location.setLatitude(31.772386);
-    location.setLongitude(35.203788);*/
-
-    return locationService.byLatLong(latitude, longitude);
+	@GetMapping("/x/{x}/y/{y}")
+	public Location getLocationByCoordinates(@PathVariable Double x, @PathVariable Double y) {
+    return locationService.byXY(x, y);
   }
 }

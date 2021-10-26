@@ -23,8 +23,8 @@ public class Location {
   private String city;
   private Integer area;
   @NotNull(message = "Waarde is verplicht")
-  private Double latitude;
+  private Double x;
   @NotNull(message = "Waarde is verplicht")
-  private Double longitude;
+  private Double y;
 
 }

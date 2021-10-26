@@ -102,14 +102,26 @@ public class Convert {
   
 
   public static Company companyEntity(CompanyEntity companyEntity) {
-		return new Company(companyEntity.getId(), companyEntity.getName());
+    Company company = new Company();
+    company.setId(companyEntity.getId());
+    company.setName(companyEntity.getName());
+    company.setCode(companyEntity.getCode());
+    company.setSrid(companyEntity.getSrid());
+
+    if (companyEntity.getCenter() != null && companyEntity.getCenter().getCoordinate() != null) {
+      company.setX(companyEntity.getCenter().getCoordinate().x);
+      company.setY(companyEntity.getCenter().getCoordinate().y);
+    }
+    
+    
+		return company;
 	}
 
   public static CompanyEntity company(Company company) {
 		CompanyEntity companyEntity = new CompanyEntity();
 		companyEntity.setId(company.getId());
 		companyEntity.setName(company.getName());
-		return companyEntity;
+    return companyEntity;
 	}
 
   public static Group groupEntity(GroupEntity groupEntity) {
@@ -177,8 +189,8 @@ public class Convert {
     locationEntity.setNumber(location.getNumber());
     locationEntity.setPostal(location.getPostal());
     locationEntity.setCity(location.getCity());
-    locationEntity.setLatitude(location.getLatitude());
-    locationEntity.setLongitude(location.getLongitude());
+    locationEntity.setLatitude(location.getX());
+    locationEntity.setLongitude(location.getY());
     return locationEntity;
   }
 
@@ -188,8 +200,8 @@ public class Convert {
     location.setNumber(locationEntity.getNumber());
     location.setPostal(locationEntity.getPostal());
     location.setCity(locationEntity.getCity());
-    location.setLatitude(locationEntity.getLatitude());
-    location.setLongitude(locationEntity.getLongitude());
+    location.setX(locationEntity.getLatitude());
+    location.setY(locationEntity.getLongitude());
     return location;
   }
 

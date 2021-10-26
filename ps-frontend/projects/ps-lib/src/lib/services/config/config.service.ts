@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 import { Call } from '../../../model/call';
 import { CallList } from '../../../model/call-list';
 import { Template, EndpointT, KeyValueT, HeaderMenuItemT } from '../../../model/template';
+import { Page } from '../../../model/page';
+import { Company } from '../../../model/company';
 
-import { ActivatedRoute } from '@angular/router';
 import { StorageService } from '../storage/storage.service';
-import { Page } from 'projects/ps-lib/src/model/page';
+
 
 export enum PageTypes {
   overview = 'overview',
@@ -37,20 +39,6 @@ export class ConfigService {
 
   public set api(api: string) {
     this._api = api;
-  }
-
-  public getPage(page: string): Page {
-    if (this.template.pages.has(page)) {
-      return this.template.pages.get(page);
-    }
-    return null;
-  }
-
-  public getEndpoint(identifier: string): EndpointT {
-    if (this._endpoints.has(identifier)) {
-      return this._endpoints.get(identifier);
-    }
-    return { endpoint: null };
   }
 
   public set template(template: Template) {
@@ -136,6 +124,24 @@ export class ConfigService {
     }
     
     return template;
+  }
+
+  public getCompany(): Company {
+    return this.template.company;
+  }
+
+  public getPage(page: string): Page {
+    if (this.template.pages.has(page)) {
+      return this.template.pages.get(page);
+    }
+    return null;
+  }
+
+  public getEndpoint(identifier: string): EndpointT {
+    if (this._endpoints.has(identifier)) {
+      return this._endpoints.get(identifier);
+    }
+    return { endpoint: null };
   }
 
   public getLogo(): string {

@@ -21,9 +21,7 @@ CREATE TABLE public.geo_address (
     addition text, 
     postal text,
     city text NOT NULL,
-    xcoord integer,
-    ycoord integer,
-    coord integer NOT NULL,
+    srid integer NOT NULL,
     geo geometry NOT NULL
 );
 

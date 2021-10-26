@@ -67,10 +67,11 @@ public class ConfigServiceImpl implements ConfigService {
         Optional<DomainEntity> domainEntity = domainRepository.getDomainByDomain(domain);
         if (domainEntity.isPresent()) {
           Long companyId = domainEntity.get().getCompany().getId();
+          
           Long domainId = domainEntity.get().getId();
           config.getInfo().setCompany(companyId);
           config.getInfo().setDomain(domainId);
-          
+          config.setCompany(Convert.companyEntity(domainEntity.get().getCompany()));
           List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
           List<Status> statusses = new ArrayList<>();
           statusEntities.forEach(statusEntity -> {
