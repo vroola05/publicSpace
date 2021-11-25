@@ -59,9 +59,9 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
     this.buttonsLeft = this.config.template.order.handle.buttonsLeft;
     this.buttonsRight = this.config.template.order.handle.buttonsRight;
 
-    this.action.register('next', () => { this.next(); });
-    this.action.register('save', () => { this.save(); });
-    this.action.register('submit', () => { this.submit(); });
+    //this.action.register('next', () => { this.next(); });
+    //this.action.register('save', () => { this.save(); });
+    //this.action.register('submit', () => { this.submit(); });
 
     this.getCall();
   }

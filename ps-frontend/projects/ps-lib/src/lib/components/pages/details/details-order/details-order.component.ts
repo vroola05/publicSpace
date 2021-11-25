@@ -66,7 +66,7 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
       this.pageLayoutType = this.config.template.details.pageType;
     }
 
-    this.action.register('reject-order', () => { this.reject(); });
+    //this.action.register('reject-order', () => { this.reject(); });
   }
 
   public ngOnDestroy(): void {

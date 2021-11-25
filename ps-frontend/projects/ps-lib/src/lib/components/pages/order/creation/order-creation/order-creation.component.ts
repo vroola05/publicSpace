@@ -117,7 +117,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
       this.pageLayoutType = this.config.template.order.creation.pageType;
     }
 
-    this.action.register('next', () => { this.next(); });
+    //this.action.register('next', () => { this.next(); });
   }
 
   public ngOnDestroy(): void {

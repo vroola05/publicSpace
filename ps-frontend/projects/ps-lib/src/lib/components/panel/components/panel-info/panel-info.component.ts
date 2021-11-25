@@ -48,9 +48,7 @@ export class PanelInfoComponent implements OnInit {
     this.popup.add(this.call.location.street + ' ' + this.call.location.number, MapsComponent, {
       location: this.call.location,
       classes: 'big',
-      zoom: true,
-      pan: true,
-      zoomControl: true
+      controls: true
     });
   }
 

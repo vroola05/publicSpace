@@ -81,9 +81,9 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
       this.pageLayoutType = this.config.template.order.information.pageType;
     }
 
-    this.action.register('next', () => { this.next(); });
-    this.action.register('save', () => { this.save(); });
-    this.action.register('submit', () => { this.submit(); });
+    //this.action.register('next', () => { this.next(); });
+    //this.action.register('save', () => { this.save(); });
+    //this.action.register('submit', () => { this.submit(); });
   }
 
   public ngOnDestroy(): void {

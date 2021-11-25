@@ -15,7 +15,10 @@ public enum ActionEnum {
   ORDER_DONE(8L, "Opdracht gereedmelden"),
   ORDER_DONE_REJECT(9L, "Opdracht goedkeuren"),
   ORDER_CLOSE(10L, "Opdracht afkeuren"),
-  ORDER_CANCEL(11L, "Opdracht annuleren");
+  ORDER_CANCEL(11L, "Opdracht annuleren"),
+  CANCEL(12L, "Terug"),
+  BACK(13L, "Annuleren"),
+  NEXT(14L, "Volgende");
   
   private static final Map<Long, ActionEnum> BY_ID = new HashMap<>();
   private static final Map<String, ActionEnum> BY_NAME = new HashMap<>();

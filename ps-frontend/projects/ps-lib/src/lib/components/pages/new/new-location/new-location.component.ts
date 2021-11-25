@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 import { ActionService } from '../../../../services/action/action.service';
-import { ConfigService } from '../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewMapComponent } from '../../../panel/components/panel-new-map/panel-new-map.component';
@@ -40,6 +40,9 @@ export class NewLocationComponent extends PageAbstract implements OnInit, OnDest
 
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.page = this.config.getPage(PageTypes.newLocation);
+    console.log(this.page)
     this.buttonsLeft = this.config.template.pagesOld.newLocation.buttonsLeft;
     this.buttonsRight = this.config.template.pagesOld.newLocation.buttonsRight;
 
@@ -47,7 +50,7 @@ export class NewLocationComponent extends PageAbstract implements OnInit, OnDest
       this.pageLayoutType = this.config.template.pagesOld.newLocation.pageType;
     }
 
-    this.action.register('next', () => { this.next(); });
+    //this.action.register('next', () => { this.next(); });
   }
 
   public ngOnDestroy(): void {

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
 import { CallList } from '../../../../../model/call-list';
-import { PopupETypes, StatusTypes } from '../../../../../model/intefaces';
+import { ActionTypes, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Note } from '../../../../../model/note';
 import { Message } from '../../../../../model/message';
 
@@ -57,19 +57,16 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     super.ngOnInit();
 
     this.getCall();
-
-    this.page = this.config.getPage(PageTypes.overview);
-
-    /*if (this.config.template.details.pageType) {
-      this.pageLayoutType = this.config.template.details.pageType;
-    }*/
-
-    this.action.register('abort-call', () => { this.abortCall(); });
-    this.action.register('close-call', () => { this.closeCall(); });
+    
+    this.page = this.config.getPage(PageTypes.details);
   }
 
   public ngOnDestroy(): void {
     super.ngOnDestroy();
+
+    this.action.register(ActionTypes.CALL_CLOSE, () => { super.callClose(); });
+    this.action.register(ActionTypes.CALL_KILL, () => { super.callKill(); });
+
     this.subscription.forEach(subscription => subscription.unsubscribe());
   }
 
@@ -132,7 +129,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     return this.call.orders.find(o => o.contractor.id === order.contractor.id);
   }
 
-  public abortCall(): void {
+  public callKill(): void {
     this.popup.add('Melding afbreken', PopupConfirmComponent, {
       description: '*** De opdrachten zullen ook afgebroken worden. Dit kan effect hebben op de verdere afhandelingen bij de partijen.'
     }, [{type: PopupETypes.ok, event: (text: string) => {
@@ -150,7 +147,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
       }}]);
   }
 
-  public closeCall(): void {
+  public callClose(): void {
     this.popup.add('Melding afsluiten', PopupConfirmComponent, {
     }, [{type: PopupETypes.ok, event: (text: string) => {
         if (text && text.length > 0) {

@@ -49,7 +49,7 @@ export class NewInformationComponent extends PageAbstract implements OnInit, OnD
       this.pageLayoutType = this.config.template.pagesOld.newInformation.pageType;
     }
 
-    this.action.register('next', () => { this.next(); });
+    //this.action.register('next', () => { this.next(); });
   }
 
   public ngOnDestroy(): void {

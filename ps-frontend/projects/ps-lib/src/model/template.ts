@@ -1,3 +1,4 @@
+import { Action } from './action';
 import { ActionType } from './action-type';
 import { Company } from './company';
 import { ButtonTypes, ContractorType, PageLayoutType } from './intefaces';
@@ -231,7 +232,7 @@ export interface Template {
   mail?: MailT[];
   change?: ChangeT;
   order?: OrderT;
-
+  actions: Action[];
   defaults?: DefaultsT;
   //endpoints?: EndpointsT;
   endpoints?: Map<string, EndpointT>;

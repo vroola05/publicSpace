@@ -17,6 +17,24 @@ export enum StatusTypes {
   KILLED = 99999,
 }
 
+export enum ActionTypes {
+  ASSIGN_PERSON = 0,
+  ASSIGN_GROUP =  1,
+  CALL_CREATE = 2,
+  CALL_CLOSE = 3,
+  CALL_KILL = 4,
+  ORDER_CREATE = 5,
+  ORDER_ACCEPT = 6,
+  ORDER_REJECT = 7,
+  ORDER_DONE = 8,
+  ORDER_DONE_REJECT = 9,
+  ORDER_CLOSE = 10,
+  ORDER_CANCEL = 11,
+  CANCEL = 12,
+  BACK = 13,
+  NEXT = 14,
+}
+
 export enum ContractorType {
   contract = 'contract',
   noContract = 'noContract',

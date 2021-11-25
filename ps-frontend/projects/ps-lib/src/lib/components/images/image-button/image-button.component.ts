@@ -45,7 +45,8 @@ export class ImageButtonComponent implements OnInit {
   }
 
   public hasUploadUrl(): boolean {
-    return this.authorisation.hasRoles(this.config.getEndpoint('postImage').roles);
+    return false;
+    //return this.authorisation.hasRoles(this.config.getEndpoint('postImage').roles);
   }
 
   public getImage(): Image {

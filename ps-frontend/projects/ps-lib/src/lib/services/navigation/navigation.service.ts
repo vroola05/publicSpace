@@ -123,7 +123,7 @@ export class NavigationService {
       return this.routes[this.routes.length - 1].route;
     }
     if (this._selectedHeaderItem.getValue() !== null) {
-      return [this._selectedHeaderItem.getValue().route];
+      return ['/overview/' + this._selectedHeaderItem.getValue().id];
     }
     return null;
   }

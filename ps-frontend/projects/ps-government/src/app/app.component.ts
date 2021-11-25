@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
-import { NavigationService, ConfigService, AuthorisationService, StorageService } from 'ps-lib';
+import { NavigationService, ConfigService, AuthorisationService, StorageService, ActionService } from 'ps-lib';
 import { User } from '../../../ps-lib/src/model/user';
 import { Template } from '../../../ps-lib/src/model/template';
 import { HeaderMenuItemT } from '../../../ps-lib/src/model/template';
@@ -20,6 +20,7 @@ export class AppComponent {
     private activatedRoute: ActivatedRoute,
     private authorisation: AuthorisationService,
     private navigationService: NavigationService,
+    protected action: ActionService,
     private storage: StorageService,
     private config: ConfigService
   ) {
@@ -29,7 +30,8 @@ export class AppComponent {
       if (template.info.prefix) {
         this.storage.setPrefix(template.info.prefix);
       }
-
+      this.action.setActions(template.actions);
+      
       this.authorisation.readUser();
       this.navigationService.readNavigation();
 

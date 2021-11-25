@@ -65,7 +65,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
       this.pageLayoutType = this.config.template.order.confirmation.pageType;
     }
 
-    this.action.register('extra', () => { this.extra(); });
+    //this.action.register('extra', () => { this.extra(); });
   }
 
   public ngOnDestroy(): void {

@@ -37,6 +37,9 @@ INSERT INTO public.action_type VALUES (8, 'Opdracht gereedmelden');
 INSERT INTO public.action_type VALUES (9, 'Opdracht goedkeuren');
 INSERT INTO public.action_type VALUES (10, 'Opdracht afkeuren');
 INSERT INTO public.action_type VALUES (11, 'Opdracht annuleren');
+INSERT INTO public.action_type VALUES (12, 'Terug');
+INSERT INTO public.action_type VALUES (13, 'Annuleren');
+INSERT INTO public.action_type VALUES (14, 'Volgende');
 
 --
 -- TOC entry 3139 (class 0 OID 24849)

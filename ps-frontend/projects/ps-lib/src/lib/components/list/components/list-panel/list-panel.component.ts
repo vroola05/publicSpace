@@ -59,9 +59,7 @@ export class ListPanelComponent {
     this.popup.add(this._call.location.street + ' ' + this._call.location.number, MapsComponent, {
       location: this._call.location,
       classes: 'big',
-      zoom: true,
-      pan: true,
-      zoomControl: true
+      controls: true
     });
   }
 

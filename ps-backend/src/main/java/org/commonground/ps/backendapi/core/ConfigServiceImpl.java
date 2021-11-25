@@ -35,6 +35,9 @@ public class ConfigServiceImpl implements ConfigService {
   @Autowired
 	private PageService pageService;
 
+  @Autowired
+	private ActionService actionService;
+
   public Template get(String domain) throws SecurityException {
     if(!ConfigService.isValidDomain(domain)) {
       throw new SecurityException("Not a valid domain.");
@@ -78,6 +81,8 @@ public class ConfigServiceImpl implements ConfigService {
             statusses.add(Convert.statusEntity(statusEntity));
           });
           config.getInfo().setStatus(statusses);
+
+          config.setActions(actionService.getActionByDomainId(domainId));
 
           config.setPages(getPages(companyId, domainId));
         }

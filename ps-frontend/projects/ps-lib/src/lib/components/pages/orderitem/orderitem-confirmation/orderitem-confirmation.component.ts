@@ -73,7 +73,7 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
       this.pageLayoutType = this.config.template.order.confirmation.pageType;
     }
 
-    this.action.register('save', () => { this.save(); });
+    // this.action.register('save', () => { this.save(); });
   }
 
   public ngOnDestroy(): void {

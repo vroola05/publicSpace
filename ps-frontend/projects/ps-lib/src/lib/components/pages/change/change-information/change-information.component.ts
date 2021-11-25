@@ -47,7 +47,7 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
       this.pageLayoutType = this.config.template.change.information.pageType;
     }
 
-    this.action.register('next', () => { this.next(); });
+    //this.action.register('next', () => { this.next(); });
   }
 
   public ngOnDestroy(): void {

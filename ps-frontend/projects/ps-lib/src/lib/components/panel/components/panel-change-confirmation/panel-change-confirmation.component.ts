@@ -181,9 +181,7 @@ export class PanelChangeConfirmationComponent implements OnInit, OnDestroy {
     this.popup.add(location.street + ' ' + location.number, MapsComponent, {
       location,
       classes: 'big',
-      zoom: true,
-      pan: true,
-      zoomControl: true
+      controls: true
     });
   }
 }

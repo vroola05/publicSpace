@@ -50,7 +50,7 @@
 </div>
 <div class="row">
   <div class="col-sm-12">
-    <lib-maps [classes]="'bigger'" [clickable]="true" [zoom]="true" [pan]="true" [zoomControl]="true" [location]="call.location" (clicked)="clicked($event)"></lib-maps>
+    <lib-maps [classes]="'bigger'" [clickable]="true" [controls]="true" [location]="call.location" (clicked)="clicked($event)"></lib-maps>
   </div>
 </div>
 <div class="row" *ngIf="showNearby()">
