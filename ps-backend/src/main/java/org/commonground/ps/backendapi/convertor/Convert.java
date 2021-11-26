@@ -189,8 +189,8 @@ public class Convert {
     locationEntity.setNumber(location.getNumber());
     locationEntity.setPostal(location.getPostal());
     locationEntity.setCity(location.getCity());
-    locationEntity.setLatitude(location.getX());
-    locationEntity.setLongitude(location.getY());
+    locationEntity.setX(location.getX());
+    locationEntity.setY(location.getY());
     return locationEntity;
   }
 
@@ -200,8 +200,8 @@ public class Convert {
     location.setNumber(locationEntity.getNumber());
     location.setPostal(locationEntity.getPostal());
     location.setCity(locationEntity.getCity());
-    location.setX(locationEntity.getLatitude());
-    location.setY(locationEntity.getLongitude());
+    location.setX(locationEntity.getX());
+    location.setY(locationEntity.getY());
     return location;
   }
 

@@ -21,8 +21,8 @@ public class LocationEntity {
   private String postal;
   private String city;
   //private Integer area;
-  private Double latitude;
-  private Double longitude;
+  private Double x;
+  private Double y;
 
   
   @OneToOne(cascade = CascadeType.ALL)

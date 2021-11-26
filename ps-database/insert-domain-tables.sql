@@ -6,7 +6,7 @@
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.company VALUES (1, 'System Admin');
+INSERT INTO public.company (id, name, code, srid, center) VALUES (1, 'System Admin', 394, 28992, '010100002040710000EB65C4A11977F9400C3883DA1D2B1D41');
 
 --
 -- TOC entry 3146 (class 0 OID 16616)

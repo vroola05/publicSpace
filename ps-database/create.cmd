@@ -1,8 +1,9 @@
-set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f database.sql
+set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f create_database.sql
 
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION postgis;"
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION fuzzystrmatch;"
 
+set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f create_tables.sql
 
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f geo.sql
 
