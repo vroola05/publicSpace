@@ -8,7 +8,7 @@ import { ActionTypes } from '../../../model/intefaces';
   providedIn: 'root'
 })
 export class ActionService {
-  private actions: Map<number, {action: Action, func: any}> = new Map<number, {action: Action, func: any}>();
+  private actions: Map<number, {action: Action, func: () => Promise<boolean>}> = new Map<number, {action: Action, func: () => Promise<boolean>}>();
 
   constructor() {}
 
@@ -21,18 +21,20 @@ export class ActionService {
     });
   }
 
-  public register(actionType: ActionTypes, func: any) {
+  public register(actionType: ActionTypes, func: () => Promise<boolean>) {
     if (actionType && func && this.actions.has(actionType)) {
       this.actions.get(actionType).func = func;
     }
   }
 
-  public call(actionType: ActionType) {
-    console.log(actionType);
+  public call(actionType: ActionType): Promise<boolean> {
     if (actionType && this.actions.has(actionType.id)) {
-      this.actions.get(actionType.id).func();
+      return this.actions.get(actionType.id).func();
     } else {
-      console.error('Action not found: ' + name);
+      return new Promise((resolve, reject) => {
+        console.error('Action not found: ' + actionType.name);
+        reject(false)
+      });
     }
   }
 }

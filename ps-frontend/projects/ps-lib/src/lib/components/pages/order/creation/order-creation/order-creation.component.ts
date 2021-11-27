@@ -299,9 +299,10 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     this.storage.setSession('order', JSON.stringify(this.orders), true);
   }
 
-  public next(): void {
-    if (this.actions.validate() && (!this.options || this.options.validate()) && this.descriptionField.validate()) {
-      this.navigationService.navigate([`/details/${this.call.id}/order/confirmation`], true);
-    }
+  public next(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        //this.navigationService.navigate([`/details/${this.call.id}/order/confirmation`], true);
+      resolve(this.actions.validate() && (!this.options || this.options.validate()) && this.descriptionField.validate());
+    });
   }
 }

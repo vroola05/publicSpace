@@ -51,21 +51,21 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     private toast: ToastService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
-   }
+  }
 
   public ngOnInit(): void {
     super.ngOnInit();
 
     this.getCall();
-    
+
     this.page = this.config.getPage(PageTypes.details);
   }
 
   public ngOnDestroy(): void {
     super.ngOnDestroy();
 
-    this.action.register(ActionTypes.CALL_CLOSE, () => { super.callClose(); });
-    this.action.register(ActionTypes.CALL_KILL, () => { super.callKill(); });
+    this.action.register(ActionTypes.CALL_CLOSE, () => { return super.callClose() });
+    this.action.register(ActionTypes.CALL_KILL, () => { return super.callKill() });
 
     this.subscription.forEach(subscription => subscription.unsubscribe());
   }
@@ -92,7 +92,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     }
   }
 
-  public rejectOrder(data: {order: Order, note: Note}): void {
+  public rejectOrder(data: { order: Order, note: Note }): void {
     if (data.note && data.note.description) {
       this.updateStatus(data.order, StatusTypes.ORDER_SEND, data.note);
     } else {
@@ -129,40 +129,51 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     return this.call.orders.find(o => o.contractor.id === order.contractor.id);
   }
 
-  public callKill(): void {
-    this.popup.add('Melding afbreken', PopupConfirmComponent, {
-      description: '*** De opdrachten zullen ook afgebroken worden. Dit kan effect hebben op de verdere afhandelingen bij de partijen.'
-    }, [{type: PopupETypes.ok, event: (text: string) => {
-        if (text && text.length > 0) {
-          const loaderId = this.loader.add('Bezig met opslaan!');
-
-          this.endpoints.put('postCallAbort', text).then((mesage: Message) => {
-            this.loader.remove(loaderId);
-            this.cancel();
-          })
-          .catch(error => {
-            this.loader.remove(loaderId);
-          });
+  public callKill(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.popup.add('Melding afbreken', PopupConfirmComponent, {
+        description: '*** De opdrachten zullen ook afgebroken worden. Dit kan effect hebben op de verdere afhandelingen bij de partijen.'
+      }, [{
+        type: PopupETypes.ok, event: (text: string) => {
+          if (text && text.length > 0) {
+            const loaderId = this.loader.add('Bezig met opslaan!');
+  
+            this.endpoints.put('postCallAbort', text).then((mesage: Message) => {
+              this.loader.remove(loaderId);
+              resolve(true);
+            })
+              .catch(error => {
+                this.loader.remove(loaderId);
+                reject(false);
+              });
+          }
         }
-      }}]);
+      }]);
+    });
   }
 
-  public callClose(): void {
-    this.popup.add('Melding afsluiten', PopupConfirmComponent, {
-    }, [{type: PopupETypes.ok, event: (text: string) => {
-        if (text && text.length > 0) {
-          const loaderId = this.loader.add('Bezig met opslaan!');
-          const note = new Note();
-          note.description = text;
+  public callClose(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.popup.add('Melding afsluiten', PopupConfirmComponent, {
+      }, [{
+        type: PopupETypes.ok, event: (text: string) => {
+          if (text && text.length > 0) {
+            const loaderId = this.loader.add('Bezig met opslaan!');
+            const note = new Note();
+            note.description = text;
 
-          this.endpoints.post('postCallClose', note).then((mesage: Message) => {
-            this.loader.remove(loaderId);
-            this.cancel();
-          })
-          .catch(error => {
-            this.loader.remove(loaderId);
-          });
+            this.endpoints.post('postCallClose', note).then((mesage: Message) => {
+              this.loader.remove(loaderId);
+              resolve(true);
+            })
+              .catch(error => {
+                this.loader.remove(loaderId);
+                reject(false);
+              });
+          }
         }
-      }}]);
+      }]);
+    });
   }
+
 }

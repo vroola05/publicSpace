@@ -54,20 +54,25 @@ export class ChangeLocationComponent extends PageAbstract implements OnInit, OnD
     super.ngOnDestroy();
   }
 
-  public cancel(): void {
-    const call = this.storage.getSession('call');
-    if (call) {
-      const callChanged = JSON.parse(call) as Call;
-      if (callChanged.location) {
-        delete callChanged.location;
-        this.storage.setSession('call', JSON.stringify(callChanged), true);
+  public cancel(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const call = this.storage.getSession('call');
+      if (call) {
+        const callChanged = JSON.parse(call) as Call;
+        if (callChanged.location) {
+          delete callChanged.location;
+          this.storage.setSession('call', JSON.stringify(callChanged), true);
+          
+        }
       }
-    }
+      resolve(true);
+    });
   }
 
-  public next(): void {
-    if (this.panelNewMapComponent.validate()) {
-      this.navigationService.back();
-    }
+  public next(): Promise<boolean> {
+    return new Promise((resolve) => {
+        //this.navigationService.back();
+        resolve(this.panelNewMapComponent.validate());
+    });
   }
 }

@@ -300,16 +300,21 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
     return a && b && c;
   }
 
-  public back(): void {
-    if (this.validate()) {
-      this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-creation')], true);
-    }
+  public back(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (this.validate()) {
+        resolve(true);
+        //this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-creation')], true);
+      }
+      reject(true);
+    });
   }
 
-  public next(): void {
-    if (this.validate()) {
-      this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-confirmation')], true);
-    }
+  public next(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      resolve(this.validate());
+      //this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-confirmation')], true);
+    });
   }
 
   public save(): void {

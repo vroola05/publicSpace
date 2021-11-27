@@ -119,10 +119,11 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
   }
 
   public focus($event): void {
-    this.openList();
+    this.openList($event);
   }
 
-  public openList() {
+  public openList($event) {
+    $event.preventDefault();
     if (!this.opened && this.hasItems()) {
       this.opened = true;
       setTimeout(() => {

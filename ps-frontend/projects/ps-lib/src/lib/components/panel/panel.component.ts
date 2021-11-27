@@ -29,10 +29,14 @@ export class PanelComponent implements OnInit {
   }
 
   public onClick(button: PageButton) {
+    
     if (button.action) {
-      this.action.call(button.action);
-    }
-    if (button.route) {
+      this.action.call(button.action).then(value => {
+        if (value && button.route) {
+          this.navigate(this.transform.URL(button.route));
+        }
+      });
+    } else if (button.route) {
       this.navigate(this.transform.URL(button.route));
     }
   }

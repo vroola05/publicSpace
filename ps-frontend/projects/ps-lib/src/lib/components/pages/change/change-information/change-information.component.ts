@@ -54,9 +54,10 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
     super.ngOnDestroy();
   }
 
-  public next(): void {
-    if (this.panelNewInformationComponent.validate()) {
-      this.navigationService.back();
-    }
+  public next(): Promise<boolean> {
+    return new Promise((resolve) => {
+        //this.navigationService.back();
+        resolve(this.panelNewInformationComponent.validate());
+    });
   }
 }

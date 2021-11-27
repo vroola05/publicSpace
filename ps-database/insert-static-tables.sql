@@ -50,6 +50,9 @@ INSERT INTO public.action_type VALUES (14, 'Volgende');
 INSERT INTO public.page_type VALUES (1, 'overview');
 INSERT INTO public.page_type VALUES (2, 'details');
 INSERT INTO public.page_type VALUES (3, 'assign');
+INSERT INTO public.page_type VALUES (4, 'newLocation');
+INSERT INTO public.page_type VALUES (5, 'newInformation');
+INSERT INTO public.page_type VALUES (6, 'newConfirm');
 
 
 --

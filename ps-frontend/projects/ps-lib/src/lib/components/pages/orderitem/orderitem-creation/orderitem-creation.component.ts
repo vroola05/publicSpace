@@ -126,7 +126,10 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
     }
   }
 
-  public next(): void {
-    this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-information')], true);
+  public next(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      resolve(true);
+    //this.navigationService.navigate([this.transform.URL('/order/${path.id}/${path.orderId}/orderitem-information')], true);
+    });
   }
 }

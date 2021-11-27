@@ -182,9 +182,12 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     return image;
   }
 
-  public cancel(): void {
-    this.storage.clearProcessData();
-    this.navigationService.navigateHome();
+  public cancel(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.storage.clearProcessData();
+      this.navigationService.navigateHome();
+      resolve(true);
+    });
   }
 
   public submitUser(): void {

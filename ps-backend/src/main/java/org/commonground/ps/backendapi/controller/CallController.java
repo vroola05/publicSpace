@@ -20,8 +20,6 @@ import org.commonground.ps.backendapi.model.QueryParameters;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.constants.PageTypes;
 import org.commonground.ps.backendapi.model.template.Template;
-import org.commonground.ps.backendapi.model.template.StatusT;
-import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.util.ActionEnum;

@@ -115,8 +115,11 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
     this.descrption = $event;
   }
 
-  public back(): void {
-    this.navigationService.back();
+  public back(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.navigationService.back();
+      resolve(true);
+    });
   }
 
   public submit(): void {

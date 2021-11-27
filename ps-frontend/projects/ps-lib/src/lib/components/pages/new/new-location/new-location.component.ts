@@ -11,6 +11,7 @@ import { PageAbstract } from '../../page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
+import { ActionTypes } from '../../../../../model/intefaces';
 
 @Component({
   selector: 'lib-new-location',
@@ -42,24 +43,21 @@ export class NewLocationComponent extends PageAbstract implements OnInit, OnDest
     super.ngOnInit();
 
     this.page = this.config.getPage(PageTypes.newLocation);
-    console.log(this.page)
-    this.buttonsLeft = this.config.template.pagesOld.newLocation.buttonsLeft;
-    this.buttonsRight = this.config.template.pagesOld.newLocation.buttonsRight;
 
     if (this.config.template.pagesOld.newLocation.pageType) {
       this.pageLayoutType = this.config.template.pagesOld.newLocation.pageType;
     }
-
-    //this.action.register('next', () => { this.next(); });
   }
 
   public ngOnDestroy(): void {
     super.ngOnDestroy();
+
+    this.action.register(ActionTypes.CALL_CLOSE, () => { return super.callClose() });
   }
 
-  public next(): void {
-    if (this.panelNewMapComponent.validate()) {
-      this.navigationService.navigate(['new/information'], true);
-    }
+  public next(): Promise<boolean> {
+    return new Promise((resolve) => {
+      resolve(this.panelNewMapComponent.validate());
+    });
   }
 }

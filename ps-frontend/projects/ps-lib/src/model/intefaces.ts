@@ -30,8 +30,8 @@ export enum ActionTypes {
   ORDER_DONE_REJECT = 9,
   ORDER_CLOSE = 10,
   ORDER_CANCEL = 11,
-  CANCEL = 12,
-  BACK = 13,
+  BACK = 12,
+  CANCEL = 13,
   NEXT = 14,
 }
 

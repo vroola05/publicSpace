@@ -3,7 +3,7 @@ import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { ConfigService } from '../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { ApiService } from '../../../../services/api/api.service';
@@ -54,6 +54,9 @@ export class NewConfirmationComponent extends PageAbstract implements OnInit, On
 
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.page = this.config.getPage(PageTypes.newConfirm);
+
     this.buttonsLeft = this.config.template.pagesOld.newConfirmation.buttonsLeft;
     this.buttonsRight = this.config.template.pagesOld.newConfirmation.buttonsRight;
     if (this.config.template.pagesOld.newConfirmation.pageType) {

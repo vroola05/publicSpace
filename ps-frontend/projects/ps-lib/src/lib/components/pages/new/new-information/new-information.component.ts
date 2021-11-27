@@ -3,7 +3,7 @@ import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
 
 import { ActionService } from '../../../../services/action/action.service';
-import { ConfigService } from '../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { PanelNewInformationComponent } from '../../../panel/components/panel-new-information/panel-new-information.component';
@@ -43,8 +43,9 @@ export class NewInformationComponent extends PageAbstract implements OnInit, OnD
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.config.template.pagesOld.newInformation.buttonsLeft;
-    this.buttonsRight = this.config.template.pagesOld.newInformation.buttonsRight;
+
+    this.page = this.config.getPage(PageTypes.newInformation);
+
     if (this.config.template.pagesOld.newInformation.pageType) {
       this.pageLayoutType = this.config.template.pagesOld.newInformation.pageType;
     }
@@ -56,11 +57,12 @@ export class NewInformationComponent extends PageAbstract implements OnInit, OnD
     super.ngOnDestroy();
   }
 
-  public next(): void {
-    const a = this.panelNewInformationComponent.validate();
-    const b = this.panelNewContactComponent.validate();
-    if (a && b) {
-      this.navigationService.navigate(['new/confirmation'], true);
-    }
+  public next(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const a = this.panelNewInformationComponent.validate();
+      const b = this.panelNewContactComponent.validate();
+        resolve(a && b);
+        //this.navigationService.navigate(['new/confirmation'], true);
+    });
   }
 }
