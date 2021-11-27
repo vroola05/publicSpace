@@ -19,6 +19,19 @@ INSERT INTO public.status VALUES (3, 'Afgesloten', 1);
 INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (1, 1, 1, 'Overzicht');
 INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (2, 1, 2, 'Melding informatie');
 INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (3, 1, 3, 'Melding toewijzen');
+INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (4, 1, 4, 'Nieuwe melding - locatie');
+INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (5, 1, 5, 'Nieuwe melding - informatie');
+INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (6, 1, 6, 'Nieuwe melding - controle');
+
+
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (1, 2, 'left', 2, 'Vorige', '', 12, 0);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (2, 4, 'left', 2, 'Annuleren', '', 13, 0);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (3, 4, 'right', 1, 'Volgende', '/new/information', 14, 0);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (4, 5, 'right', 1, 'Controleer de melding', '/new/confirmation', 14, 0);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (5, 5, 'left', 2, 'Vorige', '', 12, 0);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (6, 6, 'left', 2, 'Annuleren', '', 13, 0);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (7, 6, 'left', 2, 'Vorige', '', 12, 1);
+INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (8, 6, 'right', 1, 'Melding maken', '', 2, 0);
 
 --
 -- TOC entry 3159 (class 0 OID 37433)
