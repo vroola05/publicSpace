@@ -799,7 +799,8 @@ CREATE TABLE public.page (
     id integer NOT NULL,
     domain_id integer NOT NULL,
     page_type_id integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    layoutType text NOT NULL
 );
 
 ALTER TABLE public.page

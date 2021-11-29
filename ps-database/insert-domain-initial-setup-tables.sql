@@ -16,12 +16,12 @@ INSERT INTO public.status VALUES (3, 'Afgesloten', 1);
 -- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (1, 1, 1, 'Overzicht');
-INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (2, 1, 2, 'Melding informatie');
-INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (3, 1, 3, 'Melding toewijzen');
-INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (4, 1, 4, 'Nieuwe melding - locatie');
-INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (5, 1, 5, 'Nieuwe melding - informatie');
-INSERT INTO public.page (id, domain_id, page_type_id, name) VALUES (6, 1, 6, 'Nieuwe melding - controle');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (1, 1, 1, 'Overzicht', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (2, 1, 2, 'Melding informatie', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (3, 1, 3, 'Melding toewijzen', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (4, 1, 4, 'Nieuwe melding - locatie', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (5, 1, 5, 'Nieuwe melding - informatie', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (6, 1, 6, 'Nieuwe melding - controle', 'page');
 
 
 INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (1, 2, 'left', 2, 'Vorige', '', 12, 0);
