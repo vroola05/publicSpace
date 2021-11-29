@@ -16,12 +16,12 @@ INSERT INTO public.status VALUES (3, 'Afgesloten', 1);
 -- Data for Name: pages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (1, 1, 1, 'Overzicht', 'page');
-INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (2, 1, 2, 'Melding informatie', 'page');
-INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (3, 1, 3, 'Melding toewijzen', 'page');
-INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (4, 1, 4, 'Nieuwe melding - locatie', 'page');
-INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (5, 1, 5, 'Nieuwe melding - informatie', 'page');
-INSERT INTO public.page (id, domain_id, page_type_id, name, layoutType) VALUES (6, 1, 6, 'Nieuwe melding - controle', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (1, 1, 1, 'Overzicht', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (2, 1, 2, 'Melding informatie', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (3, 1, 3, 'Melding toewijzen', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (4, 1, 4, 'Nieuwe melding - locatie', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (5, 1, 5, 'Nieuwe melding - informatie', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (6, 1, 6, 'Nieuwe melding - controle', 'page');
 
 
 INSERT INTO public.page_button (id, page_id, location, button_type_id, name, route, action_type_id, sort) VALUES (1, 2, 'left', 2, 'Vorige', '', 12, 0);
@@ -82,3 +82,26 @@ INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), 3, 'description', 'Omschrijving', 'text', '', 'col-sm-12 col-md-4 col-lg-4', '', 3);
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), 3, 'dateCreated', 'Datum', 'date', '', 'col-sm-6 col-md-2 col-lg-2', 'three-b', 4);
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), 3, 'area', 'Gebied', 'string', '', 'col-md-1 col-lg-1', '', 5);
+
+
+--
+-- TOC entry 3159 (class 0 OID 37448)
+-- Dependencies: 242
+-- Data for Name: action; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (2, 1, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (7, 6, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (8, 7, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (9, 8, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (10, 9, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (11, 10, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (12, 11, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (13, 12, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (14, 13, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (15, 14, 1, NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (3, 2, 1, 1);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (5, 4, 1, 3);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (4, 3, 1, 3);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (1, 0, 1, 2);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (6, 5, 1, 2);

@@ -800,7 +800,7 @@ CREATE TABLE public.page (
     domain_id integer NOT NULL,
     page_type_id integer NOT NULL,
     name text NOT NULL,
-    layoutType text NOT NULL
+    layout_type text NOT NULL
 );
 
 ALTER TABLE public.page

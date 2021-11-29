@@ -90,7 +90,7 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	public Action updateAction(Long domainId, Action action) throws BadRequestException {
-		Optional<ActionEntity> optionalActionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId,
+		Optional<ActionEntity> optionalActionEntity = actionRepository.getActionByDomainIdAndActionId(domainId,
 				action.getId());
 		if (optionalActionEntity.isPresent()) {
 			ActionEntity actionEntity = optionalActionEntity.get();
