@@ -3,6 +3,8 @@ psql -h localhost -U postgres -f create_database.sql
 
 psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION postgis;"
 psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION fuzzystrmatch;"
+psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION pg_trgm;"
+
 
 psql -h localhost -U postgres -f create_tables.sql
 

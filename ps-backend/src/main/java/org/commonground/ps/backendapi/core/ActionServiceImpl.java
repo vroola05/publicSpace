@@ -40,11 +40,9 @@ public class ActionServiceImpl implements ActionService {
 	public Action get(Long domainId, ActionEnum actionEnum) {
 		Optional<ActionEntity> actionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId,
 				actionEnum.id);
-		System.out.println("Nope1 " + domainId + " actionEnum " + actionEnum.id );
 		if (actionEntity.isPresent()) {
 			return Convert.actionEntity(actionEntity.get());
 		}
-		System.out.println("Nope " + domainId + " actionEnum " + actionEnum.id );
 		return null;
 	}
 

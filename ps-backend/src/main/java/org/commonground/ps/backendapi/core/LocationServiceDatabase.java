@@ -40,12 +40,12 @@ public class LocationServiceDatabase implements LocationService {
 	@Override
 	public List<Location> byStreet(String street) {
 		ArrayList<Location> locations = new ArrayList<>();
-		/*List<String> geoAddressEntities = geoAddressRepository.searchStreet(street);
-		for(String geoAddressEntity : geoAddressEntities) {
+		List<GeoAddressEntity> geoAddressEntities = geoAddressRepository.searchStreet(street);
+		for(GeoAddressEntity geoAddressEntity : geoAddressEntities) {
 			Location location = new Location();
 			location.setStreet(geoAddressEntity.getStreet());
 			locations.add(location);
-		}*/
+		}
 		return locations;
 	}
 }
