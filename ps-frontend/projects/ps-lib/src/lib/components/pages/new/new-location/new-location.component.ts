@@ -1,24 +1,32 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { PanelNewMapComponent } from '../../../panel/components/panel-new-map/panel-new-map.component';
+
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
+import { ActionTypeEnum } from '../../../../../model/intefaces';
+
 import { ActionService } from '../../../../services/action/action.service';
 import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
-import { PanelNewMapComponent } from '../../../panel/components/panel-new-map/panel-new-map.component';
+import { ApiService } from '../../../../services/api/api.service';
+import { Loader } from '../../../../services/loader/loader.service';
 
-import { PageAbstract } from '../../page';
-import { ActivatedRoute, Router } from '@angular/router';
+
+import { ToastService } from '../../../../services/toast/toast.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ActionTypes } from '../../../../../model/intefaces';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
+import { ActionCallCreate } from '../page-call-create';
 
 @Component({
   selector: 'lib-new-location',
   templateUrl: './new-location.component.html',
   styleUrls: ['./new-location.component.scss']
 })
-export class NewLocationComponent extends PageAbstract implements OnInit, OnDestroy {
+export class NewLocationComponent extends ActionCallCreate implements OnInit, OnDestroy {
   @ViewChild('panelNewMapComponent') panelNewMapComponent: PanelNewMapComponent;
 
   public call: Call;
@@ -33,9 +41,13 @@ export class NewLocationComponent extends PageAbstract implements OnInit, OnDest
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected apiService: ApiService,
+    protected endpoints: EndpointService,
+    protected config: ConfigService,
+    protected loader: Loader,
+    protected toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, apiService, endpoints, config, loader, toast);
     this.call = new Call();
   }
 
@@ -43,16 +55,12 @@ export class NewLocationComponent extends PageAbstract implements OnInit, OnDest
     super.ngOnInit();
 
     this.page = this.config.getPage(PageTypes.newLocation);
-
-    if (this.config.template.pagesOld.newLocation.pageType) {
-      this.pageLayoutType = this.config.template.pagesOld.newLocation.pageType;
-    }
   }
 
   public ngOnDestroy(): void {
     super.ngOnDestroy();
 
-    this.action.register(ActionTypes.CALL_CLOSE, () => { return super.callClose() });
+    this.action.register(ActionTypeEnum.NEXT, () => { return super.next() });
   }
 
   public next(): Promise<boolean> {

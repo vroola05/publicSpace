@@ -18,6 +18,7 @@ public class PageEntity {
   @SequenceGenerator(name = "seq_page_id", sequenceName = "seq_page_id", allocationSize = 1)
   private Long id;
   private String name;
+  private String layoutType;
 
   @ManyToOne(fetch = FetchType.EAGER)
   private DomainEntity domain;

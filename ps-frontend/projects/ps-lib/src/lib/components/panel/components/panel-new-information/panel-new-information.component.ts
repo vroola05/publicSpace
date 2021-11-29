@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
-import { ConfigService } from '../../../../services/config/config.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Category } from '../../../../../model/category';
 import { Call } from '../../../../../model/call';
 import { MainCategory } from '../../../../../model/main-category';
-import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
@@ -23,7 +21,9 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
   @ViewChild('descriptionComponent') descriptionComponent: TextareaFieldComponent;
 
   public call: Call;
-  private categorySet = false;
+  public initialCall: Call;
+  private initMainCategory = false;
+  private initCategory = false;
 
   constructor(
     private endpoints: EndpointService,
@@ -31,7 +31,13 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
     protected authorisation: AuthorisationService,
     private storage: StorageService
   ) {
-    this.getCall();
+    this.initialCall = this.getCall();
+    if (this.initialCall.mainCategory && this.initialCall.mainCategory.id) {
+      this.initMainCategory = true;
+      if (this.initialCall.mainCategory.category && this.initialCall.mainCategory.category.id) {
+        this.initCategory = true;
+      }
+    }
   }
 
   public ngOnInit(): void {
@@ -44,11 +50,10 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
           items.push({name: category.name, value: '' + category.id, data: category});
         });
         this.mainCategorieComponent.setItems(items);
-        
-        if (this.call.mainCategory) {
-          this.mainCategorieComponent.select(this.mainCategorieComponent.options.find(option => option.value === '' + this.call.mainCategory.id));
-        } else {
-          this.categorySet = true;
+
+        if (this.initMainCategory) {
+          this.mainCategorieComponent.select(this.mainCategorieComponent.options.find(option => option.value === '' + this.initialCall.mainCategory.id));
+          this.initMainCategory = false;
         }
       }
     });
@@ -57,13 +62,14 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
   }
 
-  public getCall(): void {
+  public getCall(): Call {
     const call = this.storage.getSession('call');
     if (call) {
       this.call = JSON.parse(call) as Call;
     } else {
       this.call =  new Call();
     }
+    return this.call;
   }
 
   public storeMainCategory(mainCategory: MainCategory) {
@@ -88,7 +94,7 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
 
   public onMainCategoryChanged($event) {
     this.categoryComponent.clear();
-    if (this.categorySet) {
+    if (!this.initCategory) {
       this.storeCategory(null);
     }
 
@@ -105,12 +111,11 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
           });
           this.categoryComponent.setItems(items);
 
-          if (!this.categorySet) {
-              if (this.call.mainCategory && this.call.mainCategory.category) {
-                this.categoryComponent.select(this.categoryComponent.options.find(option => option.value === '' + this.call.mainCategory.category.id));
-              }
+          if (this.initCategory) {
+            this.categoryComponent.select(this.categoryComponent.options.find(option => option.value === '' + this.initialCall.mainCategory.category.id));
+            this.initCategory = false;
           }
-          this.categorySet = true;
+          
         }
       });
     }

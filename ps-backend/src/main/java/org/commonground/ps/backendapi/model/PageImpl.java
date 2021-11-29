@@ -18,6 +18,8 @@ public class PageImpl implements Page {
   @Size(min = 1, max = 100, message = "Waarde is minimaal 1 en maximaal 100 tekens")
   protected String name;
   protected PageType pageType;
+  @Size(min = 1, max = 100, message = "Waarde is minimaal 1 en maximaal 100 tekens")
+  protected String layoutType;
   
   @Valid
   protected List<PageButton> buttonsLeft;

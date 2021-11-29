@@ -17,7 +17,7 @@ export enum StatusTypes {
   KILLED = 99999,
 }
 
-export enum ActionTypes {
+export enum ActionTypeEnum {
   ASSIGN_PERSON = 0,
   ASSIGN_GROUP =  1,
   CALL_CREATE = 2,

@@ -1,7 +1,7 @@
 import { OnDestroy, OnInit, Directive } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../../model/page';
-import { ActionTypes, PageLayoutType } from '../../../model/intefaces';
+import { ActionTypeEnum, PageLayoutType } from '../../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { AuthorisationService } from '../../services/authorisation/authorisation.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
@@ -37,23 +37,23 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
         : '');
 
 
-    this.action.register(ActionTypes.ASSIGN_GROUP, () => { return this.assignGroup(); });
-    this.action.register(ActionTypes.ASSIGN_PERSON, () => { return this.assignPerson(); });
-    this.action.register(ActionTypes.CALL_CREATE, () => { return this.callCreate(); });
-    this.action.register(ActionTypes.CALL_CLOSE, () => { return this.callClose(); });
-    this.action.register(ActionTypes.CALL_KILL, () => { return this.callKill(); });
+    this.action.register(ActionTypeEnum.ASSIGN_GROUP, () => { return this.assignGroup(); });
+    this.action.register(ActionTypeEnum.ASSIGN_PERSON, () => { return this.assignPerson(); });
+    this.action.register(ActionTypeEnum.CALL_CREATE, () => { return this.callCreate(); });
+    this.action.register(ActionTypeEnum.CALL_CLOSE, () => { return this.callClose(); });
+    this.action.register(ActionTypeEnum.CALL_KILL, () => { return this.callKill(); });
 
-    this.action.register(ActionTypes.ORDER_CREATE, () => { return this.orderCreate(); });
-    this.action.register(ActionTypes.ORDER_ACCEPT, () => { return this.orderAccept(); });
-    this.action.register(ActionTypes.ORDER_REJECT, () => { return this.orderReject(); });
-    this.action.register(ActionTypes.ORDER_CANCEL, () => { return this.orderCancel(); });
-    this.action.register(ActionTypes.ORDER_CLOSE, () => { return this.orderClose(); });
-    this.action.register(ActionTypes.ORDER_DONE, () => { return this.orderDone(); });
-    this.action.register(ActionTypes.ORDER_DONE_REJECT, () => { return this.orderDoneReject(); });
+    this.action.register(ActionTypeEnum.ORDER_CREATE, () => { return this.orderCreate(); });
+    this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(); });
+    this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(); });
+    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(); });
+    this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(); });
+    this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(); });
+    this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(); });
 
-    this.action.register(ActionTypes.CANCEL, () => { return this.cancel(); });
-    this.action.register(ActionTypes.BACK, () => { return this.back(); });
-    this.action.register(ActionTypes.NEXT, () => { return this.next(); });
+    this.action.register(ActionTypeEnum.CANCEL, () => { return this.cancel(); });
+    this.action.register(ActionTypeEnum.BACK, () => { return this.back(); });
+    this.action.register(ActionTypeEnum.NEXT, () => { return this.next(); });
   }
 
   public ngOnDestroy(): void {

@@ -39,6 +39,7 @@ public class PageServiceImpl implements PageService {
 		if (optionalPageEntity.isPresent()) {
 			PageEntity pageEntity = optionalPageEntity.get();
 			pageEntity.setName(page.getName());
+			pageEntity.setLayoutType(page.getLayoutType());
 
 			// Remove page buttons
 			pageEntity.getPageButtons()

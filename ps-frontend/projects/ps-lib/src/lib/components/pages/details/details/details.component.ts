@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
 import { CallList } from '../../../../../model/call-list';
-import { ActionTypes, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
+import { ActionTypeEnum, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Note } from '../../../../../model/note';
 import { Message } from '../../../../../model/message';
 
@@ -64,8 +64,8 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   public ngOnDestroy(): void {
     super.ngOnDestroy();
 
-    this.action.register(ActionTypes.CALL_CLOSE, () => { return super.callClose() });
-    this.action.register(ActionTypes.CALL_KILL, () => { return super.callKill() });
+    this.action.register(ActionTypeEnum.CALL_CLOSE, () => { return super.callClose() });
+    this.action.register(ActionTypeEnum.CALL_KILL, () => { return super.callKill() });
 
     this.subscription.forEach(subscription => subscription.unsubscribe());
   }

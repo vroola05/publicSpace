@@ -9,6 +9,8 @@ import { Page } from '../../../model/page';
 import { Company } from '../../../model/company';
 
 import { StorageService } from '../storage/storage.service';
+import { Action } from '../../../model/action';
+import { ActionTypeEnum } from '../../../model/intefaces';
 
 
 export enum PageTypes {
@@ -144,6 +146,12 @@ export class ConfigService {
     return { endpoint: null };
   }
 
+  public getAction(actionType: ActionTypeEnum): Action {
+    if (this.template.actions) {
+      return this.template.actions.find(action => action.actionType.id == actionType);
+    }
+    return null;
+  }
   public getLogo(): string {
     return !this.template.info.logo ? 'assets/images/default-logo.svg' : this.template.info.logo;
   }

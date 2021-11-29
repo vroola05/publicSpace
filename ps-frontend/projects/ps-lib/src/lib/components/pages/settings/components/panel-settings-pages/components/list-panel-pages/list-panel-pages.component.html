@@ -13,7 +13,14 @@
     </div>
     <div class="col-md-6 list-panel-block">
       <div class="row">
-        
+        <div class="col-md-12">
+          <h4>Groep</h4>
+          <div class="field-wrapper">
+            <lib-dropdown-field [id]="'layoutType'" [required]="true" [name]="'layoutType'" [placeholder]="'Soort layout'" [options]="layoutTypeItems"
+              (changed)="onLayoutTypeChanged($event)" #layoutTypeComponent>
+            </lib-dropdown-field>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-md-12" *ngIf="showPage('overview')" >

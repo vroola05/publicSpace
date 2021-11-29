@@ -141,8 +141,9 @@ public class CallController extends Controller {
 	@Secured(identifier = "postCall")
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public Call postCall(@Valid @PostCallValidator @RequestBody Call call) throws BadRequestException {
-
+		System.out.println("Yessss");
 		CallEntity callEntity = convertCall(call);
+		System.out.println("Yessss1 ");
 		callEntity.setDateCreated(new Date());
 		callEntity.setCasenumber(getCasenumber());
 		return convertCallEntity(callRepository.saveAndFlush(callEntity));

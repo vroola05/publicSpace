@@ -34,37 +34,48 @@ public class ActionServiceImpl implements ActionService {
 	@Autowired
 	private ActionTypeRepository actionTypeRepository;
 
-  @Autowired
+	@Autowired
 	private ActionRepository actionRepository;
-  
-  public Action get(Long domainId, ActionEnum actionEnum) {
-    Optional<ActionEntity> actionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
-    return Convert.actionEntity(actionEntity.get());
-  }
 
-  public List<ActionType> getActionTypes() {
-    List<ActionType> actionTypes = new ArrayList<>();
+	public Action get(Long domainId, ActionEnum actionEnum) {
+		Optional<ActionEntity> actionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId,
+				actionEnum.id);
+		System.out.println("Nope1 " + domainId + " actionEnum " + actionEnum.id );
+		if (actionEntity.isPresent()) {
+			return Convert.actionEntity(actionEntity.get());
+		}
+		System.out.println("Nope " + domainId + " actionEnum " + actionEnum.id );
+		return null;
+	}
+
+	public List<ActionType> getActionTypes() {
+		List<ActionType> actionTypes = new ArrayList<>();
 		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
 		actionTypeEntities.forEach(actionTypeEntity -> {
 			actionTypes.add(Convert.actionTypeEntity(actionTypeEntity));
 		});
 		return actionTypes;
-  }
+	}
 
-  public List<Action> getActionByDomainId(Long domainId) {
-    List<Action> actions = new ArrayList<>();
+	public List<Action> getActionByDomainId(Long domainId) {
+		List<Action> actions = new ArrayList<>();
 		List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
 		actionEntities.forEach(actionEntity -> {
 			actions.add(Convert.actionEntity(actionEntity));
 		});
-    return actions;
-  }
+		return actions;
+	}
 
-  public void synchronizeActions(Long companyId, Long domainId, User user) {
+	public void synchronizeActions(Long companyId, Long domainId, User user) {
 		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
 		List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
 		if (actionTypeEntities.size() != actionEntities.size()) {
-			List<ActionTypeEntity> newActionTypes = actionTypeEntities.stream().filter(a -> { return actionEntities.stream().noneMatch(b -> { return b.getActionType().getId() == a.getId(); }); }).collect(Collectors.toList());;
+			List<ActionTypeEntity> newActionTypes = actionTypeEntities.stream().filter(a -> {
+				return actionEntities.stream().noneMatch(b -> {
+					return b.getActionType().getId() == a.getId();
+				});
+			}).collect(Collectors.toList());
+			;
 
 			Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, user);
 			if (optionalDomainEntity.isPresent()) {
@@ -80,13 +91,15 @@ public class ActionServiceImpl implements ActionService {
 		}
 	}
 
-  public Action updateAction(Long domainId, Action action) throws BadRequestException {
-    Optional<ActionEntity> optionalActionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId, action.getId());
-		if (optionalActionEntity.isPresent()){
+	public Action updateAction(Long domainId, Action action) throws BadRequestException {
+		Optional<ActionEntity> optionalActionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId,
+				action.getId());
+		if (optionalActionEntity.isPresent()) {
 			ActionEntity actionEntity = optionalActionEntity.get();
-			
+
 			if (action.getStatus() != null) {
-				Optional<StatusEntity> statusEntity = statusRepository.getStatusByDomainIdAndById(domainId, action.getStatus().getId());
+				Optional<StatusEntity> statusEntity = statusRepository.getStatusByDomainIdAndById(domainId,
+						action.getStatus().getId());
 				if (statusEntity.isPresent()) {
 					actionEntity.setStatus(statusEntity.get());
 				} else {
@@ -101,9 +114,9 @@ public class ActionServiceImpl implements ActionService {
 
 		throw new BadRequestException();
 
-  }
+	}
 
-  public ActionTypeEntity getActionTypeEntity(long id) {
-    return actionTypeRepository.getById(id);
-  }
+	public ActionTypeEntity getActionTypeEntity(long id) {
+		return actionTypeRepository.getById(id);
+	}
 }

@@ -12,6 +12,6 @@ public interface ActionRepository extends JpaRepository<ActionEntity, Long> {
   @Query("select a from ActionEntity a where a.domain.id = :#{#id} order by a.actionType.name asc")
   List<ActionEntity> getActionByDomainId(@Param("id") Long id);
 
-  @Query("select a from ActionEntity a where a.domain.id = :#{#domainId} and a.id = :#{#actionId}")
+  @Query("select a from ActionEntity a where a.domain.id = :#{#domainId} and a.actionType.id = :#{#actionId}")
   Optional<ActionEntity> getActionByDomainIdAndActionTypeId(@Param("domainId") Long domainId, @Param("actionId") Long actionId);
 }

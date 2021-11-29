@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Action } from '../../../model/action';
 import { ActionType } from '../../../model/action-type';
-import { ActionTypes } from '../../../model/intefaces';
+import { ActionTypeEnum } from '../../../model/intefaces';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class ActionService {
     });
   }
 
-  public register(actionType: ActionTypes, func: () => Promise<boolean>) {
+  public register(actionType: ActionTypeEnum, func: () => Promise<boolean>) {
     if (actionType && func && this.actions.has(actionType)) {
       this.actions.get(actionType).func = func;
     }

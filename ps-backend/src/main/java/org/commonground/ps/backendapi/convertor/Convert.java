@@ -340,9 +340,7 @@ public class Convert {
   public static Page pageGenericEntity(PageEntity pageEntity, Page page) {
     page.setId(pageEntity.getId());
     page.setName(pageEntity.getName());
-
-    page.setId(pageEntity.getId());
-    page.setName(pageEntity.getName());
+    page.setLayoutType(pageEntity.getLayoutType());
     page.setPageType(Convert.pageTypeEntity(pageEntity.getPageType()));
 
     List<PageButtonEntity> pageButtonEntities = pageEntity.getPageButtons();

@@ -7,6 +7,9 @@ import { EndpointService } from '../../../../../../../services/endpoint/endpoint
 
 import { Page } from '../../../../../../../../model/page';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
+import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
+import { PageLayoutType } from 'projects/ps-lib/src/model/intefaces';
+
 
 @Component({
   selector: 'lib-list-panel-pages',
@@ -15,8 +18,16 @@ import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/
 })
 export class ListPanelPagesComponent implements OnInit {
   @ViewChild('pageNameComponent') pageNameComponent: TextareaFieldComponent;
-
+  @ViewChild('layoutTypeComponent') layoutTypeComponent: DropdownFieldComponent;
+  
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
+
+
+  public layoutTypeItems: { name: string, value?: string, data?: any }[] = [
+    { name: 'Standaard', value: PageLayoutType.page },
+    { name: 'Sticky', value: PageLayoutType.pageStickyButtons },
+    { name: 'Overzicht', value: PageLayoutType.overview }
+  ];
 
   public _page: Page;
   @Input() set page(page: Page){
@@ -25,9 +36,15 @@ export class ListPanelPagesComponent implements OnInit {
       this._page.id = page.id;
       this._page.name = page.name;
       this._page.pageType = page.pageType;
+      this._page.layoutType = page.layoutType;
       this._page.pageOverviewTemplate = page.pageOverviewTemplate;
       this._page.buttonsLeft = page.buttonsLeft;
       this._page.buttonsRight = page.buttonsRight;
+
+      if(this.layoutTypeComponent) {
+        
+        this.layoutTypeComponent.select(this.layoutTypeItems.find(layoutType => layoutType.value === page.layoutType));
+      }
     }
   }
 
@@ -62,6 +79,12 @@ export class ListPanelPagesComponent implements OnInit {
 
   public onOverviewChanged($event) {
     
+  }
+
+  public onLayoutTypeChanged($event) {
+    if (this.layoutTypeComponent.validate()) {
+      this._page.layoutType = $event.value;
+    }
   }
 
   public showPage(pageTypeName: string): boolean {

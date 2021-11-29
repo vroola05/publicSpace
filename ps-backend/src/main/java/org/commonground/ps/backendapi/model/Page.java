@@ -9,6 +9,9 @@ public interface Page {
     void setName(String name);
     String getName();
 
+    void setLayoutType(String layoutType);
+    String getLayoutType();
+
     void setPageType(PageType pageType);
     PageType getPageType();
 
