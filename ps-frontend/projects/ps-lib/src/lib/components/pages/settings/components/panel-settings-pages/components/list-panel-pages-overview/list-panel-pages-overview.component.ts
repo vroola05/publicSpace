@@ -161,6 +161,14 @@ export class ListPanelPagesOverviewComponent implements OnInit {
     }
   }
 
+  public onButtonsLeftChanged($event) {
+    this._pageOverviewTemplate.buttonsLeft = $event;
+  }
+  
+  public onButtonsRightChanged($event) {
+    this._pageOverviewTemplate.buttonsRight = $event;
+  }
+
   public onDeleteClick($event): void {
     this.changed.emit({ action: 'delete', index: this.index, pageOverviewTemplate: this._pageOverviewTemplate });
   }

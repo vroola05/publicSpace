@@ -15,7 +15,7 @@ import { EndpointService } from '../../../../../../../services/endpoint/endpoint
 export class CreateButtonsComponent implements OnInit {
   
   @Input() public prefix: string = '';
-  @Input() public buttons: PageButton[];
+  @Input() public buttons: PageButton[] = [];
 
   @Output() changed: EventEmitter<PageButton[]> = new EventEmitter<PageButton[]>();
   
@@ -84,6 +84,9 @@ export class CreateButtonsComponent implements OnInit {
   }
   
   public onAddClick($event): void {
+    if (!this.buttons) {
+      this.buttons = [];
+    }
     const button = new PageButton();
     button.name = '';
     button.route = '';

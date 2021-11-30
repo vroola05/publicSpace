@@ -48,12 +48,27 @@
     </div>
 
     <div class="col-md-12">
-        <h4>Kolommen</h4>
+        <h4>Kolommen in de lijst</h4>
         <div class="field-wrapper">
             <lib-create-overview-columns class="conditions-list" [prefix]="getId('columns')" [columns]="_pageOverviewTemplate?.columns"
                 (changed)="onColumnsChanged($event)"></lib-create-overview-columns>
         </div>
     </div>
+
+
+    <div class="col-md-12">
+        <h4>Knoppen links</h4>
+        <lib-panel-toggle [style]="'default'" [title]="['Knoppen links']">
+          <lib-create-buttons [prefix]="'buttonsLeft'" [buttons]="_pageOverviewTemplate?.buttonsLeft" (changed)="onButtonsLeftChanged($event)"></lib-create-buttons>
+        </lib-panel-toggle>
+      </div>
+      <div class="col-md-12">
+        <h4>Knoppen rechts</h4>
+      <lib-panel-toggle [style]="'default'" [title]="['Knoppen rechts']">
+        <lib-create-buttons [prefix]="'buttonsRight'" [buttons]="_pageOverviewTemplate?.buttonsRight" (changed)="onButtonsRightChanged($event)"></lib-create-buttons>
+      </lib-panel-toggle>
+      </div>
+
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
