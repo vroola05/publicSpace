@@ -41,6 +41,10 @@
 
     cursor: pointer;
 
+    &:first-child:hover {
+      background: $gray3b;
+    }
+
     .toggle-row {
       display: flex;
       flex-direction: row;
@@ -77,10 +81,5 @@
 
     border-top: $gray solid 1px;
     font-size: $small-font-size;
-  }
-  &:hover {
-    .panel-toggle-title {
-      background: $gray3b;
-    }
   }
 }

@@ -23,19 +23,19 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12" *ngIf="showPage('overview')" >
+    <div class="col-md-12" *ngIf="showPage('overview')">
       <h4>Overzichtspagina's</h4>
       <lib-panel-toggle [style]="'default'" [title]="['Overzichtspagina\'s']">
         <lib-panel-page-overview [prefix]="'pageOverviewTemplate'" [page]="_page"></lib-panel-page-overview>  
       </lib-panel-toggle>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12" *ngIf="!showPage('overview')">
       <h4>Knoppen links</h4>
       <lib-panel-toggle [style]="'default'" [title]="['Knoppen links']">
         <lib-create-buttons [prefix]="'buttonsLeft'" [buttons]="_page?.buttonsLeft" (changed)="onButtonsLeftChanged($event)"></lib-create-buttons>
       </lib-panel-toggle>
     </div>
-    <div class="col-md-12">
+    <div class="col-md-12" *ngIf="!showPage('overview')">
       <h4>Knoppen rechts</h4>
     <lib-panel-toggle [style]="'default'" [title]="['Knoppen rechts']">
       <lib-create-buttons [prefix]="'buttonsRight'" [buttons]="_page?.buttonsRight" (changed)="onButtonsRightChanged($event)"></lib-create-buttons>

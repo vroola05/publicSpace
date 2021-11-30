@@ -22,7 +22,6 @@ export class ListPanelPagesComponent implements OnInit {
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
 
-
   public layoutTypeItems: { name: string, value?: string, data?: any }[] = [
     { name: 'Standaard', value: PageLayoutType.page },
     { name: 'Sticky', value: PageLayoutType.pageStickyButtons },
@@ -40,9 +39,8 @@ export class ListPanelPagesComponent implements OnInit {
       this._page.pageOverviewTemplate = page.pageOverviewTemplate;
       this._page.buttonsLeft = page.buttonsLeft;
       this._page.buttonsRight = page.buttonsRight;
-
+      
       if(this.layoutTypeComponent) {
-        
         this.layoutTypeComponent.select(this.layoutTypeItems.find(layoutType => layoutType.value === page.layoutType));
       }
     }

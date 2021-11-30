@@ -32,7 +32,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   public pageLayoutType: PageLayoutType = PageLayoutType.overview;
   public title = '';
   public page: Page;
-  public pageTemplate: PageOverviewTemplate;
+  public pageOverviewTemplate: PageOverviewTemplate;
   private id: number;
   private subscriptions: Subscription[] = [];
 
@@ -69,19 +69,19 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     super.ngOnInit();
     this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
-    this.pageTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
-    
-    this.filterService.setListsize(this.pageTemplate.size ? this.pageTemplate.size : 50);
+    this.pageOverviewTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
+
+    this.filterService.setListsize(this.pageOverviewTemplate.size ? this.pageOverviewTemplate.size : 50);
 
     this.listTemplate = {
-      id: String(this.pageTemplate.id),
-      toggle: this.pageTemplate.toggle,
-      route: this.pageTemplate.route,
-      buttonsLeft: this.pageTemplate.buttonsLeft,
-      buttonsRight: this.pageTemplate.buttonsRight,
-      priority: this.pageTemplate.priority,
+      id: String(this.pageOverviewTemplate.id),
+      toggle: this.pageOverviewTemplate.toggle,
+      route: this.pageOverviewTemplate.route,
+      buttonsLeft: this.pageOverviewTemplate.buttonsLeft,
+      buttonsRight: this.pageOverviewTemplate.buttonsRight,
+      priority: this.pageOverviewTemplate.priority,
       notification: '',
-      columns: this.pageTemplate.columns
+      columns: this.pageOverviewTemplate.columns
     }
 
     this.loadList(false);
