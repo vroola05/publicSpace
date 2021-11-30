@@ -21,10 +21,10 @@ public class GeoAddressEntity {
   private Boolean active;
   private Date startDate;
   private Date endDate;
-  private String government;
+  private Integer government;
   private String district;
   private String street;
-  private String number;
+  private Integer number;
   private String letter;
   private String addition;
   private String postal;

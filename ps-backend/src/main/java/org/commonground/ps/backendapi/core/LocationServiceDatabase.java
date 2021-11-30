@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
 import org.commonground.ps.backendapi.jpa.repositories.GeoAddressRepository;
 import org.commonground.ps.backendapi.model.Location;
-import org.commonground.ps.backendapi.util.geocoding.Geo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,24 +19,23 @@ public class LocationServiceDatabase implements LocationService {
 	private GeoAddressRepository geoAddressRepository;
 
 	@Override
-	public Location byXY(Double x, Double y) {
-		Location location = new Location();
+	public Location byXY(Double x, Double y) throws NotFoundException {
 		Optional<GeoAddressEntity> geoAddressEntityOptional = geoAddressRepository.getAddressByLatitudeLongitude(x, y);
 		if (geoAddressEntityOptional.isPresent()) {
-			GeoAddressEntity geoAddressEntity = geoAddressEntityOptional.get();
-			location.setStreet(geoAddressEntity.getStreet());
-			location.setNumber(geoAddressEntity.getNumber());
-			location.setLetter(geoAddressEntity.getLetter());
-			location.setPostal(geoAddressEntity.getPostal());
-			location.setCity(geoAddressEntity.getCity());
-			if (geoAddressEntity.getGeo() != null && geoAddressEntity.getGeo().getCoordinate() != null) {
-				location.setX(geoAddressEntity.getGeo().getCoordinate().x);
-				location.setY(geoAddressEntity.getGeo().getCoordinate().y);
-			}
+			return Convert.toLocation(geoAddressEntityOptional.get());
 		}
-		return location;
+		throw new NotFoundException();
 	}
 
+	@Override
+	public Location byStreetAndNumber(String street, Integer number) throws NotFoundException {
+		Optional<GeoAddressEntity> geoAddressEntityOptional = geoAddressRepository.getAddressStreetAndNumber(street, number);
+		if (geoAddressEntityOptional.isPresent()) {
+			return Convert.toLocation(geoAddressEntityOptional.get());
+		}
+		throw new NotFoundException();
+	}
+	
 	@Override
 	public List<Location> byStreet(String street) {
 		ArrayList<Location> locations = new ArrayList<>();

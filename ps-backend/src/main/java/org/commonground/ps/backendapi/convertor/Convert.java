@@ -10,6 +10,7 @@ import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainTypeEntity;
+import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
@@ -424,4 +425,18 @@ public class Convert {
     return role;
   }*/
   
+  public static Location toLocation(GeoAddressEntity geoAddressEntity) {
+		Location location = new Location();
+    location.setStreet(geoAddressEntity.getStreet());
+    location.setNumber(Integer.toString(geoAddressEntity.getNumber()));
+    location.setLetter(geoAddressEntity.getLetter());
+    location.setPostal(geoAddressEntity.getPostal());
+    location.setCity(geoAddressEntity.getCity());
+    if (geoAddressEntity.getGeo() != null && geoAddressEntity.getGeo().getCoordinate() != null) {
+      location.setX(geoAddressEntity.getGeo().getCoordinate().x);
+      location.setY(geoAddressEntity.getGeo().getCoordinate().y);
+    }
+		
+		return location;
+	}
 }
