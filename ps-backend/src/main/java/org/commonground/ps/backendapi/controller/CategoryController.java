@@ -145,6 +145,7 @@ public class CategoryController extends Controller {
       category.setStartDate(categoryEntity.getStartDate());
       category.setEndDate(categoryEntity.getEndDate());
       category.setActive(categoryEntity.getActive());
+      category.setGroup(Convert.groupEntity(categoryEntity.getGroup()));
       categories.add(category);
     });
 

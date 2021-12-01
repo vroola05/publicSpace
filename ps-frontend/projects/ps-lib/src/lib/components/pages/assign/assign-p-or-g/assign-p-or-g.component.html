@@ -1,6 +1,8 @@
-<lib-panel *ngIf="call" [data]="call" [pageLayoutType]="pageLayoutType" [buttonsLeft]="buttonsLeft" [buttonsRight]="buttonsRight">
+<lib-panel *ngIf="call" [data]="call"
+  [pageLayoutType]="page?.layoutType"
+  [buttonsLeft]="page?.buttonsLeft"
+  [buttonsRight]="page?.buttonsRight">
   <lib-panel-title>
-
     <div class="row assign-main">
       <div class="col-sm-12 assign-header">
         <lib-details-header [data]="headerData"></lib-details-header>

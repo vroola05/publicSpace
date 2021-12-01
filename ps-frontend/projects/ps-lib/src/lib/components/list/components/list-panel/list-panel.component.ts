@@ -16,8 +16,8 @@ import { PageButton } from '../../../../../model/page-button';
 export class ListPanelComponent {
   public getUrlImage = '';
 
-  public buttonsLeft: ButtonT[] = [];
-  public buttonsRight: ButtonT[] = [];
+  public buttonsLeft: PageButton[] = [];
+  public buttonsRight: PageButton[] = [];
 
   @Input() template: ListTemplateT;
 
@@ -25,8 +25,8 @@ export class ListPanelComponent {
   @Input() set call(call: Call) {
     this._call = call;
     // this.getUrlImage = this.transform.URL(this.domain.getEndpoint('getImage').endpoint);
-    // this.buttonsLeft = this.createButtons(this.template.buttonsLeft);
-    // this.buttonsRight = this.createButtons(this.template.buttonsRight);
+    this.buttonsLeft = this.createButtons(this.template.buttonsLeft);
+    this.buttonsRight = this.createButtons(this.template.buttonsRight);
   }
 
   constructor(

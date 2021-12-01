@@ -155,16 +155,17 @@ public class CallController extends Controller {
 			throw new BadRequestException();
 		}
 
-		Optional<StatusEntity> statusEntity = statusRepository.getStatusById(action.getStatus().getId(), user);
+		Optional<StatusEntity> statusEntityOptional = statusRepository.getStatusById(action.getStatus().getId(), user);
 
-		Optional<CompanyEntity> companyEntity = companyRepository.findById(user.getCompany().getId());
-		Optional<CategoryEntity> categoryEntity = categoryRepository.getCategory(call.getMainCategory().getCategory().getId(), user);
-		if (statusEntity.isPresent() && companyEntity.isPresent() && categoryEntity.isPresent()) {
+		Optional<CompanyEntity> companyEntityOptional = companyRepository.findById(user.getCompany().getId());
+		Optional<CategoryEntity> categoryEntityOptional = categoryRepository.getCategory(call.getMainCategory().getCategory().getId(), user);
+		if (statusEntityOptional.isPresent() && companyEntityOptional.isPresent() && categoryEntityOptional.isPresent()) {
 			CallEntity callEntity = Convert.call(call);
-			callEntity.setCompany(companyEntity.get());
-			callEntity.setCategory(categoryEntity.get());
-			callEntity.setStatus(statusEntity.get());
-
+			callEntity.setCompany(companyEntityOptional.get());
+			callEntity.setCategory(categoryEntityOptional.get());
+			callEntity.setStatus(statusEntityOptional.get());
+			callEntity.setGroup(categoryEntityOptional.get().getGroup());
+			
 			LocationEntity locationEntity = Convert.location(call.getLocation());
 			locationEntity.setCall(callEntity);
 			callEntity.setLocation(locationEntity);
@@ -191,6 +192,9 @@ public class CallController extends Controller {
 			call.setPerson(Convert.personEntity(callEntity.getPerson()));
 		}
 		
+		if (callEntity.getGroup() != null) {
+			call.setGroup(Convert.groupEntity(callEntity.getGroup()));
+		}
 
 		if (callEntity.getCategory() != null) {
 			call.setMainCategory(Convert.mainCategoryEntity(callEntity.getCategory().getMainCategory()));

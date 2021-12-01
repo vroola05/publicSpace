@@ -46,6 +46,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
       this._category.endDate = category.endDate;
       this._category.active = category.active;
       this._category.group = category.group;
+      this.selectGroup();
     }
   }
   
@@ -134,6 +135,7 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
     const d = this.groupComponent.validate();
 
     if (a && b && c && d) {
+      console.log('this._category', this._category)
       this.transform.setVariable('category', this._category);
       if (this.isNew) {
         this.post(this._category);

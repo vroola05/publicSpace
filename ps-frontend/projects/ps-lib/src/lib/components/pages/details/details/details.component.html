@@ -1,6 +1,6 @@
 <lib-panel *ngIf="page && call" 
   [data]="call"
-  [pageLayoutType]="pageLayoutType"
+  [pageLayoutType]="page?.layoutType"
   [buttonsLeft]="page?.buttonsLeft"
   [buttonsRight]="page?.buttonsRight"
   [title]="'Melding informatie'">

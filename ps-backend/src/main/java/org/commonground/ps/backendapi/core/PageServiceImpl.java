@@ -41,20 +41,19 @@ public class PageServiceImpl implements PageService {
 			pageEntity.setName(page.getName());
 			pageEntity.setLayoutType(page.getLayoutType());
 
-			// Remove page buttons
-			pageEntity.getPageButtons()
-				.removeIf(pageButtonEntity -> 
-					page.getButtonsLeft().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
-					&& page.getButtonsRight().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
-				);
-
-			pageButtonService.updatePageButtons("left", pageEntity, page.getButtonsLeft());
-			pageButtonService.updatePageButtons("right", pageEntity, page.getButtonsRight());
-
-			
-			
 			if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
 				pageOverviewService.updatePageOverviewPages(domainId, page, pageEntity);
+			} else {
+
+				// Remove page buttons
+				pageEntity.getPageButtons()
+					.removeIf(pageButtonEntity -> 
+						page.getButtonsLeft().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
+						&& page.getButtonsRight().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
+					);
+
+				pageButtonService.updatePageButtons("left", pageEntity, page.getButtonsLeft());
+				pageButtonService.updatePageButtons("right", pageEntity, page.getButtonsRight());
 			}
 
 			return Convert.pageEntity(pageRepository.save(pageEntity));

@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PanelToggleComponent implements OnInit {
   @Input() public toggle = false;
   @Input() public title: string[] = [];
-  @Input() style: 'default' | 'filled' | 'primary' | 'grey' | 'secondary' = 'default';
+  @Input() style: 'default' | 'filled' | 'primary' | 'grey' | 'secondary' | 'blanc' = 'default';
 
   constructor() { }
 

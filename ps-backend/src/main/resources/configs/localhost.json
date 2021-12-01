@@ -177,6 +177,7 @@
     "postDomain": {"endpoint": "/company/${environment.company.id}/domain", "roles": ["ROLE_ADMIN"]},
     "putDomain": {"endpoint": "/company/${environment.company.id}/domain/${domain.id}", "roles": ["ROLE_ADMIN"]},
     "getUsers": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user", "roles": ["ROLE_ADMIN"]},
+    "getUsersOfGroup": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user/of/group/${group.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
     "postUser": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user", "roles": ["ROLE_ADMIN"]},
     "putUser": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user/${user.id}", "roles": ["ROLE_ADMIN"]},
     "getGroups": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group", "roles": ["ROLE_ADMIN"]},

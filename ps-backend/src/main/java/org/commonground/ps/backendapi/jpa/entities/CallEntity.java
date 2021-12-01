@@ -42,4 +42,8 @@ public class CallEntity {
   @ManyToOne(fetch=FetchType.LAZY)
   @JoinColumn(name="user_id", referencedColumnName = "id")
   private UserEntity user;
+
+  @ManyToOne(fetch=FetchType.LAZY)
+  @JoinColumn(name="group_id", referencedColumnName = "id")
+  private GroupEntity group;
 }

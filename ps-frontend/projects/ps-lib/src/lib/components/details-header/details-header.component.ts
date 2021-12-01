@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CallList } from '../../../model/call-list';
 import { ListTemplateColumnT } from '../../../model/template';
 import { ConfigService } from '../../services/config/config.service';
+import moment from 'moment';
 
 @Component({
   selector: 'lib-details-header',
@@ -32,6 +33,14 @@ export class DetailsHeaderComponent implements OnInit {
     return this.data[id] ? this.data[id] : ' ';
   }
 
+  public date(id: string): string {
+    const date = this.data[id] as Date;
+    if (date) {
+      return moment(date).format('DD MMM YYYY');
+    }
+    return '';
+  }
+  
   public dateAsDays(id: string): string {
     const date = this.data[id] as Date;
     const today = new Date().setHours(0, 0, 0, 0);

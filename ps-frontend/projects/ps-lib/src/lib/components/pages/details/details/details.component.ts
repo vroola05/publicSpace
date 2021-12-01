@@ -74,7 +74,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     this.endpoints.get('getCallById').then((call: Call) => {
       this.transform.setVariable('call', call);
       this.call = call;
-      //this.headerData = this.config.transformCall(call);
+      this.headerData = this.config.transformCall(call);
     });
   }
 

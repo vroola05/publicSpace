@@ -34,6 +34,16 @@
       color: $gray-primary;
     }
   }
+  &.blanc {
+    box-shadow: unset;
+
+    .panel-toggle-title {
+      border: #eee solid 1px;
+    }
+    .panel-toggle-toggle {
+      border-top: none;
+    }
+  }
   .panel-toggle-title {
     position: relative;
     display: flex;

@@ -3,7 +3,7 @@
     <div class="row" *ngFor="let p of pageOverviewTemplate; let i = index">
 
         <div class="col-md-11">
-          <lib-panel-toggle [style]="'default'" [title]="[p.name]">
+          <lib-panel-toggle [style]="'blanc'" [title]="[p.name]">
             <div class="page">
               <lib-list-panel-pages-overview [pageOverviewTemplate]="p" [index]="i" [prefix]="getId('[' + i + ']')"
                 (changed)="onPageOverviewTemplateChanged($event)"></lib-list-panel-pages-overview>

@@ -41,17 +41,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/user", produces = { "application/json; charset=utf-8" })
 public class UserController extends Controller {
 
-  @Value("${sec.gen.hash.function}")
-  public String defaultHashFunction;
+	@Value("${sec.gen.hash.function}")
+	public String defaultHashFunction;
 
-  @Value("${sec.gen.salt.length}")
-  public int defaultSaltLength;
+	@Value("${sec.gen.salt.length}")
+	public int defaultSaltLength;
 
-  @Value("${sec.gen.iteration.count}")
-  public int defaultIterationCount;
+	@Value("${sec.gen.iteration.count}")
+	public int defaultIterationCount;
 
-  @Value("${sec.gen.key.length}")
-  public int defaultKeyLength;
+	@Value("${sec.gen.key.length}")
+	public int defaultKeyLength;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -68,8 +68,8 @@ public class UserController extends Controller {
 	@Secured(identifier = "getUsers")
 	@GetMapping()
 	public List<User> getUsers(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 		isValid(companyId, domainId);
 
 		List<User> users = new ArrayList<>();
@@ -80,18 +80,35 @@ public class UserController extends Controller {
 		return users;
 	}
 
+	@Secured(identifier = "getUsersOfGroup")
+	@GetMapping(value = "/of/group/{groupId}")
+	public List<User> getUsersOfGroup(
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long groupId) {
+		isValid(companyId, domainId);
+
+		List<User> users = new ArrayList<>();
+		List<UserEntity> userEntities = userRepository.getUserByGroupId(domainId, groupId);
+		userEntities.forEach(userEntity -> {
+			users.add(Convert.userEntity(userEntity));
+		});
+		return users;
+	}
+
 	@Secured(identifier = "postUser")
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public User postUser(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-		@Valid @PostUserValidator @RequestBody UserExtended user) {
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+			@Valid @PostUserValidator @RequestBody UserExtended user) {
 
 		isValid(companyId, domainId);
 
 		UserEntity userEntity = Convert.user(user);
 
-		SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount, defaultKeyLength);
+		SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount,
+				defaultKeyLength);
 		String salt = secureHash.generateSalt(secureHash.defaultSaltLength);
 		userEntity.setPasswordSalt(salt);
 		userEntity.setPasswordHashFunction(secureHash.defaultHashFunction);
@@ -99,12 +116,11 @@ public class UserController extends Controller {
 		userEntity.setPasswordKeyLength(Long.valueOf(secureHash.defaultKeyLength));
 
 		userEntity.setPassword(secureHash.generateHashBase64(
-			user.getPassword(),
-			salt,
-			secureHash.defaultIterationCount,
-			secureHash.defaultKeyLength,
-			secureHash.defaultHashFunction
-		));
+				user.getPassword(),
+				salt,
+				secureHash.defaultIterationCount,
+				secureHash.defaultKeyLength,
+				secureHash.defaultHashFunction));
 
 		Optional<DomainEntity> domainEntity = domainRepository.findById(domainId);
 		if (domainEntity.isPresent()) {
@@ -113,18 +129,18 @@ public class UserController extends Controller {
 
 		attachRoles(user.getRoles(), userEntity);
 		attachGroups(user.getGroups(), userEntity, domainId);
-		
+
 		return Convert.userEntity(userRepository.saveAndFlush(userEntity));
 	}
 
 	@Secured(admin = true, identifier = "putUser")
 	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	public User putCompany(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@Valid @PutUserValidator @RequestBody User user) throws BadRequestException {
-		
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+			@Valid @PutUserValidator @RequestBody User user) throws BadRequestException {
+
 		isValid(companyId, domainId);
 
 		Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
@@ -145,31 +161,31 @@ public class UserController extends Controller {
 		throw new BadRequestException();
 	}
 
-	private void attachRoles(List<String> roles, UserEntity userEntity){
+	private void attachRoles(List<String> roles, UserEntity userEntity) {
 		userEntity.getRoles().clear();
 
 		List<RolesEntity> rolesEntities = rolesRepository.findAll();
 		roles.forEach(role -> {
-			for (RolesEntity roleEntity: rolesEntities) {
+			for (RolesEntity roleEntity : rolesEntities) {
 				if (roleEntity.getName().equals(role)) {
 					userEntity.getRoles().add(roleEntity);
 					break;
 				}
-				}
+			}
 		});
 	}
 
-	private void attachGroups(List<Group> groups, UserEntity userEntity, Long domainId){
+	private void attachGroups(List<Group> groups, UserEntity userEntity, Long domainId) {
 		userEntity.getGroups().clear();
 
 		List<GroupEntity> groupEntities = groupRepository.getGroups(domainId);
 		groups.forEach(group -> {
-			for (GroupEntity groupEntity: groupEntities) {
+			for (GroupEntity groupEntity : groupEntities) {
 				if (groupEntity.getId() == group.getId()) {
 					userEntity.getGroups().add(groupEntity);
 					break;
 				}
-				}
+			}
 		});
 	}
 }

@@ -126,7 +126,6 @@ export class MapsComponent implements IPopup, AfterViewInit, OnInit {
 
   public setMapPosition(): void {
     if (this.map && this._location && this._location.x && this._location.y) {
-      console.log(this._location);
       this.setPointer(this._location.x, this._location.y);
     }
   }

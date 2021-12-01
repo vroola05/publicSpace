@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewColumnEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
 import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageOverviewColumn;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
@@ -19,27 +21,48 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 	@Autowired
 	private StatusService statusService;
 
+	@Autowired
+	private PageButtonService pageButtonService;
+
 	@Override
 	public void updatePageOverviewPages(Long domainId, Page page, PageEntity pageEntity) {
 		PageOverviewImpl pageOverview = (PageOverviewImpl) page;
 		List<PageOverviewTemplate> pageOverviewTemplates = pageOverview.getPageOverviewTemplate();
 		List<PageOverviewEntity> pageOverviewEntities = pageEntity.getPageOverview();
 
+		List<PageButton> pageButtonsLeft = new ArrayList<PageButton>();
+		List<PageButton> pageButtonsRight = new ArrayList<PageButton>();
+
 		long i = 0;
 		for (PageOverviewTemplate pageOverviewTemplate : pageOverviewTemplates) {
+			
 			Optional<PageOverviewEntity> pageOverviewEntityOptional = pageOverviewEntities.stream()
 					.filter(c -> c.getId() == pageOverviewTemplate.getId()).findFirst();
 			if (pageOverviewTemplate.getId() != null && pageOverviewEntityOptional.isPresent()) {
 				// Update
 				PageOverviewEntity pageOverviewEntity = pageOverviewEntityOptional.get();
-				updatePageOverviewPage(domainId, i, pageOverviewTemplate, pageOverviewEntity);
+				updatePageOverviewPage(domainId, i, pageEntity, pageOverviewTemplate, pageOverviewEntity);
+
+				pageOverviewEntity.getPageButtons().removeIf(pageButtonEntity -> 
+					pageOverviewTemplate.getButtonsLeft().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
+					&& pageOverviewTemplate.getButtonsRight().stream().noneMatch(a -> a.getId() == pageButtonEntity.getId())
+				);
+	
+				pageButtonService.updatePageButtons("left", pageEntity, pageOverviewEntity, pageOverviewTemplate.getButtonsLeft());
+				pageButtonService.updatePageButtons("right", pageEntity, pageOverviewEntity, pageOverviewTemplate.getButtonsRight());
+
+
 			} else {
 				// Insert
 				PageOverviewEntity pageOverviewEntity = new PageOverviewEntity();
 				pageOverviewEntity.setPage(pageEntity);
-				updatePageOverviewPage(domainId, i, pageOverviewTemplate, pageOverviewEntity);
+				updatePageOverviewPage(domainId, i, pageEntity, pageOverviewTemplate, pageOverviewEntity);
 				pageOverviewEntities.add(pageOverviewEntity);
+
+				pageButtonService.updatePageButtons("left", pageEntity, pageOverviewEntity, pageOverviewTemplate.getButtonsLeft());
+				pageButtonService.updatePageButtons("right", pageEntity, pageOverviewEntity, pageOverviewTemplate.getButtonsRight());
 			}
+
 			i++;
 		}
 
@@ -47,9 +70,11 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 		pageOverviewEntities.removeIf(pageOverviewEntity -> pageOverviewTemplates.stream()
 				.noneMatch(p -> p.getId() == pageOverviewEntity.getId()));
 
+
+
 	}
 
-	public void updatePageOverviewPage(Long domainId, long sort, PageOverviewTemplate pageOverviewTemplate, PageOverviewEntity pageOverviewEntity) {
+	public void updatePageOverviewPage(Long domainId, long sort, PageEntity pageEntity, PageOverviewTemplate pageOverviewTemplate, PageOverviewEntity pageOverviewEntity) {
 		pageOverviewEntity.setId(pageOverviewTemplate.getId());
 		pageOverviewEntity.setName(pageOverviewTemplate.getName());
 		pageOverviewEntity.setIcon(pageOverviewTemplate.getIcon());
@@ -86,6 +111,7 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 		// Remove
 		pageOverviewColumnEntities.removeIf(pageOverviewColumnEntity -> pageOverviewTemplate.getColumns().stream()
 				.noneMatch(p -> p.getId() == pageOverviewColumnEntity.getId()));
+
 	}
 
 	public void updatePageOverviewColumn(long sort, PageOverviewColumn pageOverviewColumn, PageOverviewColumnEntity pageOverviewColumnEntity) {

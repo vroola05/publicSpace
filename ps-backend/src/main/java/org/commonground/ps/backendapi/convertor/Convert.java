@@ -325,6 +325,13 @@ public class Convert {
           columns.add(pageOverviewColumn);
         }
         pageOverviewTemplate.setColumns(columns);
+
+        List<PageButtonEntity> pageButtonEntities = pageOverviewEntity.getPageButtons();
+        //pageOverviewTemplate.setButtonsLeft(pageButtons);
+
+        pageOverviewTemplate.setButtonsLeft(getButtonsLocation(pageButtonEntities, "left"));
+        pageOverviewTemplate.setButtonsRight(getButtonsLocation(pageButtonEntities, "right"));
+
         page.getPageOverviewTemplate().add(pageOverviewTemplate);
       }
       

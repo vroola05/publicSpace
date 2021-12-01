@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ConfigService } from '../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
@@ -16,11 +16,14 @@ import { User } from '../../../../../model/user';
 import { Image } from '../../../../../model/image';
 import { Group } from '../../../../../model/group';
 import { Message } from '../../../../../model/message';
+import { Environment } from '../../../../../model/intefaces';
+
 import { ToastService } from '../../../../services/toast/toast.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { ActionService } from '../../../../services/action/action.service';
+import { EnvironmentService } from '../../../../services/environment/environment.service';
 
 @Component({
   selector: 'lib-assign-p-or-g',
@@ -53,8 +56,10 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
   }
 
   private type: 'user' | 'group' = 'user';
-//  private group: Group;
+  private group: Group;
 //  private user: User;
+
+  public environment: Environment;
 
   public headerData: CallList;
   constructor(
@@ -68,20 +73,21 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     private endpoints: EndpointService,
     private config: ConfigService,
     private loader: Loader,
-    private toast: ToastService
+    private toast: ToastService,
+    private environmentService: EnvironmentService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
   }
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.getCall();
 
-    this.buttonsLeft = this.config.template.assign.buttonsLeft;
-    this.buttonsRight = this.config.template.assign.buttonsRight;
-    if (this.config.template.assign.pageType) {
-      this.pageLayoutType = this.config.template.assign.pageType;
-    }
+    this.environment = this.environmentService.get();
+    this.transform.setVariable('environment', this.environment);
+
+    this.page = this.config.getPage(PageTypes.assign);
+
+    this.getCall();
 
     this.tabs.push({name: 'Medewerker', value: 'user', selected: false});
     this.tabs.push({name: 'Team', value: 'group', selected: false});
@@ -93,8 +99,14 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
   }
 
   public getCall(): void {
-    this.endpoints.get('getDetailCall').then((call: Call) => {
+    this.endpoints.get('getCallById').then((call: Call) => {
       this.transform.setVariable('call', call);
+
+      this.group = call.group;
+      this.transform.setVariable('group', this.group);
+
+      this.getPersons();
+
       this.call = call;
       this.headerData = this.config.transformCall(call);
     });
@@ -109,7 +121,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     this.clearSelection();
     this.type = $event.tab.value;
     if (this.type === 'user') {
-      this.getPersons();
+      //this.getPersons();
     } else if (this.type === 'group') {
       this.getTeams();
     }
@@ -117,7 +129,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public getPersons() {
     this.items = [];
-    this.endpoints.get('getAssignUsersOfGroup').then((users: User[]) => {
+    this.endpoints.get('getUsersOfGroup').then((users: User[]) => {
       const items = [];
       users.forEach(user => {
         items.push({selected: false, image: this.getImageOfUser(user), data: user});

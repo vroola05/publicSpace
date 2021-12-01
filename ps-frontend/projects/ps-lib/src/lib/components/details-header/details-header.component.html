@@ -8,7 +8,7 @@
       <div class="col ps-table-cell {{column.css}} {{column.mobile}}" *ngFor="let column of columns; let colIndex = index">
         <span class="ps-table-cell-label">{{column.name}}:</span>
         <div *ngIf="column.type=='text'" class="ps-table-cell-inner col-text">{{getValue(column.id)}}</div>
-        <span *ngIf="column.type=='date'" class="ps-table-cell-inner">{{getValue(column.id) | date}}</span>
+        <span *ngIf="column.type=='date'" class="ps-table-cell-inner">{{date(column.id)}}</span>
         <span *ngIf="column.type=='date-as-days'" class="ps-table-cell-inner">{{dateAsDays(column.id)}}</span>
         <span *ngIf="column.type=='string' || column.type=='number'" class="ps-table-cell-inner">{{getValue(column.id)}}</span>
       </div>

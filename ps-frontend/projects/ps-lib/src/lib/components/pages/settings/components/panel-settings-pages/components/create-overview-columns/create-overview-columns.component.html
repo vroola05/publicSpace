@@ -1,14 +1,16 @@
-<lib-panel-toggle [style]="'default'" [title]="['Kolommen in de lijst']">
-<div class="row" >
-    <div class="col-md-12" *ngIf="columns">
-        <div class="columns" *ngFor="let column of columns; let i = index">
-            <lib-create-overview-column [index]="i" [prefix]="getId('[' + i + ']')" [column]="column" (changed)="onColumnsChanged($event)"></lib-create-overview-column>
+<lib-panel-toggle [style]="'blanc'" [title]="['Kolommen in de lijst']">
+    <div class="row">
+        <div class="col-md-12" *ngIf="columns">
+            <div class="columns" *ngFor="let column of columns; let i = index">
+                <lib-create-overview-column [index]="i" [prefix]="getId('[' + i + ']')" [column]="column"
+                    (changed)="onColumnsChanged($event)"></lib-create-overview-column>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <lib-btn-contained class="float-right col-md-3" [type]="'containedPrimary'"
+                    (clicked)="onAddClick($event)">Kolom toevoegen</lib-btn-contained>
+            </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="row" >
-            <lib-btn-contained class="float-right col-md-3" [type]="'containedPrimary'" (clicked)="onAddClick($event)">Kolom toevoegen</lib-btn-contained>
-        </div>
-    </div>
-</div>
 </lib-panel-toggle>

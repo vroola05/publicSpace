@@ -25,8 +25,12 @@ public class PageButtonEntity {
   private Long sort;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "page_id", nullable = false)
+  @JoinColumn(name = "page_id", nullable = true)
   private PageEntity page;
+
+  @JoinColumn(name = "page_overview_id", nullable = true)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private PageOverviewEntity pageOverview;
 
   @ManyToOne(optional = true, fetch = FetchType.EAGER)
   ActionTypeEntity actionType;

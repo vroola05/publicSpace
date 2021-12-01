@@ -35,4 +35,8 @@ public class PageOverviewEntity {
 
   @OneToMany(targetEntity = PageOverviewStatusEntity.class, mappedBy = "pageOverview", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<PageOverviewStatusEntity> statusses = new ArrayList<>();
+
+  @OneToMany(targetEntity = PageButtonEntity.class, mappedBy = "pageOverview", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OrderBy("sort ASC")
+  private List<PageButtonEntity> pageButtons = new ArrayList<>();
 }

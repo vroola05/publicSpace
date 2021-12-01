@@ -36,4 +36,6 @@ public class Call {
   private Company company;
 
   private Status status;
+
+  private Group group;
 }
