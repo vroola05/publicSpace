@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.CallList;
+import org.commonground.ps.backendapi.model.Message;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilter;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterOperator;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterType;
@@ -24,6 +25,7 @@ import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.util.ActionEnum;
 import org.commonground.ps.backendapi.validators.PostCallValidator;
+import org.commonground.ps.backendapi.validators.PutCallUserValidator;
 import org.commonground.ps.backendapi.validators.QueryParametersValidator;
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ActionService;
@@ -36,11 +38,13 @@ import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
+import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CallListRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
+import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.jpa.repositories.builder.CallListBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,6 +52,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,6 +76,9 @@ public class CallController extends Controller {
 
 	@Autowired
 	private CallListRepository callListRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	ActionService actionService;
@@ -123,7 +131,6 @@ public class CallController extends Controller {
 		org.springframework.data.domain.Page<CallList> v = callListRepository.findAll(cb.build(), cb.getPage(queryParameters.getOffset(), queryParameters.getSize() <= 0 ? 50 : queryParameters.getSize()));
 		return v.getContent();
 	}
-
 
 	@Secured(identifier = "getCallById")
 	@GetMapping("/{id}")
@@ -192,6 +199,10 @@ public class CallController extends Controller {
 			call.setPerson(Convert.personEntity(callEntity.getPerson()));
 		}
 		
+		if (callEntity.getUser() != null) {
+			call.setUser(Convert.userEntity(callEntity.getUser()));
+		}
+
 		if (callEntity.getGroup() != null) {
 			call.setGroup(Convert.groupEntity(callEntity.getGroup()));
 		}
@@ -212,5 +223,36 @@ public class CallController extends Controller {
 	public String getCasenumber(){
 		BigDecimal casenumber = callRepository.getNextCasenumber();
 		return casenumber.toString();
+	}
+
+	@Secured(identifier = "putCallUser")
+	@PutMapping(value = "/{id}/user", consumes = "application/json", produces = "application/json")
+	public Call putCallUser(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @PutCallUserValidator @RequestBody User u) throws BadRequestException {
+
+		User user = getUser();
+		Optional<CallEntity> callOptional = callRepository.getCallById(id, user);
+		Optional<UserEntity> userEntityOptional = userRepository.getUserById(user.getDomain().getId(), u.getId());
+
+		if (callOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+		CallEntity callEntity = callOptional.get();
+
+		if (userEntityOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+		UserEntity userEntity = userEntityOptional.get();
+
+		if(userEntity.getGroups().stream().noneMatch(group -> group.getId() == callEntity.getGroup().getId())) {
+			throw new BadRequestException();
+		}
+
+		callEntity.setUser(userEntity);
+
+		callRepository.saveAndFlush(callEntity);
+
+		return convertCallEntity(callEntity);
 	}
 }

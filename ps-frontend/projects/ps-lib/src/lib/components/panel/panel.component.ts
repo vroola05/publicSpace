@@ -29,7 +29,6 @@ export class PanelComponent implements OnInit {
   }
 
   public onClick(button: PageButton) {
-    
     if (button.action) {
       this.action.call(button.action).then(value => {
         if (value && button.route) {

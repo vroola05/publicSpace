@@ -10,7 +10,9 @@ import { ActionTypeEnum } from '../../../model/intefaces';
 export class ActionService {
   private actions: Map<number, {action: Action, func: () => Promise<boolean>}> = new Map<number, {action: Action, func: () => Promise<boolean>}>();
 
-  constructor() {}
+  constructor() {
+
+  }
 
   public setActions(actions: Array<Action>) {
     actions.forEach(action => {
@@ -22,7 +24,7 @@ export class ActionService {
   }
 
   public register(actionType: ActionTypeEnum, func: () => Promise<boolean>) {
-    if (actionType && func && this.actions.has(actionType)) {
+    if (!isNaN(Number(actionType)) && func && this.actions.has(actionType)) {
       this.actions.get(actionType).func = func;
     }
   }

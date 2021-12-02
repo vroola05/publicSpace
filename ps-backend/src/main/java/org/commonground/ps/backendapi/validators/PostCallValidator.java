@@ -17,10 +17,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
 import org.commonground.ps.backendapi.model.Call;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
@@ -34,9 +32,6 @@ public @interface PostCallValidator {
 	Class<? extends Payload>[] payload() default {};
 
 	class Validator implements ConstraintValidator<PostCallValidator, Call> {
-		@Autowired
-		private CompanyRepository companyRepository;
-
 		@Override
 		public void initialize(PostCallValidator postCall) {
 		}

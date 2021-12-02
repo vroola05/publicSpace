@@ -855,7 +855,8 @@ ALTER TABLE ONLY public.page_button_type
 
 CREATE TABLE public.page_button (
     id integer NOT NULL,
-    page_id integer NOT NULL,
+    page_id integer,
+    page_overview_id integer,
     location text NOT NULL,
     button_type_id integer NOT NULL,
     name text NOT NULL,

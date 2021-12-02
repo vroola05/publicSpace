@@ -10,7 +10,7 @@
         </div>
         <h4>Groep</h4>
         <div class="field-wrapper">
-          <lib-dropdown-field [id]="'group'" [name]="'group'" [placeholder]="'Groep'" [options]="groupItems"
+          <lib-dropdown-field [id]="'group'" [required]="true" [name]="'group'" [placeholder]="'Groep'" [options]="groupItems"
             (changed)="onGroupChanged($event)" #groupComponent>
           </lib-dropdown-field>
         </div>

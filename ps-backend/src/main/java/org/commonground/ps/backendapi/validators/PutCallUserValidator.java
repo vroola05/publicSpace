@@ -17,28 +17,31 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.commonground.ps.backendapi.model.MainCategory;
+import org.commonground.ps.backendapi.model.User;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { PutMainCategoryValidator.Validator.class })
-public @interface PutMainCategoryValidator {
+@Constraint(validatedBy = { PutCallUserValidator.Validator.class })
+public @interface PutCallUserValidator {
 	String message() default "Field value should be from list of ";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
 
-	class Validator implements ConstraintValidator<PutMainCategoryValidator, MainCategory> {
+	class Validator implements ConstraintValidator<PutCallUserValidator, User> {
 		@Override
-		public void initialize(PutMainCategoryValidator postMainCategory) {
+		public void initialize(PutCallUserValidator putCallUserValidator) {
 		}
 
 		@Override
-		public boolean isValid(MainCategory mainCategory, ConstraintValidatorContext context) {
-			
-			if (mainCategory.getId() == null) {
+		public boolean isValid(User user, ConstraintValidatorContext context) {
+			if (user == null) {
+				setMessage(context, "user", "Not null");
+				return false;
+			}
+			if (user.getId() == null) {
 				setMessage(context, "id", "Waarde is verplicht");
 				return false;
 			}

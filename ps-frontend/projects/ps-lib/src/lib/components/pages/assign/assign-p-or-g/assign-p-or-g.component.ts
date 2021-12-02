@@ -32,7 +32,7 @@ import { EnvironmentService } from '../../../../services/environment/environment
 })
 export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
-  private sending = false;
+  protected lock = false;
 
   public call: Call;
   public buttonsLeft: ButtonT[];
@@ -57,7 +57,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   private type: 'user' | 'group' = 'user';
   private group: Group;
-//  private user: User;
+  private user: User;
 
   public environment: Environment;
 
@@ -166,8 +166,10 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
   public setSelected(data: any): void {
     if (this.type === 'user') {
       this.transform.setVariable('user', data);
+      this.user = data;
     } else if (this.type === 'group') {
       this.transform.setVariable('group', data);
+      //this.group = data;
     }
   }
 
@@ -194,53 +196,22 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     return image;
   }
 
-  public cancel(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.storage.clearProcessData();
-      this.navigationService.navigateHome();
-      resolve(true);
-    });
-  }
-
-  public submitUser(): void {
-    if (!this.sending) {
-      const user = this.transform.getVariable('user') as User;
-      if (user && user.username) {
-        this.sending = true;
-
-        const loaderId = this.loader.add('Bezig met opslaan!');
-        this.endpoints.put('putAssignUser', {}).then((message: Message) => {
-          this.loader.remove(loaderId);
-          this.sending = false;
-          this.storage.clearProcessData();
-          this.navigationService.navigateHome();
-        })
-        .catch(() => {
-          this.loader.remove(loaderId);
-          this.sending = false;
-        });
-      } else {
-        this.toast.error('Er is geen gebruiker geselecteerd.', 5, true);
-      }
-    }
-  }
-
   public submitGroup(): void {
-    if (!this.sending) {
+    if (!this.lock) {
       const group = this.transform.getVariable('group') as Group;
       if (group && group.id) {
-        this.sending = true;
+        this.lock = true;
 
         const loaderId = this.loader.add('Bezig met opslaan!');
         this.endpoints.put('putAssignGroup', {}).then((message: Message) => {
           this.loader.remove(loaderId);
-          this.sending = false;
+          this.lock = false;
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
         })
         .catch(() => {
           this.loader.remove(loaderId);
-          this.sending = false;
+          this.lock = false;
         });
       } else {
         this.toast.error('Er is geen groep geselecteerd.', 5, true);
@@ -250,9 +221,36 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public submit(): void {
     if (this.type === 'user') {
-      this.submitUser();
     } else if (this.type === 'group') {
       this.submitGroup();
     }
+  }
+
+  public assignPerson(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if (!this.lock) {
+        this.lock = true;
+        const user = this.transform.getVariable('user') as User;
+        if (!user || !user.id) {
+          this.toast.error('Er is geen gebruiker geselecteerd.', 5, true);
+          this.lock = false;
+          resolve(false);
+        }
+
+        const loaderId = this.loader.add('Bezig met opslaan!');
+        this.endpoints.put('putCallUser', this.user).then((message: Call) => {
+          this.loader.remove(loaderId);
+          this.lock = false;
+          this.storage.clearProcessData();
+          resolve(true);
+        })
+        .catch(() => {
+          this.loader.remove(loaderId);
+          this.lock = false;
+          reject(false);
+        });
+       
+      }
+    });
   }
 }

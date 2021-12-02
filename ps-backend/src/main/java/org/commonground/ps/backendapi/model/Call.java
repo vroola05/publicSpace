@@ -38,4 +38,5 @@ public class Call {
   private Status status;
 
   private Group group;
+  private User user;
 }

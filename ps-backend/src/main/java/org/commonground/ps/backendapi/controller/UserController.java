@@ -135,7 +135,7 @@ public class UserController extends Controller {
 
 	@Secured(admin = true, identifier = "putUser")
 	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
-	public User putCompany(
+	public User putUser(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,

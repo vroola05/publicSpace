@@ -169,6 +169,7 @@
     "getCallById": { "endpoint": "/call/${path.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "getCallByCallListId": { "endpoint": "/call/${calllist.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "postCall": { "endpoint": "/call", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "putCallUser": { "endpoint": "/call/${path.id}/user", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "getCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
     "putCompany": {"endpoint": "/company/${company.id}", "roles": ["ROLE_ADMIN"]},
     "postCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
