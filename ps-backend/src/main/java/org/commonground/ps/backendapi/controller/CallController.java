@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.CallList;
+import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Message;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilter;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterOperator;
@@ -25,6 +26,7 @@ import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.util.ActionEnum;
 import org.commonground.ps.backendapi.validators.PostCallValidator;
+import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
 import org.commonground.ps.backendapi.validators.PutCallUserValidator;
 import org.commonground.ps.backendapi.validators.QueryParametersValidator;
 import org.commonground.ps.backendapi.convertor.Convert;
@@ -35,6 +37,7 @@ import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
+import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
@@ -43,6 +46,7 @@ import org.commonground.ps.backendapi.jpa.repositories.CallListRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
+import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.jpa.repositories.builder.CallListBuilder;
@@ -79,6 +83,9 @@ public class CallController extends Controller {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private GroupRepository groupRepository;
 
 	@Autowired
 	ActionService actionService;
@@ -250,6 +257,33 @@ public class CallController extends Controller {
 		}
 
 		callEntity.setUser(userEntity);
+
+		callRepository.saveAndFlush(callEntity);
+
+		return convertCallEntity(callEntity);
+	}
+
+	@Secured(identifier = "putCallGroup")
+	@PutMapping(value = "/{id}/group", consumes = "application/json", produces = "application/json")
+	public Call putCallGroup(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @PutCallGroupValidator @RequestBody Group g) throws BadRequestException {
+
+		User user = getUser();
+		Optional<CallEntity> callOptional = callRepository.getCallById(id, user);
+		Optional<GroupEntity> groupEntityOptional = groupRepository.getGroupById(g.getId(), user.getDomain().getId());
+
+		if (callOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+		CallEntity callEntity = callOptional.get();
+
+		if (groupEntityOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+		GroupEntity groupEntity = groupEntityOptional.get();
+
+		callEntity.setGroup(groupEntity);
 
 		callRepository.saveAndFlush(callEntity);
 

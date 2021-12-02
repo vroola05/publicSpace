@@ -31,7 +31,6 @@ import { EnvironmentService } from '../../../../services/environment/environment
   styleUrls: ['./assign-p-or-g.component.scss']
 })
 export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestroy {
-  private subscription: Subscription[] = [];
   protected lock = false;
 
   public call: Call;
@@ -41,6 +40,9 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public searchtext = '';
   
+  public _itemsUser: {selected: boolean, image: Image, data: any}[] = [];
+  public _itemsGroup: {selected: boolean, image: Image, data: any}[] = [];
+
   public _items: {selected: boolean, image: Image, data: any}[] = [];
   @Input() set items(items: {selected: boolean, image: Image, data: any}[]) {
     if (items) {
@@ -95,17 +97,16 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public ngOnDestroy(): void {
     super.ngOnDestroy();
-    this.subscription.forEach(subscription => subscription.unsubscribe());
   }
 
   public getCall(): void {
     this.endpoints.get('getCallById').then((call: Call) => {
       this.transform.setVariable('call', call);
 
-      this.group = call.group;
-      this.transform.setVariable('group', this.group);
+      this.transform.setVariable('group', call.group);
 
       this.getPersons();
+      this.getGroups();
 
       this.call = call;
       this.headerData = this.config.transformCall(call);
@@ -121,31 +122,31 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     this.clearSelection();
     this.type = $event.tab.value;
     if (this.type === 'user') {
-      //this.getPersons();
+      this.items = this._itemsUser;
     } else if (this.type === 'group') {
-      this.getTeams();
+      this.items = this._itemsGroup
     }
   }
 
   public getPersons() {
-    this.items = [];
+    this._itemsUser = [];
     this.endpoints.get('getUsersOfGroup').then((users: User[]) => {
       const items = [];
       users.forEach(user => {
         items.push({selected: false, image: this.getImageOfUser(user), data: user});
       });
-      this.items = items;
+      this._itemsUser = items;
     });
   }
 
-  public getTeams() {
-    this.items = [];
-    this.endpoints.get('getAssignGroups').then((groups: Group[]) => {
+  public getGroups() {
+    this._itemsGroup = [];
+    this.endpoints.get('getGroups').then((groups: Group[]) => {
       const items = [];
         groups.forEach(group => {
           items.push({selected: false, image: this.getImageOfGroup(group), data: group});
         });
-        this.items = items;
+        this._itemsGroup = items;
     });
   }
 
@@ -165,11 +166,13 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
   }
   public setSelected(data: any): void {
     if (this.type === 'user') {
+      this.group = null;
       this.transform.setVariable('user', data);
       this.user = data;
     } else if (this.type === 'group') {
+      this.user = null;
       this.transform.setVariable('group', data);
-      //this.group = data;
+      this.group = data;
     }
   }
 
@@ -196,34 +199,32 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     return image;
   }
 
-  public submitGroup(): void {
-    if (!this.lock) {
-      const group = this.transform.getVariable('group') as Group;
-      if (group && group.id) {
+  public assignGroup(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if (!this.lock) {
         this.lock = true;
+        const group = this.transform.getVariable('group') as Group;
+        if (!group || !group.id) {
+          this.toast.error('Er is geen groep geselecteerd.', 5, true);
+          this.lock = false;
+          resolve(false);
+        }
 
         const loaderId = this.loader.add('Bezig met opslaan!');
-        this.endpoints.put('putAssignGroup', {}).then((message: Message) => {
+        this.endpoints.put('putCallGroup', this.group).then((message: Message) => {
           this.loader.remove(loaderId);
           this.lock = false;
           this.storage.clearProcessData();
           this.navigationService.navigateHome();
+          resolve(true);
         })
         .catch(() => {
           this.loader.remove(loaderId);
           this.lock = false;
+          reject(false);
         });
-      } else {
-        this.toast.error('Er is geen groep geselecteerd.', 5, true);
       }
-    }
-  }
-
-  public submit(): void {
-    if (this.type === 'user') {
-    } else if (this.type === 'group') {
-      this.submitGroup();
-    }
+    });
   }
 
   public assignPerson(): Promise<boolean> {
@@ -236,12 +237,12 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
           this.lock = false;
           resolve(false);
         }
-
         const loaderId = this.loader.add('Bezig met opslaan!');
         this.endpoints.put('putCallUser', this.user).then((message: Call) => {
           this.loader.remove(loaderId);
           this.lock = false;
           this.storage.clearProcessData();
+          this.navigationService.navigateHome();
           resolve(true);
         })
         .catch(() => {
@@ -249,7 +250,6 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
           this.lock = false;
           reject(false);
         });
-       
       }
     });
   }
