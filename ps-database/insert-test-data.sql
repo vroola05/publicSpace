@@ -24,5 +24,5 @@ INSERT INTO public.category (id, main_category_id, name, start_date, end_date, a
 
 
 INSERT INTO public.call (id, description, category_id, casenumber, company_id, status_id, group_id) VALUES (nextval('public.seq_call_id'), 'Testmelding 1', 1, '1000000', 1, 1, 1);
-INSERT INTO public.location (id, street, number, letter, postal, city, area, x, y, call_id) VALUES ( nextval( 'public.seq_location_id'), 'Piratenweg', '1' ,'a', '2121AA', 'Hoofddorp', 1, 0, 0, currval('public.seq_call_id'));
+INSERT INTO public.location (id, street, number, letter, postal, city, area, x, y, call_id) VALUES ( nextval( 'public.seq_location_id'), 'Piratenweg', '1' ,'a', '2121AA', 'Hoofddorp', 1, 108221.437, 478861.66, currval('public.seq_call_id'));
 
