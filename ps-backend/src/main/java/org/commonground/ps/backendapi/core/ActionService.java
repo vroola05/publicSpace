@@ -16,4 +16,5 @@ public interface ActionService {
   public List<Action> getActionByDomainId(Long domainId);
   public void synchronizeActions(Long companyId, Long domainId, User user);
   public Action updateAction(Long domainId, Action action) throws BadRequestException;
+  public boolean call(long domainId, long callId, ActionEnum action);
 }

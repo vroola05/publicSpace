@@ -30,7 +30,6 @@ import { Page } from '../../../../../model/page';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy {
-  private subscription: Subscription[] = [];
   public page: Page;
   public call: Call;
   public getUrlImage: string;
@@ -66,8 +65,6 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
 
     this.action.register(ActionTypeEnum.CALL_CLOSE, () => { return super.callClose() });
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return super.callKill() });
-
-    this.subscription.forEach(subscription => subscription.unsubscribe());
   }
 
   public getCall(): void {

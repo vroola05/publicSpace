@@ -13,7 +13,6 @@ import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.CallList;
 import org.commonground.ps.backendapi.model.Group;
-import org.commonground.ps.backendapi.model.Message;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilter;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterOperator;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterType;
@@ -34,6 +33,7 @@ import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
+import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
@@ -143,7 +143,7 @@ public class CallController extends Controller {
 	@GetMapping("/{id}")
 	public Call getCallById(@PathVariable long id) {
 		User user = getUser();
-		Optional<CallEntity> result = callRepository.getCallById(id, user);
+		Optional<CallEntity> result = callRepository.getCallById(id, user.getCompany().getId());
 		if (result.isEmpty()) {
 			throw new NotFoundException();
 		}
@@ -158,7 +158,11 @@ public class CallController extends Controller {
 		CallEntity callEntity = convertCall(call);
 		callEntity.setDateCreated(new Date());
 		callEntity.setCasenumber(getCasenumber());
-		return convertCallEntity(callRepository.saveAndFlush(callEntity));
+		CallEntity result = callRepository.saveAndFlush(callEntity);
+
+		actionService.call(getUser().getDomain().getId(), result.getId(), ActionEnum.CALL_CREATE);
+
+		return convertCallEntity(result);
 	}
 
 	public CallEntity convertCall(Call call) throws BadRequestException {
@@ -166,7 +170,9 @@ public class CallController extends Controller {
 
 		Action action = actionService.get(user.getDomain().getId(), ActionEnum.CALL_CREATE);
 		if (action.getStatus() == null) {
-			throw new BadRequestException();
+			BadRequestException badRequest = new BadRequestException();
+			badRequest.addError(new FieldValue("status", "No status is defined for action"));
+			throw badRequest;
 		}
 
 		Optional<StatusEntity> statusEntityOptional = statusRepository.getStatusById(action.getStatus().getId(), user);
@@ -177,7 +183,7 @@ public class CallController extends Controller {
 			CallEntity callEntity = Convert.call(call);
 			callEntity.setCompany(companyEntityOptional.get());
 			callEntity.setCategory(categoryEntityOptional.get());
-			callEntity.setStatus(statusEntityOptional.get());
+			// callEntity.setStatus(statusEntityOptional.get());
 			callEntity.setGroup(categoryEntityOptional.get().getGroup());
 			
 			LocationEntity locationEntity = Convert.location(call.getLocation());
@@ -239,7 +245,7 @@ public class CallController extends Controller {
 		@Valid @PutCallUserValidator @RequestBody User u) throws BadRequestException {
 
 		User user = getUser();
-		Optional<CallEntity> callOptional = callRepository.getCallById(id, user);
+		Optional<CallEntity> callOptional = callRepository.getCallById(id, user.getCompany().getId());
 		Optional<UserEntity> userEntityOptional = userRepository.getUserById(user.getDomain().getId(), u.getId());
 
 		if (callOptional.isEmpty()) {
@@ -260,6 +266,8 @@ public class CallController extends Controller {
 
 		callRepository.saveAndFlush(callEntity);
 
+		actionService.call(getUser().getDomain().getId(), callEntity.getId(), ActionEnum.ASSIGN_PERSON);
+
 		return convertCallEntity(callEntity);
 	}
 
@@ -270,7 +278,7 @@ public class CallController extends Controller {
 		@Valid @PutCallGroupValidator @RequestBody Group g) throws BadRequestException {
 
 		User user = getUser();
-		Optional<CallEntity> callOptional = callRepository.getCallById(id, user);
+		Optional<CallEntity> callOptional = callRepository.getCallById(id, user.getCompany().getId());
 		Optional<GroupEntity> groupEntityOptional = groupRepository.getGroupById(g.getId(), user.getDomain().getId());
 
 		if (callOptional.isEmpty()) {
@@ -286,6 +294,8 @@ public class CallController extends Controller {
 		callEntity.setGroup(groupEntity);
 
 		callRepository.saveAndFlush(callEntity);
+
+		actionService.call(getUser().getDomain().getId(), callEntity.getId(), ActionEnum.ASSIGN_GROUP);
 
 		return convertCallEntity(callEntity);
 	}

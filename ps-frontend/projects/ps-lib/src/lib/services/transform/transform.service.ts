@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PageButton } from '../../../model/page-button';
 import { ButtonT, ConditionT } from '../../../model/template';
 import { AuthorisationService } from '../authorisation/authorisation.service';
@@ -8,17 +9,24 @@ import { AuthorisationService } from '../authorisation/authorisation.service';
 })
 export class TransformService {
   private variables = new Map();
+  private variableChanged: BehaviorSubject<{action: 'set' | 'delete' | 'clear', key: string, value: any}> = new BehaviorSubject<{action: 'set' | 'delete', key: string, value: any}>(null);
 
   constructor(
     private authorisation: AuthorisationService
   ) { }
 
+  public getVariableChangedObservable(): Observable<{action: 'set' | 'delete' | 'clear', key: string, value: any}> {
+    return this.variableChanged.asObservable()
+  }
+
   public setVariable(key: string, value: any): void {
     this.variables.set(key, value);
+    this.variableChanged.next({action: 'set', key, value});
   }
 
   public deleteVariable(key: string): void {
     this.variables.delete(key);
+    this.variableChanged.next({action: 'delete', key, value: undefined});
   }
 
   public getVariable(key: string): any {
@@ -27,6 +35,7 @@ export class TransformService {
 
   public clearVariable(): void {
     this.variables.clear();
+    this.variableChanged.next({action: 'clear', key: undefined, value: undefined});
   }
 
   public filterRolesAndConditions(buttons: PageButton[]): PageButton[] {
@@ -86,6 +95,7 @@ export class TransformService {
         }
         return path;
       } else {
+        
         try {
           const data = this.getVariable(vars[0]);
           return this.readValueFromPath(vars.slice(1), data);
@@ -93,10 +103,17 @@ export class TransformService {
           return path;
         }
       }
+    } else if (vars && vars.length === 1) {
+      const result = this.getVariable(vars[0]);
+      if (result) {
+        return result;
+      }
+      return path;
     }
   }
 
   public readValueFromPath(path: string[], obj: any) {
+
     const length = path.length;
     if (length > 0) {
       const property = path.shift();

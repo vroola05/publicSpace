@@ -41,6 +41,7 @@ export class CreateConditionComponent implements OnInit {
     { name: 'call.person.city', value: '', data: 'call.person.city' },
     { name: 'call.mainCategory.name', value: '', data: 'call.mainCategory.name' },
     { name: 'call.mainCategory.category.name', value: '', data: 'call.mainCategory.category.name' },
+    { name: 'tab', value: '', data: 'tab' },
   ];
 
   public _operators: { name: string, value?: string, data?: any }[] = [

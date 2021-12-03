@@ -34,8 +34,6 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
   protected lock = false;
 
   public call: Call;
-  public buttonsLeft: ButtonT[];
-  public buttonsRight: ButtonT[];
   public tabs: {name: string, value?: string, data?: any, selected: boolean}[] = [];
 
   public searchtext = '';
@@ -57,7 +55,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
       : this._items.filter(item => item.image.alt.toLowerCase().includes(this.searchtext.toLowerCase()));
   }
 
-  private type: 'user' | 'group' = 'user';
+  private tab: 'user' | 'group' = 'user';
   private group: Group;
   private user: User;
 
@@ -99,10 +97,13 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     super.ngOnDestroy();
   }
 
+  public getNoItemsText(): string {
+    return this.tab === 'user' ? 'Geen personen!' : 'Geen groepen!';
+  }
+
   public getCall(): void {
     this.endpoints.get('getCallById').then((call: Call) => {
       this.transform.setVariable('call', call);
-
       this.transform.setVariable('group', call.group);
 
       this.getPersons();
@@ -120,10 +121,15 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public onTabChanged($event): void {
     this.clearSelection();
-    this.type = $event.tab.value;
-    if (this.type === 'user') {
+    this.tab = $event.tab.value;
+    this.transform.setVariable('tab', this.tab);
+    this.setItems();
+  }
+
+  public setItems(): void {
+    if (this.tab === 'user') {
       this.items = this._itemsUser;
-    } else if (this.type === 'group') {
+    } else if (this.tab === 'group') {
       this.items = this._itemsGroup
     }
   }
@@ -136,6 +142,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
         items.push({selected: false, image: this.getImageOfUser(user), data: user});
       });
       this._itemsUser = items;
+      this.setItems();
     });
   }
 
@@ -147,6 +154,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
           items.push({selected: false, image: this.getImageOfGroup(group), data: group});
         });
         this._itemsGroup = items;
+        this.setItems();
     });
   }
 
@@ -165,11 +173,11 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     });
   }
   public setSelected(data: any): void {
-    if (this.type === 'user') {
+    if (this.tab === 'user') {
       this.group = null;
       this.transform.setVariable('user', data);
       this.user = data;
-    } else if (this.type === 'group') {
+    } else if (this.tab === 'group') {
       this.user = null;
       this.transform.setVariable('group', data);
       this.group = data;
@@ -192,7 +200,6 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     if (user && user.name) {
       image.api = true;
       image.url = this.config.getEndpoint('getProfileImage').endpoint + user.profilePhoto;
-      image.name = 'Medewerker';
       image.alt = user.name;
     }
 

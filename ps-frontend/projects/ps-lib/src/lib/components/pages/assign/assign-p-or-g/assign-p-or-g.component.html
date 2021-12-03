@@ -20,7 +20,7 @@
             </div>
             <div  class="row" *ngIf="!items || items.length == 0">
               <div class="col-12">
-                <div class="no-items">Geen personen!</div>
+                <div class="no-items">{{getNoItemsText()}}</div>
               </div>
             </div>
             <div  class="row" *ngIf="items.length > 0">

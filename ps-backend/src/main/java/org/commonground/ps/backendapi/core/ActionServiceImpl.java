@@ -9,10 +9,13 @@ import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
+import org.commonground.ps.backendapi.jpa.entities.CallEntity;
+import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ActionRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
+import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Action;
@@ -36,6 +39,9 @@ public class ActionServiceImpl implements ActionService {
 
 	@Autowired
 	private ActionRepository actionRepository;
+
+	@Autowired
+	private CallRepository callRepository;
 
 	public Action get(Long domainId, ActionEnum actionEnum) {
 		Optional<ActionEntity> actionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId,
@@ -116,5 +122,23 @@ public class ActionServiceImpl implements ActionService {
 
 	public ActionTypeEntity getActionTypeEntity(long id) {
 		return actionTypeRepository.getById(id);
+	}
+
+	public boolean call(long domainId, long callId, ActionEnum actionEnum) {
+		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
+		if (actionEntityOptional.isPresent()) {
+			ActionEntity actionEntity = actionEntityOptional.get();
+			
+			if (actionEntity.getStatus() != null && actionEntity.getStatus().getId() != null) {
+				CompanyEntity companyEntity = actionEntity.getDomain().getCompany();
+				Optional<CallEntity> callEntityOptional = callRepository.getCallById(callId, companyEntity.getId());
+				if (callEntityOptional.isPresent()) {
+					CallEntity callEntity = callEntityOptional.get();
+					callEntity.setStatus(actionEntity.getStatus());
+					callRepository.saveAndFlush(callEntity);
+				}
+			}
+		}
+		return true;
 	}
 }

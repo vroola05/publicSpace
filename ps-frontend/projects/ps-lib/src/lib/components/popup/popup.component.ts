@@ -5,11 +5,9 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output,
   QueryList,
   ViewChildren,
   ViewContainerRef } from '@angular/core';
-import { EventEmitter } from 'events';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { PopupETypes } from '../../../model/intefaces';
