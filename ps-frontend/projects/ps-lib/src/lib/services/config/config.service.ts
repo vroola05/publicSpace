@@ -20,6 +20,8 @@ export enum PageTypes {
   newLocation = 'newLocation',
   newInformation = 'newInformation',
   newConfirm = 'newConfirm',
+  orderCreation = 'orderCreation',
+  orderConfirm = 'orderConfirm',
 }
 
 @Injectable({

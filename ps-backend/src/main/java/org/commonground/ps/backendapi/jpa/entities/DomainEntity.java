@@ -1,6 +1,8 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -27,6 +31,7 @@ public class DomainEntity {
   @SequenceGenerator(name = "seq_domain_id", sequenceName = "seq_domain_id", allocationSize = 1)
   private Long id;
   private String domain;
+  private String name;
 
   @ManyToOne()
   @JoinColumn(name="domain_type", referencedColumnName = "id")
@@ -44,4 +49,11 @@ public class DomainEntity {
 
   @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<StatusEntity> statusses;
+
+  // @OrderBy("sort ASC")
+  @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainGovernment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<ContractEntity> contractsContractor;
+
+  @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainContractor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<ContractEntity> contractsGovernment;
 }

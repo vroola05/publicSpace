@@ -44,7 +44,6 @@ public class PageServiceImpl implements PageService {
 			if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
 				pageOverviewService.updatePageOverviewPages(domainId, page, pageEntity);
 			} else {
-
 				// Remove page buttons
 				pageEntity.getPageButtons()
 					.removeIf(pageButtonEntity -> 

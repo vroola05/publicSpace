@@ -22,6 +22,8 @@ INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES 
 INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (4, 1, 4, 'Nieuwe melding - locatie', 'page');
 INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (5, 1, 5, 'Nieuwe melding - informatie', 'page');
 INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (6, 1, 6, 'Nieuwe melding - controle', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (7, 1, 7, 'Nieuwe opdracht maken', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (8, 1, 8, 'Nieuwe opdracht controleren', 'page');
 
 
 INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), 2, NULL, 'left', 2, 'Vorige', '', 12, 0);
@@ -67,8 +69,8 @@ INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'dateCreated', 'Datum', 'date', '', 'col-sm-6 col-md-2 col-lg-2', 'three-b', 4);
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'area', 'Gebied', 'string', '', 'col-md-1 col-lg-1', '', 5);
 
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, 1, 'left', 1, 'Melding informatie', '/details/${calllist.id}', NULL, 0);
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, 1, 'right', 1, 'Melding toewijzen', '/assign/${calllist.id}', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', 1, 'Melding informatie', '/details/${calllist.id}', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', 1, 'Melding toewijzen', '/assign/${calllist.id}', NULL, 0);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 1, true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 2, true);
 
@@ -76,6 +78,11 @@ INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES 
 INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), 1, 'In behandeling', 'event', false, 'details/${calllist.id}', 50, true, true, 1);
 
 INSERT INTO public.page_overview_status (id, page_overview_id, status_id) VALUES (2, currval('public.seq_page_overview_id'), 2);
+
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', 1, 'Melding informatie', '/details/${calllist.id}', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', 1, 'Melding toewijzen', '/details/${calllist.id}/order/creation', NULL, 0);
+INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 1, true);
+INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 2, true);
 
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'category', 'Categorie', 'string', 'equals', 'col-sm-12 col-md-2 col-lg-2 bold', 'one', 0);
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'location', 'Lokatie', 'string', '', 'col-sm-6 col-md-2 col-lg-2 italic', 'two', 1);

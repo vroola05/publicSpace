@@ -30,9 +30,6 @@ public class PageOverviewServiceImpl implements PageOverviewService {
 		List<PageOverviewTemplate> pageOverviewTemplates = pageOverview.getPageOverviewTemplate();
 		List<PageOverviewEntity> pageOverviewEntities = pageEntity.getPageOverview();
 
-		List<PageButton> pageButtonsLeft = new ArrayList<PageButton>();
-		List<PageButton> pageButtonsRight = new ArrayList<PageButton>();
-
 		long i = 0;
 		for (PageOverviewTemplate pageOverviewTemplate : pageOverviewTemplates) {
 			

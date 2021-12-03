@@ -55,6 +55,7 @@ CREATE TABLE public.domain (
     id integer NOT NULL,
     company_id integer NOT NULL,
     domain text NOT NULL,
+    name text NOT NULL,
     domain_type integer
 );
 
@@ -63,6 +64,8 @@ ALTER TABLE public.domain OWNER TO postgres;
 
 ALTER TABLE ONLY public.domain
     ADD CONSTRAINT domain_pkey PRIMARY KEY (id);
+
+
 
 --
 -- TOC entry 208 (class 1259 OID 16640)
@@ -378,7 +381,7 @@ ALTER TABLE public.seq_category_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_company_id
-    START WITH 2
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 0
     NO MAXVALUE
@@ -393,7 +396,7 @@ ALTER TABLE public.seq_company_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_domain_id
-    START WITH 2
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -1048,4 +1051,36 @@ ALTER SEQUENCE public.seq_page_overview_status_id
 --
 
 
+--
+-- TOC entry 256 (class 1259 OID 41088)
+-- Name: contract; Type: TABLE; Schema: public; Owner: postgres
+--
 
+CREATE TABLE public.contract (
+    id integer NOT NULL,
+    domain_id_governent integer NOT NULL,
+    domain_id_contractor integer NOT NULL,
+    date_created timestamp with time zone DEFAULT now() NOT NULL,
+    accepted boolean
+);
+
+ALTER TABLE public.contract OWNER TO postgres;
+
+ALTER TABLE ONLY public.contract
+    ADD CONSTRAINT contract_id_pk PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.contract
+    ADD CONSTRAINT contract_domain_contr_fk FOREIGN KEY (domain_id_contractor) REFERENCES public.domain(id) NOT VALID;
+
+ALTER TABLE ONLY public.contract
+    ADD CONSTRAINT contract_domain_gov_fk FOREIGN KEY (domain_id_governent) REFERENCES public.domain(id);
+
+CREATE SEQUENCE public.seq_contract_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_contract_id
+    OWNER TO postgres;

@@ -9,7 +9,9 @@ public enum PageTypes {
     ASSIGN(3, "assign"),
     NEW_LOCATION(4, "newLocation"),
     NEW_INFORMATION(5, "newInformation"),
-    NEW_CONFIRM(6, "newConfirm");
+    NEW_CONFIRM(6, "newConfirm"),
+    ORDER_CREATION(7, "orderCreation"),
+    ORDER_CONFIRM(8, "orderConfirm");
 
     private static final Map<Long, PageTypes> BY_ID = new HashMap<>();
     private static final Map<String, PageTypes> BY_NAME = new HashMap<>();

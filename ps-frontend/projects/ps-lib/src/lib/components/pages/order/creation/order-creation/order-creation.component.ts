@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ActionService } from '../../../../../services/action/action.service';
-import { ConfigService } from '../../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../../services/config/config.service';
 import { MailService } from '../../../../../services/mail/mail.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
@@ -85,6 +85,8 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   public ngOnInit(): void {
     super.ngOnInit();
 
+    this.page = this.config.getPage(PageTypes.orderCreation);
+    
     let ordertypes;
     if (this.orders[this.index].ordertypes) {
       ordertypes = this.orders[this.index].ordertypes;
@@ -110,14 +112,8 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
 
     this.getCall();
 
-    this.contractortypes = this.config.template.order.creation.contractortypes;
-    this.buttonsLeft = this.config.template.order.creation.buttonsLeft;
-    this.buttonsRight = this.config.template.order.creation.buttonsRight;
-    if (this.config.template.order.creation.pageType) {
-      this.pageLayoutType = this.config.template.order.creation.pageType;
-    }
+    //this.contractortypes = this.config.template.order.creation.contractortypes;
 
-    //this.action.register('next', () => { this.next(); });
   }
 
   public ngOnDestroy(): void {
@@ -170,7 +166,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public getCall(): void {
-    this.endpoints.get('getDetailCall').then((call: Call) => {
+    this.endpoints.get('getCallById').then((call: Call) => {
       this.phase.next('call-loaded');
       this.transform.setVariable('call', call);
       this.call = call;

@@ -1,5 +1,9 @@
-<lib-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType" [buttonsRight]="buttonsRight"
-  [title]="'Melding informatie'">
+<lib-panel *ngIf="page && call" 
+  [data]="call"
+  [buttonsLeft]="page?.buttonsLeft"
+  [buttonsRight]="page?.buttonsRight"
+  [pageLayoutType]="page?.layoutType">
+
   <lib-panel-title>
     <div class="row details-main">
       <div class="col-sm-12 details-main-header">

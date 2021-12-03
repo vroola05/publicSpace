@@ -67,22 +67,8 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
-    this.pageOverviewTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
-
-    this.filterService.setListsize(this.pageOverviewTemplate.size ? this.pageOverviewTemplate.size : 50);
-
-    this.listTemplate = {
-      id: String(this.pageOverviewTemplate.id),
-      toggle: this.pageOverviewTemplate.toggle,
-      route: this.pageOverviewTemplate.route,
-      buttonsLeft: this.pageOverviewTemplate.buttonsLeft,
-      buttonsRight: this.pageOverviewTemplate.buttonsRight,
-      priority: this.pageOverviewTemplate.priority,
-      notification: '',
-      columns: this.pageOverviewTemplate.columns
-    }
+    this.setListTemplate(Number(this.activatedRoute.snapshot.paramMap.get('id')));
 
     this.loadList(false);
 
@@ -97,7 +83,9 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
         this.pageChanged = true;
 
         this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
-        this.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+
+        this.setListTemplate(Number(this.activatedRoute.snapshot.paramMap.get('id')));
+
         this.setPosition(0);
         this.loadList(false);
       }
@@ -112,6 +100,24 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   public loadList(append: boolean) {
     this.setMenu(append,this.config.headers.find(header => header.id === this.id));
     
+  }
+
+  public setListTemplate(id: number): void {
+    this.id = id;
+    this.pageOverviewTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
+
+    this.filterService.setListsize(this.pageOverviewTemplate.size ? this.pageOverviewTemplate.size : 50);
+
+    this.listTemplate = {
+      id: String(this.pageOverviewTemplate.id),
+      toggle: this.pageOverviewTemplate.toggle,
+      route: this.pageOverviewTemplate.route,
+      buttonsLeft: this.pageOverviewTemplate.buttonsLeft,
+      buttonsRight: this.pageOverviewTemplate.buttonsRight,
+      priority: this.pageOverviewTemplate.priority,
+      notification: '',
+      columns: this.pageOverviewTemplate.columns
+    }
   }
 
   public setMenu(append: boolean, headerMenuItem: HeaderMenuItemT): void {

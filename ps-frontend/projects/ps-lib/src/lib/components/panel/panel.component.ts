@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 })
 export class PanelComponent implements OnInit, OnDestroy {
   private subscribtions: Subscription[] = [];
-  public title = '';
 
   @Input() public pageLayoutType: PageLayoutType = PageLayoutType.page;
   private _buttonsLeft: PageButton[] = [];
@@ -44,7 +43,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.subscribtions.push(this.transform.getVariableChangedObservable().subscribe(
       (variableChanged) => {
-        //this.buttonsLeftFiltered = this.filterRolesAndConditions(this._buttonsLeft);
+        this.buttonsLeftFiltered = this.filterRolesAndConditions(this._buttonsLeft);
         this.buttonsRightFiltered = this.filterRolesAndConditions(this._buttonsRight);
       }
     ));

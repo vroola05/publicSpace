@@ -99,7 +99,8 @@ public class PageController extends Controller {
 					pageEntity.setPageType(pageTypeEntity);
 					pageEntity.setDomain(optionalDomainEntity.get());
 					pageEntity.setName("");
-					pageEntity.setPageButtons(null);
+					pageEntity.setLayoutType("page");
+					//pageEntity.setPageButtons(null);
 					newPageEntities.add(pageEntity);
 				});
 				pageRepository.saveAll(newPageEntities);
@@ -161,6 +162,26 @@ public class PageController extends Controller {
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/newConfirm", consumes = "application/json")
 	public Page putPageNewConfirmImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderCreation", consumes = "application/json")
+	public Page putPageOrderCreationImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderConfirm", consumes = "application/json")
+	public Page putPageOrderConfirmImpl(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
