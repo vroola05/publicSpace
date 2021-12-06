@@ -40,7 +40,7 @@ export class PanelSettingsDomainsComponent implements OnInit {
           name: 'domain',
           title: 'Domein',
           type: 'string',
-          css: 'col-sm-12 col-md-11 col-lg-11'
+          css: 'col-sm-12 col-md-11 col-lg-11 one'
         }
       ]
     };

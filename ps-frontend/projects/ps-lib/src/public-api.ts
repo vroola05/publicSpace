@@ -62,6 +62,7 @@ export * from './lib/components/pages/settings/components/panel-settings-categor
 export * from './lib/components/pages/settings/components/panel-settings-status/panel-settings-status.component';
 export * from './lib/components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
+export * from './lib/components/pages/settings/components/settings-title/settings-title.component';
 
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/panel-page-overview/panel-page-overview.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';

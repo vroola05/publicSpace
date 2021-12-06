@@ -1,8 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
+import { EnvironmentService } from '../../../../../services/environment/environment.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
 import { ListComponent } from '../../../../list/list.component';
+import { Environment } from '../../../../../../model/intefaces';
+import { ActivatedRoute } from '@angular/router';
+
 
 
 @Component({

@@ -5,6 +5,7 @@ import { AuthorisationService } from '../../../../../services/authorisation/auth
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../../model/template';
 import { Page } from '../../../../../../model/page';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'lib-panel-settings-pages',
@@ -22,11 +23,11 @@ export class PanelSettingsPagesComponent implements OnInit {
   public selectedPage: Page;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
-
     this.listTemplate = {
       toggle: true,
       columns: [
@@ -46,7 +47,7 @@ export class PanelSettingsPagesComponent implements OnInit {
           name: 'name',
           title: 'Naam',
           type: 'string',
-          css: 'col-sm-12 col-md-9 col-lg-9'
+          css: 'col-sm-12 col-md-9 col-lg-9 one'
         }
       ]
     };

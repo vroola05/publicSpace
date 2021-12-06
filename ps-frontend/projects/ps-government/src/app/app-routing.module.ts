@@ -34,41 +34,42 @@ const routes: Routes = [
   {
     path: 'settings', component: SettingsStartComponent, data: { title: 'Instellingen' },
     children: [
+      
       {
         path: 'company',
-        component: PanelSettingsCompaniesComponent
+        component: PanelSettingsCompaniesComponent, data: { title: 'Bedrijf' }
       },
       {
         path: 'domains',
-        component: PanelSettingsDomainsComponent
+        component: PanelSettingsDomainsComponent, data: { title: 'Domeinen' }
       },
       {
         path: 'users',
-        component: PanelSettingsUsersComponent
+        component: PanelSettingsUsersComponent, data: { title: 'Gebruikers' }
       },
       {
         path: 'groups',
-        component: PanelSettingsGroupsComponent
+        component: PanelSettingsGroupsComponent, data: { title: 'Groepen' }
       },
       {
         path: 'main-category',
-        component: PanelSettingsMainCategoryComponent
+        component: PanelSettingsMainCategoryComponent, data: { title: 'Hoofdcategorie' }
       },
       {
         path: 'category',
-        component: PanelSettingsCategoryComponent
+        component: PanelSettingsCategoryComponent, data: { title: 'Categorie' }
       },
       {
         path: 'status',
-        component: PanelSettingsStatusComponent
+        component: PanelSettingsStatusComponent, data: { title: 'Status' }
       },
       {
         path: 'actions',
-        component: PanelSettingsActionsComponent
+        component: PanelSettingsActionsComponent, data: { title: 'Acties' }
       },
       {
         path: 'pages',
-        component: PanelSettingsPagesComponent
+        component: PanelSettingsPagesComponent, data: { title: 'Pagina\'s' }
       }
     ]
   },

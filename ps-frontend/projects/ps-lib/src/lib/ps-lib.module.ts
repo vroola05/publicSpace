@@ -121,6 +121,7 @@ import { ListPanelStatusComponent } from './components/pages/settings/components
 import { PanelSettingsActionsComponent } from './components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 import { ListPanelActionComponent } from './components/pages/settings/components/panel-settings-actions/components/list-panel-action/list-panel-action.component';
 import { PanelSettingsPagesComponent } from './components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
+import { SettingsTitleComponent } from './components/pages/settings/components/settings-title/settings-title.component';
 import { ListPanelPagesComponent } from './components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
 import { CreateButtonsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/create-buttons.component';
 import { CreateButtonComponent } from './components/pages/settings/components/panel-settings-pages/components/create-buttons/components/create-button/create-button.component';
@@ -131,6 +132,7 @@ import { ListPanelPagesOverviewComponent } from './components/pages/settings/com
 import { CreateOverviewColumnsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';
 import { CreateOverviewColumnComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
 import { ValidationService } from './services/validation/validation.service';
+
 
 @NgModule({
   declarations: [
@@ -233,6 +235,7 @@ import { ValidationService } from './services/validation/validation.service';
     OrderHandleComponent,
     SettingsStartComponent,
     SettingsButtonComponent,
+    SettingsTitleComponent,
     CreateButtonsComponent,
     CreateButtonComponent,
     CreateConditionsComponent,
@@ -340,6 +343,7 @@ import { ValidationService } from './services/validation/validation.service';
     OrderHandleNoLoginComponent,
     OrderHandleComponent,
     SettingsStartComponent,
+    SettingsTitleComponent,
     CreateButtonsComponent,
     CreateButtonComponent,
     CreateConditionsComponent,

@@ -97,7 +97,6 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public onCompanyChanged($event): void {
-    this.navigationService.navigate(['/settings'], false);
     this.environment.company = $event.data as Company;
 
     if (this.initCompany) {
@@ -111,7 +110,6 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public onDomainChanged($event): void {
-    this.navigationService.navigate(['/settings'], false);
     this.environment.domain = $event.data as Domain;
     this.environmentService.store(this.environment);
     this.transform.setVariable('environment', this.environment);

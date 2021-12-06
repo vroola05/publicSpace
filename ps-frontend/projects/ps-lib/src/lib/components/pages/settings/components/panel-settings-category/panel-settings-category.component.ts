@@ -45,7 +45,7 @@ export class PanelSettingsCategoryComponent implements OnInit {
           name: 'name',
           title: 'Naam',
           type: 'string',
-          css: 'col-sm-12 col-md-6 col-lg-6'
+          css: 'col-sm-12 col-md-6 col-lg-6 three-a'
         },
         {
           name: 'startDate',
@@ -63,7 +63,7 @@ export class PanelSettingsCategoryComponent implements OnInit {
           name: 'active',
           title: 'Actief',
           type: 'boolean',
-          css: 'col-sm-12 col-md-1 col-lg-1'
+          css: 'col-sm-12 col-md-1 col-lg-1 three-b'
         }
       ]
     };

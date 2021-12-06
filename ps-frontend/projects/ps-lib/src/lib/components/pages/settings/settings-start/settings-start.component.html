@@ -7,7 +7,7 @@
     <lib-toast></lib-toast>
   </div>
   <div class="layout-settings-main-container row">
-    <div class="layout-settings-menu col-12 col-sm-4 col-md-3 col-lg-2">
+    <div class="layout-settings-menu col-12 col-md-3 col-lg-2">
       <div class="menu-domain" *ngIf="showCompanySelector()">
         <h4>Geselecteerd domein</h4>
         <div class="field-wrapper">
@@ -35,11 +35,7 @@
         <lib-settings-button [name]="'Pagina\'s'" [icon]="'text_snippet'" [route]="'/settings/pages'" [selected]="isSelected('/settings/pages')"></lib-settings-button>
       </div>
     </div>
-    <div class="layout-settings-content col-12 col-sm-8 col-md-9 col-lg-10">
-      <div class="layout-title">
-        <h1>{{environment.company.name}}</h1>
-        <h3>{{environment.domain.domain}}</h3>
-      </div>
+    <div class="layout-settings-content col-12 col-md-9 col-lg-10">
       <router-outlet></router-outlet>
     </div>
   </div>

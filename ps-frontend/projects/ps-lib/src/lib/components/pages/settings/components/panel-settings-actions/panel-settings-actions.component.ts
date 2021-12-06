@@ -40,13 +40,13 @@ export class PanelSettingsActionsComponent implements OnInit {
           name: 'action',
           title: 'Actie',
           type: 'string',
-          css: 'col-sm-12 col-md-5 col-lg-5'
+          css: 'col-sm-12 col-md-5 col-lg-5 three-a'
         },
         {
           name: 'status',
           title: 'Status',
           type: 'string',
-          css: 'col-sm-12 col-md-6 col-lg-6'
+          css: 'col-sm-12 col-md-6 col-lg-6 three-b'
         }
       ]
     };

@@ -40,7 +40,7 @@ export class PanelSettingsCompaniesComponent implements OnInit {
           name: 'name',
           title: 'Bedrijf',
           type: 'string',
-          css: 'col-sm-12 col-md-11 col-lg-11'
+          css: 'col-sm-12 col-md-11 col-lg-11 one'
         }
       ]
     };
