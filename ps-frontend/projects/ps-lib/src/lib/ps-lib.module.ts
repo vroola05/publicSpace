@@ -132,6 +132,7 @@ import { ListPanelPagesOverviewComponent } from './components/pages/settings/com
 import { CreateOverviewColumnsComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-columns/create-overview-columns.component';
 import { CreateOverviewColumnComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
 import { ValidationService } from './services/validation/validation.service';
+import { PanelSettingsContractsComponent } from './components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
 
 
 @NgModule({
@@ -241,7 +242,8 @@ import { ValidationService } from './services/validation/validation.service';
     CreateConditionsComponent,
     CreateConditionComponent,
     CreateOverviewColumnsComponent,
-    CreateOverviewColumnComponent
+    CreateOverviewColumnComponent,
+    PanelSettingsContractsComponent
   ],
   imports: [
     CommonModule,
@@ -349,7 +351,8 @@ import { ValidationService } from './services/validation/validation.service';
     CreateConditionsComponent,
     CreateConditionComponent,
     CreateOverviewColumnsComponent,
-    CreateOverviewColumnComponent
+    CreateOverviewColumnComponent,
+    PanelSettingsContractsComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

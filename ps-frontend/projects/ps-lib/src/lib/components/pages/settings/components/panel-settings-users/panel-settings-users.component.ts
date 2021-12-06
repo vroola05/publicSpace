@@ -39,13 +39,13 @@ export class PanelSettingsUsersComponent implements OnInit {
           name: 'name',
           title: 'Naam',
           type: 'string',
-          css: 'col-sm-12 col-md-2 col-lg-2 bold'
+          css: 'col-sm-12 col-md-2 col-lg-2 bold three-a'
         },
         {
           name: 'username',
           title: 'Gebruikersnaam',
           type: 'string',
-          css: 'col-sm-12 col-md-2 col-lg-2'
+          css: 'col-sm-12 col-md-2 col-lg-2 three-b'
         },
         {
           name: 'roles',

@@ -26,7 +26,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   @ViewChild('domainComponent') public domainComponent: DropdownFieldComponent;
 
   private subscriptions: Subscription[] = [];
-
+  public isMenuOpen = false;
   public companyItems: { name: string, value?: string, data?: any }[] = [];
   public domainItems: { name: string, value?: string, data?: any }[] = [];
 
@@ -113,6 +113,13 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     this.environment.domain = $event.data as Domain;
     this.environmentService.store(this.environment);
     this.transform.setVariable('environment', this.environment);
+  }
+  public buttonClicked(): void {
+    this.isMenuOpen = false;
+  }
+ 
+  public toggleMenu($event): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   public showCompany(): boolean {

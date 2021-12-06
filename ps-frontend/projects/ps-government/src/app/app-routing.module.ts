@@ -24,7 +24,8 @@ import {
   PanelSettingsCategoryComponent,
   PanelSettingsStatusComponent,
   PanelSettingsActionsComponent,
-  PanelSettingsPagesComponent
+  PanelSettingsPagesComponent,
+  PanelSettingsContractsComponent
 } from 'ps-lib';
 
 const routes: Routes = [
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'domains',
         component: PanelSettingsDomainsComponent, data: { title: 'Domeinen' }
+      },
+      {
+        path: 'contracts',
+        component: PanelSettingsContractsComponent, data: { title: 'Contracten' }
       },
       {
         path: 'users',

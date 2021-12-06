@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 
@@ -12,6 +12,7 @@ export class SettingsButtonComponent implements OnInit {
   @Input() name: string;
   @Input() route: string;
   @Input() selected = false;
+  @Output() clicked: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(
     private navigationService: NavigationService,
@@ -23,7 +24,9 @@ export class SettingsButtonComponent implements OnInit {
 
   public click(): void {
     setTimeout(() => {
+      this.clicked.emit(this.route);
       this.navigationService.navigate([this.route]);
+
     });
   }
 

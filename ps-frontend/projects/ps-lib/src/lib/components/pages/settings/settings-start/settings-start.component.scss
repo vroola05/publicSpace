@@ -27,8 +27,27 @@
       overflow-y: auto;
       background: $white;
 
+      .layout-settings-menu {
+        .layout-settings-menu-mobile-header {
+          display: flex;
+          flex-direction: row-reverse;
+          font-size: $header-font-size;
+        }
+        .settings-menu {
+          display: none;
+          &.opened {
+            display: block;
+          }
+        }
+      }
+
       .menu-domain {
         display: none;        
+      }
+      .layout-settings-content {
+        padding: $default-spacing;
+        padding-left: $default-spacing + 15;
+        padding-right: $default-spacing + 15;
       }
     }
   }
@@ -64,10 +83,18 @@
 
         background: $gray-secondary;
         border-right: $gray-primary solid 1px;
+
+        .layout-settings-menu-mobile-header {
+          display: none;
+        }
       }
       .layout-settings-content {
         padding-right: $default-spacing*3;
       }
+
+      
+      
+  
     }
   }
 }
