@@ -1,11 +1,9 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
-import javax.persistence.Column;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-
-import org.locationtech.jts.geom.Geometry;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,10 +23,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "contract")
 public class ContractEntity {
   @Id
-  // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_company_id")
-  // @SequenceGenerator(name = "seq_company_id", sequenceName = "seq_company_id", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "public.seq_contract_id")
+  @SequenceGenerator(name = "public.seq_contract_id", sequenceName = "public.seq_contract_id", allocationSize = 1)
   private Long id;
-  
+  private Date dateCreated;
+  private Boolean accepted;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "domain_id_governent", nullable = false)
   private DomainEntity domainGovernment;

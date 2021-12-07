@@ -1,1 +1,10 @@
-<p>panel-settings-contracts works!</p>
+<lib-settings-title></lib-settings-title>
+<lib-panel-settings
+  [titleNew]="'Nieuw contract'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  
+</lib-panel-settings>

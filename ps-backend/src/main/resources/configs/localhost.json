@@ -203,7 +203,8 @@
     "putStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status/${status.id}", "roles": ["ROLE_ADMIN"]},
     "getPages":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page", "roles": ["ROLE_ADMIN"]},
     "getButtonTypes":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/button/types", "roles": ["ROLE_ADMIN"]},
-    "putPage":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/${page.id}/${page.pageType.name}", "roles": ["ROLE_ADMIN"]}
+    "putPage":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/${page.id}/${page.pageType.name}", "roles": ["ROLE_ADMIN"]},
+    "getContracts":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract", "roles": ["ROLE_ADMIN"]}
   },
   "components": {
     "detailsHeader": [

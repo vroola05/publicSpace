@@ -9,7 +9,7 @@
       'search search search'
       'toast toast toast'
       'main main main';
-    grid-template-rows: $header-height min-content min-content auto;
+    grid-template-rows: $header-mobile-height min-content min-content auto;
 
     height: 100%;
     width: 100%;

@@ -8,7 +8,7 @@
       'header header header'
       'toast toast toast'
       'main main main';
-    grid-template-rows: $header-height min-content auto;
+    grid-template-rows: $header-mobile-height min-content auto;
 
     height: 100%;
     width: 100%;
@@ -22,6 +22,7 @@
       grid-area: toast;
     }
     .layout-settings-main-container {
+      display: block;
       position: relative;
       grid-area: main;
       overflow-y: auto;
@@ -32,6 +33,10 @@
           display: flex;
           flex-direction: row-reverse;
           font-size: $header-font-size;
+          
+          lib-btn-icon {
+            height: 64px;
+          }
         }
         .settings-menu {
           display: none;
@@ -45,7 +50,6 @@
         display: none;        
       }
       .layout-settings-content {
-        padding: $default-spacing;
         padding-left: $default-spacing + 15;
         padding-right: $default-spacing + 15;
       }
@@ -61,7 +65,7 @@
       'header header header'
       'toast toast toast'
       'main main main';
-    grid-template-rows: $header-height min-content auto;
+    grid-template-rows: $header-mobile-height min-content auto;
 
     height: 100%;
     width: 100%;
