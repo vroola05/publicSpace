@@ -75,6 +75,7 @@ public class ConfigServiceImpl implements ConfigService {
           config.getInfo().setCompany(companyId);
           config.getInfo().setDomain(domainId);
           config.setCompany(Convert.companyEntity(domainEntity.get().getCompany()));
+          config.setDomain(Convert.domainEntity(domainEntity.get()));
           List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
           List<Status> statusses = new ArrayList<>();
           statusEntities.forEach(statusEntity -> {

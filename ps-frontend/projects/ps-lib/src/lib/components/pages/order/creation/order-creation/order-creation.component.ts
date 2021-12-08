@@ -90,7 +90,6 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
       const contractorItems = [];
       this.contracts.forEach(contract => {
         contractorItems.push({ name: contract.domain.domain, value: '' + contract.id, data: contract });
-
       });
       this.contractorItems = contractorItems;
     });
@@ -99,7 +98,4 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   public onContractorChanged($event): void {
 
   }
- 
-
-  
 }

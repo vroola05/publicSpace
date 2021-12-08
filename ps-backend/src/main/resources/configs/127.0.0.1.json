@@ -1,0 +1,252 @@
+{
+  "info": {
+    "apikey": "x-apikey",
+    "prefix": "jer",
+    "logo": "assets/images/default-logo.svg",
+    "favicon": "assets/images/default-favicon.png",
+    "favicon32": "assets/images/default-favicon32.png",
+    "favicon512": "assets/images/default-favicon512.png",
+    "statusses": [
+      { "id": 1, "type": "call", "name": "Nieuwe melding", "path": "new", "action": "new" },
+      { "id": 2, "type": "call", "name": "In behandeling", "path": "handling" },
+      { "id": 3, "type": "call", "name": "Opdracht verstuurd naar aannemer", "path": "send" },
+      { "id": 4, "type": "call", "name": "Gereed gemeld", "path": "done" },
+      { "id": 5, "type": "call", "name": "Afgesloten", "path": "closed" }
+    ]
+  },
+  "pagesOld": {
+    "overview": {
+      "listSize": 50,
+      "listTemplate": [
+        {
+          "id": "new",
+          "toggle": true,
+          "buttonsLeft": [
+            { "name": "Meer info", "route": "details/${calllist.id}", "type": "containedPrimary" }
+          ],
+          "buttonsRight": [
+            { "name": "Toewijzen", "route": "assign/${calllist.id}", "type": "containedPrimary",  "roles": [{"role": "callcenter", "allow": false}] }
+          ],
+          "priority": "priority",
+          "notification": "notification",
+          "columns": [
+            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+            { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+            { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+            { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-4 col-lg-4" },
+            { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "three-b" },
+            { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" }
+          ]
+        },
+        {
+          "id": "handling",
+          "toggle": true,
+          "buttonsLeft": [
+            { "name": "Meer info", "route": "details/${calllist.id}", "type": "containedPrimary" }
+          ],
+          "buttonsRight": [
+            { "name": "Tussenbrief", "route": "mail/${calllist.id}/intermediate-message", "type": "containedSecondary", "roles": [{"role": "callcenter", "allow": false}], "conditions": [{"field": "call.person.email", "operator": "neq", "value": ""}] },
+            { "name": "Opdracht maken", "route": "details/${calllist.id}/order/creation", "type": "containedPrimary", "roles": [{"role": "callcenter", "allow": false}] }
+          ],
+          "priority": "priority",
+          "notification": "notification",
+          "columns": [
+            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+            { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+            { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+            { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-5 col-lg-5" },
+            { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-sm-6 col-md-1 col-lg-1 italic", "mobile": "three-b" },
+            { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" }
+          ]
+        },
+        {
+          "id": "send",
+          "toggle": true,
+          "buttonsLeft": [
+            { "name": "Meer info", "route": "details/${calllist.id}", "type": "containedPrimary" }
+          ],
+          "priority": "priority",
+          "notification": "notification",
+          "columns": [
+            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+            { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+            { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+            { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-5 col-lg-5" },
+            { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-sm-6 col-md-1 col-lg-1 italic", "mobile": "three-b" },
+            { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" }
+          ]
+        },
+        {
+          "id": "done",
+          "toggle": false,
+          "route": "details/${calllist.id}",
+          "priority": "priority",
+          "notification": "notification",
+          "columns": [
+            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+            { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+            { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+            { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-5 col-lg-5" },
+            { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-sm-6 col-md-1 col-lg-1 italic", "mobile": "three-b" },
+            { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" }
+          ]
+        },
+        {
+          "id": "closed",
+          "toggle": false,
+          "route": "details/${calllist.id}",
+          "priority": "priority",
+          "columns": [
+            { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"},
+            { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+            { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+            { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-5 col-lg-5" },
+            { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-sm-6 col-md-1 col-lg-1 italic", "mobile": "three-b" },
+            { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" }
+          ]
+        },
+        {
+          "id": "all",
+          "toggle": false,
+          "route": "details/${calllist.id}",
+          "priority": "priority",
+          "columns": [
+            { "filter": "equals", "id": "category",    "name": "Categorie",    "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+            {                     "id": "location",    "name": "Locatie",      "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+            { "filter": "between","id": "casenumber",  "name": "Id",           "type": "string", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+            {                     "id": "description", "name": "Omschrijving", "type": "string", "css": " col-sm-12 col-md-3 col-lg-3" },
+            { "filter": "between","id": "dateCreated", "name": "Datum",        "type": "date",   "css": "col-sm-6 col-md-1 col-lg-1 italic", "mobile": "three-b" },
+            { "filter": "in",     "id": "status",      "name": "Status",       "type": "string", "css": " col-sm-6 col-md-1 col-lg-1" },
+            {                     "id": "supervisor",  "name": "Gebruiker",    "type": "string", "css": " col-sm-6 col-md-2 col-lg-2" }
+          ]
+        }
+      ]
+    },
+    "newLocation": {
+      "buttonsLeft": [
+        { "name": "Annuleren", "action": "cancel", "type": "containedSecondary" }
+      ],
+      "buttonsRight": [
+        { "name": "Volgende", "action": "next", "type": "containedPrimary" }
+      ],
+      "listTemplate": {
+        "toggle": true,
+        "priority": "priority",
+        "columns": [
+          { "id": "category", "name": "Categorie", "type": "string", "css": "col-sm-12 col-md-2 col-lg-2 bold", "mobile": "one"} ,
+          { "id": "location", "name": "Locatie", "type": "string", "css": "col-sm-6 col-md-2 col-lg-2 italic", "mobile": "two" },
+          { "id": "casenumber", "name": "Id", "type": "number", "css": " col-sm-6 col-md-1 col-lg-1", "mobile": "three-a" },
+          { "id": "description", "name": "Omschrijving", "type": "text", "css": " col-sm-12 col-md-3 col-lg-3" },
+          { "id": "dateStart", "name": "Datum", "type": "date", "css": "col-sm-6 col-md-1 col-lg-1 italic", "mobile": "three-b" },
+          { "id": "status", "name": "Status", "type": "string", "css": " col-sm-6 col-md-1 col-lg-1" },
+          { "id": "supervisor", "name": "Gebruiker", "type": "string", "css": " col-sm-6 col-md-2 col-lg-2" }
+        ]
+      }
+    },
+    "newInformation": {
+      "buttonsLeft": [
+        { "name": "Vorige", "action": "back", "type": "containedSecondary" },
+        { "name": "Annuleren", "action": "cancel", "type": "containedSecondary" }
+      ],
+      "buttonsRight": [
+        { "name": "Volgende", "action": "next", "type": "containedPrimary" }
+      ]
+    },
+    "newConfirmation": {
+      "buttonsLeft": [
+        { "name": "Vorige", "action": "back", "type": "containedSecondary" },
+        { "name": "Annuleren", "action": "cancel", "type": "containedSecondary" }
+      ],
+      "buttonsRight": [
+        { "name": "Versturen", "action": "submit", "type": "containedPrimary" }
+      ]
+    }
+  },
+  "endpoints": {
+    "postLogin": { "endpoint": "/login", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "getRoles": { "endpoint": "/roles", "roles": ["ROLE_ADMIN"] },
+    "getCallList": { "endpoint": "/call/list/${path.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "getCallById": { "endpoint": "/call/${path.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "getCallByCallListId": { "endpoint": "/call/${calllist.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "postCall": { "endpoint": "/call", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "putCallUser": { "endpoint": "/call/${path.id}/user", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "putCallGroup": { "endpoint": "/call/${path.id}/group", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "getCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
+    "putCompany": {"endpoint": "/company/${company.id}", "roles": ["ROLE_ADMIN"]},
+    "postCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
+    "getDomain": {"endpoint": "/company/${environment.company.id}/domain", "roles": ["ROLE_ADMIN"]},
+    "getDomainType": {"endpoint": "/company/${environment.company.id}/domain/type", "roles": ["ROLE_ADMIN"]},
+    "postDomain": {"endpoint": "/company/${environment.company.id}/domain", "roles": ["ROLE_ADMIN"]},
+    "putDomain": {"endpoint": "/company/${environment.company.id}/domain/${domain.id}", "roles": ["ROLE_ADMIN"]},
+    "getUsers": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user", "roles": ["ROLE_ADMIN"]},
+    "getUsersOfGroup": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user/of/group/${group.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "postUser": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user", "roles": ["ROLE_ADMIN"]},
+    "putUser": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user/${user.id}", "roles": ["ROLE_ADMIN"]},
+    "getGroups": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group", "roles": ["ROLE_ADMIN"]},
+    "postGroup": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group", "roles": ["ROLE_ADMIN"]},
+    "putGroup": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group/${group.id}", "roles": ["ROLE_ADMIN"]},
+    "getLocationByStreet": {"endpoint": "/location/street/${location.street}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "getActionTypes": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action/type", "roles": ["ROLE_ADMIN"]},
+    "getActions": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action", "roles": ["ROLE_ADMIN"]},
+    "putAction": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action/${action.id}", "roles": ["ROLE_ADMIN"]},
+    "getLocationByStreetAndNumber": {"endpoint": "/location/street/${location.street}/number/${location.number}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "getLocationByCoordinates": {"endpoint": "/location/x/${location.x}/y/${location.y}", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "getMainCategories":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "postMainCategory":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory", "roles": ["ROLE_ADMIN"]},
+    "putMainCategory":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory/${mainCategory.id}", "roles": ["ROLE_ADMIN"]},
+    "getCategories":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory/${mainCategory.id}/category", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "getCategoriesFull":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory/${mainCategory.id}/category/full", "roles": ["ROLE_ADMIN"]},
+    "postCategory":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory/${mainCategory.id}/category", "roles": ["ROLE_ADMIN"]},
+    "putCategory":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory/${mainCategory.id}/category/${category.id}", "roles": ["ROLE_ADMIN"]},
+    "getStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
+    "postStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
+    "putStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status/${status.id}", "roles": ["ROLE_ADMIN"]},
+    "getPages":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page", "roles": ["ROLE_ADMIN"]},
+    "getButtonTypes":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/button/types", "roles": ["ROLE_ADMIN"]},
+    "putPage":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/${page.id}/${page.pageType.name}", "roles": ["ROLE_ADMIN"]},
+    "getContracts":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract", "roles": ["ROLE_ADMIN"]}
+  },
+  "components": {
+    "detailsHeader": [
+      { "id": "category", "name": "Categorie", "type": "string", "css": "col-md-2 col-lg-2 bold"},
+      { "id": "casenumber", "name": "Id", "type": "number", "css": " col-md-1 col-lg-1" },
+      { "id": "location", "name": "Locatie", "type": "string", "css": " col-md-2 col-lg-2" },
+      { "id": "dateStart", "name": "Datum", "type": "date", "css": "col-md-1 col-lg-1 italic" },
+      { "id": "description", "name": "Omschrijving", "type": "text", "css": "d-md-none d-lg-block col-lg-2 italic" },
+      { "id": "status", "name": "Status", "type": "string", "css": " col-md-1 col-lg-1" },
+      { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" },
+      { "id": "supervisor", "name": "Behandelaar", "type": "string", "css": " col-md-2 col-lg-2" }
+    ],
+    "header": {
+      "headerMenu": [
+        { "id": "new", "icon": "fiber_new", "name": "Nieuwe meldingen", "notification": "amountNew", "menuType": "main" },
+        { "id": "handling", "icon": "event", "name": "In behandelingen", "notification": "amountHandling", "menuType": "main" },
+        { "id": "send", "icon": "watch_later", "name": "Opdracht verstuurd", "notification": "amountSend", "menuType": "main" },
+        { "id": "done", "icon": "done", "name": "Gereed gemeld", "notification": "amountDone", "menuType": "main" },
+        { "id": "closed", "icon": "list_alt", "name": "Afgesloten meldingen", "menuType": "main" },
+        { "id": "all", "icon": "search", "name": "Zoeken een melding", "menuType": "main" }
+      ],
+      "group": {
+        "route": "overview/group", 
+        "api": "/api/call/list/group/area"
+      }
+    },
+    "filter": {
+      "area": [
+        {"key": 1, "value": "Gebied 1"},
+        {"key": 2, "value": "Gebied 2"},
+        {"key": 3, "value": "Gebied 3"},
+        {"key": 4, "value": "Gebied 4"},
+        {"key": 5, "value": "Gebied 5"},
+        {"key": 6, "value": "Gebied 6"}
+      ],
+      "status": [
+        {"value": "Nieuwe melding"},
+        {"value": "In behandeling"},
+        {"value": "Opdracht verstuurd naar aannemer"},
+        {"value": "Gereed gemeld"},
+        {"value": "Afgesloten"}
+      ]
+    }
+  }
+}

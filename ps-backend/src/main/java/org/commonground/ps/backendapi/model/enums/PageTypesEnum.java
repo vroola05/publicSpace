@@ -1,9 +1,9 @@
-package org.commonground.ps.backendapi.model.constants;
+package org.commonground.ps.backendapi.model.enums;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public enum PageTypes {
+public enum PageTypesEnum {
     OVERVIEW(1, "overview"),
     DETAILS(2, "details"),
     ASSIGN(3, "assign"),
@@ -13,11 +13,11 @@ public enum PageTypes {
     ORDER_CREATION(7, "orderCreation"),
     ORDER_CONFIRM(8, "orderConfirm");
 
-    private static final Map<Long, PageTypes> BY_ID = new HashMap<>();
-    private static final Map<String, PageTypes> BY_NAME = new HashMap<>();
+    private static final Map<Long, PageTypesEnum> BY_ID = new HashMap<>();
+    private static final Map<String, PageTypesEnum> BY_NAME = new HashMap<>();
     
     static {
-        for (PageTypes e : values()) {
+        for (PageTypesEnum e : values()) {
             BY_ID.put(e.id, e);
             BY_NAME.put(e.name, e);
         }
@@ -26,17 +26,17 @@ public enum PageTypes {
     public final long id;
     public final String name;
 
-    private PageTypes(long id, String name) {
+    private PageTypesEnum(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
 
-    public static PageTypes valueOfId(long id) {
+    public static PageTypesEnum valueOfId(long id) {
         return BY_ID.get(id);
     }
 
-    public static PageTypes valueOfName(String label) {
+    public static PageTypesEnum valueOfName(String label) {
         return BY_NAME.get(label);
     }
 

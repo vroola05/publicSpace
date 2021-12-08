@@ -17,9 +17,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.commonground.ps.backendapi.jpa.repositories.MainCategoryRepository;
 import org.commonground.ps.backendapi.model.MainCategory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
@@ -33,8 +31,7 @@ public @interface PostMainCategoryValidator {
 	Class<? extends Payload>[] payload() default {};
 
 	class Validator implements ConstraintValidator<PostMainCategoryValidator, MainCategory> {
-		@Autowired
-		private MainCategoryRepository mainCategoryRepository;
+		
 
 		@Override
 		public void initialize(PostMainCategoryValidator postMainCategory) {

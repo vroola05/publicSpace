@@ -31,7 +31,6 @@ public class ConfigController {
 	public Template get(@RequestHeader("${sec.header.config}") String referer) throws NotFoundException {
 		try {
 			URL url = new URL(referer);
-			System.out.println(url.getHost());
 			List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
 			for (DomainEntity domainEntity: domains) {
 				if (configService.checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {

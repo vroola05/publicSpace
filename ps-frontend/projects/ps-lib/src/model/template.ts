@@ -1,7 +1,8 @@
 import { Action } from './action';
 import { ActionType } from './action-type';
 import { Company } from './company';
-import { ButtonTypes, ContractorType, PageLayoutType } from './intefaces';
+import { Domain } from './domain';
+import { ButtonTypes, PageLayoutType } from './intefaces';
 import { Page } from './page';
 import { PageButton } from './page-button';
 import { PageOverviewColumns } from './page-overview-columns';
@@ -50,13 +51,8 @@ export interface OverviewPageT {
   listTemplate?: ListTemplateT[];
 }
 
-export interface ContractortypesT {
-  type: ContractorType;
-  value: string;
-  endpoint?: string;
-}
 export interface OrderCreationPageT {
-  contractortypes?: ContractortypesT[];
+  
   buttonsLeft?: ButtonT[];
   buttonsRight?: ButtonT[];
   pageType?: PageLayoutType;
@@ -234,8 +230,8 @@ export interface Template {
   order?: OrderT;
   actions: Action[];
   defaults?: DefaultsT;
-  //endpoints?: EndpointsT;
   endpoints?: Map<string, EndpointT>;
   info: InfoT;
   company: Company;
+  domain: Domain;
 }

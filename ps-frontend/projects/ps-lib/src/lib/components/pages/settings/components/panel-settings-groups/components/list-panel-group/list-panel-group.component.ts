@@ -75,7 +75,7 @@ export class ListPanelGroupComponent implements OnInit {
 
   public postGroup(group: Group): void {
     this.transform.setVariable('group', group);
-    this.endpoints.put('postGroup', group).then((d: Group) => {
+    this.endpoints.post('postGroup', group).then((d: Group) => {
       this.transform.deleteVariable('group');
       this.onEvent.emit({
         action: 'save',

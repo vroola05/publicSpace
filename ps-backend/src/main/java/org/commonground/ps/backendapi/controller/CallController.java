@@ -19,7 +19,7 @@ import org.commonground.ps.backendapi.model.QueryParametersFieldFilterType;
 import org.commonground.ps.backendapi.model.QueryParametersFilterValue;
 import org.commonground.ps.backendapi.model.QueryParameters;
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.model.constants.PageTypes;
+import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
@@ -97,7 +97,7 @@ public class CallController extends Controller {
 		@Valid @QueryParametersValidator @RequestBody QueryParameters queryParameters) {
 		User user = getUser();
 		Template domainT = getTemplate();
-		PageOverviewImpl pageOverwiew = (PageOverviewImpl)domainT.getPages().get(PageTypes.OVERVIEW.name);
+		PageOverviewImpl pageOverwiew = (PageOverviewImpl)domainT.getPages().get(PageTypesEnum.OVERVIEW.name);
 		Optional<PageOverviewTemplate> pageOverviewTemplateOptional = pageOverwiew.getPageOverviewTemplate().stream().filter(t -> t.getId() == id).findFirst();
 		if (!pageOverviewTemplateOptional.isPresent()) {
 			throw new BadRequestException();

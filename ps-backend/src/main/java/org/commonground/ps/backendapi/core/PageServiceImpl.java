@@ -9,7 +9,7 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.repositories.PageRepository;
 import org.commonground.ps.backendapi.model.Page;
-import org.commonground.ps.backendapi.model.constants.PageTypes;
+import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class PageServiceImpl implements PageService {
 			pageEntity.setName(page.getName());
 			pageEntity.setLayoutType(page.getLayoutType());
 
-			if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
+			if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypesEnum.OVERVIEW.name)) {
 				pageOverviewService.updatePageOverviewPages(domainId, page, pageEntity);
 			} else {
 				// Remove page buttons

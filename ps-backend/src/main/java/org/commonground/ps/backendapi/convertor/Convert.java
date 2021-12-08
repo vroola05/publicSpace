@@ -48,7 +48,7 @@ import org.commonground.ps.backendapi.model.Person;
 import org.commonground.ps.backendapi.model.Role;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.model.constants.PageTypes;
+import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 
 public class Convert {
   
@@ -288,7 +288,7 @@ public class Convert {
   }
 
   public static Page pageEntity(PageEntity pageEntity) {
-    if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypes.OVERVIEW.name)) {
+    if (pageEntity.getPageType().getName().equalsIgnoreCase(PageTypesEnum.OVERVIEW.name)) {
       PageOverviewImpl page = new PageOverviewImpl();
       Convert.pageGenericEntity(pageEntity, page);
 

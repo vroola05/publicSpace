@@ -10,7 +10,8 @@ import { Company } from '../../../model/company';
 
 import { StorageService } from '../storage/storage.service';
 import { Action } from '../../../model/action';
-import { ActionTypeEnum } from '../../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum } from '../../../model/intefaces';
+import { DomainType } from '../../../model/domain-type';
 
 
 export enum PageTypes {
@@ -128,6 +129,17 @@ export class ConfigService {
     }
     
     return template;
+  }
+
+  public getDomainType(): DomainType {
+    return this.template.domain.domainType;
+  }
+  public isGovernment(): boolean {
+    return this.template.domain.domainType.id === DomainTypeEnum.GOVERNMENT;
+  }
+
+  public isContractor(): boolean {
+    return this.template.domain.domainType.id === DomainTypeEnum.CONTRACTOR;
   }
 
   public getCompany(): Company {

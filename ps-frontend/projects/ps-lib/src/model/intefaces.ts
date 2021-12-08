@@ -2,6 +2,11 @@ import { EventEmitter } from '@angular/core';
 import { Company } from './company';
 import { Domain } from './domain';
 
+export enum DomainTypeEnum {
+  GOVERNMENT = 1,
+  CONTRACTOR = 2
+}
+
 export enum StatusTypes {
   CALL_NEW = 15000,
   CALL_IN_PROGRESS = 25000,
@@ -14,7 +19,7 @@ export enum StatusTypes {
   ORDER_KILLED = 99999,
   NOT_UNIQUE = 94000,
   CLOSED = 95000,
-  KILLED = 99999,
+  KILLED = 99999
 }
 
 export enum ActionTypeEnum {
@@ -32,13 +37,7 @@ export enum ActionTypeEnum {
   ORDER_CANCEL = 11,
   BACK = 12,
   CANCEL = 13,
-  NEXT = 14,
-}
-
-export enum ContractorType {
-  contract = 'contract',
-  noContract = 'noContract',
-  noJurisdiction = 'noJurisdiction'
+  NEXT = 14
 }
 
 export enum PageLayoutType {

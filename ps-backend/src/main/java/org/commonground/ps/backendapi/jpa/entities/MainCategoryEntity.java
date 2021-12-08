@@ -24,6 +24,6 @@ public class MainCategoryEntity {
   private String name;
   
   @ManyToOne()
-  @JoinColumn(name="company_id", referencedColumnName = "id")
-  private CompanyEntity company;
+  @JoinColumn(name="domain_id", referencedColumnName = "id")
+  private DomainEntity domain;
 }
