@@ -18,4 +18,7 @@ public interface MainCategoryRepository extends JpaRepository<MainCategoryEntity
 
   @Query("select m from MainCategoryEntity m where m.name = :#{#name} and m.domain.id = :#{#domainId}")
   Optional<MainCategoryEntity> getMainCategoryByName(@Param("name") String name, @Param("domainId") Long domainId);
+
+  @Query("select m from MainCategoryEntity m where m.id = :#{#id} and m.domain.id = :#{#domainId}")
+  Optional<MainCategoryEntity> getMainCategoryByContractId(@Param("id") Long id, @Param("domainId") Long domainId);
 }

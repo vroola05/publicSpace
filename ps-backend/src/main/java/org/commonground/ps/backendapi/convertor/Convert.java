@@ -23,7 +23,6 @@ import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewStatusEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
-import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.model.Action;
@@ -37,12 +36,12 @@ import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.Page;
+import org.commonground.ps.backendapi.model.PageButton;
+import org.commonground.ps.backendapi.model.PageButtonCondition;
 import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.PageOverviewColumn;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
-import org.commonground.ps.backendapi.model.PageButton;
-import org.commonground.ps.backendapi.model.PageButtonCondition;
 import org.commonground.ps.backendapi.model.PageType;
 import org.commonground.ps.backendapi.model.Person;
 import org.commonground.ps.backendapi.model.Role;
@@ -87,12 +86,13 @@ public class Convert {
   }
 
   public static Domain domainEntity(DomainEntity domainEntity) {
-		return new Domain(domainEntity.getId(), domainEntity.getDomain(), domainTypeEntity(domainEntity.getDomainType()));
+		return new Domain(domainEntity.getId(), domainEntity.getName(), domainEntity.getDomain(), domainTypeEntity(domainEntity.getDomainType()));
 	}
 
   public static DomainEntity domain(Domain domain) {
     DomainEntity domainEntity = new DomainEntity();
     domainEntity.setId(domain.getId());
+    domainEntity.setName(domain.getName());
     domainEntity.setDomain(domain.getDomain());
 		return domainEntity;
 	}

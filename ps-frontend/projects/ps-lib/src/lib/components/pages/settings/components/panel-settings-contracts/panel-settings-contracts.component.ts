@@ -37,10 +37,16 @@ export class PanelSettingsContractsComponent implements OnInit {
           css: 'col-sm-12 col-md-1 col-lg-1 bold'
         },
         {
-          name: 'domain',
-          title: 'Domein',
+          name: 'name',
+          title: 'Naam',
           type: 'string',
-          css: 'col-sm-12 col-md-11 col-lg-11 one'
+          css: 'col-sm-12 col-md-6 col-lg-6 three-a'
+        },
+        {
+          name: 'domain',
+          title: 'Domain',
+          type: 'string',
+          css: 'col-sm-12 col-md-5 col-lg-5 three-b'
         }
       ]
     };
@@ -62,6 +68,7 @@ export class PanelSettingsContractsComponent implements OnInit {
     contracts.forEach(contract => {
       data.push({
         id: contract.id,
+        name: contract.domain.name,
         domain: contract.domain.domain
       });
     });

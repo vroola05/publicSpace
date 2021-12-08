@@ -30,6 +30,7 @@ export * from './lib/components/pages/settings/components/panel-settings-status/
 export * from './lib/components/pages/settings/components/panel-settings-actions/components/list-panel-action/list-panel-action.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/list-panel-pages-overview/list-panel-pages-overview.component';
+export * from './lib/components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-government/list-panel-contract-government.component';
 
 export * from './lib/components/filter/filter-equals/filter-equals.component';
 export * from './lib/components/filter/filter-between/filter-between.component';

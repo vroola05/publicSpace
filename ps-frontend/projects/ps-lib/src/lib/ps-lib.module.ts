@@ -133,6 +133,7 @@ import { CreateOverviewColumnsComponent } from './components/pages/settings/comp
 import { CreateOverviewColumnComponent } from './components/pages/settings/components/panel-settings-pages/components/create-overview-column/create-overview-column.component';
 import { ValidationService } from './services/validation/validation.service';
 import { PanelSettingsContractsComponent } from './components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
+import { ListPanelContractGovernmentComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-government/list-panel-contract-government.component';
 
 
 @NgModule({
@@ -166,6 +167,7 @@ import { PanelSettingsContractsComponent } from './components/pages/settings/com
     ListPanelActionComponent,
     ListPanelPagesComponent,
     ListPanelPagesOverviewComponent,
+    ListPanelContractGovernmentComponent,
     FilterComponent,
     FilterEqualsComponent,
     FilterBetweenComponent,
@@ -282,6 +284,7 @@ import { PanelSettingsContractsComponent } from './components/pages/settings/com
     ListPanelActionComponent,
     ListPanelPagesComponent,
     ListPanelPagesOverviewComponent,
+    ListPanelContractGovernmentComponent,
     MapsComponent,
     PopupConfirmComponent,
     ImageComponent,

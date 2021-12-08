@@ -16,6 +16,7 @@ import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/
   styleUrls: ['./list-panel-domain.component.scss']
 })
 export class ListPanelDomainComponent implements OnInit {
+  @ViewChild('nameComponent') nameComponent: TextareaFieldComponent;
   @ViewChild('domainComponent') domainComponent: TextareaFieldComponent;
   @ViewChild('domainTypeComponent') public domainTypeComponent: DropdownFieldComponent;
 
@@ -33,6 +34,7 @@ export class ListPanelDomainComponent implements OnInit {
     this._domain = new Domain();
     if (domain) {
       this._domain.id = domain.id;
+      this._domain.name = domain.name;
       this._domain.domain = domain.domain;
       this._domain.domainType = domain.domainType;
 
@@ -67,6 +69,13 @@ export class ListPanelDomainComponent implements OnInit {
       this._domain.domain = $event;
     }
   }
+
+  public onNameChanged($event) {
+    if (this.nameComponent.validate()) {
+      this._domain.name = $event;
+    }
+  }
+  
 
   public onDomainTypeChanged($event): void {
     this._domain.domainType = $event.data;

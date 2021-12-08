@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.commonground.ps.backendapi.exception.ForbiddenException;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.model.security.UserPrincipal;
 import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.model.template.EndpointT;
@@ -26,6 +27,7 @@ public class SecuredMethodAspect {
     Secured secured = getAnnotation(joinPoint);
     boolean admin = secured.admin();
     String identifier = secured.identifier();
+    DomainTypeEnum domainType = secured.domainType();
 
     UserPrincipal userPrincipal = getPricipal();
     if (admin) {
@@ -37,7 +39,15 @@ public class SecuredMethodAspect {
         return joinPoint.proceed();
       }
     }
-    
+
+    if (domainType != DomainTypeEnum.NONE) {
+      if (userPrincipal.getPrincipal() != null && userPrincipal.getPrincipal().getDomain() != null) {
+        if(domainType.id != userPrincipal.getPrincipal().getDomain().getDomainType().getId()) {
+          throw new ForbiddenException();
+        }
+      }
+    }
+
     Template template = (Template)userPrincipal.getDetails();
     HashMap<String, EndpointT> endpointsT = template.getEndpoints();
     if (endpointsT.containsKey(identifier)) {

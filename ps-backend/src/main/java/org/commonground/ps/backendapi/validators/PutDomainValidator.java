@@ -70,6 +70,14 @@ public @interface PutDomainValidator {
 				return false;
 			}
 
+			if (!domain.getName().equalsIgnoreCase(domainEntity.get().getName())) {
+				Optional<DomainEntity> nameUniqueValidator = domainRepository.getDomainByName(domain.getName());
+				if (nameUniqueValidator.isPresent()) {
+					setMessage(context, "naem",  "Waarde is niet uniek");
+					return false;
+				}
+			}
+
 			if (!domain.getDomain().equalsIgnoreCase(domainEntity.get().getDomain())) {
 				Optional<DomainEntity> domainUniqueValidator = domainRepository.getDomainByDomain(domain.getDomain());
 				if (domainUniqueValidator.isPresent()) {

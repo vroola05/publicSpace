@@ -17,6 +17,9 @@ public interface DomainRepository extends JpaRepository<DomainEntity, Long> {
   @Query("select d from DomainEntity d where d.id = :#{#id} and d.company.id = :#{#user.company.id}")
   Optional<DomainEntity> getDomainById(@Param("id") Long id, @Param("user") User user);
 
+  @Query("select d from DomainEntity d where d.name = :#{#name}")
+  Optional<DomainEntity>  getDomainByName(@Param("name") String name);
+
   @Query("select d from DomainEntity d where d.domain = :#{#domain}")
   Optional<DomainEntity>  getDomainByDomain(@Param("domain") String domain);
   

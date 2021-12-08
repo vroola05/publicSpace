@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum DomainTypeEnum {
+    NONE(-1),
     GOVERNMENT(1),
     CONTRACTOR(2);
 

@@ -1,7 +1,7 @@
 {
   "info": {
     "apikey": "x-apikey",
-    "prefix": "jer",
+    "prefix": "tsf",
     "logo": "assets/images/default-logo.svg",
     "favicon": "assets/images/default-favicon.png",
     "favicon32": "assets/images/default-favicon32.png",
@@ -175,6 +175,7 @@
     "putCompany": {"endpoint": "/company/${company.id}", "roles": ["ROLE_ADMIN"]},
     "postCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
     "getDomain": {"endpoint": "/company/${environment.company.id}/domain", "roles": ["ROLE_ADMIN"]},
+    "getDomainContractors": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contractor/domain", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
     "getDomainType": {"endpoint": "/company/${environment.company.id}/domain/type", "roles": ["ROLE_ADMIN"]},
     "postDomain": {"endpoint": "/company/${environment.company.id}/domain", "roles": ["ROLE_ADMIN"]},
     "putDomain": {"endpoint": "/company/${environment.company.id}/domain/${domain.id}", "roles": ["ROLE_ADMIN"]},

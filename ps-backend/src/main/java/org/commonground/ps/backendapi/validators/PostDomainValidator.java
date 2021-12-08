@@ -61,6 +61,13 @@ public @interface PostDomainValidator {
 				return false;
 			}
 
+			
+			Optional<DomainEntity> nameUniqueValidator = domainRepository.getDomainByName(domain.getName());
+			if (nameUniqueValidator.isPresent()) {
+				setMessage(context, "name",  "Waarde is niet uniek");
+				return false;
+			}
+
 			Optional<DomainEntity> domainUniqueValidator = domainRepository.getDomainByDomain(domain.getDomain());
 			if (domainUniqueValidator.isPresent()) {
 				setMessage(context, "domain",  "Waarde is niet uniek");

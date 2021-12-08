@@ -18,6 +18,7 @@ import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainTypeRepository;
 import org.commonground.ps.backendapi.model.Domain;
 import org.commonground.ps.backendapi.model.DomainType;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PostDomainValidator;
 import org.commonground.ps.backendapi.validators.PutDomainValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,22 @@ public class DomainController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId) {
 
 		isValid(companyId);
+
+		List<Domain> domains = new ArrayList<Domain>();
+		List<DomainEntity> domainEntities = domainRepository.getDomains(companyId);
+		domainEntities.forEach(domainEntity -> {
+			domains.add(Convert.domainEntity(domainEntity));
+		});
+		return domains;
+	}
+
+	@Secured(identifier = "getDomainContractors", domainType = DomainTypeEnum.GOVERNMENT)
+	@GetMapping(value = "/{domainId}/contractor/domain")
+	public List<Domain> getDomainContractors(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
+
+		isValid(companyId, domainId);
 
 		List<Domain> domains = new ArrayList<Domain>();
 		List<DomainEntity> domainEntities = domainRepository.getDomains(companyId);
@@ -104,6 +121,7 @@ public class DomainController extends Controller {
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(id, getUser());
 		if (optionalDomainEntity.isPresent() && id == domain.getId()) {
 			DomainEntity domainEntity = optionalDomainEntity.get();
+			domainEntity.setName(domain.getName());
 			domainEntity.setDomain(domain.getDomain());
 			if (domain.getDomainType().getId() != domainEntity.getDomainType().getId()) {
 				domainEntity.setDomainType(getDomainType(domain.getDomainType().getId()));

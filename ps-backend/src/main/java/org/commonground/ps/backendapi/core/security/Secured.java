@@ -2,6 +2,9 @@ package org.commonground.ps.backendapi.core.security;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;
 
@@ -10,4 +13,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Secured {
   String identifier() default "";
   boolean admin() default false;
+  DomainTypeEnum domainType() default DomainTypeEnum.NONE;
 }

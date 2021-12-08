@@ -89,7 +89,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
       this.contracts = contracts;
       const contractorItems = [];
       this.contracts.forEach(contract => {
-        contractorItems.push({ name: contract.domain.domain, value: '' + contract.id, data: contract });
+        contractorItems.push({ name: contract.domain.name, value: '' + contract.id, data: contract });
       });
       this.contractorItems = contractorItems;
     });
