@@ -7,9 +7,9 @@
 -- Data for Name: main_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.main_category (id, name, company_id) VALUES (nextval('public.seq_maincategory_id'), 'Wegen', 1);
-INSERT INTO public.main_category (id, name, company_id) VALUES (nextval('public.seq_maincategory_id'), 'Water', 1);
-INSERT INTO public.main_category (id, name, company_id) VALUES (nextval('public.seq_maincategory_id'), 'Overlast', 1);
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Wegen', 1);
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Water', 1);
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Overlast', 1);
 
 
 --

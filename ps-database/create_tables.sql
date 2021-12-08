@@ -178,7 +178,7 @@ ALTER TABLE ONLY public.status
 CREATE TABLE public.main_category (
     id integer NOT NULL,
     name text NOT NULL,
-    company_id integer NOT NULL
+    domain_id integer NOT NULL
 );
 
 
@@ -188,7 +188,7 @@ ALTER TABLE ONLY public.main_category
     ADD CONSTRAINT main_catergory_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.main_category
-    ADD CONSTRAINT main_category_company_fk FOREIGN KEY (company_id) REFERENCES public.company(id) NOT VALID;
+    ADD CONSTRAINT main_category_domain_fk FOREIGN KEY (domain_id) REFERENCES public.domain(id) NOT VALID;
 
 --
 -- TOC entry 203 (class 1259 OID 16600)
