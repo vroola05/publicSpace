@@ -51,8 +51,16 @@ export class ListPanelContractGovernmentComponent implements OnInit {
 
   public getDomainContractors(): void {
     this.endpoints.get('getDomainContractors').then((domains: Domain[]) => {
-      console.log(domains);
+      const domainItems = [];
+      domains.forEach(domain => {
+        domainItems.push({ name: this.getDomainName(domain), value: '' + domain.id, data: domain });
+      })
+      this.domainItems = domainItems;
     });
+  }
+
+  public getDomainName(domain: Domain): string {
+    return domain.company ? domain.company.name + ' - ' + domain.name : domain.name;
   }
 
   public onDomainChanged($event) {

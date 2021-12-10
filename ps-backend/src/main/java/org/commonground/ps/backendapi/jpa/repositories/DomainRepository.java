@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,9 @@ public interface DomainRepository extends JpaRepository<DomainEntity, Long> {
 
   @Query("select d from DomainEntity d where d.company.id = :#{#id}")
   List<DomainEntity> getDomains(@Param("id") Long id);
+
+  @Query("select d from DomainEntity d where d.domainType.id = :#{#domainTypeEnum.id}")
+  List<DomainEntity> getDomainsByDomainType(@Param("domainTypeEnum") DomainTypeEnum domainTypeEnum);
 
   @Query("select d from DomainEntity d where lower(d.domain) like :#{#domain}%")
   List<DomainEntity> getDomainsByStartsWithDomain(@Param("domain") String domain);

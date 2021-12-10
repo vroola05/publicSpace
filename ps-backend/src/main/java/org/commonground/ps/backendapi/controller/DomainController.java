@@ -69,9 +69,11 @@ public class DomainController extends Controller {
 		isValid(companyId, domainId);
 
 		List<Domain> domains = new ArrayList<Domain>();
-		List<DomainEntity> domainEntities = domainRepository.getDomains(companyId);
+		List<DomainEntity> domainEntities = domainRepository.getDomainsByDomainType(DomainTypeEnum.CONTRACTOR);
 		domainEntities.forEach(domainEntity -> {
-			domains.add(Convert.domainEntity(domainEntity));
+			Domain domain = Convert.domainEntity(domainEntity);
+			domain.setCompany(Convert.companyEntity(domainEntity.getCompany()));
+			domains.add(domain);
 		});
 		return domains;
 	}
