@@ -83,4 +83,8 @@ export class PanelPageOverviewComponent implements OnInit {
   private moveButton(oldIndex, newIndex) {
     this.pageOverviewTemplate.splice(newIndex, 0, this.pageOverviewTemplate.splice(oldIndex, 1)[0]);
   }
+
+  public getValueOr(value: string, onEmpty: string = 'Geen waarde' ): string {
+    return value ? value : onEmpty;
+  }
 }

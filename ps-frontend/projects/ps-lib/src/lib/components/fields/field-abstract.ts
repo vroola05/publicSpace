@@ -17,6 +17,7 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
   @Input() classes = '';
   @Input() required = false;
   @Input() maxLength: number;
+  @Input() readonly = false;
   @Input() disabled = false;
   @Input() placeholder = '';
   @Input() validator: {pattern: RegExp, text: string}[] = [];

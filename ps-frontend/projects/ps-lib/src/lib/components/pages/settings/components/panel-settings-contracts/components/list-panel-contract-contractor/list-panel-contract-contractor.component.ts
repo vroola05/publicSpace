@@ -6,16 +6,16 @@ import { AuthorisationService } from '../../../../../../../services/authorisatio
 import { TransformService } from '../../../../../../../services/transform/transform.service';
 
 import { Contract } from '../../../../../../../../model/contract';
-import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
+import { TextFieldComponent } from '../../../../../../fields/text-field/text-field.component';
 import { Domain } from '../../../../../../../../model/domain';
 
 @Component({
-  selector: 'lib-list-panel-contract-government',
-  templateUrl: './list-panel-contract-government.component.html',
-  styleUrls: ['./list-panel-contract-government.component.scss']
+  selector: 'lib-list-panel-contract-contractor',
+  templateUrl: './list-panel-contract-contractor.component.html',
+  styleUrls: ['./list-panel-contract-contractor.component.scss']
 })
-export class ListPanelContractGovernmentComponent implements OnInit {
-  @ViewChild('domainComponent') domainComponent: DropdownFieldComponent;
+export class ListPanelContractContractorComponent implements OnInit {
+  @ViewChild('domainComponent') domainComponent: TextFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
 
@@ -36,8 +36,6 @@ export class ListPanelContractGovernmentComponent implements OnInit {
     }
   }
 
-  public domainItems: { name: string, value?: string, data?: any }[] = [];
-  
   constructor(
     private endpoints: EndpointService,
     private validation: ValidationService,
@@ -46,18 +44,8 @@ export class ListPanelContractGovernmentComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.getDomainContractors();
   }
 
-  public getDomainContractors(): void {
-    this.endpoints.get('getDomainContractors').then((domains: Domain[]) => {
-      const domainItems = [];
-      domains.forEach(domain => {
-        domainItems.push({ name: this.getDomainName(domain), value: '' + domain.id, data: domain });
-      })
-      this.domainItems = domainItems;
-    });
-  }
 
   public getDomainName(domain: Domain): string {
     return domain.company ? domain.company.name + ' - ' + domain.name : domain.name;
@@ -66,7 +54,7 @@ export class ListPanelContractGovernmentComponent implements OnInit {
   public onDomainChanged($event) {
     console.log($event);
     if (this.domainComponent.validate()) {
-      this._contract.domain = $event.data;
+      
     }
   }
 
@@ -86,5 +74,4 @@ export class ListPanelContractGovernmentComponent implements OnInit {
     this.validation.clear();
 
   }
-
 }

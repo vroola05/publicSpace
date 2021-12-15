@@ -1,10 +1,11 @@
 <div class="field-wrapper">
-  <label (click)="openList($event)" class="field {{classes}}">
+  <label (click)="openList($event)" class="field {{classes}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
     <input
       type="text"
       class="text-field-input"
       [id]="id"
       [name]="name"
+      [readonly]="readonly"
       [disabled]="disabled"
       [value]="value"
       [placeholder]="placeholder"

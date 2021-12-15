@@ -3,18 +3,13 @@
     <div class="col-md-6 list-panel-block">
       <div class="row">
         <div class="col-md-12">
-          <h4>Domein</h4>
+          <h4>Domein gemeente</h4>
           <div class="field-wrapper">
-            <lib-dropdown-field [id]="'domains'" [required]="true" [name]="'domains'" [options]="domainItems"
-                [placeholder]="'Selecteer een domein'" (changed)="onDomainChanged($event)" #domainComponent>
-            </lib-dropdown-field>
+            <lib-text-field [style]="'filled'" [id]="'domain'" [readonly]="true" [name]="'domain'" [placeholder]="'Domein gemeente'"
+            [value]="_contract?.domain?.name" [required]="true"
+            #domainComponent></lib-text-field>
           </div>
-        </div>
-        <div class="col-md-12">
-          <h4>Geaccepteerd</h4>
-          <div class="field-wrapper">
-            <lib-checkbox-field [id]="'accepted'" [name]="'accepted'" [value]="_contract?.accepted" [readonly]="true">Geaccepteerd</lib-checkbox-field>
-          </div>
+  
         </div>
       </div>
     </div>

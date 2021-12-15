@@ -1,8 +1,10 @@
-<div *ngIf="hasItems()" class="selectbox {{classes}}">
+<div *ngIf="hasItems()" class="selectbox {{classes}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
   <div class="selectbox-search" *ngIf="search">
   <lib-text-field
     [name]="'search'"
     [icon]="'search'"
+    [readonly]="readonly"
+    [disabled]="disabled"
     [style]="'small'"
     [placeholder]="'Zoeken...'"
     (typing)="onTyping($event)"

@@ -8,6 +8,7 @@ import { RoleT } from '../../../model/template';
 import { first } from 'rxjs/operators';
 import { Message } from '../../../model/message';
 import { ToastService } from '../toast/toast.service';
+import { DomainTypeEnum } from '../../../model/intefaces';
 
 @Injectable({
   providedIn: 'root'
@@ -102,6 +103,10 @@ export class AuthorisationService {
 
   public isAdmin(): boolean {
     return this.user && this.user.admin === true;
+  }
+
+  public isDomainType(domainTypeEnum: DomainTypeEnum): boolean {
+    return this.user && this.user.domain && this.user.domain.domainType && this.user.domain.domainType.id === domainTypeEnum;
   }
 
   public hasRoles(roles: string[]): boolean {

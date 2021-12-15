@@ -41,6 +41,8 @@ public class ContractController extends Controller {
 
 		List<Contract> contracts = new ArrayList<>();
 
+
+
 		Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId);
 		if (domainEntityOptional.isPresent()) {
 			DomainEntity domainEntity = domainEntityOptional.get();
@@ -56,6 +58,15 @@ public class ContractController extends Controller {
 				}
 				
 			} else if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+				List<ContractEntity> contractEntities = contractRepository.getContractByContractorDomainId(domainEntity.getId());
+				for (ContractEntity contractEntity:  contractEntities) {
+					Contract contract = new Contract();
+					contract.setId(contractEntity.getId());
+					contract.setAccepted(contractEntity.getAccepted());
+					contract.setDateCreated(contractEntity.getDateCreated());
+					contract.setDomain(Convert.domainEntity(contractEntity.getDomainGovernment()));
+					contracts.add(contract);
+				}
 			}
 		}
 

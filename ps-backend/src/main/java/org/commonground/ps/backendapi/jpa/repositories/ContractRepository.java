@@ -12,4 +12,7 @@ public interface ContractRepository extends JpaSpecificationExecutor<ContractEnt
   
   @Query("select c from ContractEntity c where c.domainGovernment.id = :#{#id}")
   List<ContractEntity> getContractByGovernmentDomainId(@Param("id") Long id);
+
+  @Query("select c from ContractEntity c where c.domainContractor.id = :#{#id}")
+  List<ContractEntity> getContractByContractorDomainId(@Param("id") Long id);
 }

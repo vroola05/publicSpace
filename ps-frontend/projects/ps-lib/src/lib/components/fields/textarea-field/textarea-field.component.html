@@ -1,8 +1,9 @@
-<label class="field {{classes}} {{style}}">
+<label class="field {{classes}} {{style}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
   <textarea
     class="text-field-input"
     [id]="id"
     [name]="name"
+    [readonly]="readonly"
     [disabled]="disabled"
     (change)="onChanged($event)"
     (keydown)="onKeydown($event)"

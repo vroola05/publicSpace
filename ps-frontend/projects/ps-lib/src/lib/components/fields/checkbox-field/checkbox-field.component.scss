@@ -86,4 +86,24 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  &.readonly {
+    &:hover {
+      text-decoration: none;
+  
+      .checkbox-input ~ .checkbox-mark {
+        background-color: $gray-primary;
+        border: solid 1px $gray-primary;
+        }
+    }
+  
+    .checkbox-input:checked ~ .checkbox-mark {
+      background-color: $gray-primary;
+      border: solid 1px $gray-primary;
+    }
+    .checkbox-content {
+      color: $gray-primary;
+      font-style: italic;
+    }
+  }
 }

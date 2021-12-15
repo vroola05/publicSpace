@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-//import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BtnContainedComponent } from './components/buttons/btn-contained/btn-contained.component';
@@ -134,6 +133,7 @@ import { CreateOverviewColumnComponent } from './components/pages/settings/compo
 import { ValidationService } from './services/validation/validation.service';
 import { PanelSettingsContractsComponent } from './components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
 import { ListPanelContractGovernmentComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-government/list-panel-contract-government.component';
+import { ListPanelContractContractorComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-contractor/list-panel-contract-contractor.component';
 
 
 @NgModule({
@@ -245,7 +245,8 @@ import { ListPanelContractGovernmentComponent } from './components/pages/setting
     CreateConditionComponent,
     CreateOverviewColumnsComponent,
     CreateOverviewColumnComponent,
-    PanelSettingsContractsComponent
+    PanelSettingsContractsComponent,
+    ListPanelContractContractorComponent
   ],
   imports: [
     CommonModule,
@@ -285,6 +286,7 @@ import { ListPanelContractGovernmentComponent } from './components/pages/setting
     ListPanelPagesComponent,
     ListPanelPagesOverviewComponent,
     ListPanelContractGovernmentComponent,
+    ListPanelContractContractorComponent,
     MapsComponent,
     PopupConfirmComponent,
     ImageComponent,

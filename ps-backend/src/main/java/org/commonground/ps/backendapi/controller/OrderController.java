@@ -2,21 +2,14 @@ package org.commonground.ps.backendapi.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
-import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.security.Secured;
-import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
-import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.MainCategoryRepository;
-import org.commonground.ps.backendapi.model.Category;
-import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.MainCategory;
-import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

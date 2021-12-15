@@ -24,6 +24,8 @@ export class CheckboxFieldComponent extends FieldAbstract implements OnInit, OnD
   }
 
   public onChanged(event): void {
+    if (this.readonly || this.disabled) return;
+    console.log('Hier');
     this.value = event.target.checked;
     if (this.data) {
       this.changed.emit({checked: event.target.checked, data: this.data});
@@ -31,4 +33,9 @@ export class CheckboxFieldComponent extends FieldAbstract implements OnInit, OnD
       this.changed.emit(event.target.checked);
     }
   }
+  
+  public onClicked($event): void {
+    if (this.readonly || this.disabled) return;
+  }
+  
 }
