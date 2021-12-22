@@ -115,8 +115,8 @@
 
           .ps-header-profile-info-mobile {
             flex: auto;
-            max-width: calc(100% - #{$header-mobile-height + ($default-spacing*4)});
-            margin: $default-spacing/2;
+            max-width: calc(100% - $header-mobile-height + ($default-spacing*4));
+            margin: calc($default-spacing / 2);
 
             .profile-info {
               overflow: hidden;
@@ -129,12 +129,12 @@
         }
         .ps-header-profile-avatar {
           flex: 1;
-          width: calc(#{$header-mobile-height} - #{$default-spacing});
-          min-width: calc(#{$header-mobile-height} - #{$default-spacing});
-          max-width: calc(#{$header-mobile-height} - #{$default-spacing});
-          height: calc(#{$header-mobile-height} - #{$default-spacing});
-          min-height: calc(#{$header-mobile-height} - #{$default-spacing});
-          margin: $default-spacing/2;
+          width: calc($header-mobile-height - $default-spacing);
+          min-width: calc($header-mobile-height - $default-spacing);
+          max-width: calc($header-mobile-height - $default-spacing);
+          height: calc($header-mobile-height - $default-spacing);
+          min-height: calc($header-mobile-height - $default-spacing);
+          margin: calc($default-spacing / 2);
           overflow: hidden;
           border-radius: 50%;
           border: $black solid 1px;
@@ -146,12 +146,12 @@
         }
         .ps-header-profile-image {
           flex: 1;
-          width: calc(#{$header-mobile-height} - #{$default-spacing});
-          min-width: calc(#{$header-mobile-height} - #{$default-spacing});
-          max-width: calc(#{$header-mobile-height} - #{$default-spacing});
-          height: calc(#{$header-mobile-height} - #{$default-spacing});
-          min-height: calc(#{$header-mobile-height} - #{$default-spacing});
-          margin: $default-spacing/2;
+          width: calc($header-mobile-height - $default-spacing);
+          min-width: calc($header-mobile-height - $default-spacing);
+          max-width: calc($header-mobile-height - $default-spacing);
+          height: calc($header-mobile-height - $default-spacing);
+          min-height: calc($header-mobile-height - $default-spacing);
+          margin: calc($default-spacing / 2);
           overflow: hidden;
           border-radius: 50%;
           display: flex;
@@ -263,12 +263,12 @@
           }
           .ps-header-profile-avatar {
             flex: 1;
-            width: calc(#{$header-mobile-height} - #{$default-spacing});
-            min-width: calc(#{$header-mobile-height} - #{$default-spacing});
-            max-width: calc(#{$header-mobile-height} - #{$default-spacing});
-            height: calc(#{$header-mobile-height} - #{$default-spacing});
-            min-height: calc(#{$header-mobile-height} - #{$default-spacing});
-            margin: $default-spacing/2;
+            width: calc($header-mobile-height - $default-spacing);
+            min-width: calc($header-mobile-height - $default-spacing);
+            max-width: calc($header-mobile-height - $default-spacing);
+            height: calc($header-mobile-height - $default-spacing);
+            min-height: calc($header-mobile-height - $default-spacing);
+            margin: calc($default-spacing / 2);
             overflow: hidden;
             border-radius: 50%;
             border: $black solid 1px;
@@ -280,12 +280,12 @@
           }
           .ps-header-profile-image {
             flex: 1;
-            width: calc(#{$header-height} - #{$default-spacing});
-            min-width: calc(#{$header-height} - #{$default-spacing});
-            max-width: calc(#{$header-height} - #{$default-spacing});
-            height: calc(#{$header-height} - #{$default-spacing});
-            min-height: calc(#{$header-height} - #{$default-spacing});
-            margin: $default-spacing/2;
+            width: calc($header-height - $default-spacing);
+            min-width: calc($header-height - $default-spacing);
+            max-width: calc($header-height - $default-spacing);
+            height: calc($header-height - $default-spacing);
+            min-height: calc($header-height - $default-spacing);
+            margin: calc($default-spacing / 2);
             overflow: hidden;
             border-radius: 50%;
             display: flex;

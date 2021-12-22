@@ -44,7 +44,7 @@
 
       .overview-load-more {
         margin: auto;
-        padding: $default-spacing*2;
+        padding: calc($default-spacing * 2);
         text-align: center;
 
         lib-btn-contained {
@@ -78,8 +78,8 @@
     .search-container {
       grid-area: search;
 
-      margin-top: $default-spacing*4;
-      margin-bottom: $default-spacing*4;
+      margin-top: calc($default-spacing * 4);
+      margin-bottom: calc($default-spacing * 4);
     }
     .overview-list-container {
       position: relative;
@@ -94,7 +94,7 @@
       .overview-load-more {
         max-width: 300px;
         margin: auto;
-        padding: $default-spacing*2;
+        padding: calc($default-spacing * 2);
         text-align: center;
 
         lib-btn-contained {

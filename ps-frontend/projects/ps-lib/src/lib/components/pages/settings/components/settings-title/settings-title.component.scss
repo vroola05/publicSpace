@@ -1,7 +1,7 @@
 @import "../../../../../../../../assets/scss/styles.scss";
 
 .layout-title {
-  padding-top: $default-spacing*2;
+  padding-top: calc($default-spacing * 2);
   h1 {
     margin-top: 0px;
     margin-bottom: 0px;

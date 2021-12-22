@@ -67,12 +67,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    top: $default-spacing*7;
-    width: $default-spacing*4;
-    height: $default-spacing*4;
+    top: calc($default-spacing * 7);
+    width: calc($default-spacing * 4);
+    height: calc($default-spacing * 4);
     margin: $default-spacing;
 
-    border-radius: $default-spacing*2;
+    border-radius: calc($default-spacing * 2);
     background: $color-primary;
 
     color: $white;
@@ -94,13 +94,13 @@
     .image-gallery-container-outer {
       .image-gallery-container {
         lib-image {
-          height: $image-size / 2;
+          height: calc($image-size / 2);
           
         }
       }
     }
     .image-gallery-nav {
-      top: $default-spacing*2;
+      top: calc($default-spacing * 2);
     }
   }
 }

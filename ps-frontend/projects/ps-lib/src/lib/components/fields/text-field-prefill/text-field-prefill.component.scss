@@ -18,7 +18,7 @@
     flex-direction: column;
 
     width: 100%;
-    padding: $default-spacing/2;
+    padding: calc($default-spacing / 2);
 
     background: $white;
     border: $color-primary solid 1px;
@@ -30,8 +30,8 @@
     .dropdown-field-list-item {
       width: 100%;
       padding: $default-spacing;
-      padding-top: $default-spacing/2;
-      padding-bottom: $default-spacing/2;
+      padding-top: calc($default-spacing / 2);
+      padding-bottom: calc($default-spacing / 2);
       
       color: $black;
       font-size: $large-font-size;

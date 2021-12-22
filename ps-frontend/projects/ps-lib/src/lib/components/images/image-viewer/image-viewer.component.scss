@@ -1,8 +1,6 @@
 @import "../../../../../../assets/scss/styles.scss";
 
 .image-viewer {
-  //display: flex;
-  //flex-direction: column;
   display: grid;
   grid-template-areas:
     'image'
@@ -19,7 +17,7 @@
     justify-content: center;
 
     height: 100%;
-    max-height: calc(100vh - #{$image-size + ($default-spacing * 6) + 1});
+    max-height: calc(100vh - $image-size + ($default-spacing * 6) + 1);
     lib-image {
       max-height: 100%;
       max-width: 100%;
@@ -35,7 +33,7 @@
 @include media-breakpoint-down(sm) {
   .image-viewer {
     .image-viewer-image {
-      max-height: calc(100vh - #{($default-spacing * 6) + ($image-size / 2) + 1});
+      max-height: calc(100vh - ($default-spacing * 6) + ($image-size / 2) + 1);
     }
   }
 }

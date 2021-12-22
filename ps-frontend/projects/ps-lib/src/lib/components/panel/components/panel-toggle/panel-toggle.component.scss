@@ -87,7 +87,7 @@
   .panel-toggle-toggle {
     margin: 0px;
     padding: $default-spacing;
-    padding-bottom: $default-spacing*2;
+    padding-bottom: calc($default-spacing * 2);
 
     border-top: $gray solid 1px;
     font-size: $small-font-size;

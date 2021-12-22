@@ -3,6 +3,6 @@
 .btn-container-pages {
   lib-header-button {
     display: block;
-    margin-top: $default-spacing/2;
+    margin-top: calc($default-spacing / 2);
   }
 }

@@ -33,7 +33,7 @@
     overflow: hidden;
     height: 0px;
     position: absolute;
-    min-width: calc(100% + #{$default-spacing*2});
+    min-width: calc(100% + $default-spacing*2);
     width: 220px;
     background: $white;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -49,12 +49,12 @@
 
 :host ::ng-deep {
   app-checkbox .checkbox {
-    padding: $default-spacing/2 0px;
+    padding: calc($default-spacing / 2) 0px;
   }
 }
 
 .filter-dropdown-title {
-  padding: $default-spacing/2 0px;
+  padding: calc($default-spacing / 2) 0px;
 }
 
 .filter-list {

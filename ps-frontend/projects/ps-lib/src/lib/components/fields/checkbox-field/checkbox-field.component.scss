@@ -26,10 +26,10 @@
   .checkbox-mark {
     float: left;
     position: relative;
-    height: $default-spacing*2;
-    min-height: $default-spacing*2;
-    width: $default-spacing*2;
-    min-width: $default-spacing*2;
+    height: calc($default-spacing * 2);
+    min-height: calc($default-spacing * 2);
+    width: calc($default-spacing * 2);
+    min-width: calc($default-spacing * 2);
     margin-right: $default-spacing;
     
     background-color: $white;
@@ -64,10 +64,10 @@
   }
 
   .checkbox-mark:after {
-    left: ($default-spacing/2);
-    top: ($default-spacing/10);
-    width: $default-spacing*0.8;
-    height: $default-spacing*1.2;
+    left: calc($default-spacing / 2);
+    top: calc($default-spacing / 10);
+    width: calc($default-spacing * 0.8);
+    height: calc($default-spacing * 1.2);
     border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);

@@ -1,7 +1,7 @@
 @import "../../../../../../assets/scss/styles.scss";
 
 .notes-viewer-notes {
-  margin-bottom: $default-spacing*2;
+  margin-bottom: calc($default-spacing * 2);
 }
 
 .notes-viewer-footer {

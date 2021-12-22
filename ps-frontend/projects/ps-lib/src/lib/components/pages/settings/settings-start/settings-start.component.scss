@@ -50,8 +50,8 @@
         display: none;        
       }
       .layout-settings-content {
-        padding-left: $default-spacing + 15;
-        padding-right: $default-spacing + 15;
+        padding-left: calc($default-spacing + 15px);
+        padding-right: calc($default-spacing + 15px);
       }
     }
   }
@@ -82,7 +82,7 @@
       overflow-y: auto;
 
       .layout-settings-menu {
-        padding-top: $default-spacing*2;
+        padding-top: calc($default-spacing * 2);
         padding-right: 0px;
 
         background: $gray-secondary;
@@ -93,7 +93,7 @@
         }
       }
       .layout-settings-content {
-        padding-right: $default-spacing*3;
+        padding-right: calc($default-spacing * 3);
       }
 
       

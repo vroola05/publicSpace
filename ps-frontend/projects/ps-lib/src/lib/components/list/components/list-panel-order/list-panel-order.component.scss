@@ -1,17 +1,17 @@
 @import "../../../../../../../assets/scss/styles.scss";
 
 .list-panel {
-  margin-top: $default-spacing*2;
-  margin-bottom: $default-spacing*2;
-  margin-left: $default-spacing*3;
-  margin-right: $default-spacing*3;
+  margin-top: calc($default-spacing * 2);
+  margin-bottom: calc($default-spacing * 2);
+  margin-left: calc($default-spacing * 3);
+  margin-right: calc($default-spacing * 3);
 
   .list-panel-spacer {
     margin-top: $default-spacing;
   }
 
   .buttons {
-    margin-top: $default-spacing*2;
+    margin-top: calc($default-spacing * 2);
 
     lib-btn-contained {
       margin: $default-spacing;

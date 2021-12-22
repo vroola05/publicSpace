@@ -32,7 +32,7 @@
       justify-content: center;
 
       background: $color-primary;
-      height: $default-spacing * 4;
+      height: calc($default-spacing * 4);
 
       .ps-header-title {
         flex: auto;
@@ -40,7 +40,7 @@
         color: $white;
       }
       .ps-header-close {
-        width: $default-spacing * 4;
+        width: calc($default-spacing * 4);
 
         .btn-close {
           padding: 0px !important;
@@ -58,7 +58,7 @@
       padding: $default-spacing;
 
       min-height: 200px;
-      max-height: calc(100vh - #{$default-spacing * 4});
+      max-height: calc(100vh - ($default-spacing * 4));
       background: $white;
       overflow-y: auto;
     }
@@ -72,7 +72,7 @@
       height: 100%;
 
       .ps-popup-body {
-        height: calc(100vh - #{$default-spacing * 4});
+        height: calc(100vh - ($default-spacing * 4));
       }
     }
   }

@@ -29,7 +29,7 @@
     border: $white solid 2px;
 
     &.date {
-      width: calc(100% - #{$default-spacing*2});
+      width: calc(100% - ($default-spacing *2));
     }
   }
 }

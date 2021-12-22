@@ -4,16 +4,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  // margin-bottom: $default-spacing*2;
 
   .person-initials-container {
     flex: 1;
-    width: calc(#{$header-mobile-height} - #{$default-spacing});
-    min-width: calc(#{$header-mobile-height} - #{$default-spacing});
-    max-width: calc(#{$header-mobile-height} - #{$default-spacing});
-    height: calc(#{$header-mobile-height} - #{$default-spacing});
-    min-height: calc(#{$header-mobile-height} - #{$default-spacing});
-    margin: $default-spacing/2;
+    width: calc($header-mobile-height - $default-spacing);
+    min-width: calc($header-mobile-height - $default-spacing);
+    max-width: calc($header-mobile-height - $default-spacing);
+    height: calc($header-mobile-height - $default-spacing);
+    min-height: calc($header-mobile-height - $default-spacing);
+    margin: calc($default-spacing / 2);
     overflow: hidden;
     border-radius: 50%;
     border: $black solid 1px;
@@ -26,12 +25,12 @@
 
   .person-image-container {
     flex: 1;
-    width: calc(#{$header-mobile-height} - #{$default-spacing});
-    min-width: calc(#{$header-mobile-height} - #{$default-spacing});
-    max-width: calc(#{$header-mobile-height} - #{$default-spacing});
-    height: calc(#{$header-mobile-height} - #{$default-spacing});
-    min-height: calc(#{$header-mobile-height} - #{$default-spacing});
-    margin: $default-spacing/2;
+    width: calc($header-mobile-height - $default-spacing);
+    min-width: calc($header-mobile-height - $default-spacing);
+    max-width: calc($header-mobile-height - $default-spacing);
+    height: calc($header-mobile-height - $default-spacing);
+    min-height: calc($header-mobile-height - $default-spacing);
+    margin: calc($default-spacing / 2);
     overflow: hidden;
     border-radius: 50%;
     border: $black solid 1px;

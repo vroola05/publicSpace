@@ -20,7 +20,7 @@
     color: $white;
 
     .loader-inner {
-      padding: $default-spacing*2;
+      padding: calc($default-spacing * 2);
 
       border: $white solid 1px;
       border-radius: $default-spacing;

@@ -4,7 +4,7 @@
   position: relative;
 
   .layout-settings-list-container {
-    margin-top: $default-spacing*2;
+    margin-top: calc($default-spacing * 2);
   }
   
   .layout-settings-new-container {
@@ -17,7 +17,7 @@
 
     .layout-settings-new {
       width: 100%;
-      padding: $default-spacing*3;
+      padding: calc($default-spacing * 3);
       background: $white;
       border: $color-primary solid 1px;
     }

@@ -65,7 +65,7 @@
       flex-direction: row;
       align-items: center;
       width: 100%;
-      padding: $default-spacing/2;
+      padding: calc($default-spacing / 2);
 
       &.done {
         border-bottom: $color-primary solid 1px;
@@ -103,14 +103,14 @@
   .ps-toasts {
     width: 90%;
     margin: auto;
-    margin-top: $default-spacing*4;
+    margin-top: calc($default-spacing * 4);
   
     .ps-toast {
       display: flex;
       flex-direction: row;
       align-items: center;
       width: 100%;
-      padding: $default-spacing*2;
+      padding: calc($default-spacing * 2);
   
       border-radius: 4px;
       margin-top: $default-spacing;
