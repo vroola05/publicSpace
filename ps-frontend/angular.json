@@ -63,7 +63,6 @@
             "main": "projects/ps-government/src/main.ts",
             "polyfills": "projects/ps-government/src/polyfills.ts",
             "tsConfig": "projects/ps-government/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/ps-government/src/favicon.ico",
               "projects/ps-government/src/assets"
@@ -74,7 +73,13 @@
               "./node_modules/ol/ol.css",
               "projects/ps-government/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -104,7 +109,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
