@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BtnIconComponent } from './btn-icon.component';
 
@@ -6,7 +6,7 @@ describe('BtnIconComponent', () => {
   let component: BtnIconComponent;
   let fixture: ComponentFixture<BtnIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BtnIconComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TextFieldBigComponent } from './text-field-big.component';
 
@@ -6,7 +6,7 @@ describe('TextFieldBigComponent', () => {
   let component: TextFieldBigComponent;
   let fixture: ComponentFixture<TextFieldBigComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TextFieldBigComponent ]
     })

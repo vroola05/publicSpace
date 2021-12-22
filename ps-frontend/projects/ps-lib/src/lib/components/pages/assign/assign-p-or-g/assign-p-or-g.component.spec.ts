@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AssignPOrGComponent } from './assign-p-or-g.component';
 
@@ -6,7 +6,7 @@ describe('AssignPOrGComponent', () => {
   let component: AssignPOrGComponent;
   let fixture: ComponentFixture<AssignPOrGComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssignPOrGComponent ]
     })
