@@ -15,7 +15,7 @@
 <div class="ps-header" [ngClass]="{'opened': opened}">
   <div class="ps-header-menu">
     <div class="ps-header-mobile-inner">
-      <lib-btn-icon class="ps-header-btn btn-close" [icon]="'close'" (clicked)="close($event)"></lib-btn-icon>
+      <lib-btn-icon class="ps-header-btn ps-btn-close" [icon]="'close'" (clicked)="close($event)"></lib-btn-icon>
     </div>
     <div class="ps-header-right" *ngIf="user">
       <div class="ps-header-new">

@@ -28,8 +28,9 @@ export class ListPanelActionComponent implements OnInit {
       this._action.id = action.id;
       this._action.actionType = action.actionType;
       this._action.status = action.status;
-
-      this.selectStatus();
+      setTimeout(() => {
+        this.selectStatus();  
+      });
     }
   }
 
@@ -53,8 +54,8 @@ export class ListPanelActionComponent implements OnInit {
       this.statusComponent.select(null);
       return;
     }
-    if ( this.statusComponent) {
-      this.statusComponent.select(this.statusItems.find( type => !type.data || type.data.id === this._action.status.id));
+    if (this.statusComponent) {
+      this.statusComponent.select(this.statusItems.find( type => type.data && type.data.id === this._action.status.id));
     }
   }
 
@@ -70,7 +71,7 @@ export class ListPanelActionComponent implements OnInit {
       statusses.forEach(status => {
         this.statusItems.push({ name: status.name, value: String(status.id), data: status });
       });
-      this.selectStatus();
+      this.selectStatus();  
     });
   }
 

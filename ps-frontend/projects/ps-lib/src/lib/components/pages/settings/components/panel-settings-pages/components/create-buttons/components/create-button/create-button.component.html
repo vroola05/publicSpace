@@ -49,8 +49,10 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
-                <lib-btn-contained class="float-right w-25" [type]="'containedSecondary'"
-                    (clicked)="onDeleteClick(button)">Knop verwijderen</lib-btn-contained>
+                <div class="float-end w-25">
+                    <lib-btn-contained [type]="'containedSecondary'"
+                        (clicked)="onDeleteClick(button)">Knop verwijderen</lib-btn-contained>
+                </div>
             </div>
         </div>
     </div>

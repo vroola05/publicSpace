@@ -5,7 +5,9 @@
     <div class="ps-popup-title">
       <span class="ps-header-title">{{title}}</span>
       <span class="ps-header-close">
-        <lib-btn-icon (clicked)="close()" class="btn-close" [classes]="'inline'" [icon]="'close'"></lib-btn-icon>
+        <span class="ps-btn-close">
+          <lib-btn-icon (clicked)="close()" [classes]="'inline'" [icon]="'close'"></lib-btn-icon>
+        </span>
       </span>
     
     </div>
