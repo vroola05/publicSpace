@@ -1,23 +1,26 @@
 package org.commonground.ps.backendapi.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.core.ContractService;
 import org.commonground.ps.backendapi.core.security.Secured;
-import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
-import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
-import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
-import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
+import org.commonground.ps.backendapi.exception.BadRequestException;
+import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
+import org.commonground.ps.backendapi.validators.PostContractValidator;
+import org.commonground.ps.backendapi.validators.PutContractValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,50 +30,58 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContractController extends Controller {
 	
 	@Autowired
-	private DomainRepository domainRepository;
+	private ContractService contractService;
 
-	@Autowired
-	private ContractRepository contractRepository;
-
-	@Secured(identifier = "getContacts")
+	@Secured(identifier = "getContracts")
 	@GetMapping()
-	public List<Contract> getContacts(
+	public List<Contract> getContracts(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 		isValid(companyId, domainId);
 
-		List<Contract> contracts = new ArrayList<>();
-
-
-
-		Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId);
-		if (domainEntityOptional.isPresent()) {
-			DomainEntity domainEntity = domainEntityOptional.get();
-			if (domainEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
-				List<ContractEntity> contractEntities = contractRepository.getContractByGovernmentDomainId(domainEntity.getId());
-				for (ContractEntity contractEntity:  contractEntities) {
-					Contract contract = new Contract();
-					contract.setId(contractEntity.getId());
-					contract.setAccepted(contractEntity.getAccepted());
-					contract.setDateCreated(contractEntity.getDateCreated());
-					contract.setDomain(Convert.domainEntity(contractEntity.getDomainContractor()));
-					contracts.add(contract);
-				}
-				
-			} else if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-				List<ContractEntity> contractEntities = contractRepository.getContractByContractorDomainId(domainEntity.getId());
-				for (ContractEntity contractEntity:  contractEntities) {
-					Contract contract = new Contract();
-					contract.setId(contractEntity.getId());
-					contract.setAccepted(contractEntity.getAccepted());
-					contract.setDateCreated(contractEntity.getDateCreated());
-					contract.setDomain(Convert.domainEntity(contractEntity.getDomainGovernment()));
-					contracts.add(contract);
-				}
-			}
-		}
-
-		return contracts;
+		return contractService.getContracts(domainId);
 	}
 
+	@Secured(identifier = "postContract", domainType = DomainTypeEnum.GOVERNMENT)
+	@PostMapping(consumes = "application/json")
+	public Contract postContract(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@Valid @PostContractValidator @RequestBody Contract contract) throws BadRequestException {
+
+		isValid(companyId, domainId);
+
+		if (contractService.getContractBy(domainId, contract.getDomain().getId()).isPresent()) {
+			BadRequestException badRequestException = new BadRequestException();
+			badRequestException.addError(new FieldValue("domains", "Waarde is niet uniek"));
+			throw badRequestException;
+		}
+
+		return contractService.save(domainId, contract);
+	}
+
+	@Secured(identifier = "putContract", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}", consumes = "application/json")
+	public Contract putContract(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @PutContractValidator @RequestBody Contract contract) throws BadRequestException {
+
+		isValid(companyId, domainId);
+
+		return contractService.update(domainId, id, contract);
+	}
+
+	@Secured(identifier = "deleteContract", domainType = DomainTypeEnum.GOVERNMENT)
+	@DeleteMapping(value = "/{id}", consumes = "application/json")
+	public boolean deleteContract(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id) throws BadRequestException {
+
+		isValid(companyId, domainId);
+
+		return contractService.delete(domainId, id);
+	}
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,6 +39,12 @@ public class ValidationExeptionHandler {
       return new ResponseEntity<>(new ApiError(HttpStatus.BAD_REQUEST, "Validation error", fieldValues), HttpStatus.BAD_REQUEST);
   }
   
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<ApiError> handleMethodArgumentNotValidException(
+    BadRequestException ex) {
+      return new ResponseEntity<>(new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex.getErrors()), HttpStatus.BAD_REQUEST);
+  }
+
   public String stripPath(String path) {
     int index = path.lastIndexOf(".");
     if (path.length() > 0 && index > 0) {

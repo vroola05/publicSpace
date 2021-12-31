@@ -19,6 +19,7 @@ export class PanelSettingsComponent implements OnInit {
 
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
 
+  @Input() hasNew = true;
   @Input() titleNew = 'Nieuw';
   @Input() data: any[] = [];
 

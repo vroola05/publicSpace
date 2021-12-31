@@ -109,9 +109,11 @@ export class ListPanelCategoryComponent implements OnInit, OnDestroy {
 
   public getGroups(): void {
     this.endpoints.get('getGroups').then((groups: Group[]) => {
+      const groupItems = [];
       groups.forEach(group => {
-        this.groupItems.push({ name: group.name, value: String(group.id), data: group });
+        groupItems.push({ name: group.name, value: String(group.id), data: group });
       });
+      this.groupItems = groupItems;
       this.selectGroup();
     });
   }

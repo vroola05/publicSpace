@@ -181,7 +181,6 @@ CREATE TABLE public.main_category (
     domain_id integer NOT NULL
 );
 
-
 ALTER TABLE public.main_category OWNER TO postgres;
 
 ALTER TABLE ONLY public.main_category
@@ -411,7 +410,7 @@ ALTER TABLE public.seq_domain_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_group_id
-    START WITH 2
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -501,7 +500,7 @@ ALTER TABLE public.seq_status_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_user_id
-    START WITH 2
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 0
     NO MAXVALUE
@@ -1044,11 +1043,6 @@ CREATE SEQUENCE public.seq_page_overview_status_id
 
 ALTER SEQUENCE public.seq_page_overview_status_id
     OWNER TO postgres;
-
--- Completed on 2021-09-14 16:16:51 CEST
---
--- PostgreSQL database dump complete
---
 
 
 --

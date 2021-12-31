@@ -20,6 +20,8 @@ import { NotificationService } from '../../../services/notification/notification
 import { TransformService } from '../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../services/endpoint/endpoint.service';
+import { DynamicDirective } from '../../../directives/dynamic.directive';
+import { ListPanelComponent } from '../../list/components/list-panel/list-panel.component';
 
 @Component({
   selector: 'lib-overview',
@@ -27,6 +29,8 @@ import { EndpointService } from '../../../services/endpoint/endpoint.service';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy {
+  @ViewChild(DynamicDirective, {static: true}) private dynamicHost!: DynamicDirective;
+  
   @ViewChild('tableContainer') public tableContainer: ElementRef;
   @ViewChild('headerRef') public headerRef: ElementRef;
   public pageLayoutType: PageLayoutType = PageLayoutType.overview;
@@ -97,6 +101,19 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  public clearComponent() {
+    this.dynamicHost.viewContainerRef.clear();
+  }
+
+  private loadComponent() {
+    const viewContainerRef = this.dynamicHost.viewContainerRef;  
+    viewContainerRef.clear();
+
+    const componentRef = viewContainerRef.createComponent<ListPanelComponent>(ListPanelComponent);  
+    componentRef.instance.template = this.listTemplate;
+    componentRef.instance.call = this.call;
+  }
+
   public loadList(append: boolean) {
     this.setMenu(append,this.config.headers.find(header => header.id === this.id));
     
@@ -161,9 +178,13 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
       this.endpoints.get('getCallByCallListId').then((call: Call) => {
         this.transform.setVariable('call', call);
         this.call = call;
+        this.loadComponent();
       });
     } else if (this.listTemplate.route) {
+      this.clearComponent();
       this.navigationService.navigate([this.transform.URL(this.listTemplate.route)]);
+    } else {
+      this.clearComponent();
     }
   }
 

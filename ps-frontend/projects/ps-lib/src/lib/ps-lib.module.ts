@@ -134,6 +134,7 @@ import { ValidationService } from './services/validation/validation.service';
 import { PanelSettingsContractsComponent } from './components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
 import { ListPanelContractGovernmentComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-government/list-panel-contract-government.component';
 import { ListPanelContractContractorComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-contractor/list-panel-contract-contractor.component';
+import { DynamicDirective } from './directives/dynamic.directive';
 
 
 @NgModule({
@@ -246,7 +247,8 @@ import { ListPanelContractContractorComponent } from './components/pages/setting
     CreateOverviewColumnsComponent,
     CreateOverviewColumnComponent,
     PanelSettingsContractsComponent,
-    ListPanelContractContractorComponent
+    ListPanelContractContractorComponent,
+    DynamicDirective
   ],
   imports: [
     CommonModule,

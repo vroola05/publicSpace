@@ -2,6 +2,8 @@ package org.commonground.ps.backendapi.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +40,21 @@ public class ConfigServiceImpl implements ConfigService {
   @Autowired
 	private ActionService actionService;
 
+  @Override
+  public Template find(String referer) throws SecurityException {
+    try {
+			URL url = new URL(referer);
+			List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
+			for (DomainEntity domainEntity: domains) {
+				if (checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {
+					return get(domainEntity.getDomain());
+				}
+			}
+		} catch (MalformedURLException e) {}
+      throw new SecurityException("Not a valid domain.");
+  }
+
+  @Override
   public Template get(String domain) throws SecurityException {
     if(!ConfigService.isValidDomain(domain)) {
       throw new SecurityException("Not a valid domain.");

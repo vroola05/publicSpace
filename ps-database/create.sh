@@ -8,6 +8,9 @@ psql -h localhost -U postgres -d publicspace -c "CREATE EXTENSION pg_trgm;"
 
 psql -h localhost -U postgres -f create_tables.sql
 
+psql -h localhost -U postgres -f create_audit.sql
+
+
 psql -h localhost -U postgres -f geo.sql
 
 # Insert required tables

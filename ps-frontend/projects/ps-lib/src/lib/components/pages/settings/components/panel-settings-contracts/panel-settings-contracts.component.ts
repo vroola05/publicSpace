@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
@@ -6,6 +6,11 @@ import { TransformService } from '../../../../../services/transform/transform.se
 import { ListTemplateT } from '../../../../../../model/template';
 import { Contract } from '../../../../../../model/contract';
 import { DomainTypeEnum } from '../../../../../../model/intefaces';
+import { ListPanelContractContractorComponent } from './components/list-panel-contract-contractor/list-panel-contract-contractor.component';
+import { DynamicDirective } from '../../../../../directives/dynamic.directive';
+import { ListPanelContractComponent } from './components/list-panel-contract';
+import { ListPanelContractGovernmentComponent } from './components/list-panel-contract-government/list-panel-contract-government.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-panel-settings-contracts',
@@ -13,8 +18,10 @@ import { DomainTypeEnum } from '../../../../../../model/intefaces';
   styleUrls: ['./panel-settings-contracts.component.scss']
 })
 export class PanelSettingsContractsComponent implements OnInit {
+  @ViewChild(DynamicDirective, {static: true}) private dynamicHost!: DynamicDirective;
+  
   public contracts: Contract[];
-  public selectedContract:Contract;
+  public selectedContract: Contract;
 
   public data: any[] = [];
   public listTemplate: ListTemplateT;
@@ -24,6 +31,7 @@ export class PanelSettingsContractsComponent implements OnInit {
   public isGovernment: boolean;
 
   constructor(
+    private injector: Injector,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
@@ -70,6 +78,20 @@ export class PanelSettingsContractsComponent implements OnInit {
     this.getContracts();
   }
 
+  public clearComponent() {
+    this.dynamicHost.viewContainerRef.clear();
+  }
+
+  private loadComponent() {
+    const viewContainerRef = this.dynamicHost.viewContainerRef;  
+    viewContainerRef.clear();
+
+    const componentRef = viewContainerRef.createComponent<ListPanelContractComponent>(this.isGovernment ? ListPanelContractGovernmentComponent : ListPanelContractContractorComponent);  
+    componentRef.instance.isNew = this.isNew;
+    componentRef.instance.contract = this.selectedContract;
+    const onEventSubscription: Subscription = componentRef.instance.onEvent.subscribe(events => this.events(events));
+    componentRef.onDestroy(()=> { onEventSubscription.unsubscribe();});
+  }
 
   public isDomainType(domainTypeEnum: DomainTypeEnum): boolean {
     return this.authorisation.isDomainType(domainTypeEnum);
@@ -96,18 +118,29 @@ export class PanelSettingsContractsComponent implements OnInit {
     this.data = data;
   }
 
+  public createNewContract(): void {
+    this.selectedContract = new Contract();
+    this.selectedContract.accepted = false;
+  }
+
   public events($event): void {
     if ($event.action === 'create') {
+      this.createNewContract();
       this.isNew = true;
       this.open = true;
+      this.loadComponent();
     } else if ($event.action === 'toggle') {
       this.selectedContract = this.contracts[$event.data.index];
       this.isNew = false;
       this.open = true;
+      this.loadComponent();
     } else if ($event.action === 'save') {
       this.open = false;
+      this.getContracts();
+      this.clearComponent();
     } else if ($event.action === 'cancel') {
       this.open = false;
+      this.clearComponent();
     }
   }
 }

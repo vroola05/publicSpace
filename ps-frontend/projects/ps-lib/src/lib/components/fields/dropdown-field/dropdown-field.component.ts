@@ -124,7 +124,8 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
 
   public openList($event) {
     $event.preventDefault();
-    if (!this.opened && this.hasItems()) {
+
+    if (!this.opened && this.hasItems() && !(this.readonly || this.disabled)) {
       this.opened = true;
       setTimeout(() => {
         document.addEventListener('click', this.closeListener);

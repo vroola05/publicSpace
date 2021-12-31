@@ -8,6 +8,7 @@ import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
+import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
@@ -30,6 +31,7 @@ import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.Company;
+import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.Domain;
 import org.commonground.ps.backendapi.model.DomainType;
 import org.commonground.ps.backendapi.model.Group;
@@ -446,4 +448,12 @@ public class Convert {
 		
 		return location;
 	}
+
+  public static Contract contractEntity(ContractEntity contractEntity) {
+    Contract contract = new Contract();
+    contract.setId(contractEntity.getId());
+    contract.setAccepted(contractEntity.getAccepted());
+    contract.setDateCreated(contractEntity.getDateCreated());
+    return contract;
+  }
 }

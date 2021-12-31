@@ -30,7 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain/{domainId}/group", produces = { "application/json; charset=utf-8" })
+@RequestMapping(value = "/company/{companyId}/domain/{domainId}/group", produces = {
+		"application/json; charset=utf-8" })
 public class GroupController extends Controller {
 
 	@Autowired
@@ -42,8 +43,8 @@ public class GroupController extends Controller {
 	@Secured(identifier = "getGroups")
 	@GetMapping()
 	public List<Group> getGroups(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
 		isValid(companyId, domainId);
 
@@ -58,17 +59,17 @@ public class GroupController extends Controller {
 	@Secured(identifier = "postGroup")
 	@PostMapping(consumes = "application/json")
 	public Group postGroup(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-		@Valid @PostGroupValidator @RequestBody Group group) {
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+			@Valid @PostGroupValidator @RequestBody Group group) {
 
 		isValid(companyId, domainId);
 
 		if (groupRepository.getGroupByName(group.getName(), domainId).isPresent()) {
-      BadRequestException badRequestException = new BadRequestException();
-      badRequestException.addError(new FieldValue("name", "Waarde is niet uniek"));
-      throw badRequestException;
-    }
+			BadRequestException badRequestException = new BadRequestException();
+			badRequestException.addError(new FieldValue("name", "Waarde is niet uniek"));
+			throw badRequestException;
+		}
 
 		Optional<DomainEntity> domainEntity = domainRepository.getDomainById(domainId, getUser());
 		if (domainEntity.isPresent()) {
@@ -82,19 +83,19 @@ public class GroupController extends Controller {
 	@Secured(identifier = "putGroup")
 	@PutMapping(value = "/{id}", consumes = "application/json")
 	public Group putGroup(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@Valid @PutGroupValidator @RequestBody Group group) throws BadRequestException {
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+			@Valid @PutGroupValidator @RequestBody Group group) throws BadRequestException {
 
 		isValid(companyId, domainId);
 
 		Optional<GroupEntity> optionalGroupEntityName = groupRepository.getGroupByName(group.getName(), domainId);
-		if (optionalGroupEntityName.isPresent() && group.getId() != optionalGroupEntityName.get().getId()){
-      BadRequestException badRequestException = new BadRequestException();
-      badRequestException.addError(new FieldValue("name", "Waarde is niet uniek"));
-      throw badRequestException;
-    }
+		if (optionalGroupEntityName.isPresent() && group.getId() != optionalGroupEntityName.get().getId()) {
+			BadRequestException badRequestException = new BadRequestException();
+			badRequestException.addError(new FieldValue("name", "Waarde is niet uniek"));
+			throw badRequestException;
+		}
 
 		Optional<GroupEntity> optionalGroupEntity = groupRepository.getGroupById(group.getId(), domainId);
 		if (optionalGroupEntity.isPresent() && id == group.getId()) {

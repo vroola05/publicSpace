@@ -8,13 +8,15 @@ import { TransformService } from '../../../../../../../services/transform/transf
 import { Contract } from '../../../../../../../../model/contract';
 import { TextFieldComponent } from '../../../../../../fields/text-field/text-field.component';
 import { Domain } from '../../../../../../../../model/domain';
+import { MainCategory } from '../../../../../../../../model/main-category';
+import { ListPanelContractComponent } from '../list-panel-contract';
 
 @Component({
   selector: 'lib-list-panel-contract-contractor',
   templateUrl: './list-panel-contract-contractor.component.html',
   styleUrls: ['./list-panel-contract-contractor.component.scss']
 })
-export class ListPanelContractContractorComponent implements OnInit {
+export class ListPanelContractContractorComponent implements ListPanelContractComponent, OnInit {
   @ViewChild('domainComponent') domainComponent: TextFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
@@ -44,19 +46,30 @@ export class ListPanelContractContractorComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.transform.setVariable('environment', { company: this.authorisation.user.company, domain: this.authorisation.user.domain });
+
+    this.getMainCategories();
   }
 
+  public getMainCategories(): void {
+    this.endpoints.get('getMainCategories').then((mainCategories: MainCategory[]) => {
+      const mainCategoryItems = [];
+      mainCategories.forEach(mainCategory => {
+        mainCategoryItems.push({ name: mainCategory.name, value: mainCategory.id, data: mainCategory });
+      })
+
+    });
+  }
 
   public getDomainName(domain: Domain): string {
     return domain.company ? domain.company.name + ' - ' + domain.name : domain.name;
   }
 
-  public onDomainChanged($event) {
-    console.log($event);
-    if (this.domainComponent.validate()) {
-      
-    }
+
+  public onAcceptedChanged($event) {
+    this._contract.accepted = $event;
   }
+  
 
   public cancel(): void {
     this.onEvent.emit({
@@ -72,6 +85,31 @@ export class ListPanelContractContractorComponent implements OnInit {
 
   public onSave($event): void {
     this.validation.clear();
+    if (this.validation.validate('contract-contractor')) {
+        this.putContract(this._contract);
+    }
+  }
 
+  public putContract(contract: Contract): void {
+    this.transform.setVariable('contract', contract);
+    this.endpoints.put('putContract', contract).then((c: Contract) => {
+      this.transform.deleteVariable('contract');
+      this.onEvent.emit({
+        action: 'save',
+        isNew: this.isNew,
+        data: null
+      });
+    })
+    .catch((response) => {
+      this.transform.deleteVariable('status');
+      this.setErrors(response);
+    });
+  }
+
+  public setErrors(response: any): void {
+    if(response && response.error && response.error.errors) {
+      const errors = response.error.errors as {field: string, value: string}[];
+      this.validation.errors = errors;
+    }
   }
 }

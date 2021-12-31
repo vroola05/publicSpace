@@ -14,9 +14,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Data
 @NoArgsConstructor
 @Entity
@@ -37,19 +42,22 @@ public class DomainEntity {
   @JoinColumn(name="company_id", referencedColumnName = "id")
   private CompanyEntity company;
 
+  @NotAudited
   @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<UserEntity> users;
 
+  @NotAudited
   @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<GroupEntity> groups;
 
+  @NotAudited
   @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<StatusEntity> statusses;
 
   // @OrderBy("sort ASC")
-  @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainGovernment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<ContractEntity> contractsContractor;
+  // @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainGovernment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  // private List<ContractEntity> contractsContractor;
 
-  @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainContractor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<ContractEntity> contractsGovernment;
+  // @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainContractor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  // private List<ContractEntity> contractsGovernment;
 }

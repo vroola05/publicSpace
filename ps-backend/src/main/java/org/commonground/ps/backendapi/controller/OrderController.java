@@ -21,15 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/order", produces = { "application/json; charset=utf-8" })
 public class OrderController extends Controller {
-	
-	@Autowired
-  	private MainCategoryRepository mainCategoryRepository;
-
-	@Autowired
-	private DomainRepository domainRepository;
-
-	@Autowired
-	private ContractRepository contractRepository;
 
 	@Secured(identifier = "getContractCategories")
 	@GetMapping(value = "/contractor/{contractId}/maincategory")

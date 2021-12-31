@@ -83,4 +83,21 @@ export class EndpointService {
       }
     });
   }
+
+  public delete(endpointIdentifier: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const endpoint = this.config.getEndpoint(endpointIdentifier);
+      if (endpoint.endpoint !== null && this.authorisation.hasRoles(endpoint.roles)) {
+        this.apiService.delete(this.transform.URL(endpoint.endpoint)).pipe(first()).subscribe(
+          data => {
+            resolve(data);
+          },
+          err => {
+            reject(err);
+          });
+      } else {
+        reject(new Error('No access'));
+      }
+    });
+  }
 }

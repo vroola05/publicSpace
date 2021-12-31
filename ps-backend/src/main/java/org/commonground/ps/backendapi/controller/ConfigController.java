@@ -22,24 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigController {
 
 	@Autowired
-	private DomainRepository domainRepository;
-
-	@Autowired
 	ConfigService configService;
 
 	@GetMapping()
 	public Template get(@RequestHeader("${sec.header.config}") String referer) throws NotFoundException {
 		try {
-			URL url = new URL(referer);
-			List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
-			for (DomainEntity domainEntity: domains) {
-				if (configService.checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {
-					return configService.get(domainEntity.getDomain());
-				}
-			}
-		} catch (MalformedURLException e) {
+			return configService.find(referer);
+		} catch (SecurityException ex) {
+			throw new NotFoundException();
 		}
-
-		throw new NotFoundException();
 	}
 }

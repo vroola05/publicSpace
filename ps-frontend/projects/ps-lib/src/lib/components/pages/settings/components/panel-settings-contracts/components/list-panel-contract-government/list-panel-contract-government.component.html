@@ -5,15 +5,9 @@
         <div class="col-md-12">
           <h4>Domein</h4>
           <div class="field-wrapper">
-            <lib-dropdown-field [id]="'domains'" [required]="true" [name]="'domains'" [options]="domainItems"
+            <lib-dropdown-field [id]="'domains'" [form]="'contract-government'" [disabled]="!isNew" [required]="true" [name]="'domains'" [options]="domainItems"
                 [placeholder]="'Selecteer een domein'" (changed)="onDomainChanged($event)" #domainComponent>
             </lib-dropdown-field>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <h4>Geaccepteerd</h4>
-          <div class="field-wrapper">
-            <lib-checkbox-field [id]="'accepted'" [name]="'accepted'" [value]="_contract?.accepted" [readonly]="true">Geaccepteerd</lib-checkbox-field>
           </div>
         </div>
       </div>
@@ -21,6 +15,10 @@
     <div class="col-md-6 list-panel-block">
       <div class="row">
         <div class="col-md-12">
+          <h4>Geaccepteerd</h4>
+          <div class="field-wrapper">
+            <lib-checkbox-field [id]="'accepted'" [name]="'accepted'" [value]="_contract?.accepted" [readonly]="true">Geaccepteerd</lib-checkbox-field>
+          </div>
         </div>
       </div>
     </div>
@@ -33,7 +31,7 @@
                 (changed)="onDeleteChanged($event)">Verwijderen</lib-checkbox-field>
             </div>
             <div *ngIf="delete" class="col-md-4">
-              <lib-btn-contained [type]="'outlineSecondary'">Verwijderen</lib-btn-contained>
+              <lib-btn-contained [type]="'outlineSecondary'" (clicked)="onDelete($event)">Verwijderen</lib-btn-contained>
             </div>
             
           </div>
@@ -43,7 +41,7 @@
             <div *ngIf="isNew" class="col-md-4">
               <lib-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</lib-btn-contained>
             </div>
-            <div class="col-md-4">
+            <div *ngIf="isNew" class="col-md-4">
               <lib-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</lib-btn-contained>
             </div>
           </div>

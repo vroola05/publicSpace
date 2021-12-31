@@ -1,7 +1,7 @@
 
 <ng-template #contentTemplate><ng-content></ng-content></ng-template>
 <div class="layout-settings-container">
-  <div *ngIf="titleNew !== ''" class="row">
+  <div *ngIf="hasNew && titleNew !== ''" class="row">
     <div class="col-4 ml-auto">
       <lib-btn-contained (clicked)="createNew()">{{titleNew}}</lib-btn-contained>
     </div>
