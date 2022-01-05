@@ -206,6 +206,7 @@
     "getButtonTypes":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/button/types", "roles": ["ROLE_ADMIN"]},
     "putPage":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/${page.id}/${page.pageType.name}", "roles": ["ROLE_ADMIN"]},
     "getContracts":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract", "roles": ["ROLE_ADMIN"]},
+    "getContractById":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract/${contract.id}", "roles": ["ROLE_ADMIN"]},
     "postContract":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract", "roles": ["ROLE_ADMIN"]},
     "putContract":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract/${contract.id}", "roles": ["ROLE_ADMIN"]},
     "deleteContract":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract/${contract.id}", "roles": ["ROLE_ADMIN"]}

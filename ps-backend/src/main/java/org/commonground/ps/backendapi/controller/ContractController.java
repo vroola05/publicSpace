@@ -42,6 +42,17 @@ public class ContractController extends Controller {
 		return contractService.getContracts(domainId);
 	}
 
+	@Secured(identifier = "getContractById")
+	@GetMapping(value = "/{id}")
+	public Contract getContractById(
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
+		isValid(companyId, domainId);
+
+		return contractService.getContract(domainId, id);
+	}
+
 	@Secured(identifier = "postContract", domainType = DomainTypeEnum.GOVERNMENT)
 	@PostMapping(consumes = "application/json")
 	public Contract postContract(

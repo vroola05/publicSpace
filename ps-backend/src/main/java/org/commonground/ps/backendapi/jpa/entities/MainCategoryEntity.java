@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -33,9 +35,11 @@ public class MainCategoryEntity {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_maincategory_id")
   @SequenceGenerator(name = "seq_maincategory_id", sequenceName = "seq_maincategory_id", allocationSize = 1)
   private Long id;
+  @OrderColumn
   private String name;
   
   @OneToMany(targetEntity = CategoryEntity.class, mappedBy = "mainCategory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OrderBy("name ASC")
   private List<CategoryEntity> categories = new ArrayList<>();
 
   @ManyToOne()

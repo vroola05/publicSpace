@@ -1078,3 +1078,37 @@ CREATE SEQUENCE public.seq_contract_id
 
 ALTER SEQUENCE public.seq_contract_id
     OWNER TO postgres;
+
+--
+-- TOC entry 256 (class 1259 OID 41088)
+-- Name: contract_main_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contract_main_category (
+    id integer NOT NULL,
+    contract_id integer NOT NULL,
+    main_category_id integer NOT NULL
+);
+
+
+ALTER TABLE public.contract_main_category OWNER TO postgres;
+
+ALTER TABLE ONLY public.contract_main_category
+    ADD CONSTRAINT contract_main_category_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.contract_main_category
+    ADD CONSTRAINT contract_main_category_contract_id FOREIGN KEY (contract_id) REFERENCES public.contract(id) NOT VALID;
+
+ALTER TABLE ONLY public.contract_main_category
+    ADD CONSTRAINT contract_main_category_main_category_id FOREIGN KEY (main_category_id) REFERENCES public.main_category(id) NOT VALID;
+
+
+CREATE SEQUENCE public.seq_contract_main_category_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_contract_main_category_id
+    OWNER TO postgres;

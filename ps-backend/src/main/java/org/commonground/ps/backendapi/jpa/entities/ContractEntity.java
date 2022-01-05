@@ -1,7 +1,10 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -10,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -40,4 +46,8 @@ public class ContractEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "domain_id_contractor", nullable = false)
   private DomainEntity domainContractor;
+
+  @OneToMany(targetEntity = ContractMainCategoryEntity.class, mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OrderBy("mainCategory ASC")
+  private List<ContractMainCategoryEntity> contractMainCategories = new ArrayList<>();
 }

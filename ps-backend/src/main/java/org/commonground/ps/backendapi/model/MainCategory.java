@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.model;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -16,6 +18,7 @@ public class MainCategory {
   private String name;
 
   private Category category;
+  private List<Category> categories;
 
   public MainCategory(Long id, String name) {
     this.id = id;

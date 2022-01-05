@@ -23,6 +23,13 @@
       </div>
     </div>
     <div class="col-md-12">
+      <ul *ngFor="let mainCategory of _contract?.mainCategories; let colIndex = index">
+        <li *ngFor="let category of mainCategory?.categories; let colIndex = index">{{mainCategory.name}} - {{category.name}}</li>
+
+      </ul>
+      
+    </div>
+    <div class="col-md-12">
       <div class="row buttons">
         <div class="col-md-6 text-left">
           <div *ngIf="!isNew" class="row">

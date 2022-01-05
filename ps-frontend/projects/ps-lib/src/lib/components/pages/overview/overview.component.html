@@ -24,11 +24,7 @@
         (clicked)="clicked($event)"
         (positionChanged)="setPosition($event)"
         (filterChanged)="filterChanged($event)">
-
         <ng-template libDynamic></ng-template>
-        
-        <!-- <lib-list-panel [template]="listTemplate" [call]="call"></lib-list-panel> -->
-        <!-- <lib-list-panel-order *ngIf="overview.panelType === 'order'" [template]="listTemplate" [call]="call"></lib-list-panel-order> -->
       </lib-list>
     </div>
     <div *ngIf="!endOfList" class="overview-load-more">

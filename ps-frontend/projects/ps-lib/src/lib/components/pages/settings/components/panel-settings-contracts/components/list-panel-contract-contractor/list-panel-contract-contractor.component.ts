@@ -23,21 +23,18 @@ export class ListPanelContractContractorComponent implements ListPanelContractCo
 
   @Input() isNew = true;
 
-  public delete = false;
 
   public _contract: Contract;
   @Input() set contract(contract: Contract){
-    this.delete = false;
     this._contract = new Contract();
     if (contract) {
-      this._contract.id = contract.id;
-      this._contract.accepted = contract.accepted;
-      this._contract.dateCreated = contract.dateCreated;
-      this._contract.domain = contract.domain;
-      
+      this.transform.setVariable('contract', contract);
+      this.getContractById();
     }
   }
 
+  public _mainCategoryItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+  
   constructor(
     private endpoints: EndpointService,
     private validation: ValidationService,
@@ -47,18 +44,37 @@ export class ListPanelContractContractorComponent implements ListPanelContractCo
 
   public ngOnInit(): void {
     this.transform.setVariable('environment', { company: this.authorisation.user.company, domain: this.authorisation.user.domain });
+    
+    
+  }
 
-    this.getMainCategories();
+  public getContractById(): void {
+    this.endpoints.get('getContractById').then((contract: Contract) => {
+      this._contract.id = contract.id;
+      this._contract.accepted = contract.accepted;
+      this._contract.dateCreated = contract.dateCreated;
+      this._contract.domain = contract.domain;
+      this._contract.mainCategories = contract.mainCategories;
+      
+      this.getMainCategories();
+    });
   }
 
   public getMainCategories(): void {
     this.endpoints.get('getMainCategories').then((mainCategories: MainCategory[]) => {
       const mainCategoryItems = [];
       mainCategories.forEach(mainCategory => {
-        mainCategoryItems.push({ name: mainCategory.name, value: mainCategory.id, data: mainCategory });
+        mainCategoryItems.push({ name: mainCategory.name, value: mainCategory.id, selected: this.hasMainCategory(mainCategory), data: mainCategory });
       })
-
+      this._mainCategoryItems = mainCategoryItems;
     });
+  }
+
+  public hasMainCategory(mainCategory: MainCategory): boolean {
+    if (this._contract.mainCategories.find(mc => mc.id === mainCategory.id)) {
+      return true;
+    }
+    return false;
   }
 
   public getDomainName(domain: Domain): string {
@@ -70,6 +86,20 @@ export class ListPanelContractContractorComponent implements ListPanelContractCo
     this._contract.accepted = $event;
   }
   
+  public onMainCategoryChanged($event): void {
+    if ($event.checked) {
+      if (!this.hasMainCategory($event.data.data.id)) {
+        this._contract.mainCategories.push($event.data.data);
+      }
+    } else {
+      const status = this._contract.mainCategories.find(s => s.id === $event.data.data.id);
+      const index = this._contract.mainCategories.indexOf(status);
+      if (index >= 0) {
+        this._contract.mainCategories.splice(index, 1);
+      }
+    }
+  }
+
 
   public cancel(): void {
     this.onEvent.emit({
@@ -77,10 +107,6 @@ export class ListPanelContractContractorComponent implements ListPanelContractCo
       isNew: this.isNew,
       data: null
     });
-  }
-
-  public onDeleteChanged($event): void {
-    this.delete = $event;
   }
 
   public onSave($event): void {

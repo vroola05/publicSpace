@@ -29,11 +29,9 @@ export class ListPanelContractGovernmentComponent implements ListPanelContractCo
     this.delete = false;
     this._contract = new Contract();
     if (contract) {
-      this._contract.id = contract.id;
-      this._contract.accepted = contract.accepted;
-      this._contract.dateCreated = contract.dateCreated;
-      this._contract.domain = contract.domain;
-      this.selectDomain();
+      this.transform.setVariable('contract', contract);
+      this.getContractById();
+      
     }
   }
 
@@ -48,6 +46,17 @@ export class ListPanelContractGovernmentComponent implements ListPanelContractCo
 
   public ngOnInit(): void {
     this.getDomainContractors();
+  }
+
+  public getContractById(): void {
+    this.endpoints.get('getContractById').then((contract: Contract) => {
+      this._contract.id = contract.id;
+      this._contract.accepted = contract.accepted;
+      this._contract.dateCreated = contract.dateCreated;
+      this._contract.domain = contract.domain;
+      this._contract.mainCategories = contract.mainCategories;
+      this.selectDomain();
+    });
   }
 
   public getDomainContractors(): void {

@@ -22,6 +22,17 @@
         </div>
       </div>
     </div>
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Hoofdcategorie</h4>
+          <div class="field-wrapper">
+            <lib-select-field class="mainCategory-list" [form]="'contract-contractor'" (changed)="onMainCategoryChanged($event)" [search]="false"
+            [id]="'mainCategory'" [name]="'mainCategory'" [options]="_mainCategoryItems" [style]="'filled'" [classes]="'max-height'"></lib-select-field>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="col-md-12">
       <div class="row buttons">
         <div class="col-md-6 text-left">

@@ -4,4 +4,5 @@ export class MainCategory {
   public id: number;
   public name?: string;
   public category?: Category;
+  public categories?: Category[];
 }

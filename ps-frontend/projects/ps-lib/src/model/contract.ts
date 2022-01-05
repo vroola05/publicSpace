@@ -1,3 +1,4 @@
+import { MainCategory } from "./main-category";
 import { Domain } from "./domain";
 
 export class Contract {
@@ -7,4 +8,5 @@ export class Contract {
   public startDate?: Date;
   
   public domain: Domain;
+  public mainCategories: MainCategory[]
 }
