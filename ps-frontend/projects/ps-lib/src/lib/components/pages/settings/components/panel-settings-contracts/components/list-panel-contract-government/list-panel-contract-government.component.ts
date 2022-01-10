@@ -9,6 +9,7 @@ import { Contract } from '../../../../../../../../model/contract';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { Domain } from '../../../../../../../../model/domain';
 import { ListPanelContractComponent } from '../list-panel-contract';
+import { MainCategory } from '../../../../../../../../model/main-category';
 
 @Component({
   selector: 'lib-list-panel-contract-government',
@@ -88,6 +89,11 @@ export class ListPanelContractGovernmentComponent implements ListPanelContractCo
     if (this.domainComponent.validate()) {
       this._contract.domain = $event.data;
     }
+  }
+
+
+  public hasCategories(mainCategory: MainCategory): boolean {
+    return mainCategory.categories && mainCategory.categories.length > 0;
   }
 
   public cancel(): void {

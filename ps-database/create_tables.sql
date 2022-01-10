@@ -1085,7 +1085,6 @@ ALTER SEQUENCE public.seq_contract_id
 --
 
 CREATE TABLE public.contract_main_category (
-    id integer NOT NULL,
     contract_id integer NOT NULL,
     main_category_id integer NOT NULL
 );
@@ -1094,7 +1093,7 @@ CREATE TABLE public.contract_main_category (
 ALTER TABLE public.contract_main_category OWNER TO postgres;
 
 ALTER TABLE ONLY public.contract_main_category
-    ADD CONSTRAINT contract_main_category_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT contract_main_category_pkey PRIMARY KEY (contract_id,main_category_id);
 
 ALTER TABLE ONLY public.contract_main_category
     ADD CONSTRAINT contract_main_category_contract_id FOREIGN KEY (contract_id) REFERENCES public.contract(id) NOT VALID;
@@ -1112,3 +1111,38 @@ CREATE SEQUENCE public.seq_contract_main_category_id
 
 ALTER SEQUENCE public.seq_contract_main_category_id
     OWNER TO postgres;
+
+
+--
+-- TOC entry 267 (class 1259 OID 86799)
+-- Name: order; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.order (
+    id integer NOT NULL,
+    call_id integer NOT NULL,
+    date_created timestamp with time zone DEFAULT now() NOT NULL,
+    date_ended timestamp with time zone,
+    description text NOT NULL,
+    status_id integer NOT NULL,
+    user_id integer,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.order OWNER TO postgres;
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_call_fk FOREIGN KEY (call_id) REFERENCES public.call(id) NOT VALID;
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_status_fk FOREIGN KEY (status_id) REFERENCES public.status(id) NOT VALID;
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_group_fk FOREIGN KEY (group_id) REFERENCES public.groups(id) NOT VALID;
+
+ALTER TABLE ONLY public.order
+    ADD CONSTRAINT order_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;

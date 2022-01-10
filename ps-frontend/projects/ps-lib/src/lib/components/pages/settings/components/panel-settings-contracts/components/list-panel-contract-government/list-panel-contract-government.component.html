@@ -23,11 +23,16 @@
       </div>
     </div>
     <div class="col-md-12">
-      <ul *ngFor="let mainCategory of _contract?.mainCategories; let colIndex = index">
-        <li *ngFor="let category of mainCategory?.categories; let colIndex = index">{{mainCategory.name}} - {{category.name}}</li>
-
-      </ul>
-      
+      <lib-panel-toggle [style]="'blanc'" [title]="['Categorieën']">
+        <div *ngFor="let mainCategory of _contract?.mainCategories; let colIndex = index">
+          <div *ngIf="hasCategories(mainCategory)">
+            <h4>{{mainCategory.name}}</h4>
+            <ul>
+              <li *ngFor="let category of mainCategory?.categories; let colIndex = index">{{category.name}}</li>
+            </ul>
+          </div>
+        </div>
+      </lib-panel-toggle>
     </div>
     <div class="col-md-12">
       <div class="row buttons">

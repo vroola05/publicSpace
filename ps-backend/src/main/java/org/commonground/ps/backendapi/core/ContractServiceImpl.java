@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.BadRequestException;
@@ -12,6 +13,7 @@ import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractMainCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
+import org.commonground.ps.backendapi.jpa.repositories.ContractMainCategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.MainCategoryRepository;
@@ -34,6 +36,10 @@ public class ContractServiceImpl implements ContractService {
     
     @Autowired
     private MainCategoryRepository mainCategoryRepository;
+
+    @Autowired
+    private ContractMainCategoryRepository contractMainCategoryRepository;
+    
 
     @Override
     public List<Contract> getContracts(Long domainId) {
@@ -96,15 +102,20 @@ public class ContractServiceImpl implements ContractService {
 
         if (complete) {
             List<MainCategory> mainCategories = new ArrayList<>();
-            for( ContractMainCategoryEntity contractMainCategoryEntity: contractEntity.getContractMainCategories()) {
-                MainCategory mainCategory = Convert.mainCategoryEntity(contractMainCategoryEntity.getMainCategory());
-                mainCategories.add(mainCategory);
-                List<Category> categories = new ArrayList<>();
-                for(CategoryEntity categoryEntity: contractMainCategoryEntity.getMainCategory().getCategories()) {
-                    categories.add(Convert.categoryEntity(categoryEntity));
+            if( contractEntity.getContractMainCategories() != null) {
+                for( ContractMainCategoryEntity contractMainCategoryEntity: contractEntity.getContractMainCategories()) {
+                    MainCategory mainCategory = Convert.mainCategoryEntity(contractMainCategoryEntity.getMainCategory());
+                    mainCategories.add(mainCategory);
+                    List<Category> categories = new ArrayList<>();
+                    if( contractMainCategoryEntity.getMainCategory().getCategories() != null) {
+                        for(CategoryEntity categoryEntity: contractMainCategoryEntity.getMainCategory().getCategories()) {
+                            categories.add(Convert.categoryEntity(categoryEntity));
+                        }
+                    }
+                    mainCategory.setCategories(categories);
                 }
-                mainCategory.setCategories(categories);
             }
+
             contract.setMainCategories(mainCategories);
         }
 
@@ -151,36 +162,37 @@ public class ContractServiceImpl implements ContractService {
             if (contractEntity.getDomainContractor().getId() == domainIdContractor) {
                 contractEntity.setAccepted(contract.getAccepted());
 
-                convertContractMainCategories(contract.getMainCategories(), contractEntity);
+                updateContractMainCategories(contract.getMainCategories(), contractEntity);
 
-                return Convert.contractEntity(contractRepository.saveAndFlush(contractEntity));
+                contractRepository.saveAndFlush(contractEntity);
+                removeContractMainCategories(contract.getMainCategories(), contractEntity.getContractMainCategories());
             }
+
+            return contract;
         }
         return null;
     }
 
-    private void convertContractMainCategories(List<MainCategory> mainCategories, ContractEntity contractEntity) throws BadRequestException {
+    private void removeContractMainCategories(List<MainCategory> mainCategories, List<ContractMainCategoryEntity> contractMainCategoryEntities) throws BadRequestException {
+        contractMainCategoryRepository.deleteAll(contractMainCategoryEntities.stream()
+            .filter(mce -> mainCategories.stream().noneMatch(mc -> mce.getMainCategory().getId() == mc.getId()))
+                .collect(Collectors.toList()));
+        
+    }
+
+    private void updateContractMainCategories(List<MainCategory> mainCategories, ContractEntity contractEntity) throws BadRequestException {
         List<MainCategoryEntity> mainCategoryEntities = mainCategoryRepository.getMainCategories(contractEntity.getDomainContractor().getId());
         for (MainCategory mainCategory : mainCategories) {
             if (contractEntity.getContractMainCategories().stream().noneMatch(cmc -> cmc.getMainCategory().getId() == mainCategory.getId())) {
-                // Insert
-                ContractMainCategoryEntity contractMainCategoryEntity = new ContractMainCategoryEntity();
-                contractMainCategoryEntity.setContract(contractEntity);
-
+                // // Insert
                 Optional<MainCategoryEntity> mainCategoryEntityOptional = mainCategoryEntities.stream().filter(r -> r.getId() == mainCategory.getId()).findFirst();
                 if (mainCategoryEntityOptional.isPresent()) {
-                    contractMainCategoryEntity.setMainCategory(mainCategoryEntityOptional.get());
+                    contractEntity.addMainCategory(mainCategoryEntityOptional.get());
                 } else {
                     throw new BadRequestException();
                 }
-                contractEntity.getContractMainCategories().add(contractMainCategoryEntity);
             }
         }
-
-        // Remove
-        contractEntity.getContractMainCategories()
-            .removeIf(contractMainCategoryEntity -> 
-                mainCategories.stream().noneMatch(mainCategory -> mainCategory.getId() == contractMainCategoryEntity.getMainCategory().getId()));
     }
 
 

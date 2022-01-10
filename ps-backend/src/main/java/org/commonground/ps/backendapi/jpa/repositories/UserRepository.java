@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Query("select u from UserEntity u where u.domain.id = :#{#domainId}")
   List<UserEntity> getUsers(@Param("domainId") Long domainId);
 
-  @Query(value = "select u.* from users u, user_groups ug, groups g where u.domain_id = :#{#domainId} and u.id = ug.user_id and ug.group_id = :#{#groupId}", nativeQuery = true)
+  @Query(value = "select u.* from users u where u.domain_id = :#{#domainId} and u.id in (select ug.user_id from user_groups ug where ug.group_id = :#{#groupId})", nativeQuery = true)
   List<UserEntity> getUserByGroupId(@Param("domainId") Long domainId, @Param("groupId") Long groupId);
 
   @Query("select u from UserEntity u where u.name = :#{#name}")

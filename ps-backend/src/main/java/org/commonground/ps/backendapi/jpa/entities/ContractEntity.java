@@ -2,6 +2,7 @@ package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -47,7 +48,13 @@ public class ContractEntity {
   @JoinColumn(name = "domain_id_contractor", nullable = false)
   private DomainEntity domainContractor;
 
-  @OneToMany(targetEntity = ContractMainCategoryEntity.class, mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  @OrderBy("mainCategory ASC")
+  @OrderBy("mainCategory DESC")
+  @OneToMany(targetEntity = ContractMainCategoryEntity.class, mappedBy = "contract", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<ContractMainCategoryEntity> contractMainCategories = new ArrayList<>();
+
+  public void addMainCategory(MainCategoryEntity mainCategoryEntity) {
+    ContractMainCategoryEntity contractMainCategoryEntity = new ContractMainCategoryEntity(this, mainCategoryEntity);
+    contractMainCategories.add(contractMainCategoryEntity);
+    mainCategoryEntity.getContractMainCategory().add(contractMainCategoryEntity);
+  }
 }

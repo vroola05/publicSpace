@@ -66,7 +66,6 @@ ALTER TABLE ONLY audit.contract_aud
 
 
 CREATE TABLE audit.contract_main_category_aud (
-    id integer NOT NULL,
     contract_id integer NOT NULL,
     main_category_id integer NOT NULL,
     rev integer NOT NULL,
@@ -76,4 +75,4 @@ CREATE TABLE audit.contract_main_category_aud (
 ALTER TABLE audit.contract_main_category_aud OWNER TO postgres;
 
 ALTER TABLE ONLY audit.contract_main_category_aud
-    ADD CONSTRAINT contract_main_category_aud_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT contract_main_category_aud_pkey PRIMARY KEY (contract_id, main_category_id, rev);

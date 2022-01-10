@@ -32,7 +32,7 @@ INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES 
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 2, true);
 INSERT INTO public.page_button_condition (id, page_button_id, field, operator, value) VALUES (nextval('public.seq_page_button_condition_id'), currval('public.seq_page_button_id'), 'call.status.name', 'eq', 'Nieuwe melding');
 
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), 2, NULL, 'right', 1, 'Melding toewijzen', '/details/${call.id}/order/creation', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), 2, NULL, 'right', 1, 'Opdracht maken', '/details/${call.id}/order/creation', NULL, 0);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 1, true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 2, true);
 INSERT INTO public.page_button_condition (id, page_button_id, field, operator, value) VALUES (nextval('public.seq_page_button_condition_id'), currval('public.seq_page_button_id'), 'call.status.name', 'eq', 'In behandeling');
@@ -88,7 +88,7 @@ INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, 
 INSERT INTO public.page_overview_status (id, page_overview_id, status_id) VALUES (2, currval('public.seq_page_overview_id'), 2);
 
 INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', 1, 'Melding informatie', '/details/${calllist.id}', NULL, 0);
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', 1, 'Melding toewijzen', '/details/${calllist.id}/order/creation', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', 1, 'Opdracht maken', '/details/${calllist.id}/order/creation', NULL, 0);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 1, true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), 2, true);
 
