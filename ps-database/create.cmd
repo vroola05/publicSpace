@@ -6,6 +6,8 @@ set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -d publicspace -
 
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f create_tables.sql
 
+set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f create_audit.sql
+
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f geo.sql
 
 
