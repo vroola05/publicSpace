@@ -76,6 +76,7 @@ ng build --project=ps-lib --watch
 
 Vervolgens draai je een van de twee projecten.
 ng serve --project=ps-government
+ng serve --project=ps-government --host 0.0.0.0 --disable-host-check
 
 Default password: @dm1nistrator
 
