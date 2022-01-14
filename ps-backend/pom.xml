@@ -17,6 +17,7 @@
 	<description>Public space api</description>
 	<properties>
 		<java.version>11</java.version>
+		<start-class>org.commonground.ps.backendapi.BackendApiApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -114,6 +115,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>    
+					<mainClass>org.commonground.ps.backendapi.BackendApiApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

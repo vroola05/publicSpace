@@ -1,6 +1,22 @@
 
 \connect publicspace
 
+
+--
+-- TOC entry 226 (class 1259 OID 25098)
+-- Name: domain_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.domain_type (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+ALTER TABLE public.domain_type OWNER TO postgres;
+
+ALTER TABLE ONLY public.domain_type
+    ADD CONSTRAINT domain_type_pkey PRIMARY KEY (id);
+
 --
 -- TOC entry 227 (class 1259 OID 33312)
 -- Name: action_type; Type: TABLE; Schema: public; Owner: postgres
@@ -19,18 +35,6 @@ ALTER TABLE ONLY public.action_type
 
 ALTER TABLE ONLY public.action_type
     ADD CONSTRAINT action_type_domain_type_fk FOREIGN KEY (domain_type) REFERENCES public.domain_type(id) NOT VALID;
-
---
--- TOC entry 226 (class 1259 OID 25098)
--- Name: domain_type; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.domain_type (
-    id integer NOT NULL,
-    name text NOT NULL
-);
-
-ALTER TABLE public.domain_type OWNER TO postgres;
 
 
 
@@ -491,7 +495,7 @@ ALTER TABLE public.seq_session_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.seq_status_id
-    START WITH 4
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
@@ -599,13 +603,6 @@ ALTER TABLE ONLY public.action
     ADD CONSTRAINT action_pkey1 PRIMARY KEY (id);
 
 
---
--- TOC entry 2985 (class 2606 OID 25105)
--- Name: domain_type domain_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.domain_type
-    ADD CONSTRAINT domain_type_pkey PRIMARY KEY (id);
 
 
 --
@@ -825,7 +822,7 @@ ALTER TABLE ONLY public.page
 
 CREATE SEQUENCE public.seq_page_id
     INCREMENT 1
-    START 4
+    START 1
     MINVALUE 0
     MAXVALUE 9223372036854775807
     CACHE 1;
@@ -1028,7 +1025,7 @@ ALTER TABLE ONLY public.page_overview_status
     ADD CONSTRAINT page_overview_status_pkey PRIMARY KEY (id);
 
 ALTER TABLE ONLY public.page_overview_status
-    ADD CONSTRAINT overview_status_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page(id);
+    ADD CONSTRAINT overview_status_page_overview_id_fk FOREIGN KEY (page_overview_id) REFERENCES public.page_overview(id);
 
 ALTER TABLE ONLY public.page_overview_status
     ADD CONSTRAINT overview_status_status_id_fk FOREIGN KEY (status_id) REFERENCES public.status(id);
@@ -1145,3 +1142,4 @@ ALTER TABLE ONLY public.order
 
 ALTER TABLE ONLY public.order
     ADD CONSTRAINT order_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
+

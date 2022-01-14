@@ -50,6 +50,10 @@ export class PanelSettingsDomainsComponent implements OnInit {
     this.getDomains();
   }
 
+  public isAdmin(): boolean {
+    return this.authorisation.isAdmin();
+  }
+
   public getDomains(): void {
     this.endpoints.get('getDomain').then((domains: Domain[]) => {
       this.domains = domains;

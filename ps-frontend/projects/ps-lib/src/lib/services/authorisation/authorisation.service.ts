@@ -109,6 +109,13 @@ export class AuthorisationService {
     return this.user && this.user.domain && this.user.domain.domainType && this.user.domain.domainType.id === domainTypeEnum;
   }
 
+  public hasRole(role: string): boolean {
+    if (this.isInUserRoles(role, this.user)) {
+      return true;
+    }
+    return false;
+  }
+
   public hasRoles(roles: string[]): boolean {
     if (roles.find(role => this.isInUserRoles(role, this.user))) {
       return true;

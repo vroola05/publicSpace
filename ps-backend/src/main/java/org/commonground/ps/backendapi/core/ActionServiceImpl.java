@@ -100,7 +100,6 @@ public class ActionServiceImpl implements ActionService {
 			List<ActionEntity> actionDelete = actionEntities.stream().filter( actionEntity -> 
 				actionTypeEntities.stream().noneMatch(b -> b.getId() == actionEntity.getActionType().getId())).collect(Collectors.toList());
 
-			System.out.println("actionDelete: " + actionDelete.size());
 			if (!actionDelete.isEmpty()) {
 				actionRepository.deleteAll(actionDelete);
 			}

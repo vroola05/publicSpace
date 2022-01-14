@@ -110,8 +110,6 @@ public class AuthController extends Controller {
 			throw new NotFoundException();
 		}
 
-		
-
 		throw new ForbiddenException();
 	}
 }

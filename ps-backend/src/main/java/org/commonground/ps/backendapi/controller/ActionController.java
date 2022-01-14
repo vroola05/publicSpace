@@ -27,7 +27,7 @@ public class ActionController extends Controller {
 	@Autowired
 	private ActionService actionService;
 
-	@Secured(admin = true)
+	@Secured(identifier = "getActionTypes")
 	@GetMapping(value = "/type")
 	public List<ActionType> getActionTypes(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
@@ -38,9 +38,9 @@ public class ActionController extends Controller {
 		return actionService.getActionTypes();
 	}
 
-	@Secured(admin = true)
+	@Secured(identifier = "getActions")
 	@GetMapping()
-	public List<Action> getAction(
+	public List<Action> getActions(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 		isValid(companyId, domainId);

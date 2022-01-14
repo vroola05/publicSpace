@@ -2,6 +2,15 @@ import { EventEmitter } from '@angular/core';
 import { Company } from './company';
 import { Domain } from './domain';
 
+
+export enum RolesEnum {
+  ADMIN = 'ROLE_ADMIN',
+  USER = 'ROLE_USER',
+  SUPER_USER = 'ROLE_SUPER_USER',
+  VIEWER = 'ROLE_VIEWER'
+}
+
+
 export enum DomainTypeEnum {
   GOVERNMENT = 1,
   CONTRACTOR = 2

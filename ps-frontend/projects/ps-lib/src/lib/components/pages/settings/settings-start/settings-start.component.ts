@@ -12,7 +12,7 @@ import { Company } from '../../../../../model/company';
 import { EnvironmentService } from '../../../../services/environment/environment.service';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { Subscription } from 'rxjs';
-import { Environment } from '../../../../../model/intefaces';
+import { Environment, RolesEnum } from '../../../../../model/intefaces';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { Page } from 'projects/ps-lib/src/model/page';
 
@@ -127,7 +127,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public showDomain(): boolean {
-    return this.authorisation.isAdmin();
+    return this.authorisation.hasRole(RolesEnum.ADMIN) || this.authorisation.isAdmin();
   }
 
   public showItems(): boolean {

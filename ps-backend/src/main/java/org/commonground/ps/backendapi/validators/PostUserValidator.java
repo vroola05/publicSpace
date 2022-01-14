@@ -64,17 +64,6 @@ public @interface PostUserValidator {
 				return false;
 			}
 
-			Optional<UserEntity> nameUniqueValidator = userRepository.getUserByName(user.getName());
-			if (nameUniqueValidator.isPresent()) {
-				setMessage(context, "name",  "Er is al een gebruiker met deze naam.");
-				return false;
-			}
-
-			Optional<UserEntity> usernameUniqueValidator = userRepository.getUserByUsername(user.getUsername());
-			if (usernameUniqueValidator.isPresent()) {
-				setMessage(context, "username",  "Er is al een gebruiker met deze gebruikersnaam.");
-				return false;
-			}
 			return true;
 		}
 

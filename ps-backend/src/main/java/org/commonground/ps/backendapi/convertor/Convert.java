@@ -82,7 +82,6 @@ public class Convert {
     userEntity.setName(user.getName());
     userEntity.setUsername(user.getUsername());
     userEntity.setEmail(user.getEmail());
-    userEntity.setAdmin(user.isAdmin());
 
     return userEntity;
   }

@@ -23,7 +23,7 @@
       <div class="col-md-12">
         <h4>Type domein</h4>
         <div class="field-wrapper">
-          <lib-dropdown-field [id]="'domainType'" [name]="'domainType'" [placeholder]="'Type domein'" [required]="true" [options]="domainTypeItems"
+          <lib-dropdown-field [id]="'domainType'" [name]="'domainType'" [placeholder]="'Type domein'" [disabled]="!isNew" [required]="true" [options]="domainTypeItems"
             (changed)="onDomainTypeChanged($event)" #domainTypeComponent>
           </lib-dropdown-field>
         </div>

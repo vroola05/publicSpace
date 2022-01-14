@@ -6,9 +6,10 @@
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.roles VALUES (1, 'ROLE_USER', true, true);
-INSERT INTO public.roles VALUES (2, 'ROLE_ADMIN', true, NULL);
-INSERT INTO public.roles VALUES (3, 'ROLE_VIEWER', NULL, NULL);
+INSERT INTO public.roles VALUES (1, 'ROLE_ADMIN', true, NULL);
+INSERT INTO public.roles VALUES (2, 'ROLE_USER', true, true);
+INSERT INTO public.roles VALUES (3, 'ROLE_SUPER_USER', true, NULL);
+INSERT INTO public.roles VALUES (4, 'ROLE_VIEWER', NULL, NULL);
 
 --
 -- TOC entry 3167 (class 0 OID 25098)
@@ -30,7 +31,7 @@ INSERT INTO public.action_type (id, name, domain_type) VALUES (1, 'Toewijzen gro
 INSERT INTO public.action_type (id, name, domain_type) VALUES (2, 'Melding aanmaken', 1);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (3, 'Melding afsluiten', 1);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (4, 'Melding afbreken', 1);
-INSERT INTO public.action_type (id, name, domain_type) VALUES (5, 'Opdracht aanmaken', 2);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (5, 'Opdracht aanmaken', NULL);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (6, 'Opdracht accepteren', 2);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (7, 'Opdracht weigeren', 2);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (8, 'Opdracht gereedmelden', 2);

@@ -18,6 +18,7 @@ import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainTypeRepository;
 import org.commonground.ps.backendapi.model.Domain;
 import org.commonground.ps.backendapi.model.DomainType;
+import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PostDomainValidator;
 import org.commonground.ps.backendapi.validators.PutDomainValidator;
@@ -45,18 +46,27 @@ public class DomainController extends Controller {
 	@Autowired
 	private CompanyRepository companyRepository;
 
-	@Secured(admin = true)
+	@Secured(identifier = "getDomain")
 	@GetMapping()
 	public List<Domain> getDomain(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId) {
 
 		isValid(companyId);
 
+		User user = getUser();
 		List<Domain> domains = new ArrayList<Domain>();
-		List<DomainEntity> domainEntities = domainRepository.getDomains(companyId);
-		domainEntities.forEach(domainEntity -> {
-			domains.add(Convert.domainEntity(domainEntity));
-		});
+		List<DomainEntity> domainEntities;
+		if (user.isAdmin()) {
+			domainEntities = domainRepository.getDomains(companyId);
+			domainEntities.forEach(domainEntity -> {
+				domains.add(Convert.domainEntity(domainEntity));
+			});
+		} else {
+			Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(user.getDomain().getId(), user);
+			if (domainEntityOptional.isPresent()) {
+				domains.add(Convert.domainEntity(domainEntityOptional.get()));
+			}
+		}		
 		return domains;
 	}
 
@@ -78,7 +88,7 @@ public class DomainController extends Controller {
 		return domains;
 	}
 
-	@Secured(admin = true)
+	@Secured(identifier = "getDomainType")
 	@GetMapping(value = "/type")
 	public List<DomainType> getDomainTypes(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId) {
@@ -111,23 +121,20 @@ public class DomainController extends Controller {
 		return null;
 	}
 
-	@Secured(admin = true)
+	@Secured(identifier = "putDomain")
 	@PutMapping(value = "/{id}", consumes = "application/json")
 	public Domain putDomain(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @PutDomainValidator @RequestBody Domain domain) throws BadRequestException {
 
-		isValid(companyId);
+		isValid(companyId, id);
 
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(id, getUser());
 		if (optionalDomainEntity.isPresent() && id == domain.getId()) {
 			DomainEntity domainEntity = optionalDomainEntity.get();
 			domainEntity.setName(domain.getName());
 			domainEntity.setDomain(domain.getDomain());
-			if (domain.getDomainType().getId() != domainEntity.getDomainType().getId()) {
-				domainEntity.setDomainType(getDomainType(domain.getDomainType().getId()));
-			}
 			
 			return Convert.domainEntity(domainRepository.save(domainEntity));
 		}

@@ -35,9 +35,6 @@ public @interface PutUserValidator {
 	Class<? extends Payload>[] payload() default {};
 
 	class Validator implements ConstraintValidator<PutUserValidator, User> {
-		@Autowired
-		private UserRepository userRepository;
-
 		@Override
 		public void initialize(PutUserValidator putUser) {
 		}
@@ -50,17 +47,6 @@ public @interface PutUserValidator {
 				return false;
 			}
 
-			Optional<UserEntity> nameUniqueValidator = userRepository.getUserByName(user.getName());
-			if (nameUniqueValidator.isPresent() && nameUniqueValidator.get().getId() != user.getId()) {
-				setMessage(context, "name",  "Er is al een gebruiker met deze naam.");
-				return false;
-			}
-
-			Optional<UserEntity> usernameUniqueValidator = userRepository.getUserByUsername(user.getUsername());
-			if (usernameUniqueValidator.isPresent() && usernameUniqueValidator.get().getId() != user.getId()) {
-				setMessage(context, "username",  "Er is al een gebruiker met deze gebruikersnaam.");
-				return false;
-			}
 			return true;
 		}
 

@@ -7,6 +7,7 @@ import { PasswordFieldComponent } from '../../../../../../fields/password-field/
 import { SelectFieldComponent } from '../../../../../../fields/select-field/select-field.component';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
 import { Group } from '../../../../../../../../model/group';
+import { ValidationService } from '../../../../../../../services/validation/validation.service';
 
 @Component({
   selector: 'lib-list-panel-user',
@@ -44,6 +45,7 @@ export class ListPanelUserComponent implements OnInit {
   @Input() groups: {name: string, value?: string, selected?: boolean, data?: any}[] = [];
   
   constructor(
+    private validation: ValidationService,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
@@ -52,23 +54,22 @@ export class ListPanelUserComponent implements OnInit {
   public ngOnInit(): void {
   }
 
+  public isAdmin(): boolean {
+    return this.authorisation.isAdmin();
+  }
+
   public onDeleteChanged($event): void {
     this.delete = $event;
   }
 
   public onSave($event): void {
-    const a = this.nameComponent.validate();
-    const b = this.usernameComponent.validate();
-    const c = this.emailComponent.validate();
-    if (this.isNew) {
-      const d = this.passwordComponent.validate();
-      const e = this.rePasswordComponent.validate();
-      
-      if (a && b && c && d && e) {
-        this.postUser(this._user);
-      }
-    } else {
-      if (a && b && c) {
+    this.validation.clear();
+    if (this.validation.validate('user')) {
+      if (this.isNew) {
+        if (this.validation.validate('user-new')) {
+          this.postUser(this._user);
+        }
+      } else {
         this.putUser(this._user);
       }
     }

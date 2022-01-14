@@ -11,6 +11,7 @@ import org.commonground.ps.backendapi.core.security.SecureHash;
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
+import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
@@ -104,8 +105,13 @@ public class UserController extends Controller {
 			@Valid @PostUserValidator @RequestBody UserExtended user) {
 
 		isValid(companyId, domainId);
+		validateUser(domainId, user);
 
 		UserEntity userEntity = Convert.user(user);
+
+		if (getUser().isAdmin()) {
+			userEntity.setAdmin(user.isAdmin());
+		}
 
 		SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount,
 				defaultKeyLength);
@@ -133,7 +139,7 @@ public class UserController extends Controller {
 		return Convert.userEntity(userRepository.saveAndFlush(userEntity));
 	}
 
-	@Secured(admin = true, identifier = "putUser")
+	@Secured(identifier = "putUser")
 	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	public User putUser(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
@@ -143,6 +149,8 @@ public class UserController extends Controller {
 
 		isValid(companyId, domainId);
 
+		validateUser(domainId, user);
+
 		Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
 		if (optionalUserEntity.isPresent() && id == user.getId()) {
 			UserEntity userEntity = optionalUserEntity.get();
@@ -150,7 +158,11 @@ public class UserController extends Controller {
 			userEntity.setName(user.getName());
 			userEntity.setUsername(user.getUsername());
 			userEntity.setEmail(user.getEmail());
-			userEntity.setAdmin(user.isAdmin());
+
+			if (getUser().isAdmin()) {
+				System.out.println("Is admin: " + user.isAdmin());
+				userEntity.setAdmin(user.isAdmin());
+			}
 
 			attachRoles(user.getRoles(), userEntity);
 
@@ -159,6 +171,22 @@ public class UserController extends Controller {
 			return Convert.userEntity(userRepository.save(userEntity));
 		}
 		throw new BadRequestException();
+	}
+
+	private void validateUser(Long domainId, User user) throws BadRequestException {
+		Optional<UserEntity> nameUniqueValidator = userRepository.getUserByName(domainId, user.getName());
+		if (nameUniqueValidator.isPresent() && nameUniqueValidator.get().getId() != user.getId()) {
+			BadRequestException badRequestException = new BadRequestException();
+			badRequestException.addError(new FieldValue("name", "Er is al een gebruiker met deze naam."));
+			throw badRequestException;
+		}
+
+		Optional<UserEntity> usernameUniqueValidator = userRepository.getUserByUsername(domainId, user.getUsername());
+		if (usernameUniqueValidator.isPresent() && usernameUniqueValidator.get().getId() != user.getId()) {
+			BadRequestException badRequestException = new BadRequestException();
+			badRequestException.addError(new FieldValue("username", "Er is al een gebruiker met deze gebruikersnaam."));
+			throw badRequestException;
+		}
 	}
 
 	private void attachRoles(List<String> roles, UserEntity userEntity) {

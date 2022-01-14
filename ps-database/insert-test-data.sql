@@ -1,28 +1,74 @@
 \connect publicspace
 
+-- -------------------------
+-- Create contract
+-- -------------------------
+INSERT INTO public.contract(id, domain_id_governent, domain_id_contractor, accepted) VALUES (nextval('public.seq_contract_id'), get_domain(:domain_name), get_domain(:domain_name_contr), false);
 
---
--- TOC entry 3159 (class 0 OID 40632)
--- Dependencies: 210
--- Data for Name: main_category; Type: TABLE DATA; Schema: public; Owner: postgres
---
+-- -------------------------
+-- -------------------------
+-- Create Categorieen Government
+-- -------------------------
+-- -------------------------
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Bouw en wonen', get_domain(:domain_name));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Astbest', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Illegale bewoning', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Illegale bouw', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Sloop', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Strijdig gebruik', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Overige', '2021-01-01', NULL, true, get_group(:domain_group_name2));
 
-INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Wegen', 1);
-INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Water', 1);
-INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Overlast', 1);
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Groen en spelen', get_domain(:domain_name));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Plansoen', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Gras', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Bomen', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Onkruid', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Berm', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Speelplaats', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Hek of bank', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Illegaal gebruik', '2021-01-01', NULL, true, get_group(:domain_group_name1));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Overige', '2021-01-01', NULL, true, get_group(:domain_group_name1));
 
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Bestrating en verkeer', get_domain(:domain_name));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Stoep', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Fietspad', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Weg of straat', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Paaltje', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Verkeersbord', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Drempel', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Belijning', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Gladheid', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Bushokje', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Parkeerplaats', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Onveilige situatie', '2021-01-01', NULL, true, get_group(:domain_group_name3));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Overige', '2021-01-01', NULL, true, get_group(:domain_group_name3));
 
---
--- TOC entry 3161 (class 0 OID 40638)
--- Dependencies: 211
--- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
---
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Overlast', get_domain(:domain_name));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Geluid', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Graffiti', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Vuurwerk', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Reclame', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Hondenpoep', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Fout Parkeren', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Horeca', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Jongeren', '2021-01-01', NULL, true, get_group(:domain_group_name2));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Overige', '2021-01-01', NULL, true, get_group(:domain_group_name2));
 
-INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), 1, 'Gat in de weg', '2021-01-01', NULL, true, 1);
-INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), 2, 'Overlast', '2021-01-01', NULL, true, 1);
-INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), 3, 'Hangjongeren', '2021-01-01', NULL, true, 1);
+-- -------------------------
+-- -------------------------
+-- Create Categorieen Contractor
+-- -------------------------
+-- -------------------------
 
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Bestrating', get_domain(:domain_name_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Lichtmasten', '2021-01-01', NULL, true, get_group(:domain_group_name3_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Berm', '2021-01-01', NULL, true, get_group(:domain_group_name3_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Verzakking', '2021-01-01', NULL, true, get_group(:domain_group_name3_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Gat in de weg', '2021-01-01', NULL, true, get_group(:domain_group_name3_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Verkeersborden', '2021-01-01', NULL, true, get_group(:domain_group_name3_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Drempel', '2021-01-01', NULL, true, get_group(:domain_group_name3_contr));
 
-INSERT INTO public.call (id, description, category_id, casenumber, company_id, status_id, group_id) VALUES (nextval('public.seq_call_id'), 'Testmelding 1', 1, '1000000', 1, 1, 1);
-INSERT INTO public.location (id, street, number, letter, postal, city, area, x, y, call_id) VALUES ( nextval( 'public.seq_location_id'), 'Piratenweg', '1' ,'a', '2121AA', 'Hoofddorp', 1, 108221.437, 478861.66, currval('public.seq_call_id'));
-
+INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Overlast', get_domain(:domain_name_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Geluid', '2021-01-01', NULL, true, get_group(:domain_group_name2_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Graffiti', '2021-01-01', NULL, true, get_group(:domain_group_name2_contr));
+INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Vuurwerk', '2021-01-01', NULL, true, get_group(:domain_group_name2_contr));
