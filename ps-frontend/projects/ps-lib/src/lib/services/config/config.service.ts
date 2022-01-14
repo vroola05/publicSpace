@@ -199,12 +199,13 @@ export class ConfigService {
   }
 
   public transformCallOrder(call: Call): CallList {
-    const callList = this.transformCall(call);
-    callList.status = (!call.orders || call.orders.length !== 1 || !call.orders[0].statusProces)
-      ? callList.status
-      : call.orders[0].statusProces.name;
+    // const callList = this.transformCall(call);
+    // callList.status = (!call.orders || call.orders.length !== 1 || !call.orders[0].statusProces)
+    //   ? callList.status
+    //   : call.orders[0].statusProces.name;
 
-    return callList;
+    // return callList;
+    return new CallList();
   }
 
   public readConfig(domainUrl: string): Promise<any> {

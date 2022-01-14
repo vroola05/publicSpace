@@ -8,11 +8,17 @@
 
 CREATE TABLE public.action_type (
     id integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    domain_type integer
 );
 
 ALTER TABLE public.action_type OWNER TO postgres;
 
+ALTER TABLE ONLY public.action_type
+    ADD CONSTRAINT action_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.action_type
+    ADD CONSTRAINT action_type_domain_type_fk FOREIGN KEY (domain_type) REFERENCES public.domain_type(id) NOT VALID;
 
 --
 -- TOC entry 226 (class 1259 OID 25098)
@@ -582,13 +588,6 @@ ALTER TABLE public.session OWNER TO postgres;
 ALTER TABLE ONLY public.person
     ADD CONSTRAINT "Person_pkey" PRIMARY KEY (id);
 
---
--- TOC entry 2987 (class 2606 OID 33319)
--- Name: action_type action_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.action_type
-    ADD CONSTRAINT action_pkey PRIMARY KEY (id);
 
 
 --

@@ -1,5 +1,8 @@
 package org.commonground.ps.backendapi.core;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,27 +60,6 @@ public class ContractServiceImpl implements ContractService {
         return contracts;
     }
 
-
-    @Override
-    public Contract getContract(Long domainId, Long id) {
-        Optional<ContractEntity> contractEntityOptional = contractRepository.getContractById(id);
-        Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId);
-		if (domainEntityOptional.isPresent() && contractEntityOptional.isPresent()) {
-			DomainEntity domainEntity = domainEntityOptional.get();
-			if (domainEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
-                if (contractEntityOptional.get().getDomainGovernment().getId() == domainId) {
-                    return convertContract(contractEntityOptional.get(), contractEntityOptional.get().getDomainGovernment(), true);
-                }
-			} else if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-                if (contractEntityOptional.get().getDomainContractor().getId() == domainId) {
-                    return convertContract(contractEntityOptional.get(), contractEntityOptional.get().getDomainContractor(), true);
-                }
-			}
-		}
-
-        return null;
-    }
-
     public List<Contract> getContractsGovernment(Long domainId) {
         List<Contract> contracts = new ArrayList<>();
         List<ContractEntity> contractEntities = contractRepository.getContractByGovernmentDomainId(domainId);
@@ -96,29 +78,57 @@ public class ContractServiceImpl implements ContractService {
         return contracts;
     }
 
+    @Override
+    public Contract getContract(Long domainId, Long id) {
+        Optional<ContractEntity> contractEntityOptional = contractRepository.getContractById(id);
+        Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId);
+		if (domainEntityOptional.isPresent() && contractEntityOptional.isPresent()) {
+			DomainEntity domainEntity = domainEntityOptional.get();
+            ContractEntity contractEntity = contractEntityOptional.get();
+			if (domainEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
+                if (contractEntity.getDomainGovernment().getId() == domainId) {
+                    return convertContract(contractEntity, contractEntity.getDomainContractor(), true);
+                }
+			} else if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+                if (contractEntity.getDomainContractor().getId() == domainId) {
+                    return convertContract(contractEntity, contractEntity.getDomainGovernment(), true);
+                }
+			}
+		}
+
+        return null;
+    }
+
     private Contract convertContract(ContractEntity contractEntity, DomainEntity domainEntity, boolean complete) {
         Contract contract = Convert.contractEntity(contractEntity);
         contract.setDomain(Convert.domainEntity(domainEntity));
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
-        if (complete) {
-            List<MainCategory> mainCategories = new ArrayList<>();
-            if( contractEntity.getContractMainCategories() != null) {
-                for( ContractMainCategoryEntity contractMainCategoryEntity: contractEntity.getContractMainCategories()) {
-                    MainCategory mainCategory = Convert.mainCategoryEntity(contractMainCategoryEntity.getMainCategory());
-                    mainCategories.add(mainCategory);
-                    List<Category> categories = new ArrayList<>();
-                    if( contractMainCategoryEntity.getMainCategory().getCategories() != null) {
-                        for(CategoryEntity categoryEntity: contractMainCategoryEntity.getMainCategory().getCategories()) {
-                            categories.add(Convert.categoryEntity(categoryEntity));
+        try {
+            Date now = formatter.parse(formatter.format(new Date()));
+            if (complete) {
+                List<MainCategory> mainCategories = new ArrayList<>();
+                if( contractEntity.getContractMainCategories() != null) {
+                    for( ContractMainCategoryEntity contractMainCategoryEntity: contractEntity.getContractMainCategories()) {
+                        MainCategory mainCategory = Convert.mainCategoryEntity(contractMainCategoryEntity.getMainCategory());
+                        mainCategories.add(mainCategory);
+                        List<Category> categories = new ArrayList<>();
+                        if( contractMainCategoryEntity.getMainCategory().getCategories() != null) {
+                            for(CategoryEntity categoryEntity: contractMainCategoryEntity.getMainCategory().getCategories()) {
+                                if (categoryEntity.getActive() 
+                                    && (categoryEntity.getStartDate() == null || now.equals(categoryEntity.getStartDate()) || now.after(categoryEntity.getStartDate()))
+                                    && (categoryEntity.getEndDate() == null || now.equals(categoryEntity.getEndDate()) || now.before(categoryEntity.getEndDate())) ) {
+                                    categories.add(Convert.categoryEntity(categoryEntity));
+                                }
+                            }
                         }
+                        mainCategory.setCategories(categories);
                     }
-                    mainCategory.setCategories(categories);
                 }
+    
+                contract.setMainCategories(mainCategories);
             }
-
-            contract.setMainCategories(mainCategories);
-        }
-
+        } catch (ParseException e) {}
         return contract;
     }
 

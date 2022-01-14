@@ -123,7 +123,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public findOrder(order: Order): Order {
-    return this.call.orders.find(o => o.contractor.id === order.contractor.id);
+    return this.call.orders.find(o => o.contractorDomain.id === order.contractorDomain.id);
   }
 
   public callKill(): Promise<boolean> {

@@ -13,4 +13,8 @@ public class ActionTypeEntity {
   @Id
   private Long id;
   private String name;
+
+  @ManyToOne(fetch=FetchType.LAZY)
+  @JoinColumn(name="domain_type", referencedColumnName = "id")
+  private DomainTypeEntity domainType;
 }

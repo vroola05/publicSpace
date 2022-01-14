@@ -17,17 +17,20 @@ export class PanelOrderSecondComponent implements OnInit {
   }
 
   public hasOrdertypes(): boolean {
-    return this.order && this.order.ordertypes && this.order.ordertypes.length > 0;
+    // return this.order && this.order.ordertypes && this.order.ordertypes.length > 0;
+    return false;
   }
 
   public hasOrderitems(): boolean {
-    return this.order
-      && ((this.order.orderitems && this.order.orderitems.length > 0) ||
-      (this.order.miscOrderitems && this.order.miscOrderitems.length > 0));
+    // return this.order
+    //   && ((this.order.orderitems && this.order.orderitems.length > 0) ||
+    //   (this.order.miscOrderitems && this.order.miscOrderitems.length > 0));
+    return false;
   }
 
   public printOrdertypes(): string {
-    return this.order.ordertypes.map(ordertype => ordertype.name).join(', ');
+    // return this.order.ordertypes.map(ordertype => ordertype.name).join(', ');
+    return '';
   }
 
   public getDays(date: Date): string {
@@ -38,9 +41,9 @@ export class PanelOrderSecondComponent implements OnInit {
   }
 
   public getExecutor(): string {
-    if (this.order && this.order.executor && this.order.executor.name) {
-      return this.order.executor.name;
-    }
+    // if (this.order && this.order.executor && this.order.executor.name) {
+    //   return this.order.executor.name;
+    // }
     return '';
   }
 }

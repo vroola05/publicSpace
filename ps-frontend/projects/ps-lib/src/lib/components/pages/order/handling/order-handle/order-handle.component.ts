@@ -94,7 +94,7 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
   }
 
   public onExplanationChanged($event): void {
-    this.order.explanation = $event;
+    // this.order.explanation = $event;
     this.explanation = $event;
     this.storage.setSession('order', JSON.stringify(this.order), true);
   }
@@ -125,7 +125,7 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
       this.order.status = new Status();
       this.order.status.id = StatusTypes.ORDER_DONE;
 
-      this.order.isExecuted = isExecuted;
+      // this.order.isExecuted = isExecuted;
       this.endpoints.put('putOrder', this.order).then((message: Message) => {
         this.storage.clearProcessData();
         this.navigationService.navigateHome();

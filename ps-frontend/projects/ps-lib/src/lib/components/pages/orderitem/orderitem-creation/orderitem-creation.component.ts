@@ -85,9 +85,9 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   }
 
   public orderitemSelected(id: number): boolean {
-    if (this.order && this.order.orderitems && this.order.orderitems.find(o => o.quotationId === id)) {
-      return true;
-    }
+    // if (this.order && this.order.orderitems && this.order.orderitems.find(o => o.quotationId === id)) {
+    //   return true;
+    // }
 
     return false;
   }
@@ -121,7 +121,7 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
 
   public onOrderitemsChanged($event): void {
     if (this.order) {
-      this.order.orderitems = this.getSelectedOrderitems();
+      // this.order.orderitems = this.getSelectedOrderitems();
       this.storage.setSession('order', JSON.stringify(this.order), true);
     }
   }

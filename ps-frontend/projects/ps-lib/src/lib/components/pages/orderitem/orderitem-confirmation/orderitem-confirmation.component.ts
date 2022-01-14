@@ -53,13 +53,13 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
     const order = this.storage.getSession('order');
     if (order) {
       this.order = JSON.parse(order) as Order;
-      if (this.order.miscOrderitems) {
-        this.order.miscOrderitems.forEach(item => {
-          if (item.id < 0) {
-            delete item.id;
-          }
-        });
-      }
+      // if (this.order.miscOrderitems) {
+      //   this.order.miscOrderitems.forEach(item => {
+      //     if (item.id < 0) {
+      //       delete item.id;
+      //     }
+      //   });
+      // }
       this.transform.setVariable('order', this.order);
     }
   }
@@ -103,7 +103,7 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
       this.order.status = new Status();
       this.order.status.id = StatusTypes.ORDER_DONE;
 
-      this.order.isExecuted = isExecuted;
+      //this.order.isExecuted = isExecuted;
       this.endpoints.put('putOrder', this.order).then((message: Message) => {
         this.storage.clearProcessData();
         this.navigationService.navigateHome();

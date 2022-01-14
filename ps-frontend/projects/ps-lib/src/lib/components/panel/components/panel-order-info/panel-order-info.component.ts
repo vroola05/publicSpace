@@ -24,7 +24,8 @@ export class PanelOrderInfoComponent implements OnInit {
   }
 
   public hasOrdertypes(): boolean {
-    return this.order && this.order.ordertypes && this.order.ordertypes.length > 0;
+    // return this.order && this.order.ordertypes && this.order.ordertypes.length > 0;
+    return false;
   }
 
   public isEditable(): boolean {

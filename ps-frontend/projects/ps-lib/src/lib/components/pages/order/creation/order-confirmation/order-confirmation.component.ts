@@ -114,31 +114,31 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
 
   public findOrder(order: Order): Order {
     return this.orders.find(o => {
-      if (o.contractor.id !== order.contractor.id || o.description !== order.description) {
+      if (o.contractorDomain.id !== order.contractorDomain.id || o.description !== order.description) {
         return false;
       }
-      if (o.ordertypes && order.ordertypes) {
-        for (let i = 0; i < o.ordertypes.length; i++) {
-          if (!order.ordertypes[i] || order.ordertypes[i].id !== o.ordertypes[i].id) {
-            return false;
-          }
-        }
-      }
+      // if (o.ordertypes && order.ordertypes) {
+      //   for (let i = 0; i < o.ordertypes.length; i++) {
+      //     if (!order.ordertypes[i] || order.ordertypes[i].id !== o.ordertypes[i].id) {
+      //       return false;
+      //     }
+      //   }
+      // }
       return true;
     });
   }
 
   public removeOrdertype(order: Order, ordertype: Ordertype): void {
-    if (order) {
-      const item = this.orders.find(o =>
-        o.contractor.id === order.contractor.id
-        && o.description === order.description
-        && order.ordertypes.indexOf(ordertype) > -1);
-      if (item) {
-        item.ordertypes.splice(item.ordertypes.indexOf(ordertype), 1);
-        this.storage.setSession('order', JSON.stringify(this.orders), true);
-      }
-    }
+    // if (order) {
+    //   const item = this.orders.find(o =>
+    //     o.contractorDomain.id === order.contractorDomain.id
+    //     && o.description === order.description
+    //     && order.ordertypes.indexOf(ordertype) > -1);
+    //   if (item) {
+    //     item.ordertypes.splice(item.ordertypes.indexOf(ordertype), 1);
+    //     this.storage.setSession('order', JSON.stringify(this.orders), true);
+    //   }
+    // }
   }
 
   public extra() {
@@ -154,7 +154,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
       if (!order.description) {
         return false;
       }
-      if (!order.contractor || !order.contractor.id) {
+      if (!order.contractorDomain || !order.contractorDomain.id) {
         return false;
       }
     }

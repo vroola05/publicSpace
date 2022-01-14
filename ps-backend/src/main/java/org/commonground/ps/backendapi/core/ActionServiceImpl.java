@@ -71,26 +71,38 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	public void synchronizeActions(Long companyId, Long domainId, User user) {
-		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
-		List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
-		if (actionTypeEntities.size() != actionEntities.size()) {
-			List<ActionTypeEntity> newActionTypes = actionTypeEntities.stream().filter(a -> {
-				return actionEntities.stream().noneMatch(b -> {
-					return b.getActionType().getId() == a.getId();
-				});
-			}).collect(Collectors.toList());
-			;
+		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, user);
+		if (optionalDomainEntity.isPresent()) {
+			DomainEntity domainEntity = optionalDomainEntity.get();
 
-			Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, user);
-			if (optionalDomainEntity.isPresent()) {
+			List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
+			List<ActionTypeEntity> actionTypeEntitiesAll = actionTypeRepository.findAll();
+
+			List<ActionTypeEntity> actionTypeEntities = actionTypeEntitiesAll.stream().filter( actionTypeEntity -> 
+				actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == domainEntity.getDomainType().getId()).collect(Collectors.toList());
+
+
+			List<ActionTypeEntity> actionTypeEntitiesNew = actionTypeEntities.stream().filter( actionTypeEntity -> 
+				actionEntities.stream().noneMatch(b -> b.getActionType().getId() == actionTypeEntity.getId())).collect(Collectors.toList());
+
+			if (!actionTypeEntitiesNew.isEmpty()) {
 				List<ActionEntity> newActionEntities = new ArrayList<>();
-				newActionTypes.forEach(actionTypeEntity -> {
+				actionTypeEntitiesNew.forEach(actionTypeEntity -> {
 					ActionEntity actionEntity = new ActionEntity();
 					actionEntity.setActionType(actionTypeEntity);
 					actionEntity.setDomain(optionalDomainEntity.get());
 					newActionEntities.add(actionEntity);
 				});
+				System.out.println("newActionEntities: " + newActionEntities.size());
 				actionRepository.saveAll(newActionEntities);
+			}
+
+			List<ActionEntity> actionDelete = actionEntities.stream().filter( actionEntity -> 
+				actionTypeEntities.stream().noneMatch(b -> b.getId() == actionEntity.getActionType().getId())).collect(Collectors.toList());
+
+			System.out.println("actionDelete: " + actionDelete.size());
+			if (!actionDelete.isEmpty()) {
+				actionRepository.deleteAll(actionDelete);
 			}
 		}
 	}

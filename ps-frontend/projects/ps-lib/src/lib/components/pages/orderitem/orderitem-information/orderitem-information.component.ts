@@ -95,40 +95,40 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
     this.order = order;
     this.transform.setVariable('order', order);
 
-    if (!this.order.explanation) {
-      this.order.explanation = '';
-    }
-    if (!this.order.orderitems) {
-      this.order.orderitems = [];
-    }
-    if (!this.order.miscOrderitems) {
-      this.order.miscOrderitems = [];
-    }
+    // if (!this.order.explanation) {
+    //   this.order.explanation = '';
+    // }
+    // if (!this.order.orderitems) {
+    //   this.order.orderitems = [];
+    // }
+    // if (!this.order.miscOrderitems) {
+    //   this.order.miscOrderitems = [];
+    // }
 
-    this.order.orderitems.forEach(orderitem => {
-      this.orderitems.push(
-        {
-          name: orderitem.quotationNumber + ' - ' + orderitem.name + ' (' + orderitem.unit + ')',
-          value: '' + orderitem.quotationNumber,
-          data: orderitem,
-          selected: true
-        }
-      );
-    });
+    // this.order.orderitems.forEach(orderitem => {
+    //   this.orderitems.push(
+    //     {
+    //       name: orderitem.quotationNumber + ' - ' + orderitem.name + ' (' + orderitem.unit + ')',
+    //       value: '' + orderitem.quotationNumber,
+    //       data: orderitem,
+    //       selected: true
+    //     }
+    //   );
+    // });
 
-    this.order.miscOrderitems.forEach(orderitem => {
-      if (orderitem.id <= this.newMiscOrderitemId) {
-        this.newMiscOrderitemId  = orderitem.id - 1;
-      }
-      this.miscOrderitems.push(
-        {
-          name: 'Diverse materialen',
-          value: '',
-          data: orderitem,
-          selected: true
-        }
-      );
-    });
+    // this.order.miscOrderitems.forEach(orderitem => {
+    //   if (orderitem.id <= this.newMiscOrderitemId) {
+    //     this.newMiscOrderitemId  = orderitem.id - 1;
+    //   }
+    //   this.miscOrderitems.push(
+    //     {
+    //       name: 'Diverse materialen',
+    //       value: '',
+    //       data: orderitem,
+    //       selected: true
+    //     }
+    //   );
+    // });
   }
 
   public getCall(): void {
@@ -148,94 +148,94 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
   }
 
   public onOrderitemChecked($event): void {
-    const item = this.order.orderitems.find(o => o.quotationNumber === $event.data.data.quotationNumber);
-    if (item) {
-      if (!$event.checked) {
-        this.order.orderitems.splice(this.order.orderitems.indexOf(item), 1);
-      }
-    } else {
-      if ($event.checked) {
-        this.order.orderitems.push($event.data.data);
-      }
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.orderitems.find(o => o.quotationNumber === $event.data.data.quotationNumber);
+    // if (item) {
+    //   if (!$event.checked) {
+    //     this.order.orderitems.splice(this.order.orderitems.indexOf(item), 1);
+    //   }
+    // } else {
+    //   if ($event.checked) {
+    //     this.order.orderitems.push($event.data.data);
+    //   }
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onOrderitemAmountChanged($event): void {
-    const item = this.order.orderitems.find(o => o.quotationNumber === $event.data.data.quotationNumber);
-    if (item) {
-      item.amount = Number($event.value);
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.orderitems.find(o => o.quotationNumber === $event.data.data.quotationNumber);
+    // if (item) {
+    //   item.amount = Number($event.value);
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onMiscOrderitemChecked($event): void {
-    const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
-    if (item) {
-      if (!$event.checked) {
-        this.order.miscOrderitems.splice(this.order.miscOrderitems.indexOf(item), 1);
-      }
-    } else {
-      if ($event.checked) {
-        this.order.miscOrderitems.push($event.data.data);
-      }
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
+    // if (item) {
+    //   if (!$event.checked) {
+    //     this.order.miscOrderitems.splice(this.order.miscOrderitems.indexOf(item), 1);
+    //   }
+    // } else {
+    //   if ($event.checked) {
+    //     this.order.miscOrderitems.push($event.data.data);
+    //   }
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onMiscOrderitemNameChanged($event): void {
-    const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
-    if (item) {
-      item.name = $event.value;
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
+    // if (item) {
+    //   item.name = $event.value;
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onMiscOrderitemAmountChanged($event): void {
-    const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
-    if (item) {
-      item.amount = Number($event.value);
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
+    // if (item) {
+    //   item.amount = Number($event.value);
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onMiscOrderitemUnitChanged($event): void {
-    const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
-    if (item) {
-      item.unit = $event.value;
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
+    // if (item) {
+    //   item.unit = $event.value;
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onMiscOrderitemCostChanged($event): void {
-    const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
-    if (item) {
-      item.cost = Number($event.value);
-    }
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const item = this.order.miscOrderitems.find(o => o.id === $event.data.data.id);
+    // if (item) {
+    //   item.cost = Number($event.value);
+    // }
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public onExplanationChanged($event): void {
-    this.order.explanation = $event;
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // this.order.explanation = $event;
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
   }
 
   public addMisc(): void {
-    const orderitem = new OrderitemMisc();
-    orderitem.id = --this.newMiscOrderitemId;
-    orderitem.name = '';
-    orderitem.unit = '';
-    this.order.miscOrderitems.push(orderitem);
-    this.storage.setSession('order', JSON.stringify(this.order), true);
+    // const orderitem = new OrderitemMisc();
+    // orderitem.id = --this.newMiscOrderitemId;
+    // orderitem.name = '';
+    // orderitem.unit = '';
+    // this.order.miscOrderitems.push(orderitem);
+    // this.storage.setSession('order', JSON.stringify(this.order), true);
 
-    this.miscOrderitems.push(
-      {
-        name: 'Diverse materialen',
-        value: '',
-        data: orderitem,
-        selected: true
-      }
-    );
+    // this.miscOrderitems.push(
+    //   {
+    //     name: 'Diverse materialen',
+    //     value: '',
+    //     data: orderitem,
+    //     selected: true
+    //   }
+    // );
   }
 
   public validateOrderitems(): boolean {
@@ -331,7 +331,7 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
       this.order.status = new Status();
       this.order.status.id = StatusTypes.ORDER_DONE;
 
-      this.order.isExecuted = isExecuted;
+      // this.order.isExecuted = isExecuted;
 
       this.endpoints.put('putOrder', this.order).then((message: Message) => {
         this.storage.clearProcessData();

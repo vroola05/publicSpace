@@ -25,21 +25,22 @@ INSERT INTO public.domain_type VALUES (2, 'Aannemer');
 -- Data for Name: action_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.action_type VALUES (0, 'Toewijzen persoon');
-INSERT INTO public.action_type VALUES (1, 'Toewijzen groep');
-INSERT INTO public.action_type VALUES (2, 'Melding aanmaken');
-INSERT INTO public.action_type VALUES (3, 'Melding afsluiten');
-INSERT INTO public.action_type VALUES (4, 'Melding afbreken');
-INSERT INTO public.action_type VALUES (5, 'Opdracht aanmaken');
-INSERT INTO public.action_type VALUES (6, 'Opdracht accepteren');
-INSERT INTO public.action_type VALUES (7, 'Opdracht weigeren');
-INSERT INTO public.action_type VALUES (8, 'Opdracht gereedmelden');
-INSERT INTO public.action_type VALUES (9, 'Opdracht goedkeuren');
-INSERT INTO public.action_type VALUES (10, 'Opdracht afkeuren');
-INSERT INTO public.action_type VALUES (11, 'Opdracht annuleren');
-INSERT INTO public.action_type VALUES (12, 'Terug');
-INSERT INTO public.action_type VALUES (13, 'Annuleren');
-INSERT INTO public.action_type VALUES (14, 'Volgende');
+INSERT INTO public.action_type (id, name, domain_type) VALUES (0, 'Toewijzen persoon', NULL);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (1, 'Toewijzen groep', NULL);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (2, 'Melding aanmaken', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (3, 'Melding afsluiten', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (4, 'Melding afbreken', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (5, 'Opdracht aanmaken', 2);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (6, 'Opdracht accepteren', 2);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (7, 'Opdracht weigeren', 2);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (8, 'Opdracht gereedmelden', 2);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (9, 'Opdracht goedkeuren', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (10, 'Opdracht afkeuren', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (11, 'Opdracht annuleren', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (12, 'Terug', NULL);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (13, 'Annuleren', NULL);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (14, 'Volgende', NULL);
+
 
 --
 -- TOC entry 3139 (class 0 OID 24849)

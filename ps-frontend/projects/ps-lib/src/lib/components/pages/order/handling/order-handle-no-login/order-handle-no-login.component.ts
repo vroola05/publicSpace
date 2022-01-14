@@ -111,7 +111,7 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   }
 
   public onExplanationChanged($event): void {
-    this.order.explanation = $event;
+    // this.order.explanation = $event;
     this.explanation = $event;
     this.storage.setSession('order', JSON.stringify(this.order), true);
   }
