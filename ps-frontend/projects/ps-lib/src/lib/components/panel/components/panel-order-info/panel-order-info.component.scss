@@ -1,12 +1,12 @@
 @import "../../../../../../../assets/scss/styles.scss";
 
 .panel-order-info {
-  .panel-order-info-ordertypes {
+  .panel-order-info-categories {
     display: flex;
     flex-direction: column;
     width: 100%;
 
-    .panel-order-info-ordertype {
+    .panel-order-info-category {
       display: flex;
       flex-direction: row;
       align-items: center;

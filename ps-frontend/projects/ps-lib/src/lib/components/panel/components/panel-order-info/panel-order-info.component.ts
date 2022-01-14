@@ -2,9 +2,10 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Note } from '../../../../../model/note';
 import { PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Order } from '../../../../../model/order';
-import { Ordertype } from '../../../../../model/order-type';
 import { Popup } from '../../../../services/popup/popup.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
+import { Category } from '../../../../../model/category';
+
 
 @Component({
   selector: 'lib-panel-order-info',
@@ -23,17 +24,16 @@ export class PanelOrderInfoComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public hasOrdertypes(): boolean {
-    // return this.order && this.order.ordertypes && this.order.ordertypes.length > 0;
-    return false;
+  public hasCategories(): boolean {
+    return this.order && this.order.categories && this.order.categories.length > 0;
   }
 
   public isEditable(): boolean {
     return (!this.order || !this.order.id) ? true : false;
   }
 
-  public deleteOrdertype(ordertype: Ordertype): void {
-    this.changed.emit({action: 'delete-ordertype', data: this.order, ordertype});
+  public deleteCategory(category: Category): void {
+    this.changed.emit({action: 'delete-category', data: this.order, category});
   }
 
   public edit(): void {

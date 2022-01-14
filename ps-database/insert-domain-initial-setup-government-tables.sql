@@ -145,13 +145,17 @@ INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_
 -- ------------------------------
 
 INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderCreation'), 'Nieuwe opdracht maken', 'page');
-
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Annuleren', '', get_action_type('Annuleren'), 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Opdracht controleren', '/details/${call.id}/order/confirmation', get_action_type('Volgende'), 0);
 -- ------------------------------
 -- Nieuwe opdracht controleren
 -- ------------------------------
 
 INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderConfirm'), 'Nieuwe opdracht controleren', 'page');
-
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Annuleren', '', get_action_type('Annuleren'), 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Vorige', '', get_action_type('Terug'), 1);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Extra opdracht', '/details/${call.id}/order/creation', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Opslaan', '', get_action_type('Opdracht aanmaken'), 0);
 
 -- ------------------------------
 -- ------------------------------

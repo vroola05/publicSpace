@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { ActionService } from '../../../../../services/action/action.service';
-import { ConfigService } from '../../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../../services/config/config.service';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { PageAbstract } from '../../../page';
@@ -18,6 +18,8 @@ import { Loader } from '../../../../../services/loader/loader.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
+import { EnvironmentService } from '../../../../../services/environment/environment.service';
+import { Category } from '../../../../../../model/category';
 
 @Component({
   selector: 'lib-order-confirmation',
@@ -32,7 +34,6 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
   public contractors: Contractor[] = [];
-  public orders: Order[] = [];
   private sending = false;
 
   constructor(
@@ -45,27 +46,21 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
     protected authorisation: AuthorisationService,
     private endpoints: EndpointService,
     private config: ConfigService,
+    private environmentService: EnvironmentService,
     private loader: Loader
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
-
-    const order = this.storage.getSession('order');
-    if (order) {
-      this.orders = JSON.parse(order) as Order[];
-    }
   }
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.getCall();
 
-    this.buttonsLeft = this.config.template.order.confirmation.buttonsLeft;
-    this.buttonsRight = this.config.template.order.confirmation.buttonsRight;
-    if (this.config.template.order.confirmation.pageType) {
-      this.pageLayoutType = this.config.template.order.confirmation.pageType;
-    }
+    this.storage.removeSession('index');
+    this.transform.setVariable('environment', this.environmentService.get());
 
-    //this.action.register('extra', () => { this.extra(); });
+    this.page = this.config.getPage(PageTypes.orderConfirm);
+    
+    this.initCall();
   }
 
   public ngOnDestroy(): void {
@@ -73,13 +68,33 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
     this.subscription.forEach(subscription => subscription.unsubscribe());
   }
 
-  public getCall(): void {
-    this.endpoints.get('getDetailCall').then((call: Call) => {
-      this.transform.setVariable('call', call);
+  public initCall(): void {
+    const callData = this.storage.getSession('call');
+    let call: Call;
+    if (callData) {
+      call = JSON.parse(callData) as Call;
+    }
+
+    const id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    if (!call || call.id !== id) {
+      this.endpoints.get('getCallById').then((call: Call) => {
+        this.call = call;
+        this.headerData = this.config.transformCall(call);
+        this.transform.setVariable('call', call);
+      });
+    } else {
       this.call = call;
-      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
       this.headerData = this.config.transformCall(call);
-    });
+      this.transform.setVariable('call', call);
+    }
+  }  
+
+  public getNewOrders(): Order[] {
+    return this.call.orders.filter(order => order.id === undefined);
+  }
+
+  public getExistingOrders(): Order[] {
+    return this.call.orders.filter(order => order.id !== undefined);
   }
 
   public onOrderChanged($event): void {
@@ -90,8 +105,8 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
       case 'edit':
         this.editOrder($event.data);
         break;
-      case 'delete-ordertype':
-        this.removeOrdertype($event.data, $event.ordertype);
+      case 'delete-category':
+        this.removeCategory($event.data, $event.category);
         break;
     }
   }
@@ -99,58 +114,53 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
   public deleteOrder(order: Order): void {
     const item = this.findOrder(order);
     if (item) {
-      this.orders.splice(this.orders.indexOf(item), 1);
-      this.storage.setSession('order', JSON.stringify(this.orders), true);
+      this.call.orders.splice(this.call.orders.indexOf(item), 1);
+      this.storage.setSession('call', JSON.stringify(this.call), true);
     }
   }
 
   public editOrder(order: Order): void {
     const item = this.findOrder(order);
     if (item) {
-      this.storage.setSession('index', JSON.stringify(this.orders.indexOf(item)), true);
+      this.storage.setSession('index', JSON.stringify(this.call.orders.indexOf(item)), true);
       this.navigationService.back();
     }
   }
 
   public findOrder(order: Order): Order {
-    return this.orders.find(o => {
+    return this.call.orders.find(o => {
       if (o.contractorDomain.id !== order.contractorDomain.id || o.description !== order.description) {
         return false;
       }
-      // if (o.ordertypes && order.ordertypes) {
-      //   for (let i = 0; i < o.ordertypes.length; i++) {
-      //     if (!order.ordertypes[i] || order.ordertypes[i].id !== o.ordertypes[i].id) {
-      //       return false;
-      //     }
-      //   }
-      // }
+      if (o.categories && order.categories) {
+        for (let i = 0; i < o.categories.length; i++) {
+          if (!order.categories[i] || order.categories[i].id !== o.categories[i].id) {
+            return false;
+          }
+        }
+      }
       return true;
     });
   }
 
-  public removeOrdertype(order: Order, ordertype: Ordertype): void {
-    // if (order) {
-    //   const item = this.orders.find(o =>
-    //     o.contractorDomain.id === order.contractorDomain.id
-    //     && o.description === order.description
-    //     && order.ordertypes.indexOf(ordertype) > -1);
-    //   if (item) {
-    //     item.ordertypes.splice(item.ordertypes.indexOf(ordertype), 1);
-    //     this.storage.setSession('order', JSON.stringify(this.orders), true);
-    //   }
-    // }
-  }
-
-  public extra() {
-    this.storage.setSession('index', JSON.stringify(this.orders.length), true);
-    this.navigationService.back();
+  public removeCategory(order: Order, ordertype: Category): void {
+    if (order) {
+      const item = this.call.orders.find(o =>
+        o.contractorDomain.id === order.contractorDomain.id
+        && o.description === order.description
+        && order.categories.indexOf(ordertype) > -1);
+      if (item) {
+        item.categories.splice(item.categories.indexOf(ordertype), 1);
+        this.storage.setSession('call', JSON.stringify(this.call), true);
+      }
+    }
   }
 
   public validate(): boolean {
-    if (!this.orders || this.orders.length <= 0) {
+    if (!this.call.orders || this.call.orders.length <= 0) {
       return false;
     }
-    for ( const order of this.orders) {
+    for ( const order of this.call.orders) {
       if (!order.description) {
         return false;
       }
@@ -163,7 +173,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
 
   public save() {
     const loaderId = this.loader.add('Bezig met opslaan!');
-    this.endpoints.post('postOrders', this.orders).then((message: Message) => {
+    this.endpoints.post('postOrders', this.call.orders).then((message: Message) => {
       this.storage.clearProcessData();
       this.navigationService.navigateHome();
       this.loader.remove(loaderId);
@@ -175,7 +185,7 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
   }
 
   public assign(): void {
-    this.endpoints.post('putAssignUser', this.orders).then((message: Message) => {
+    this.endpoints.post('putAssignUser', this.call.orders).then((message: Message) => {
       this.save();
     })
     .catch(() => {

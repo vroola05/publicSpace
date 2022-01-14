@@ -1,4 +1,8 @@
-<lib-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType" [buttonsRight]="buttonsRight">
+<lib-panel *ngIf="page && call"
+  [data]="call"
+  [buttonsLeft]="page?.buttonsLeft"
+  [buttonsRight]="page?.buttonsRight"
+  [pageLayoutType]="page?.layoutType">
   <lib-panel-title>
     <div  class="row details-main">
       <div class="col-sm-12 details-main-header">
@@ -11,8 +15,8 @@
       </div>
       <div class="col-sm-12 col-md-6">
         
-        <lib-panel-order [action]="'new'" [title]="'Nieuwe opdracht(en)'" [orders]="orders" (changed)="onOrderChanged($event)"></lib-panel-order>
-        <lib-panel-order [title]="'Bestaande opdracht(en)'" [orders]="call.orders" (changed)="onOrderChanged($event)"></lib-panel-order>
+        <lib-panel-order [action]="'new'" [title]="'Nieuwe opdracht(en)'" [orders]="getNewOrders()" (changed)="onOrderChanged($event)"></lib-panel-order>
+        <lib-panel-order [title]="'Bestaande opdracht(en)'" [orders]="getExistingOrders()" (changed)="onOrderChanged($event)"></lib-panel-order>
       </div>
     </div>
   </lib-panel-title>

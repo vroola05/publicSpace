@@ -17,6 +17,7 @@ import { EndpointService } from '../../../../../services/endpoint/endpoint.servi
 import { Contract } from '../../../../../../model/contract';
 import { EnvironmentService } from '../../../../../services/environment/environment.service';
 import { Order } from '../../../../../../model/order';
+import { ValidationService } from '../../../../../services/validation/validation.service';
 
 @Component({
   selector: 'lib-order-creation',
@@ -27,14 +28,14 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   @ViewChild('contractorComponent') public contractorComponent: DropdownFieldComponent;
 
   public contracts: Contract[];
-
+  public initialized = false;
   public call: Call;
   public getUrlImage: string;
   public headerData: CallList;
 
   public order: Order;
 
-  public index = 0;
+  public index: number;
 
   public _categoryItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
@@ -49,13 +50,9 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     private endpoints: EndpointService,
     private config: ConfigService,
     private environmentService: EnvironmentService,
+    private validation: ValidationService
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
-
-    const index = this.storage.getSession('index');
-    if (index) {
-       this.index = JSON.parse(index) as number;
-    }
   }
 
   public ngOnInit(): void {
@@ -93,17 +90,27 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     }
   }
 
-  public initOrder(): void {
-    if (!this.index) {
-      this.index = 0;
+
+  public initIndex(): void {
+    const index = this.storage.getSession('index');
+    if (index) {
+       this.index = JSON.parse(index) as number;
     }
+
+    if (this.index === undefined || this.index >= this.call.orders.length) {
+
+      this.index = this.call.orders.length;
+    }
+
+    this.storage.setSession('index', JSON.stringify(this.index), true);
+  }
+
+  public initOrder(): void {
     if (!this.call.orders) {
       this.call.orders = [];
     }
-  
-    if (this.index >= this.call.orders.length) {
-      this.index = this.call.orders.length;
-    }
+
+    this.initIndex();
 
     if (!this.call.orders[this.index]) {
       const order = new Order();
@@ -133,7 +140,12 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
         contractorItems.push({ name: contract.domain.name, value: '' + contract.id, data: contract });
       });
       this.contractorComponent.options = contractorItems;
-      this.contractorComponent.select(this.contractorComponent.options.find(option => option.data.domain.id === this.order.contractorDomain.id));
+
+      if (this.order && this.order.contractorDomain) {
+        this.contractorComponent.select(this.contractorComponent.options.find(option => option.data.domain.id === this.order.contractorDomain.id));
+      } else {
+        this.initialized = true;
+      }
     });
   }
 
@@ -147,13 +159,17 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
       const categoryItems = [];
       contract.mainCategories.forEach(mainCategory => {
         mainCategory.categories.forEach(category => {
-          categoryItems.push({ name: mainCategory.name + ' - ' + category.name, value: category.id, selected: false, data: category });
+          categoryItems.push({ name: mainCategory.name + ' - ' + category.name, value: category.id, selected: this.isCategorySelected(category.id), data: category });
         });
         
       })
       this._categoryItems = categoryItems;
 
     });
+  }
+
+  public isCategorySelected(id: number): boolean {
+    return this.order.categories && this.order.categories.find(c => { return c.id === id}) !== undefined;
   }
 
   public onDescriptionChanged($event): void {
@@ -170,5 +186,16 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     });
     this.order.categories = categories;
     this.storeCall();
+  }
+
+  public next(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.validation.clear();
+      if (this.validation.validate('order')) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    });
   }
 }
