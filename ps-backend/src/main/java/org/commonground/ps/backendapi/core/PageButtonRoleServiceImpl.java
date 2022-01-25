@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
-import org.commonground.ps.backendapi.jpa.entities.PageButtonTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
 import org.commonground.ps.backendapi.jpa.repositories.RolesRepository;
 import org.commonground.ps.backendapi.model.PageButton;

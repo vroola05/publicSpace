@@ -60,11 +60,11 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
   public ngOnInit(): void {
     super.ngOnInit();
     this.getCall();
-    this.buttonsLeft = this.config.template.details.buttonsLeft;
+    /*this.buttonsLeft = this.config.template.details.buttonsLeft;
     this.buttonsRight = this.config.template.details.buttonsRight;
     if (this.config.template.details.pageType) {
       this.pageLayoutType = this.config.template.details.pageType;
-    }
+    }*/
 
     //this.action.register('reject-order', () => { this.reject(); });
   }

@@ -15,6 +15,8 @@ import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
@@ -37,6 +39,7 @@ import org.commonground.ps.backendapi.model.DomainType;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
+import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageButtonCondition;
@@ -304,6 +307,7 @@ public class Convert {
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
         pageOverviewTemplate.setPersonal(pageOverviewEntity.getPersonal());
         pageOverviewTemplate.setSize(pageOverviewEntity.getSize());
+        pageOverviewTemplate.setPanelType("ListPanelComponent");
         List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
         
         List<Status> statusses = new ArrayList<Status>();
@@ -454,5 +458,21 @@ public class Convert {
     contract.setAccepted(contractEntity.getAccepted());
     contract.setDateCreated(contractEntity.getDateCreated());
     return contract;
+  }
+
+  public static Order orderEntity(OrderEntity orderEntity) {
+    Order order = new Order();
+    order.setId(orderEntity.getId());
+    order.setDescription(orderEntity.getDescription());
+    order.setDateCreated(orderEntity.getDateCreated());
+    order.setDateEnded(orderEntity.getDateEnded());
+    order.setContractorDomain(domainEntity(orderEntity.getDomain()));
+
+    order.setStatus(statusEntity(orderEntity.getStatus()));
+    
+    for (OrderCategoryEntity orderCategoryEntity: orderEntity.getOrderCategory()) {
+      order.getCategories().add(categoryEntity(orderCategoryEntity.getCategory()));
+    }
+    return order;
   }
 }

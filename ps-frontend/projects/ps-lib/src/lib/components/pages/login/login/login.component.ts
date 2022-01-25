@@ -82,9 +82,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public resetAccount(): void {
-    if (this.config.template.login.resetAccount.route) {
-      this.navigationService.navigate([this.config.template.login.resetAccount.route]);
-    }
+    // if (this.config.template.login.resetAccount.route) {
+    //   this.navigationService.navigate([this.config.template.login.resetAccount.route]);
+    // }
   }
 
   public submit(): void {

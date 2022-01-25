@@ -67,11 +67,11 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
   public ngOnInit(): void {
     super.ngOnInit();
     this.getCall();
-    this.buttonsLeft = this.config.template.order.confirmation.buttonsLeft;
-    this.buttonsRight = this.config.template.order.confirmation.buttonsRight;
-    if (this.config.template.order.confirmation.pageType) {
-      this.pageLayoutType = this.config.template.order.confirmation.pageType;
-    }
+    // this.buttonsLeft = this.config.template.order.confirmation.buttonsLeft;
+    // this.buttonsRight = this.config.template.order.confirmation.buttonsRight;
+    // if (this.config.template.order.confirmation.pageType) {
+    //   this.pageLayoutType = this.config.template.order.confirmation.pageType;
+    // }
 
     // this.action.register('save', () => { this.save(); });
   }

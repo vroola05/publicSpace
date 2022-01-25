@@ -58,11 +58,11 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.config.template.change.confirmation.buttonsLeft;
-    this.buttonsRight = this.config.template.change.confirmation.buttonsRight;
-    if (this.config.template.change.confirmation.pageType) {
-      this.pageLayoutType = this.config.template.change.confirmation.pageType;
-    }
+    // this.buttonsLeft = this.config.template.change.confirmation.buttonsLeft;
+    // this.buttonsRight = this.config.template.change.confirmation.buttonsRight;
+    // if (this.config.template.change.confirmation.pageType) {
+    //   this.pageLayoutType = this.config.template.change.confirmation.pageType;
+    // }
 
     this.getCall();
   }

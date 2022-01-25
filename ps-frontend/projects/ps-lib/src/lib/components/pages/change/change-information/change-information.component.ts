@@ -41,11 +41,11 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.config.template.change.information.buttonsLeft;
-    this.buttonsRight = this.config.template.change.information.buttonsRight;
-    if (this.config.template.change.information.pageType) {
-      this.pageLayoutType = this.config.template.change.information.pageType;
-    }
+    // this.buttonsLeft = this.config.template.change.information.buttonsLeft;
+    // this.buttonsRight = this.config.template.change.information.buttonsRight;
+    // if (this.config.template.change.information.pageType) {
+    //   this.pageLayoutType = this.config.template.change.information.pageType;
+    // }
 
     //this.action.register('next', () => { this.next(); });
   }

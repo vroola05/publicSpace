@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.commonground.ps.backendapi.model.CallList;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilter;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterOperator;
 import org.commonground.ps.backendapi.model.QueryParametersFieldFilterType;
@@ -14,11 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
-public class CallListBuilder {
+public class ListBuilder<T> {
   private List<QueryParametersFieldFilter> filters;
   private List<Sort.Order> orders;
 
-  public CallListBuilder() {
+  public ListBuilder() {
     filters = new ArrayList<>();
     orders = new ArrayList<>();
   }
@@ -31,13 +30,13 @@ public class CallListBuilder {
     return PageRequest.of(offset, size, Sort.by(orders));
   }
 
-  public CallListBuilder with(QueryParametersFieldFilter filter) {
+  public ListBuilder with(QueryParametersFieldFilter filter) {
     filters.add(filter);
     return this;
   }
 
-  public Specification<CallList> build() {
-    Specification<CallList> specification = null;
+  public Specification<T> build() {
+    Specification<T> specification = null;
 
     for (QueryParametersFieldFilter filter : filters) {
       if (specification == null) {
@@ -50,7 +49,7 @@ public class CallListBuilder {
     return specification;
   }
 
-  private Specification<CallList> getSpecification(QueryParametersFieldFilter filter) {
+  private Specification<T> getSpecification(QueryParametersFieldFilter filter) {
     if (filter.getOperator() == QueryParametersFieldFilterOperator.EQUAL) {
       return getSpecificationEquals(filter);
     } else if (filter.getOperator() == QueryParametersFieldFilterOperator.BETWEEN) {
@@ -62,7 +61,7 @@ public class CallListBuilder {
   }
 
 
-  private Specification<CallList> getSpecificationBetween(QueryParametersFieldFilter filter) {
+  private Specification<T> getSpecificationBetween(QueryParametersFieldFilter filter) {
     if (filter.getType() == QueryParametersFieldFilterType.DATE) {
       Date from = getValue(filter.getFrom(), filter.getType(), Date.class);
       Date to = getValue(filter.getTo(), filter.getType(), Date.class);
@@ -98,7 +97,7 @@ public class CallListBuilder {
     return null;
   }
 
-  private Specification<CallList> getSpecificationEquals(QueryParametersFieldFilter filter) {
+  private Specification<T> getSpecificationEquals(QueryParametersFieldFilter filter) {
     if (filter.getType() == QueryParametersFieldFilterType.DATE) {
       return getEqualDate(filter.getField(), getValue(filter.getValue(), filter.getType(), Date.class));
     } else if (filter.getType() == QueryParametersFieldFilterType.NUMBER) {
@@ -109,7 +108,7 @@ public class CallListBuilder {
     return null;
   }
 
-  private Specification<CallList> getSpecificationIn(QueryParametersFieldFilter filter) {
+  private Specification<T> getSpecificationIn(QueryParametersFieldFilter filter) {
     if (filter.getType() == QueryParametersFieldFilterType.DATE) {
       return getInDate(filter.getField(), filter.getList().stream().map(v -> v.getDate())
       .collect(Collectors.toList()));
@@ -123,91 +122,91 @@ public class CallListBuilder {
     return null;
   }
 
-  private Specification<CallList> getEqualString(String field, String value) {
+  private Specification<T> getEqualString(String field, String value) {
     return (root, query, builder) -> {
       return builder.like(builder.lower(root.get(field)), value == null ? "" : "%" + value.toLowerCase() + "%");
     };
   }
 
-  private Specification<CallList> getEqualNumber(String field, Long value) {
+  private Specification<T> getEqualNumber(String field, Long value) {
     return (root, query, builder) -> {
       return builder.equal(root.get(field), value == null ? null : value);
     };
   }
 
-  private Specification<CallList> getEqualDate(String field, Date value) {
+  private Specification<T> getEqualDate(String field, Date value) {
     return (root, query, builder) -> {
       return builder.equal(root.get(field), value);
     };
   }
 
-  private Specification<CallList> getInText(String field, List<String> value) {
+  private Specification<T> getInText(String field, List<String> value) {
     return (root, query, builder) -> {
       return root.get(field).in(value);
     };
   }
 
-  private Specification<CallList> getInNumber(String field, List<Long> value) {
+  private Specification<T> getInNumber(String field, List<Long> value) {
     return (root, query, builder) -> {
       return root.get(field).in(value);
     };
   }
 
-  private Specification<CallList> getInDate(String field, List<Date> value) {
+  private Specification<T> getInDate(String field, List<Date> value) {
     return (root, query, builder) -> {
       return root.get(field).in(value);
     };
   }
 
-  private Specification<CallList> getBetween(String field, Long from , Long to) {
+  private Specification<T> getBetween(String field, Long from , Long to) {
     return (root, query, builder) -> {
       return builder.between(root.get(field), from, to);
     };
   }
 
-  private Specification<CallList> getBetween(String field, Date from , Date to) {
+  private Specification<T> getBetween(String field, Date from , Date to) {
     return (root, query, builder) -> {
       return builder.between(root.get(field), from, to);
     };
   }
 
-  private Specification<CallList> getBetween(String field, String from , String to) {
+  private Specification<T> getBetween(String field, String from , String to) {
     return (root, query, builder) -> {
       return builder.between(root.get(field), from, to);
     };
   }
 
-  private Specification<CallList> getLessThanOrEqualTo(String field, Date value) {
+  private Specification<T> getLessThanOrEqualTo(String field, Date value) {
     return (root, query, builder) -> {
       return builder.lessThanOrEqualTo(root.get(field).as(Date.class), value);
     };
   }
 
-  private Specification<CallList> getLessThanOrEqualTo(String field, Long value) {
+  private Specification<T> getLessThanOrEqualTo(String field, Long value) {
     return (root, query, builder) -> {
       return builder.lessThanOrEqualTo(root.get(field).as(Long.class), value);
     };
   }
 
-  private Specification<CallList> getLessThanOrEqualTo(String field, String value) {
+  private Specification<T> getLessThanOrEqualTo(String field, String value) {
     return (root, query, builder) -> {
       return builder.lessThanOrEqualTo(root.get(field).as(String.class), value);
     };
   }
 
-  private Specification<CallList> getGreaterThanOrEqualTo(String field, Date value) {
+  private Specification<T> getGreaterThanOrEqualTo(String field, Date value) {
     return (root, query, builder) -> {
       return builder.greaterThanOrEqualTo(root.get(field).as(Date.class), value);
     };
   }
 
-  private Specification<CallList> getGreaterThanOrEqualTo(String field, Long value) {
+  private Specification<T> getGreaterThanOrEqualTo(String field, Long value) {
     return (root, query, builder) -> {
       return builder.greaterThanOrEqualTo(root.get(field).as(Long.class), value);
     };
   }
 
-  private Specification<CallList> getGreaterThanOrEqualTo(String field, String value) {
+  private Specification<T> getGreaterThanOrEqualTo(String field, String value) {
     return (root, query, builder) -> {
       return builder.greaterThanOrEqualTo(root.get(field).as(String.class), value);
     };

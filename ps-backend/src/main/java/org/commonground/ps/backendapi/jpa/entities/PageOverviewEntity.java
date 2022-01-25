@@ -30,6 +30,7 @@ public class PageOverviewEntity {
   @JoinColumn(name = "page_id", nullable = false)
   private PageEntity page;
 
+  @OrderBy("sort ASC")
   @OneToMany(targetEntity = PageOverviewColumnEntity.class, mappedBy = "pageOverview", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<PageOverviewColumnEntity> columns = new ArrayList<>();
 

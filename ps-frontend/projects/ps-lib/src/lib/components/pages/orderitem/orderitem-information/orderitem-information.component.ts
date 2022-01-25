@@ -75,11 +75,11 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
   public ngOnInit(): void {
     super.ngOnInit();
     this.getCall();
-    this.buttonsLeft = this.config.template.order.information.buttonsLeft;
-    this.buttonsRight = this.config.template.order.information.buttonsRight;
-    if (this.config.template.order.information.pageType) {
-      this.pageLayoutType = this.config.template.order.information.pageType;
-    }
+    // this.buttonsLeft = this.config.template.order.information.buttonsLeft;
+    // this.buttonsRight = this.config.template.order.information.buttonsRight;
+    // if (this.config.template.order.information.pageType) {
+    //   this.pageLayoutType = this.config.template.order.information.pageType;
+    // }
 
     //this.action.register('next', () => { this.next(); });
     //this.action.register('save', () => { this.save(); });

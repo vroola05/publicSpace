@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Type } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CallList } from '../../../../model/call-list';
 import { HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
-import { PageLayoutType } from '../../../../model/intefaces';
+import { DomainTypeEnum, PageLayoutType } from '../../../../model/intefaces';
 import { Call } from '../../../../model/call';
 import { PageOverviewTemplate } from '../../../../model/page-overview-template';
 
@@ -22,6 +22,18 @@ import { AuthorisationService } from '../../../services/authorisation/authorisat
 import { EndpointService } from '../../../services/endpoint/endpoint.service';
 import { DynamicDirective } from '../../../directives/dynamic.directive';
 import { ListPanelComponent } from '../../list/components/list-panel/list-panel.component';
+import { DomainType } from '../../../../model/domain-type';
+import { OrderList } from '../../../../model/order-list';
+import { List } from '../../../../model/list';
+import { DynamicList } from '../../list/components/dynamic-list.component';
+import { ListPanelOrderComponent } from '../../list/components/list-panel-order/list-panel-order.component';
+
+interface OverviewDomainTypeConfig {
+  domainType: DomainTypeEnum;
+  listEndpoint: string;
+  toggleEndpoint: string;
+  panelType: Type<DynamicList>;
+}
 
 @Component({
   selector: 'lib-overview',
@@ -40,14 +52,19 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   private id: number;
   private subscriptions: Subscription[] = [];
 
-  public callList: CallList[] = [];
+  public list = [];
   public call: Call;
   public endOfList = false;
   public listTemplate: ListTemplateT;
-
+  public domainType: DomainType;
   public search = '';
 
   private pageChanged = false;
+  private domainTypeConfig: OverviewDomainTypeConfig;
+  private domainTypeConfigs: OverviewDomainTypeConfig[] = [  
+    { domainType: DomainTypeEnum.GOVERNMENT, panelType: ListPanelComponent, listEndpoint: 'getListCall', toggleEndpoint: 'getCallByCallListId' },
+    { domainType: DomainTypeEnum.CONTRACTOR, panelType: ListPanelOrderComponent, listEndpoint: 'getListOrder', toggleEndpoint: 'getCallByCallListId' }
+  ];
 
   constructor(
     protected router: Router,
@@ -65,7 +82,10 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
 
     this.page = this.config.getPage(PageTypes.overview);
-    
+    this.domainType = this.config.getDomainType();
+
+    this.domainTypeConfig = this.domainTypeConfigs.find(domainTypeConfig => domainTypeConfig.domainType === this.domainType.id );
+
     this.search = this.filterService.getSearch();
   }
 
@@ -108,8 +128,12 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   private loadComponent() {
     const viewContainerRef = this.dynamicHost.viewContainerRef;  
     viewContainerRef.clear();
-
-    const componentRef = viewContainerRef.createComponent<ListPanelComponent>(ListPanelComponent);  
+    let a: DynamicList;
+    const componetns = [ListPanelComponent, ListPanelOrderComponent];
+    console.log(componetns.find(componentType => { 
+      console.log(componentType.name, this.pageOverviewTemplate.panelType);
+      return typeof componentType === this.pageOverviewTemplate.panelType;}));
+    const componentRef = viewContainerRef.createComponent<DynamicList>(componetns.find(componentType => componentType.name === this.pageOverviewTemplate.panelType));//(this.domainTypeConfig.panelType);  
     componentRef.instance.template = this.listTemplate;
     componentRef.instance.call = this.call;
   }
@@ -124,7 +148,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.pageOverviewTemplate = this.page.pageOverviewTemplate.find(pageOverviewTemplate => pageOverviewTemplate.id === this.id);
 
     this.filterService.setListsize(this.pageOverviewTemplate.size ? this.pageOverviewTemplate.size : 50);
-
+    
     this.listTemplate = {
       id: String(this.pageOverviewTemplate.id),
       toggle: this.pageOverviewTemplate.toggle,
@@ -148,13 +172,13 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   }
 
   public getList(append: boolean, queryParameters: QueryParameters): void {
-    this.endpoints.post('getCallList', queryParameters).then((callList: CallList[]) => {
-      if (callList) {
-        this.endOfList = callList.length < this.filterService.getListsize();
+    this.endpoints.post(this.domainTypeConfig.listEndpoint, queryParameters).then((list) => {
+      if (list) {
+        this.endOfList = list.length < this.filterService.getListsize();
         if (append) {
-          this.callList = this.callList.concat(callList);
+          this.list = this.list.concat(list);
         } else {
-          this.callList = callList;
+          this.list = list;
         }
       }
       this.pageChanged = true;
@@ -172,16 +196,17 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   }
 
   public clicked($event: any) {
-    this.transform.setVariable('calllist', $event.data);
+    this.transform.setVariable('list', $event.data);
     this.call = null;
     if (this.listTemplate.toggle) {
-      this.endpoints.get('getCallByCallListId').then((call: Call) => {
+      this.endpoints.get(this.domainTypeConfig.toggleEndpoint).then((call: Call) => {
         this.transform.setVariable('call', call);
         this.call = call;
         this.loadComponent();
       });
     } else if (this.listTemplate.route) {
       this.clearComponent();
+      console.log(this.listTemplate.route, this.transform.URL(this.listTemplate.route))
       this.navigationService.navigate([this.transform.URL(this.listTemplate.route)]);
     } else {
       this.clearComponent();

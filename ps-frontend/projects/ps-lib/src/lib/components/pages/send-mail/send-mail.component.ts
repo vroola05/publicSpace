@@ -60,9 +60,9 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
     super.ngOnInit();
     const identifier = this.activatedRoute.snapshot.paramMap.get('mailId');
 
-    const mailConfigs = this.config.template.mail;
+    // const mailConfigs = this.config.template.mail;
 
-    this.mailConfig = mailConfigs.find(conf => conf.id === identifier);
+    // this.mailConfig = mailConfigs.find(conf => conf.id === identifier);
     if (this.mailConfig && this.mailConfig.endpoint) {
       this.getCall();
 

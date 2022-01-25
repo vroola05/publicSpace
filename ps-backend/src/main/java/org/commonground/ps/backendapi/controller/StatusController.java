@@ -55,7 +55,7 @@ public class StatusController extends Controller {
 		return statusses;
 	}
 
-	@Secured(admin = true)
+	@Secured(identifier = "postStatus")
 	@PostMapping(consumes = "application/json")
 	public Status postStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
@@ -72,7 +72,7 @@ public class StatusController extends Controller {
 		throw new BadRequestException();
 	}
 
-	@Secured(admin = true)
+	@Secured(identifier = "putStatus")
 	@PutMapping(value = "/{statusId}", consumes = "application/json", produces = "application/json")
 	public Status putStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,

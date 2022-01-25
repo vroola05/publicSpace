@@ -5,7 +5,7 @@ import { Status } from './status';
 export class Order {
   public id?: number;
   public description?: string;
-  public dateCreated?: Date;
+  public getOrderList?: Date;
   public dateEnded?: Date;
 
   public contractorDomain?: Domain;

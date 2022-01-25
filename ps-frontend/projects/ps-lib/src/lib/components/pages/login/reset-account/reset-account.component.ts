@@ -59,9 +59,9 @@ export class ResetAccountComponent implements OnInit, AfterViewInit {
   }
 
   public backToLogin(): void {
-    if (this.config.template.login.resetAccount.route) {
-      this.navigationService.navigate([this.config.template.login.login.route]);
-    }
+    // if (this.config.template.login.resetAccount.route) {
+    //   this.navigationService.navigate([this.config.template.login.login.route]);
+    // }
   }
 
   public submit(): void {

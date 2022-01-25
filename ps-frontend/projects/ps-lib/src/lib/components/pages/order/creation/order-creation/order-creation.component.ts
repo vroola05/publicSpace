@@ -81,12 +81,12 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
       this.endpoints.get('getCallById').then((call: Call) => {
         this.setCall(call);
         this.initOrder();
-        this.getContracts();
+        this.getOrderContracts();
       });
     } else {
       this.setCall(call);
       this.initOrder();
-      this.getContracts();
+      this.getOrderContracts();
     }
   }
 
@@ -132,8 +132,8 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     this.storage.setSession('call', JSON.stringify(this.call), true);
   }
 
-  public getContracts(): void {
-    this.endpoints.get('getContracts').then((contracts: Contract[]) => {
+  public getOrderContracts(): void {
+    this.endpoints.get('getOrderContracts').then((contracts: Contract[]) => {
       this.contracts = contracts;
       const contractorItems = [];
       this.contracts.forEach(contract => {

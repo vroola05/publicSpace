@@ -40,12 +40,12 @@ export class ChangeLocationComponent extends PageAbstract implements OnInit, OnD
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.buttonsLeft = this.config.template.change.location.buttonsLeft;
-    this.buttonsRight = this.config.template.change.location.buttonsRight;
+    // this.buttonsLeft = this.config.template.change.location.buttonsLeft;
+    // this.buttonsRight = this.config.template.change.location.buttonsRight;
 
-    if (this.config.template.change.location.pageType) {
-      this.pageLayoutType = this.config.template.change.location.pageType;
-    }
+    // if (this.config.template.change.location.pageType) {
+    //   this.pageLayoutType = this.config.template.change.location.pageType;
+    // }
 
     //this.action.register('next', () => { this.next(); });
   }

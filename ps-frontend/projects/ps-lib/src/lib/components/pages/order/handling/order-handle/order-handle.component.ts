@@ -56,8 +56,8 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
   public ngOnInit(): void {
     super.ngOnInit();
 
-    this.buttonsLeft = this.config.template.order.handle.buttonsLeft;
-    this.buttonsRight = this.config.template.order.handle.buttonsRight;
+    // this.buttonsLeft = this.config.template.order.handle.buttonsLeft;
+    // this.buttonsRight = this.config.template.order.handle.buttonsRight;
 
     //this.action.register('next', () => { this.next(); });
     //this.action.register('save', () => { this.save(); });

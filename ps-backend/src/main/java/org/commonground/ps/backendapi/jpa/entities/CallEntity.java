@@ -1,8 +1,20 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,8 +44,8 @@ public class CallEntity {
   private PersonEntity person;
 
   @ManyToOne(fetch=FetchType.LAZY)
-  @JoinColumn(name="company_id", referencedColumnName = "id")
-  private CompanyEntity company;
+  @JoinColumn(name="domain_id", referencedColumnName = "id")
+  private DomainEntity domain;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "status_id", referencedColumnName = "id")
@@ -46,4 +58,7 @@ public class CallEntity {
   @ManyToOne(fetch=FetchType.LAZY)
   @JoinColumn(name="group_id", referencedColumnName = "id")
   private GroupEntity group;
+
+  @OneToMany(targetEntity = OrderEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<OrderEntity> orders;
 }

@@ -53,11 +53,4 @@ public class DomainEntity {
   @NotAudited
   @OneToMany(mappedBy = "domain", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<StatusEntity> statusses;
-
-  // @OrderBy("sort ASC")
-  // @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainGovernment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  // private List<ContractEntity> contractsContractor;
-
-  // @OneToMany(targetEntity = ContractEntity.class, mappedBy = "domainContractor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  // private List<ContractEntity> contractsGovernment;
 }

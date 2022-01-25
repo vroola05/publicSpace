@@ -20,13 +20,16 @@ import { TransformService } from '../../../../../services/transform/transform.se
 import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
 import { EnvironmentService } from '../../../../../services/environment/environment.service';
 import { Category } from '../../../../../../model/category';
+import { ActionOrderCreate } from '../order-call-create';
+import { ToastService } from '../../../../../services/toast/toast.service';
+import { ApiService } from '../../../../../services/api/api.service';
 
 @Component({
   selector: 'lib-order-confirmation',
   templateUrl: './order-confirmation.component.html',
   styleUrls: ['./order-confirmation.component.scss']
 })
-export class OrderConfirmationComponent extends PageAbstract implements OnInit, OnDestroy {
+export class OrderConfirmationComponent extends ActionOrderCreate implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
   public call: Call;
   public getUrlImage: string;
@@ -44,12 +47,14 @@ export class OrderConfirmationComponent extends PageAbstract implements OnInit, 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private endpoints: EndpointService,
-    private config: ConfigService,
-    private environmentService: EnvironmentService,
-    private loader: Loader
+    protected apiService: ApiService,
+    protected endpoints: EndpointService,
+    protected config: ConfigService,
+    protected environmentService: EnvironmentService,
+    protected loader: Loader,
+    protected toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, apiService, endpoints, config, loader, toast);
   }
 
   public ngOnInit(): void {

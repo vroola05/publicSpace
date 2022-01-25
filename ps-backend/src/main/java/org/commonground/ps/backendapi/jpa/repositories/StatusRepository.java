@@ -17,6 +17,6 @@ public interface StatusRepository extends JpaRepository<StatusEntity, Long> {
   @Query("select s from StatusEntity s where s.domain.id = :#{#domainId} and s.id = :#{#id}")
   Optional<StatusEntity> getStatusByDomainIdAndById(@Param("domainId") Long domainId, @Param("id") Long id);
 
-  @Query("select s from StatusEntity s where s.domain.id = :#{#id}")
+  @Query("select s from StatusEntity s where s.domain.id = :#{#id} order by s.name asc")
   List<StatusEntity> getStatusByDomainId(@Param("id") Long id);
 }

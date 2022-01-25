@@ -53,18 +53,3 @@
     <lib-maps [classes]="'bigger'" [clickable]="true" [controls]="true" [location]="call.location" (clicked)="clicked($event)"></lib-maps>
   </div>
 </div>
-<div class="row" *ngIf="showNearby()">
-  <div class="col-sm-12 col-md-6">
-    <h4>Staat de melding die je wil doen al in deze lijst?</h4>
-  </div>
-  <div class="col-sm-12">
-    <lib-list
-      [listTemplate]="listTemplate"
-      [data]="callList"
-      (clicked)="clickedNearby($event)">
-
-      <lib-list-panel [template]="listTemplate" [call]="callNearby"></lib-list-panel>
-
-    </lib-list>
-  </div>
-</div>

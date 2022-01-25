@@ -43,13 +43,18 @@ public class ActionServiceImpl implements ActionService {
 	@Autowired
 	private CallRepository callRepository;
 
-	public Action get(Long domainId, ActionEnum actionEnum) {
-		Optional<ActionEntity> actionEntity = actionRepository.getActionByDomainIdAndActionTypeId(domainId,
-				actionEnum.id);
+	public Optional<Action> get(Long domainId, ActionEnum actionEnum) {
+		Optional<ActionEntity> actionEntity = getEntity(domainId, actionEnum);
 		if (actionEntity.isPresent()) {
-			return Convert.actionEntity(actionEntity.get());
+			return Optional.of(Convert.actionEntity(actionEntity.get()));
 		}
-		return null;
+		return Optional.empty();
+	}
+
+	public Optional<ActionEntity> getEntity(Long domainId, ActionEnum actionEnum) {
+		return actionRepository.getActionByDomainIdAndActionTypeId(domainId,
+				actionEnum.id);
+
 	}
 
 	public List<ActionType> getActionTypes() {
@@ -141,8 +146,7 @@ public class ActionServiceImpl implements ActionService {
 			ActionEntity actionEntity = actionEntityOptional.get();
 			
 			if (actionEntity.getStatus() != null && actionEntity.getStatus().getId() != null) {
-				CompanyEntity companyEntity = actionEntity.getDomain().getCompany();
-				Optional<CallEntity> callEntityOptional = callRepository.getCallById(callId, companyEntity.getId());
+				Optional<CallEntity> callEntityOptional = callRepository.getCallById(callId, domainId);
 				if (callEntityOptional.isPresent()) {
 					CallEntity callEntity = callEntityOptional.get();
 					callEntity.setStatus(actionEntity.getStatus());
@@ -151,5 +155,11 @@ public class ActionServiceImpl implements ActionService {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public boolean order(long domainId, long orderId, ActionEnum action) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

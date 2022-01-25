@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CallRepository extends JpaRepository<CallEntity, Long> {
-  @Query("select c from CallEntity c where c.id = :#{#id} and c.company.id = :#{#companyId}")
-  Optional<CallEntity> getCallById(@Param("id") Long id, @Param("companyId") Long companyId);
+  @Query("select c from CallEntity c where c.id = :#{#id} and c.domain.id = :#{#domainId}")
+  Optional<CallEntity> getCallById(@Param("id") Long id, @Param("domainId") Long domainId);
 
   @Query(value = "SELECT nextval('public.seq_casenumber_id')", nativeQuery = true)
   public BigDecimal getNextCasenumber();

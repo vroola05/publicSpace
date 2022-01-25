@@ -193,7 +193,6 @@ export class ConfigService {
         + (!call.location.street ? '' : ', ' + call.location.street)
         + (!call.location.number ? '' : ' ' + call.location.number);
     }
-    callList.supervisor = !call.supervisor ? '' : call.supervisor.name;
 
     return callList;
   }

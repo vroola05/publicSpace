@@ -7,13 +7,14 @@ import { ButtonT, ListTemplateT } from '../../../../../model/template';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { PageButton } from '../../../../../model/page-button';
+import { DynamicList } from '../dynamic-list.component';
 
 @Component({
   selector: 'lib-list-panel',
   templateUrl: './list-panel.component.html',
   styleUrls: ['./list-panel.component.scss']
 })
-export class ListPanelComponent {
+export class ListPanelComponent implements DynamicList {
   public getUrlImage = '';
 
   public buttonsLeft: PageButton[] = [];

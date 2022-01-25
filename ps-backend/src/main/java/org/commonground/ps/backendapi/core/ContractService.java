@@ -7,6 +7,7 @@ import org.commonground.ps.backendapi.model.Contract;
 
 public interface ContractService {
     public List<Contract> getContracts(Long domainId);
+    public List<Contract> getContracts(Long domainId, Boolean active);
     public Contract getContract(Long domainId, Long id);
     public Optional<Contract> getContractBy(Long domainIdGovernment, Long domainIdContractor);
     public Contract save(Long domainId, Contract contract);

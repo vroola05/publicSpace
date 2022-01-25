@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Immutable
 @Subselect("" 
         + "SELECT "
-        + "c.id, c.description, c.priority, c.casenumber, c.status_id as status_id, s.name, c.notification, c.date_created, c.date_ended, c.company_id, "
+        + "c.id, c.description, c.priority, c.casenumber, c.status_id as status_id, s.name as status, c.notification, c.date_created, c.date_ended, c.domain_id, "
         + "mcat.name || ' / ' || cat.name as category, "
         + "l.street || COALESCE(' ' || l.number, '') || ', ' || COALESCE(' ' || l.postal, '') || ' ' || l.city as location, l.street, l.number, l.postal, l.city, c.user_id, u.name as user "
         + "FROM "
@@ -39,11 +39,11 @@ public class CallList {
   private String number;
   private String postal;
   private String city;
-  private boolean priority;
+  
   private String casenumber;
-  @Column(name = "name")
   private String status;
   private String notification;
+  private boolean priority;
   private Date dateCreated;
   private Date dateEnded;
   private String user;
@@ -55,5 +55,5 @@ public class CallList {
   private Long statusId;
 
   @JsonIgnore
-  private Long companyId;
+  private Long domainId;
 }

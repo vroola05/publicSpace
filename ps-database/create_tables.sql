@@ -1097,7 +1097,6 @@ ALTER TABLE ONLY public.contract_main_category
 ALTER TABLE ONLY public.contract_main_category
     ADD CONSTRAINT contract_main_category_main_category_id FOREIGN KEY (main_category_id) REFERENCES public.main_category(id) NOT VALID;
 
-
 CREATE SEQUENCE public.seq_contract_main_category_id
     INCREMENT 1
     START 1
@@ -1111,12 +1110,13 @@ ALTER SEQUENCE public.seq_contract_main_category_id
 
 --
 -- TOC entry 267 (class 1259 OID 86799)
--- Name: order; Type: TABLE; Schema: public; Owner: postgres
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.order (
+CREATE TABLE public.orders (
     id integer NOT NULL,
     call_id integer NOT NULL,
+    domain_id integer NOT NULL,
     date_created timestamp with time zone DEFAULT now() NOT NULL,
     date_ended timestamp with time zone,
     description text NOT NULL,
@@ -1126,20 +1126,61 @@ CREATE TABLE public.order (
 );
 
 
-ALTER TABLE public.order OWNER TO postgres;
+ALTER TABLE public.orders OWNER TO postgres;
 
-ALTER TABLE ONLY public.order
+ALTER TABLE ONLY public.orders
     ADD CONSTRAINT order_pkey PRIMARY KEY (id);
 
-ALTER TABLE ONLY public.order
+ALTER TABLE ONLY public.orders
     ADD CONSTRAINT order_call_fk FOREIGN KEY (call_id) REFERENCES public.call(id) NOT VALID;
 
-ALTER TABLE ONLY public.order
+ALTER TABLE ONLY public.orders
     ADD CONSTRAINT order_status_fk FOREIGN KEY (status_id) REFERENCES public.status(id) NOT VALID;
 
-ALTER TABLE ONLY public.order
+ALTER TABLE ONLY public.orders
     ADD CONSTRAINT order_group_fk FOREIGN KEY (group_id) REFERENCES public.groups(id) NOT VALID;
 
-ALTER TABLE ONLY public.order
+ALTER TABLE ONLY public.orders
     ADD CONSTRAINT order_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
 
+CREATE SEQUENCE public.seq_order_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_order_id
+    OWNER TO postgres;
+
+--
+-- TOC entry 267 (class 1259 OID 86799)
+-- Name: orders_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_category (
+    id integer NOT NULL,
+    order_id integer,
+    category_id integer
+);
+
+ALTER TABLE public.orders_category OWNER TO postgres;
+
+ALTER TABLE ONLY public.orders_category
+    ADD CONSTRAINT orders_category_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.orders_category
+    ADD CONSTRAINT orders_category_category_fk FOREIGN KEY (category_id) REFERENCES public.category(id);
+
+ALTER TABLE ONLY public.orders_category
+    ADD CONSTRAINT orders_category_order_fk FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+CREATE SEQUENCE public.seq_orders_category_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_orders_category_id
+    OWNER TO postgres;

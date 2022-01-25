@@ -34,9 +34,6 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public errors: FieldError[] = [];
 
-  public listTemplate: ListTemplateT;
-  public callList: CallList[] = [];
-
   constructor(
     private endpoints: EndpointService,
     private config: ConfigService,
@@ -50,8 +47,6 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       this.call = new Call();
       this.call.location = new Location();
     }
-
-    this.listTemplate = this.config.template.pagesOld.newLocation.listTemplate;
   }
 
   public ngOnInit(): void {
@@ -66,9 +61,6 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public showNearby(): boolean {
-    return this.listTemplate != null && this.callList != null && this.callList.length > 0;
-  }
 
   public getShowAddress(): string {
     if (!this.call && !this.call.location) {
@@ -112,18 +104,6 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
         this.storeLocation(result);
       }
     });
-
-    /*if (this.listTemplate != null) {
-      this.apiService.get(
-        this.navigationService.transformURL(this.domain.getEndpoint('getNewLocationNearbyByCoordinates').endpoint, location))
-        .pipe(first()).subscribe((callList: CallList[]) => {
-          if (callList && callList.length > 0) {
-            this.callList = callList;
-          } else {
-            this.callList = [];
-          }
-        });
-      }*/
   }
 
   public getStreetList($event): void {
@@ -163,17 +143,6 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     } else {
       this.errors.push({ message: 'De straat is verplicht!' });
-    }
-  }
-
-  public clickedNearby($event): void {
-    this.transform.setVariable('calllist', $event);
-    this.callNearby = null;
-    if (this.listTemplate.toggle) {
-      this.endpoints.get('getListCall').then((call: Call) => {
-        this.callNearby = call;
-        this.transform.setVariable('call', call);
-      });
     }
   }
 

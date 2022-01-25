@@ -27,7 +27,7 @@ INSERT INTO public.status (id, name, domain_id) VALUES (nextval('public.seq_stat
 INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('overview'), 'Overzicht', 'page');
 
 -- TAB: Nieuwe meldingen
-INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), currval('public.seq_page_id'), 'Nieuwe meldingen', 'fiber_new', true, 'details/${calllist.id}', 50, true, false, 0);
+INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), currval('public.seq_page_id'), 'Nieuwe meldingen', 'fiber_new', true, 'details/${list.id}', 50, true, false, 0);
 
 INSERT INTO public.page_overview_status (id, page_overview_id, status_id) VALUES (nextval('public.seq_page_overview_status_id'), currval('public.seq_page_overview_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'Nieuwe melding'));
 
@@ -38,18 +38,18 @@ INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'dateCreated', 'Datum', 'date', '', 'col-sm-6 col-md-2 col-lg-2', 'three-b', 4);
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'area', 'Gebied', 'string', '', 'col-md-1 col-lg-1', '', 5);
 
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', get_page_button_type('containedPrimary'), 'Melding informatie', '/details/${calllist.id}', NULL, 0);
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', get_page_button_type('containedPrimary'), 'Melding toewijzen', '/assign/${calllist.id}', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', get_page_button_type('containedPrimary'), 'Melding informatie', '/details/${list.id}', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', get_page_button_type('containedPrimary'), 'Melding toewijzen', '/assign/${list.id}', NULL, 0);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_USER'), true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_ADMIN'), true);
 
 -- TAB: In behandeling
-INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), currval('public.seq_page_id'), 'In behandeling', 'event', false, 'details/${calllist.id}', 50, true, true, 1);
+INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), currval('public.seq_page_id'), 'In behandeling', 'event', false, 'details/${list.id}', 50, true, true, 1);
 
 INSERT INTO public.page_overview_status (id, page_overview_id, status_id) VALUES (nextval('public.seq_page_overview_status_id'), currval('public.seq_page_overview_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'In behandeling'));
 
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', get_page_button_type('containedPrimary'), 'Melding informatie', '/details/${calllist.id}', NULL, 0);
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', get_page_button_type('containedPrimary'), 'Opdracht maken', '/details/${calllist.id}/order/creation', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'left', get_page_button_type('containedPrimary'), 'Melding informatie', '/details/${list.id}', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), NULL, currval('public.seq_page_overview_id'), 'right', get_page_button_type('containedPrimary'), 'Opdracht maken', '/details/${list.id}/order/creation', NULL, 0);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_USER'), true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_ADMIN'), true);
 
@@ -61,7 +61,7 @@ INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type
 INSERT INTO public.page_overview_column (id, page_overview_id, name, title, type, filter, css, mobile, sort) VALUES (nextval('public.seq_page_overview_column_id'), currval('public.seq_page_overview_id'), 'area', 'Gebied', 'string', '', 'col-md-1 col-lg-1', '', 5);
 
 -- TAB: Zoek een melding
-INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), currval('public.seq_page_id'), 'Zoek een melding', 'search', false, 'details/${calllist.id}', 50, false, false, 2);
+INSERT INTO public.page_overview (id, page_id, name, icon, toggle, route, size, priority, personal, sort) VALUES (nextval('public.seq_page_overview_id'), currval('public.seq_page_id'), 'Zoek een melding', 'search', false, 'details/${list.id}', 50, false, false, 2);
 
 INSERT INTO public.page_overview_status (id, page_overview_id, status_id) VALUES (nextval('public.seq_page_overview_status_id'), currval('public.seq_page_overview_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'Nieuwe melding'));
 INSERT INTO public.page_overview_status (id, page_overview_id, status_id) VALUES (nextval('public.seq_page_overview_status_id'), currval('public.seq_page_overview_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'In behandeling'));

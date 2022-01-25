@@ -47,4 +47,6 @@ public class PageOverviewTemplate {
   public void setButtonsRight(List<PageButton> pageButtons) {
     buttonsRight = pageButtons;
   }
+
+  protected String panelType;
 }

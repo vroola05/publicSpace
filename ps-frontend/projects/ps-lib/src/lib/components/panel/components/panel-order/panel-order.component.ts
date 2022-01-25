@@ -23,6 +23,9 @@ export class PanelOrderComponent implements OnInit {
   }
 
   public getDays(date: Date): string {
+    if (!date) {
+      return 'Datum onbekend';
+    }
     const now = new Date().setHours(0, 0, 0, 0);
     const dateStatus = new Date(date).setHours(0, 0, 0, 0);
     const days = Math.abs(Math.round(((now - dateStatus) / 1000) / (60 * 60 * 24)));

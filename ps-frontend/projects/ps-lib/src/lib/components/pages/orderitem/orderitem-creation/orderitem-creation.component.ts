@@ -54,11 +54,11 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   public ngOnInit(): void {
     super.ngOnInit();
     this.getCall();
-    this.buttonsLeft = this.config.template.order.creation.buttonsLeft;
-    this.buttonsRight = this.config.template.order.creation.buttonsRight;
-    if (this.config.template.order.creation.pageType) {
-      this.pageLayoutType = this.config.template.order.creation.pageType;
-    }
+    // this.buttonsLeft = this.config.template.order.creation.buttonsLeft;
+    // this.buttonsRight = this.config.template.order.creation.buttonsRight;
+    // if (this.config.template.order.creation.pageType) {
+    //   this.pageLayoutType = this.config.template.order.creation.pageType;
+    // }
 
     //this.action.register('next', () => { this.next(); });
   }

@@ -57,8 +57,8 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   public ngOnInit(): void {
     super.ngOnInit();
 
-    this.buttonsLeft = this.config.template.order.handleNoLogin.buttonsLeft;
-    this.buttonsRight = this.config.template.order.handleNoLogin.buttonsRight;
+    // this.buttonsLeft = this.config.template.order.handleNoLogin.buttonsLeft;
+    // this.buttonsRight = this.config.template.order.handleNoLogin.buttonsRight;
 
     //this.action.register('reject', () => { this.reject(); });
     //this.action.register('accept', () => { this.accept(); });

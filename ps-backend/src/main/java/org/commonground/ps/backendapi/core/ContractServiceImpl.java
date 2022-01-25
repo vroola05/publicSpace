@@ -46,30 +46,42 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public List<Contract> getContracts(Long domainId) {
+        return getContracts(domainId, null);
+    }
+
+    @Override
+    public List<Contract> getContracts(Long domainId, Boolean accepted) {
         List<Contract> contracts = new ArrayList<>();
 
 		Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId);
 		if (domainEntityOptional.isPresent()) {
 			DomainEntity domainEntity = domainEntityOptional.get();
 			if (domainEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
-				contracts = getContractsGovernment(domainEntity.getId());
+				contracts = getContractsGovernment(domainEntity.getId(), accepted);
 			} else if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-                contracts = getContractsContractor(domainEntity.getId());
+                contracts = getContractsContractor(domainEntity.getId(), accepted);
 			}
 		}
         return contracts;
+        
     }
 
-    public List<Contract> getContractsGovernment(Long domainId) {
+    public List<Contract> getContractsGovernment(Long domainId, Boolean accepted) {
         List<Contract> contracts = new ArrayList<>();
-        List<ContractEntity> contractEntities = contractRepository.getContractByGovernmentDomainId(domainId);
+        List<ContractEntity> contractEntities;
+        if (accepted == null) {
+            contractEntities = contractRepository.getContractByGovernmentDomainId(domainId);
+        } else {
+            contractEntities = contractRepository.getContractByGovernmentDomainIdAccepted(domainId, accepted);
+        }
+        
         for (ContractEntity contractEntity:  contractEntities) {
             contracts.add(convertContract(contractEntity, contractEntity.getDomainContractor(), false));
         }
         return contracts;
     }
 
-    public List<Contract> getContractsContractor(Long domainId) {
+    public List<Contract> getContractsContractor(Long domainId, Boolean active) {
         List<Contract> contracts = new ArrayList<>();
         List<ContractEntity> contractEntities = contractRepository.getContractByContractorDomainId(domainId);
         for (ContractEntity contractEntity:  contractEntities) {

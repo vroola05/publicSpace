@@ -16,7 +16,7 @@ public class ContractMainCategoryEntityId implements Serializable {
     @Column(name = "main_category_id")
     private Long mainCategoryId;
  
-    private ContractMainCategoryEntityId() {}
+    public ContractMainCategoryEntityId() {}
  
     public ContractMainCategoryEntityId(Long contractId, Long mainCategoryId) {
         this.contractId = contractId;

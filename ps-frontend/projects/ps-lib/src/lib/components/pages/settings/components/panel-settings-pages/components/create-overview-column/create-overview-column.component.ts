@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ConfigService } from '../../../../../../../services/config/config.service';
 import { CallList } from '../../../../../../../../model/call-list';
 import { PageOverviewColumns } from '../../../../../../../../model/page-overview-columns';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../../../../fields/textarea-field/textarea-field.component';
+import { DomainTypeEnum } from '../../../../../../../../model/intefaces';
+import { OrderList } from '../../../../../../../../model/order-list';
 
 @Component({
   selector: 'lib-create-overview-column',
@@ -55,10 +58,17 @@ export class CreateOverviewColumnComponent implements OnInit {
     { name: 'Regel 3b', value: '', data: 'three-b' }
   ];
 
-  constructor() { }
+  constructor(private config: ConfigService) { }
 
   ngOnInit(): void {
-    const nameItems = Object.keys(new CallList());
+    let nameItems;
+    if (this.config.getDomainType().id === DomainTypeEnum.GOVERNMENT) {
+      nameItems = Object.keys(new CallList());
+    } else {
+      console.log('a', OrderList);
+      nameItems = Object.keys(new OrderList());
+    }
+    
     if (nameItems) {
       nameItems.forEach(nameItem => {
         this._name.push({ name: nameItem, value: '', data: nameItem });

@@ -1,6 +1,8 @@
 package org.commonground.ps.backendapi.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,10 +35,12 @@ public class Call {
   private Location location;
   @Valid
   private Person person;
-  private Company company;
+  private Domain domain;
 
   private Status status;
 
   private Group group;
   private User user;
+
+  private List<Order> orders = new ArrayList<>();
 }

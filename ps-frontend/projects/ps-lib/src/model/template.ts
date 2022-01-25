@@ -220,14 +220,7 @@ export interface PagesT {
 
 export interface Template {
   pages?: Map<string, Page>;
-  pagesOld: PagesT;
-  login?: LoginT;
-  assign?: DomainPageT;
   components?: ComponentsT;
-  details?: DomainPageT;
-  mail?: MailT[];
-  change?: ChangeT;
-  order?: OrderT;
   actions: Action[];
   defaults?: DefaultsT;
   endpoints?: Map<string, EndpointT>;

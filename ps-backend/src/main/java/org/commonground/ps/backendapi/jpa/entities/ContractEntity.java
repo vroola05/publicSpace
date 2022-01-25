@@ -40,11 +40,11 @@ public class ContractEntity {
   private Date dateCreated;
   private Boolean accepted;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "domain_id_governent", nullable = false)
   private DomainEntity domainGovernment;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "domain_id_contractor", nullable = false)
   private DomainEntity domainContractor;
 

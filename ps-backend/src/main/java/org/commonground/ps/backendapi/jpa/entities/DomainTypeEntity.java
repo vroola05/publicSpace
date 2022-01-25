@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
+
 @Table(name = "domain_type")
 public class DomainTypeEntity {
   @Id
