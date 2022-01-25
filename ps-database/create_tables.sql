@@ -233,6 +233,7 @@ ALTER TABLE ONLY public.category
 
 CREATE TABLE public.call (
     id integer NOT NULL,
+    domain_id integer NOT NULL,
     description text NOT NULL,
     date_created timestamp with time zone DEFAULT now() NOT NULL,
     date_ended timestamp with time zone,
@@ -240,7 +241,6 @@ CREATE TABLE public.call (
     casenumber text NOT NULL,
     priority boolean DEFAULT false NOT NULL,
     notification text,
-    company_id integer NOT NULL,
     status_id integer,
     user_id integer,
     group_id integer
@@ -256,7 +256,7 @@ ALTER TABLE ONLY public.call
     ADD CONSTRAINT call_category_fk FOREIGN KEY (category_id) REFERENCES public.category(id);
 
 ALTER TABLE ONLY public.call
-    ADD CONSTRAINT call_comany_fk FOREIGN KEY (company_id) REFERENCES public.company(id) NOT VALID;
+    ADD CONSTRAINT call_domain_fk FOREIGN KEY (domain_id) REFERENCES public.domain(id) NOT VALID;
 
 ALTER TABLE ONLY public.call
     ADD CONSTRAINT call_status_fk FOREIGN KEY (status_id) REFERENCES public.status(id) NOT VALID;
