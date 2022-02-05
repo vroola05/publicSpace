@@ -19,13 +19,14 @@ import lombok.NoArgsConstructor;
 @Immutable
 @Subselect("" 
         + "SELECT "
-        + "c.id, c.description, c.priority, c.casenumber, c.status_id as status_id, s.name as status, c.notification, c.date_created, c.date_ended, c.domain_id, "
+        + "c.id, c.description, c.priority, c.casenumber, c.status_id as status_id, s.name as status, g.name as group, g.id as group_id, c.notification, c.date_created, c.date_ended, c.domain_id, "
         + "mcat.name || ' / ' || cat.name as category, "
         + "l.street || COALESCE(' ' || l.number, '') || ', ' || COALESCE(' ' || l.postal, '') || ' ' || l.city as location, l.street, l.number, l.postal, l.city, c.user_id, u.name as user "
         + "FROM "
         + "call c "
         + "INNER JOIN location l ON c.id = l.call_id "
         + "INNER JOIN category cat ON c.category_id = cat.id "
+        + "INNER JOIN groups g ON c.group_id = g.id "
         + "INNER JOIN  main_category mcat ON cat.main_category_id = mcat.id "
         + "INNER JOIN status s ON c.status_id = s.id "
         + "LEFT JOIN users u ON c.user_id = u.id ")
@@ -47,9 +48,13 @@ public class CallList {
   private Date dateCreated;
   private Date dateEnded;
   private String user;
+  private String group;
   
   @JsonIgnore
   private Long userId;
+
+  @JsonIgnore
+  private Long groupId;
 
   @JsonIgnore
   private Long statusId;

@@ -10,7 +10,6 @@ import { StorageService } from '../../../../../services/storage/storage.service'
 import { DropdownFieldComponent } from '../../../../fields/dropdown-field/dropdown-field.component';
 import { PageAbstract } from '../../../page';
 import { Call } from '../../../../../../model/call';
-import { CallList } from '../../../../../../model/call-list';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
@@ -29,9 +28,7 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
 
   public contracts: Contract[];
   public initialized = false;
-  public call: Call;
   public getUrlImage: string;
-  public headerData: CallList;
 
   public order: Order;
 
@@ -48,11 +45,11 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private endpoints: EndpointService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private environmentService: EnvironmentService,
     private validation: ValidationService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {
@@ -124,7 +121,6 @@ export class OrderCreationComponent extends PageAbstract implements OnInit, OnDe
   public setCall(call: Call): void {
     this.transform.setVariable('call', call);
     this.call = call;
-    this.headerData = this.config.transformCall(call);
     this.storeCall();
   }
 

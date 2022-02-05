@@ -21,7 +21,6 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
 export class ChangeInformationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewInformationComponent') panelNewInformationComponent: PanelNewInformationComponent;
 
-  public call: Call;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -33,9 +32,9 @@ export class ChangeInformationComponent extends PageAbstract implements OnInit, 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
     this.call = new Call();
   }
 

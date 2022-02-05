@@ -14,7 +14,7 @@ import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-
 import { Subscription } from 'rxjs';
 import { Environment, RolesEnum } from '../../../../../model/intefaces';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
-import { Page } from 'projects/ps-lib/src/model/page';
+import { ConfigService } from '../../../../services/config/config.service';
 
 @Component({
   selector: 'lib-settings-start',
@@ -42,11 +42,12 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
+    protected config: ConfigService,
     private environmentService: EnvironmentService,
     private endpoints: EndpointService
 
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {

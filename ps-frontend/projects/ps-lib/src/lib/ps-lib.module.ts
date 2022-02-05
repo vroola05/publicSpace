@@ -135,6 +135,9 @@ import { PanelSettingsContractsComponent } from './components/pages/settings/com
 import { ListPanelContractGovernmentComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-government/list-panel-contract-government.component';
 import { ListPanelContractContractorComponent } from './components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-contractor/list-panel-contract-contractor.component';
 import { DynamicDirective } from './directives/dynamic.directive';
+import { DynamicLeftDirective } from './directives/dynamic-left.directive';
+import { DynamicRightDirective } from './directives/dynamic-right.directive';
+import { ComponentService } from './services/component/component.service';
 
 
 @NgModule({
@@ -248,7 +251,9 @@ import { DynamicDirective } from './directives/dynamic.directive';
     CreateOverviewColumnComponent,
     PanelSettingsContractsComponent,
     ListPanelContractContractorComponent,
-    DynamicDirective
+    DynamicDirective,
+    DynamicLeftDirective,
+    DynamicRightDirective
   ],
   imports: [
     CommonModule,
@@ -376,6 +381,7 @@ export class PsLibModule {static forRoot(): ModuleWithProviders<PsLibModule> {
       NavigationService,
       FilterService,
       ConfigService,
+      ComponentService,
       Popup,
       ActionService,
       Loader,

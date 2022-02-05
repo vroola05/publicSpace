@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 
 import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
-import { CallList } from '../../../../../model/call-list';
 import { ButtonT } from '../../../../../model/template';
 import { PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Note } from '../../../../../model/note';
@@ -33,10 +32,8 @@ import { Status } from '../../../../../model/status';
 })
 export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
-  public call: Call;
   public order: Order;
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -48,13 +45,13 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private endpoints: EndpointService,
     private loader: Loader,
     private popup: Popup,
     private toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
    }
 
   public ngOnInit(): void {
@@ -84,7 +81,6 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
       }
 
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCallOrder(call);
     });
   }
 

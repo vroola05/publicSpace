@@ -1,12 +1,12 @@
 import { Directive, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[libDynamic]'
+  selector: '[libDynamicLeft]'
 })
-export class DynamicDirective {
+export class DynamicLeftDirective {
 
   constructor(
     public viewContainerRef: ViewContainerRef
-    ) { }
+  ) { }
 
 }

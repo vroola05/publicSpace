@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Immutable
 @Subselect( ""
         + "SELECT o.id, mcat.name || ' / ' || cat.name as category, o.description, c.priority, c.casenumber, c.notification, o.domain_id, o.user_id, s.id as status_id, o.date_created, o.date_ended, s.name as status, l.street || COALESCE(' ' || l.number, '') || ', ' || COALESCE(' ' || l.postal, '') || ' ' || l.city as location, l.street, l.number, l.postal, l.city, "
-        + "u.name as user, g.name as group, (select array_to_string(array_agg(distinct g.name), ', ') from orders_category oc, category c, groups g where o.id = oc.order_id and c.id = oc.category_id and g.id = c.group_id) as groups "
+        + "u.name as user, g.name as group, g.id as group_id, (select array_to_string(array_agg(distinct g.name), ', ') from orders_category oc, category c, groups g where o.id = oc.order_id and c.id = oc.category_id and g.id = c.group_id) as groups "
         + "FROM orders o INNER JOIN groups g ON o.group_id = g.id INNER JOIN status s ON o.status_id = s.id LEFT JOIN users u ON o.user_id = u.id, "
         + "call c INNER JOIN location l ON c.id = l.call_id INNER JOIN category cat ON c.category_id = cat.id INNER JOIN  main_category mcat ON cat.main_category_id = mcat.id where c.id = o.call_id")
 public class OrderList {  
@@ -49,6 +49,9 @@ public class OrderList {
 
   @JsonIgnore
   private Long domainId;
+
+  @JsonIgnore
+  private Long groupId;
 
   private String group;
   private String groups;

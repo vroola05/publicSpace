@@ -114,6 +114,14 @@ public class ListController extends Controller {
 		});
 		listBuilder.with(new QueryParametersFieldFilter("statusId", QueryParametersFieldFilterType.NUMBER, statusList));
 
+		// Attach stattusses
+		List<QueryParametersFilterValue> groupList = new ArrayList<QueryParametersFilterValue>();
+		user.getGroups().forEach(group -> {
+			groupList.add(new QueryParametersFilterValue(group.getId()));
+		});
+	
+		listBuilder.with(new QueryParametersFieldFilter("groupId", QueryParametersFieldFilterType.NUMBER, groupList));
+
 		// Add additional filters
 		List<QueryParametersFieldFilter> filters = queryParameters.getFilters();
 		if (filters != null) {

@@ -11,7 +11,6 @@ import { PageAbstract } from '../../page';
 
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
-import { CallList } from '../../../../../model/call-list';
 import { User } from '../../../../../model/user';
 import { Image } from '../../../../../model/image';
 import { Group } from '../../../../../model/group';
@@ -33,7 +32,6 @@ import { EnvironmentService } from '../../../../services/environment/environment
 export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestroy {
   protected lock = false;
 
-  public call: Call;
   public tabs: {name: string, value?: string, data?: any, selected: boolean}[] = [];
 
   public searchtext = '';
@@ -61,7 +59,6 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
 
   public environment: Environment;
 
-  public headerData: CallList;
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
@@ -71,12 +68,12 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private endpoints: EndpointService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private loader: Loader,
     private toast: ToastService,
     private environmentService: EnvironmentService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {
@@ -110,7 +107,6 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
       this.getGroups();
 
       this.call = call;
-      this.headerData = this.config.transformCall(call);
     });
   }
 

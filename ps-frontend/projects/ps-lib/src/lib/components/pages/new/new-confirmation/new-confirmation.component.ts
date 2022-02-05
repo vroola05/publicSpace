@@ -24,8 +24,6 @@ import { ActionCallCreate } from '../page-call-create';
 export class NewConfirmationComponent extends ActionCallCreate implements OnInit, OnDestroy {
   @ViewChild('panelNewConfirmationComponent') panelNewConfirmationComponent: PanelNewConfirmationComponent;
 
-  public call: Call;
-
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,

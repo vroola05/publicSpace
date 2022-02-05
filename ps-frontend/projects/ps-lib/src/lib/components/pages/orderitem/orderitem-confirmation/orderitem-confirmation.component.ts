@@ -10,7 +10,6 @@ import { EndpointService } from '../../../../services/endpoint/endpoint.service'
 import { TransformService } from '../../../../services/transform/transform.service';
 import { PageAbstract } from '../../page';
 import { Call } from '../../../../../model/call';
-import { CallList } from '../../../../../model/call-list';
 import { Order } from '../../../../../model/order';
 import { Message } from '../../../../../model/message';
 import { ButtonT } from '../../../../../model/template';
@@ -27,10 +26,8 @@ import { StatusTypes } from '../../../../../model/intefaces';
 })
 export class OrderitemConfirmationComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
-  public call: Call;
   public order: Order;
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
   private sending = false;
@@ -44,11 +41,11 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private loader: Loader,
     private endpoints: EndpointService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
 
     const order = this.storage.getSession('order');
     if (order) {
@@ -87,7 +84,6 @@ export class OrderitemConfirmationComponent extends PageAbstract implements OnIn
       this.call = call;
 
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCallOrder(call);
     });
   }
 

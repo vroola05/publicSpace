@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
-import { NavigationService, ConfigService, AuthorisationService, StorageService, ActionService } from 'ps-lib';
+import { NavigationService, ConfigService, AuthorisationService, StorageService, ActionService, ComponentService } from 'ps-lib';
 import { User } from '../../../ps-lib/src/model/user';
 import { Template } from '../../../ps-lib/src/model/template';
 import { HeaderMenuItemT } from '../../../ps-lib/src/model/template';
 import { ActivatedRoute } from '@angular/router';
+import { DomainType } from '../../../ps-lib/src/model/domain-type';
+import { PageConfig, PageConfigContainer } from '../../../ps-lib/src/model/domain-type-config';
+import { DomainTypeEnum } from '../../../ps-lib/src/model/intefaces';
+import pageConfig from '../../../ps-lib/src/page-config.json'
+import { Page } from 'projects/ps-lib/src/model/page';
 
 @Component({
   selector: 'app-root',
@@ -22,11 +27,17 @@ export class AppComponent {
     private navigationService: NavigationService,
     protected action: ActionService,
     private storage: StorageService,
-    private config: ConfigService
+    private config: ConfigService,
+    private componentService: ComponentService
   ) {
     this.config.api = environment.api;
 
     this.config.readConfig(this.config.api + '/config').then((template: Template) => {
+      // I initiate this outside the config to avoid circulair dependencies
+      this.config.template.pages.forEach((page: Page, key: string) => {
+        page.pageConfig = this.getPageConfig(template.domain.domainType, pageConfig[key]);
+      });
+
       if (template.info.prefix) {
         this.storage.setPrefix(template.info.prefix);
       }
@@ -91,5 +102,32 @@ export class AppComponent {
       headerItems.push(headerItem);
     });
     this.navigationService.addHeaderItems(headerItems);*/
+  }
+
+
+  private getPageConfig(domainType: DomainType, pageConfigContainer: PageConfigContainer): PageConfig {
+    if (!pageConfigContainer) return undefined;
+
+    const pageConfig = new PageConfig();
+      if (domainType.id === DomainTypeEnum.GOVERNMENT) {
+        pageConfig.components = [];
+        for(const i in pageConfigContainer.government.components) {
+          const component = this.componentService.get(pageConfigContainer.government.components[i].component)
+          if (component) {
+            pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
+          }
+        }
+        pageConfig.endpoints = pageConfigContainer.government.endpoints;
+      } else {
+        pageConfig.components = [];
+        for(const i in pageConfigContainer.contractor.components) {
+          const component = this.componentService.get(pageConfigContainer.contractor.components[i].component)
+          if (component) {
+            pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
+          }
+        }
+        pageConfig.endpoints = pageConfigContainer.contractor.endpoints;
+      }
+      return pageConfig;
   }
 }

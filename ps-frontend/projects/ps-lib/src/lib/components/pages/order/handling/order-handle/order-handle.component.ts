@@ -11,7 +11,6 @@ import { EndpointService } from '../../../../../services/endpoint/endpoint.servi
 import { PageAbstract } from '../../../page';
 
 import { Call } from '../../../../../../model/call';
-import { CallList } from '../../../../../../model/call-list';
 import { ButtonT } from '../../../../../../model/template';
 import { Order } from '../../../../../../model/order';
 import { StatusTypes } from '../../../../../../model/intefaces';
@@ -28,13 +27,10 @@ import { Loader } from '../../../../../services/loader/loader.service';
 export class OrderHandleComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('explanationField') public explanationField: TextareaFieldComponent;
   private subscription: Subscription[] = [];
-
-  public call: Call;
   public order: Order;
   private sending = false;
   public explanation = '';
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -46,11 +42,11 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private endpoints: EndpointService,
     private loader: Loader
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {
@@ -82,7 +78,6 @@ export class OrderHandleComponent extends PageAbstract implements OnInit, OnDest
       }
 
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCall(call);
     });
   }
 

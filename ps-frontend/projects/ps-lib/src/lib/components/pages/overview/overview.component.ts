@@ -1,39 +1,25 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Type } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { Component, ComponentFactoryResolver, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CallList } from '../../../../model/call-list';
-import { HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
-import { DomainTypeEnum, PageLayoutType } from '../../../../model/intefaces';
 import { Call } from '../../../../model/call';
-import { PageOverviewTemplate } from '../../../../model/page-overview-template';
-
-import { Page } from '../../../../model/page';
-import { QueryParameters } from '../../../../model/query-parameters';
-import { PageAbstract } from '../page';
-
-import { ConfigService, PageTypes } from '../../../services/config/config.service';
-import { NavigationService } from '../../../services/navigation/navigation.service';
-import { FilterService } from '../../../services/filter/filter.service';
-import { StorageService } from '../../../services/storage/storage.service';
-import { ActionService } from '../../../services/action/action.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { TransformService } from '../../../services/transform/transform.service';
-import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
-import { EndpointService } from '../../../services/endpoint/endpoint.service';
-import { DynamicDirective } from '../../../directives/dynamic.directive';
-import { ListPanelComponent } from '../../list/components/list-panel/list-panel.component';
 import { DomainType } from '../../../../model/domain-type';
-import { OrderList } from '../../../../model/order-list';
-import { List } from '../../../../model/list';
-import { DynamicList } from '../../list/components/dynamic-list.component';
-import { ListPanelOrderComponent } from '../../list/components/list-panel-order/list-panel-order.component';
-
-interface OverviewDomainTypeConfig {
-  domainType: DomainTypeEnum;
-  listEndpoint: string;
-  toggleEndpoint: string;
-  panelType: Type<DynamicList>;
-}
+import { PageConfig } from '../../../../model/domain-type-config';
+import { DynamicListPanel, PageLayoutType } from '../../../../model/intefaces';
+import { Page } from '../../../../model/page';
+import { PageOverviewTemplate } from '../../../../model/page-overview-template';
+import { QueryParameters } from '../../../../model/query-parameters';
+import { HeaderMenuItemT, ListTemplateT } from '../../../../model/template';
+import { DynamicDirective } from '../../../directives/dynamic.directive';
+import { ActionService } from '../../../services/action/action.service';
+import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
+import { ConfigService, PageTypes } from '../../../services/config/config.service';
+import { EndpointService } from '../../../services/endpoint/endpoint.service';
+import { FilterService } from '../../../services/filter/filter.service';
+import { NavigationService } from '../../../services/navigation/navigation.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { StorageService } from '../../../services/storage/storage.service';
+import { TransformService } from '../../../services/transform/transform.service';
+import { PageAbstract } from '../page';
 
 @Component({
   selector: 'lib-overview',
@@ -45,6 +31,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   
   @ViewChild('tableContainer') public tableContainer: ElementRef;
   @ViewChild('headerRef') public headerRef: ElementRef;
+  
   public pageLayoutType: PageLayoutType = PageLayoutType.overview;
   public title = '';
   public page: Page;
@@ -53,18 +40,13 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   private subscriptions: Subscription[] = [];
 
   public list = [];
-  public call: Call;
   public endOfList = false;
   public listTemplate: ListTemplateT;
-  public domainType: DomainType;
+  
   public search = '';
 
   private pageChanged = false;
-  private domainTypeConfig: OverviewDomainTypeConfig;
-  private domainTypeConfigs: OverviewDomainTypeConfig[] = [  
-    { domainType: DomainTypeEnum.GOVERNMENT, panelType: ListPanelComponent, listEndpoint: 'getListCall', toggleEndpoint: 'getCallByCallListId' },
-    { domainType: DomainTypeEnum.CONTRACTOR, panelType: ListPanelOrderComponent, listEndpoint: 'getListOrder', toggleEndpoint: 'getCallByCallListId' }
-  ];
+  
 
   constructor(
     protected router: Router,
@@ -74,17 +56,15 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private filterService: FilterService,
     private notification: NotificationService,
     private endpoints: EndpointService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
 
     this.page = this.config.getPage(PageTypes.overview);
-    this.domainType = this.config.getDomainType();
-
-    this.domainTypeConfig = this.domainTypeConfigs.find(domainTypeConfig => domainTypeConfig.domainType === this.domainType.id );
+    this.pageConfig = this.page.pageConfig;
 
     this.search = this.filterService.getSearch();
   }
@@ -125,15 +105,12 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.dynamicHost.viewContainerRef.clear();
   }
 
-  private loadComponent() {
-    const viewContainerRef = this.dynamicHost.viewContainerRef;  
+  private loadComponent(viewContainerRef: ViewContainerRef, dynamicPanel: any) {
+    if (!viewContainerRef || !dynamicPanel) {
+      return;
+    }
     viewContainerRef.clear();
-    let a: DynamicList;
-    const componetns = [ListPanelComponent, ListPanelOrderComponent];
-    console.log(componetns.find(componentType => { 
-      console.log(componentType.name, this.pageOverviewTemplate.panelType);
-      return typeof componentType === this.pageOverviewTemplate.panelType;}));
-    const componentRef = viewContainerRef.createComponent<DynamicList>(componetns.find(componentType => componentType.name === this.pageOverviewTemplate.panelType));//(this.domainTypeConfig.panelType);  
+    const componentRef = viewContainerRef.createComponent<DynamicListPanel>(dynamicPanel);
     componentRef.instance.template = this.listTemplate;
     componentRef.instance.call = this.call;
   }
@@ -172,7 +149,8 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   }
 
   public getList(append: boolean, queryParameters: QueryParameters): void {
-    this.endpoints.post(this.domainTypeConfig.listEndpoint, queryParameters).then((list) => {
+    
+    this.endpoints.post(this.pageConfig.getEndpoint('list'), queryParameters).then((list) => {
       if (list) {
         this.endOfList = list.length < this.filterService.getListsize();
         if (append) {
@@ -199,14 +177,18 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.transform.setVariable('list', $event.data);
     this.call = null;
     if (this.listTemplate.toggle) {
-      this.endpoints.get(this.domainTypeConfig.toggleEndpoint).then((call: Call) => {
-        this.transform.setVariable('call', call);
-        this.call = call;
-        this.loadComponent();
-      });
+      if ($event.opened) {
+        this.endpoints.get(this.pageConfig.getEndpoint('toggle')).then((call: Call) => {
+          this.transform.setVariable('call', call);
+          this.call = call;
+          this.loadComponent(this.dynamicHost.viewContainerRef, this.pageConfig.getComponent('listPanel'));
+        });
+      } else {
+        this.clearComponent();
+      }
     } else if (this.listTemplate.route) {
       this.clearComponent();
-      console.log(this.listTemplate.route, this.transform.URL(this.listTemplate.route))
+
       this.navigationService.navigate([this.transform.URL(this.listTemplate.route)]);
     } else {
       this.clearComponent();

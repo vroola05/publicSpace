@@ -1,19 +1,24 @@
-<lib-panel *ngIf="page && call" 
+<lib-panel  
   [data]="call"
   [pageLayoutType]="page?.layoutType"
   [buttonsLeft]="page?.buttonsLeft"
   [buttonsRight]="page?.buttonsRight">
-
-  <lib-panel-title>
+  
+  <lib-panel-title [title]="page?.name">
     <div  class="row details-main">
       <div class="col-sm-12 details-main-header">
-        <lib-details-header [data]="headerData"></lib-details-header>
+        <lib-details-header [data]="header"></lib-details-header>
       </div>
-      <lib-panel-info class="col-sm-12 col-md-6" 
-        [call]="call"  
-        [urlImage]="getUrlImage"></lib-panel-info>
       <div class="col-sm-12 col-md-6">
-        <lib-panel-order [action]="'full'" [title]="'Bestaande opdracht(en)'" [orders]="call.orders" (changed)="onOrderChanged($event)"></lib-panel-order>
+        <ng-template libDynamicLeft></ng-template>
+      </div>
+      
+      <!-- <lib-panel-info class="col-sm-12 col-md-6" 
+        [call]="call"  
+        [urlImage]="getUrlImage"></lib-panel-info> -->
+      <div class="col-sm-12 col-md-6">
+        <ng-template libDynamicRight></ng-template>
+        <!-- <lib-panel-order [action]="'full'" [title]="'Bestaande opdracht(en)'" [orders]="call.orders" (changed)="onOrderChanged($event)"></lib-panel-order> -->
       </div>
     </div>
   </lib-panel-title>

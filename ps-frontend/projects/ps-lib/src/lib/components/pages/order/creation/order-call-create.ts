@@ -37,7 +37,7 @@ export abstract class ActionOrderCreate extends PageAbstract implements OnInit, 
         protected loader: Loader,
         protected toast: ToastService
     ) {
-        super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+        super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
     }
 
 

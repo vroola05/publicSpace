@@ -13,7 +13,6 @@ import { PageAbstract } from '../../page';
 
 import { ButtonT } from '../../../../../model/template';
 import { Call } from '../../../../../model/call';
-import { CallList } from '../../../../../model/call-list';
 import { User } from '../../../../../model/user';
 import { Image } from '../../../../../model/image';
 import { Group } from '../../../../../model/group';
@@ -33,7 +32,6 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
   private sending = false;
   private type: 'user' | 'group' = 'user';
 
-  public call: Call;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
   public tabs: {name: string, value?: string, data?: any, selected: boolean}[] = [];
@@ -54,7 +52,6 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
       : this._items.filter(item => item.image.alt.toLowerCase().includes(this.searchtext.toLowerCase()));
   }
 
-  public headerData: CallList;
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
@@ -64,11 +61,11 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private endpoints: EndpointService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private loader: Loader,
     private toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {
@@ -95,7 +92,6 @@ export class AssignPAndGComponent extends PageAbstract implements OnInit, OnDest
       this.transform.setVariable('call', call);
       this.call = call;
       this.getTeams();
-      this.headerData = this.config.transformCall(call);
     });
   }
   public onTabChanged($event): void {

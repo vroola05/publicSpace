@@ -141,7 +141,7 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     }
     setTimeout(() => {
-      this.clicked.emit({'data': this.data[index], index});
+      this.clicked.emit({'data': this.data[index], index, opened: this.rowState[index].opened});
     });
   }
 

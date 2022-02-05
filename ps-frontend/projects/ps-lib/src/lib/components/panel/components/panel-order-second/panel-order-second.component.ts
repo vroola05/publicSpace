@@ -1,12 +1,26 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DynamicPanel } from '../../../../../model/intefaces';
+import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
+import { Category } from '../../../../../model/category';
 
 @Component({
   selector: 'lib-panel-order-second',
   templateUrl: './panel-order-second.component.html',
   styleUrls: ['./panel-order-second.component.scss']
 })
-export class PanelOrderSecondComponent implements OnInit {
+export class PanelOrderSecondComponent implements DynamicPanel, OnInit {
+  private _call: Call;
+  @Input() public set call( call: Call) {
+    this._call = call;
+    this.order = call.orders[0];
+  }
+  public get call() {
+    return this._call;
+  }
+
+  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+
   @Input() public title = '';
   @Input() public order: Order;
   @Input() public action: 'view' | 'confirm' = 'view';
@@ -28,9 +42,8 @@ export class PanelOrderSecondComponent implements OnInit {
     return false;
   }
 
-  public printOrdertypes(): string {
-    // return this.order.ordertypes.map(ordertype => ordertype.name).join(', ');
-    return '';
+  public getCategories(): string {
+    return this.order.categories.map(category => category.name).join(', ');
   }
 
   public getDays(date: Date): string {

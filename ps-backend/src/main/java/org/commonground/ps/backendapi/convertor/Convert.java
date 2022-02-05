@@ -52,6 +52,7 @@ import org.commonground.ps.backendapi.model.Person;
 import org.commonground.ps.backendapi.model.Role;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 
 public class Convert {
@@ -175,16 +176,55 @@ public class Convert {
     callEntity.setDescription(call.getDescription());
     callEntity.setDateCreated(call.getDateCreated());
     callEntity.setDateEnded(call.getDateEnded());
+
     return callEntity;
   }
 
-  public static Call callEntity(CallEntity callEntity) {
+  public static Call callEntity(CallEntity callEntity, DomainType domainType) {
     Call call = new Call();
     call.setId(callEntity.getId());
     call.setCasenumber(callEntity.getCasenumber());
     call.setDescription(callEntity.getDescription());
     call.setDateCreated(callEntity.getDateCreated());
     call.setDateEnded(callEntity.getDateEnded());
+
+
+    if (callEntity.getLocation() != null) {
+			call.setLocation(locationEntity(callEntity.getLocation()));
+		}
+
+    if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+      if (callEntity.getPerson() != null) {
+        call.setPerson(personEntity(callEntity.getPerson()));
+      }
+    }		
+		
+		if (callEntity.getUser() != null) {
+			call.setUser(userEntity(callEntity.getUser()));
+		}
+
+		if (callEntity.getGroup() != null) {
+			call.setGroup(groupEntity(callEntity.getGroup()));
+		}
+
+		if (callEntity.getCategory() != null) {
+			call.setMainCategory(mainCategoryEntity(callEntity.getCategory().getMainCategory()));
+			call.getMainCategory().setCategory(categoryEntity(callEntity.getCategory()));
+		}
+
+		if (callEntity.getStatus() != null) {
+			call.setStatus(statusEntity(callEntity.getStatus()));
+		}
+
+    if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+      if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
+        for (OrderEntity orderEntity: callEntity.getOrders()) {
+          call.getOrders().add(orderEntity(orderEntity));
+        }
+      }
+    }
+
+		call.setDomain(domainEntity(callEntity.getDomain()));    
     return call;
   }
 
@@ -307,7 +347,6 @@ public class Convert {
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
         pageOverviewTemplate.setPersonal(pageOverviewEntity.getPersonal());
         pageOverviewTemplate.setSize(pageOverviewEntity.getSize());
-        pageOverviewTemplate.setPanelType("ListPanelComponent");
         List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
         
         List<Status> statusses = new ArrayList<Status>();

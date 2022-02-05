@@ -34,7 +34,6 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
 
   private loaderId: number;
 
-  public call: Call;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -47,12 +46,12 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
     private endpoints: EndpointService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private loader: Loader,
     private popup: Popup,
     private toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
     this.call = new Call();
   }
 

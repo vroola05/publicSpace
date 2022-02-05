@@ -31,7 +31,6 @@ export class NewInformationComponent extends ActionCallCreate implements OnInit,
   @ViewChild('panelNewInformationComponent') panelNewInformationComponent: PanelNewInformationComponent;
   @ViewChild('panelNewContactComponent') panelNewContactComponent: PanelNewContactComponent;
 
-  public call: Call;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 

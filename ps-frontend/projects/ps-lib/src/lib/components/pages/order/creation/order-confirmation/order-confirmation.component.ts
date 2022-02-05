@@ -8,7 +8,6 @@ import { NavigationService } from '../../../../../services/navigation/navigation
 import { StorageService } from '../../../../../services/storage/storage.service';
 import { PageAbstract } from '../../../page';
 import { Call } from '../../../../../../model/call';
-import { CallList } from '../../../../../../model/call-list';
 import { Ordertype } from '../../../../../../model/order-type';
 import { Order } from '../../../../../../model/order';
 import { Contractor } from '../../../../../../model/contractor';
@@ -31,9 +30,7 @@ import { ApiService } from '../../../../../services/api/api.service';
 })
 export class OrderConfirmationComponent extends ActionOrderCreate implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
-  public call: Call;
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
   public contractors: Contractor[] = [];
@@ -84,12 +81,10 @@ export class OrderConfirmationComponent extends ActionOrderCreate implements OnI
     if (!call || call.id !== id) {
       this.endpoints.get('getCallById').then((call: Call) => {
         this.call = call;
-        this.headerData = this.config.transformCall(call);
         this.transform.setVariable('call', call);
       });
     } else {
       this.call = call;
-      this.headerData = this.config.transformCall(call);
       this.transform.setVariable('call', call);
     }
   }  
@@ -194,7 +189,7 @@ export class OrderConfirmationComponent extends ActionOrderCreate implements OnI
       this.save();
     })
     .catch(() => {
-      this.call.supervisor = null;
+      this.call.user = null;
       this.sending = false;
     });
   }
@@ -203,7 +198,7 @@ export class OrderConfirmationComponent extends ActionOrderCreate implements OnI
     if (!this.sending && this.validate()) {
       this.sending = true;
 
-      if (this.call.supervisor && this.call.supervisor.username) {
+      if (this.call.user && this.call.user.username) {
         this.save();
       } else {
         this.assign();

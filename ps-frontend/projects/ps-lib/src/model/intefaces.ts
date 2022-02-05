@@ -1,7 +1,8 @@
 import { EventEmitter } from '@angular/core';
+import { Call } from './call';
 import { Company } from './company';
 import { Domain } from './domain';
-
+import { ListTemplateT } from './template';
 
 export enum RolesEnum {
   ADMIN = 'ROLE_ADMIN',
@@ -80,4 +81,16 @@ export interface IPopup {
 export interface Environment {
   company: Company,
   domain: Domain
+}
+
+export interface DynamicBase {
+  call: Call;
+}
+
+export interface DynamicPanel extends DynamicBase {
+  changed: EventEmitter<any>;
+}
+
+export interface DynamicListPanel extends DynamicBase {
+  template: ListTemplateT;
 }

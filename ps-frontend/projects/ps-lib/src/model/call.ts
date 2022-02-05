@@ -32,7 +32,7 @@ export class Call {
   public person?: Person;
   public orders?: Order[];
   public notes?: Note[];
-  public supervisor?: User;
+  public user?: User;
   public createdBy?: User;
   public group?: Group;
   public city?: string;

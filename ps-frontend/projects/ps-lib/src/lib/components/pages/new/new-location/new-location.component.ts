@@ -29,7 +29,6 @@ import { ActionCallCreate } from '../page-call-create';
 export class NewLocationComponent extends ActionCallCreate implements OnInit, OnDestroy {
   @ViewChild('panelNewMapComponent') panelNewMapComponent: PanelNewMapComponent;
 
-  public call: Call;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 

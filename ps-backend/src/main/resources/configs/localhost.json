@@ -71,10 +71,10 @@
       { "id": "category", "name": "Categorie", "type": "string", "css": "col-md-2 col-lg-2 bold"},
       { "id": "casenumber", "name": "Id", "type": "number", "css": " col-md-1 col-lg-1" },
       { "id": "location", "name": "Locatie", "type": "string", "css": " col-md-2 col-lg-2" },
-      { "id": "dateStart", "name": "Datum", "type": "date", "css": "col-md-1 col-lg-1 italic" },
+      { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-md-1 col-lg-1 italic" },
       { "id": "description", "name": "Omschrijving", "type": "text", "css": "d-md-none d-lg-block col-lg-2 italic" },
       { "id": "status", "name": "Status", "type": "string", "css": " col-md-1 col-lg-1" },
-      { "id": "area", "name": "Gebied", "type": "string", "css": " col-md-1 col-lg-1" },
+      { "id": "group", "name": "Groep", "type": "string", "css": " col-md-1 col-lg-1" },
       { "id": "supervisor", "name": "Behandelaar", "type": "string", "css": " col-md-2 col-lg-2" }
     ],
     "header": {

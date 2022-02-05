@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { Call } from '../../../../model/call';
-import { CallList } from '../../../../model/call-list';
 import { ButtonT, MailT } from '../../../../model/template';
 import { MailInfo } from '../../../../model/mailInfo';
 import { Message } from '../../../../model/message';
@@ -28,10 +27,7 @@ import { EndpointService } from '../../../services/endpoint/endpoint.service';
 export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('descriptionField') public descriptionField: TextareaFieldComponent;
 
-  private subscription: Subscription[] = [];
-  public call: Call;
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -49,11 +45,11 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private mailService: MailService,
     private loader: Loader,
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {
@@ -91,7 +87,6 @@ export class SendMailComponent extends PageAbstract implements OnInit, OnDestroy
       this.transform.setVariable('call', call);
       this.call = call;
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCall(call);
 
       this.getMailTemplate(this.mailConfig.template);
     });

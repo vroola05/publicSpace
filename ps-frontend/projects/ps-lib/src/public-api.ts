@@ -141,6 +141,7 @@ export * from './lib/services/toast/toast.service';
 export * from './lib/services/notification/notification.service';
 export * from './lib/services/transform/transform.service';
 export * from './lib/services/validation/validation.service';
+export * from './lib/services/component/component.service';
 
 // PIPES
 export * from './lib/pipes/truncate/truncate.pipe';

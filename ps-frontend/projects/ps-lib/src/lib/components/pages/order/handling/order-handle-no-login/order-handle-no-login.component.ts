@@ -11,7 +11,6 @@ import { EndpointService } from '../../../../../services/endpoint/endpoint.servi
 import { PageAbstract } from '../../../page';
 
 import { Call } from '../../../../../../model/call';
-import { CallList } from '../../../../../../model/call-list';
 import { ButtonT } from '../../../../../../model/template';
 import { Order } from '../../../../../../model/order';
 import { StatusTypes } from '../../../../../../model/intefaces';
@@ -29,12 +28,10 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
   @ViewChild('explanationField') public explanationField: TextareaFieldComponent;
   private subscription: Subscription[] = [];
 
-  public call: Call;
   public order: Order;
   private sending = false;
   public explanation = '';
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
   public state = 0;
@@ -47,11 +44,11 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private endpoints: EndpointService,
     private loader: Loader
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
   public ngOnInit(): void {
@@ -94,7 +91,6 @@ export class OrderHandleNoLoginComponent extends PageAbstract implements OnInit,
       } else  {
         this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
       }
-      this.headerData = this.config.transformCall(call);
     })
     .catch((error) => {
       if (error.status && error.status === 406 ) {

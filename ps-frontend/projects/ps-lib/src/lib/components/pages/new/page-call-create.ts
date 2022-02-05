@@ -36,7 +36,7 @@ export abstract class ActionCallCreate extends PageAbstract implements OnInit, O
     protected loader: Loader,
     protected toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
   }
 
 

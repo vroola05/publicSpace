@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
-import { Call } from '../../../model/call';
-import { CallList } from '../../../model/call-list';
 import { Template, EndpointT, KeyValueT, HeaderMenuItemT } from '../../../model/template';
 import { Page } from '../../../model/page';
 import { Company } from '../../../model/company';
@@ -12,7 +10,6 @@ import { StorageService } from '../storage/storage.service';
 import { Action } from '../../../model/action';
 import { ActionTypeEnum, DomainTypeEnum } from '../../../model/intefaces';
 import { DomainType } from '../../../model/domain-type';
-
 
 export enum PageTypes {
   overview = 'overview',
@@ -105,9 +102,9 @@ export class ConfigService {
 
     if (template.pages) {
       const pages = new Map<string, Page>();
-      for (const page in template.pages) {
-        if (template.pages[page]) {
-          pages.set(page, template.pages[page]);
+      for (const pageId in template.pages) {
+        if (template.pages[pageId]) {
+          pages.set(pageId, template.pages[pageId]);
         }
       }
       template.pages = pages;
@@ -130,6 +127,7 @@ export class ConfigService {
     
     return template;
   }
+
 
   public getDomainType(): DomainType {
     return this.template.domain.domainType;
@@ -172,39 +170,6 @@ export class ConfigService {
 
   public configObservable(): Observable<any> {
     return this._template.asObservable();
-  }
-
-  public transformCall(call: Call): CallList {
-    const callList = new CallList();
-    callList.id = call.id;
-    callList.casenumber = call.casenumber;
-    callList.description = call.description;
-    callList.category = !call.mainCategory ? '' : call.mainCategory.name + ' - ' + call.mainCategory.category.name;
-    callList.status = !call.status ? '' : call.status.name;
-    //callList.dateCreated = moment(call.dateStart).toISOString();
-    if (call.location) {
-      callList.area = call.location.area;
-      callList.city = call.location.city;
-      callList.postal = call.location.postal;
-      callList.street = call.location.street;
-      callList.number = call.location.number;
-      callList.location = (!call.location.postal ? '' : call.location.postal)
-        + (!call.location.city ? '' : ' ' + call.location.city)
-        + (!call.location.street ? '' : ', ' + call.location.street)
-        + (!call.location.number ? '' : ' ' + call.location.number);
-    }
-
-    return callList;
-  }
-
-  public transformCallOrder(call: Call): CallList {
-    // const callList = this.transformCall(call);
-    // callList.status = (!call.orders || call.orders.length !== 1 || !call.orders[0].statusProces)
-    //   ? callList.status
-    //   : call.orders[0].statusProces.name;
-
-    // return callList;
-    return new CallList();
   }
 
   public readConfig(domainUrl: string): Promise<any> {

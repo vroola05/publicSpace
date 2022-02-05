@@ -20,7 +20,6 @@ import { AuthorisationService } from '../../../../services/authorisation/authori
 export class ChangeLocationComponent extends PageAbstract implements OnInit, OnDestroy {
   @ViewChild('panelNewMapComponent') panelNewMapComponent: PanelNewMapComponent;
 
-  public call: Call;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -32,9 +31,9 @@ export class ChangeLocationComponent extends PageAbstract implements OnInit, OnD
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
     this.call = new Call();
   }
 

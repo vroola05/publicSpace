@@ -1,10 +1,10 @@
-<div *ngIf="_call" class="row list-panel">
+<div *ngIf="_call && _order" class="row list-panel">
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
         <h4>Opdracht omschrijving</h4>
         <h4 *ngIf="_call.priority">Spoed!</h4>
-        {{_call.description}}
+        {{_order.description}}
       </div>
       <div class="col-md-12 list-panel-spacer">
         <lib-panel-person-simple [person]="_call.person"></lib-panel-person-simple>

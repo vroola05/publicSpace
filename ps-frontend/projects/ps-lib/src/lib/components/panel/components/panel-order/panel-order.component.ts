@@ -1,17 +1,29 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { StatusTypes } from '../../../../../model/intefaces';
+import { DynamicPanel, StatusTypes } from '../../../../../model/intefaces';
 import { Order } from '../../../../../model/order';
+import { Call } from '../../../../../model/call';
 
 @Component({
   selector: 'lib-panel-order',
   templateUrl: './panel-order.component.html',
   styleUrls: ['./panel-order.component.scss']
 })
-export class PanelOrderComponent implements OnInit {
+export class PanelOrderComponent implements DynamicPanel, OnInit {
+  private _call: Call;
+  @Input() public set call( call: Call) {
+    this._call = call;
+    this.orders = call.orders;
+  }
+  public get call() {
+    return this._call;
+  }
+
+  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+  
   @Input() public title = '';
   @Input() public orders: Order[];
   @Input() public action: 'view' | 'new' | 'full' = 'view';
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+  
 
   constructor() { }
 

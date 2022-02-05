@@ -1,0 +1,43 @@
+{
+    "overview" : {
+        "government": {
+            "endpoints": [
+                {"id": "list", "endpoint": "getListCall"},
+                {"id": "toggle", "endpoint": "getCallByCallListId"}
+            ],
+            "components": [
+                {"id": "listPanel", "component": "ListPanelComponent"}
+            ]
+        },
+        "contractor": {
+            "endpoints": [
+                {"id": "list", "endpoint": "getListOrder"},
+                {"id": "toggle", "endpoint": "getCallByOrderListId"}
+            ],
+            "components": [
+                {"id": "listPanel", "component": "ListPanelOrderComponent"}
+            ]
+        }
+    },
+    "details" : {
+        "government": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallById"}
+            ],
+            "components": [
+                {"id": "left", "component": "PanelInfoComponent"},
+                {"id": "right", "component": "PanelOrderComponent"}
+            ]
+        },
+        "contractor": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallByOrderId"}
+            ],
+            "components": [
+                {"id": "left", "component": "PanelInfoComponent"},
+                {"id": "right", "component": "PanelOrderSecondComponent"}
+                
+            ]
+        }
+    } 
+}

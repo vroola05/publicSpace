@@ -16,7 +16,5 @@ export class PageOverviewTemplate {
     public columns?: PageOverviewColumns[] = [];
     public buttonsLeft: PageButton[] = [];
     public buttonsRight: PageButton[] = [];
-
-    public panelType: string;
 }
   

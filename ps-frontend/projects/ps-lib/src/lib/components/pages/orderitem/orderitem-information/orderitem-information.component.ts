@@ -1,28 +1,26 @@
 import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Call } from '../../../../../model/call';
+import { StatusTypes } from '../../../../../model/intefaces';
+import { Message } from '../../../../../model/message';
+import { Order } from '../../../../../model/order';
+import { Status } from '../../../../../model/status';
+import { ButtonT } from '../../../../../model/template';
 import { ActionService } from '../../../../services/action/action.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { ConfigService } from '../../../../services/config/config.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
+import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
-import { EndpointService } from '../../../../services/endpoint/endpoint.service';
-import { PageAbstract } from '../../page';
-import { Call } from '../../../../../model/call';
-import { CallList } from '../../../../../model/call-list';
-import { Order } from '../../../../../model/order';
-import { OrderitemMisc } from '../../../../../model/misc-order-item';
-import { ButtonT } from '../../../../../model/template';
-import { Message } from '../../../../../model/message';
-
-import { Status } from '../../../../../model/status';
-import { StatusTypes } from '../../../../../model/intefaces';
-
-import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
 import { CheckboxFieldComponent } from '../../../fields/checkbox-field/checkbox-field.component';
+import { TextFieldComponent } from '../../../fields/text-field/text-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
-import { Loader } from '../../../../services/loader/loader.service';
+import { PageAbstract } from '../../page';
+
+
 
 @Component({
   selector: 'lib-orderitem-information',
@@ -42,10 +40,8 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
   @ViewChild('explanationField') public explanationField: TextareaFieldComponent;
 
   private subscription: Subscription[] = [];
-  public call: Call;
   public order: Order;
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
   private sending = false;
@@ -61,10 +57,10 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
     protected transform: TransformService,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private loader: Loader
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
 
     const order = this.storage.getSession('order');
     if (order) {
@@ -143,7 +139,6 @@ export class OrderitemInformationComponent extends PageAbstract implements OnIni
       }
 
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCallOrder(call);
     });
   }
 

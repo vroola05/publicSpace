@@ -5,13 +5,14 @@ import { Image } from '../../../../../model/image';
 import { ConfigService } from '../../../../services/config/config.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
+import { DynamicPanel } from '../../../../../model/intefaces';
 
 @Component({
   selector: 'lib-panel-info',
   templateUrl: './panel-info.component.html',
   styleUrls: ['./panel-info.component.scss']
 })
-export class PanelInfoComponent implements OnInit {
+export class PanelInfoComponent implements DynamicPanel, OnInit {
   @Input() public call: Call;
   @Output() public changed: EventEmitter<any> = new EventEmitter<any>();
 

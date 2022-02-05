@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { Call } from '../../../../../model/call';
+import { Order } from '../../../../../model/order';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
 import { ConfigService } from '../../../../services/config/config.service';
-import { ButtonT, ListTemplateT } from '../../../../../model/template';
+import { ListTemplateT } from '../../../../../model/template';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { TransformService } from '../../../../services/transform/transform.service';
 import { PageButton } from '../../../../../model/page-button';
-import { DynamicList } from '../dynamic-list.component';
+import { DynamicListPanel } from '../../../../../model/intefaces';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { DynamicList } from '../dynamic-list.component';
   templateUrl: './list-panel-order.component.html',
   styleUrls: ['./list-panel-order.component.scss']
 })
-export class ListPanelOrderComponent implements DynamicList {
+export class ListPanelOrderComponent implements DynamicListPanel {
   public getUrlImage = '';
 
   public buttonsLeft: PageButton[] = [];
@@ -23,10 +24,13 @@ export class ListPanelOrderComponent implements DynamicList {
 
   @Input() template: ListTemplateT;
 
+  public _order: Order;
+
   public _call: Call;
   @Input() set call(call: Call) {
     this._call = call;
-    this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+    this._order = call.orders[0];
+    // this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
     this.buttonsLeft = this.createButtons(this.template.buttonsLeft);
     this.buttonsRight = this.createButtons(this.template.buttonsRight);
   }

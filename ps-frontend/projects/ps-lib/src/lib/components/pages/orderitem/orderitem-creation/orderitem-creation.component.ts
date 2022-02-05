@@ -10,7 +10,6 @@ import { TransformService } from '../../../../services/transform/transform.servi
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { PageAbstract } from '../../page';
 import { Call } from '../../../../../model/call';
-import { CallList } from '../../../../../model/call-list';
 import { Order } from '../../../../../model/order';
 import { Orderitem } from '../../../../../model/order-item';
 import { ButtonT } from '../../../../../model/template';
@@ -22,10 +21,8 @@ import { ButtonT } from '../../../../../model/template';
 })
 export class OrderitemCreationComponent extends PageAbstract implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
-  public call: Call;
   public order: Order;
   public getUrlImage: string;
-  public headerData: CallList;
   public buttonsLeft: ButtonT[];
   public buttonsRight: ButtonT[];
 
@@ -39,10 +36,10 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private endpoints: EndpointService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
 
     const order = this.storage.getSession('order');
     if (order) {
@@ -103,7 +100,6 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
       }
 
       this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-      this.headerData = this.config.transformCallOrder(call);
 
       this.getOrderitems();
     });

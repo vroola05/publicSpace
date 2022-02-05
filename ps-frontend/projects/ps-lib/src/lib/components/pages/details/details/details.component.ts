@@ -1,27 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-
+import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DynamicDirective } from '../../../../directives/dynamic.directive';
 import { Call } from '../../../../../model/call';
-import { Order } from '../../../../../model/order';
-import { CallList } from '../../../../../model/call-list';
-import { ActionTypeEnum, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
-import { Note } from '../../../../../model/note';
+import { ActionTypeEnum, DynamicPanel, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Message } from '../../../../../model/message';
-
-import { NavigationService } from '../../../../services/navigation/navigation.service';
-import { StorageService } from '../../../../services/storage/storage.service';
-import { ConfigService, PageTypes } from '../../../../services/config/config.service';
+import { Note } from '../../../../../model/note';
+import { Order } from '../../../../../model/order';
+import { Page } from '../../../../../model/page';
 import { ActionService } from '../../../../services/action/action.service';
+import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { Loader } from '../../../../services/loader/loader.service';
+import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { Popup } from '../../../../services/popup/popup.service';
+import { StorageService } from '../../../../services/storage/storage.service';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { TransformService } from '../../../../services/transform/transform.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
 import { PageAbstract } from '../../page';
-import { TransformService } from '../../../../services/transform/transform.service';
-import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { EndpointService } from '../../../../services/endpoint/endpoint.service';
-import { Page } from '../../../../../model/page';
+import { DynamicLeftDirective } from '../../../../directives/dynamic-left.directive';
+import { DynamicRightDirective } from '../../../../directives/dynamic-right.directive';
+
 
 
 @Component({
@@ -30,10 +30,12 @@ import { Page } from '../../../../../model/page';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy {
+
+  @ViewChild(DynamicLeftDirective, {static: false}) private dynamicHostLeft!: DynamicLeftDirective;
+  @ViewChild(DynamicRightDirective, {static: false}) private dynamicHostRight!: DynamicRightDirective;
+
   public page: Page;
-  public call: Call;
   public getUrlImage: string;
-  public headerData: CallList;
 
   constructor(
     protected router: Router,
@@ -43,21 +45,22 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
-    private config: ConfigService,
+    protected config: ConfigService,
     private endpoints: EndpointService,
     private loader: Loader,
     private popup: Popup,
     private toast: ToastService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
+
+    this.page = this.config.getPage(PageTypes.details);    
+    this.pageConfig = this.page.pageConfig;
   }
 
   public ngOnInit(): void {
     super.ngOnInit();
 
     this.getCall();
-
-    this.page = this.config.getPage(PageTypes.details);
   }
 
   public ngOnDestroy(): void {
@@ -68,11 +71,23 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public getCall(): void {
-    this.endpoints.get('getCallById').then((call: Call) => {
+    
+    this.endpoints.get(this.pageConfig.getEndpoint('getCall')).then((call: Call) => {
       this.transform.setVariable('call', call);
+
       this.call = call;
-      this.headerData = this.config.transformCall(call);
+      this.loadComponent(this.dynamicHostLeft.viewContainerRef, this.pageConfig.getComponent('left'));
+      this.loadComponent(this.dynamicHostRight.viewContainerRef, this.pageConfig.getComponent('right'));
     });
+  }
+
+  private loadComponent(viewContainerRef: ViewContainerRef, dynamicPanel: any) {
+    if (!viewContainerRef || !dynamicPanel) {
+      return;
+    }
+    viewContainerRef.clear();
+    const componentRef = viewContainerRef.createComponent<DynamicPanel>(dynamicPanel);
+    componentRef.instance.call = this.call;
   }
 
   public onOrderChanged($event): void {

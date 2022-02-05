@@ -1,19 +1,39 @@
 import { OnDestroy, OnInit, Directive } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../../model/page';
-import { ActionTypeEnum, PageLayoutType } from '../../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum, PageLayoutType } from '../../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { AuthorisationService } from '../../services/authorisation/authorisation.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
 import { StorageService } from '../../services/storage/storage.service';
 import { TransformService } from '../../services/transform/transform.service';
-
+import { PageConfig } from '../../../model/domain-type-config';
+import { List } from '../../../model/list';
+import { Call } from '../../../model/call';
+import { ConfigService } from '../../services/config/config.service';
+import { DomainType } from '../../../model/domain-type';
+import moment from 'moment';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {
   public pageLayoutType: PageLayoutType = PageLayoutType.page;
 
+  public domainType: DomainType;
   public page: Page;
+  public pageConfig: PageConfig;
+  public header: List;
+
+  private _call: Call;
+  public set call(call: Call) {
+    this._call = call;
+    if (call) {
+      this.header = this.getHeaderList(call);
+    }
+  }
+  
+  public get call() {
+    return this._call;
+  }
 
   constructor(
     protected router: Router,
@@ -22,11 +42,14 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     protected storage: StorageService,
     protected action: ActionService,
     protected transform: TransformService,
-    protected authorisation: AuthorisationService
+    protected authorisation: AuthorisationService,
+    protected config: ConfigService
   ) {
   }
 
   public ngOnInit(): void {
+    this.domainType = this.config.getDomainType();
+
     this.transform.clearVariable();
     this.transform.setVariable('user', this.authorisation.user);
     this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
@@ -54,6 +77,64 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.CANCEL, () => { return this.cancel(); });
     this.action.register(ActionTypeEnum.BACK, () => { return this.back(); });
     this.action.register(ActionTypeEnum.NEXT, () => { return this.next(); });
+  }
+
+  public getHeaderList(call: Call): List {
+    const list = new List();
+
+    list.casenumber = call.casenumber;
+    list.category = !call.mainCategory ? '' : call.mainCategory.name + ' - ' + call.mainCategory.category.name;
+    list.priority = call.priority;
+
+    if (call.location) {
+      list.city = call.location.city;
+      list.postal = call.location.postal;
+      list.street = call.location.street;
+      list.number = call.location.number;
+      list.location = (!call.location.postal ? '' : call.location.postal)
+        + (!call.location.city ? '' : ' ' + call.location.city)
+        + (!call.location.street ? '' : ', ' + call.location.street)
+        + (!call.location.number ? '' : ' ' + call.location.number);
+    }
+
+    if (this.domainType.id === DomainTypeEnum.GOVERNMENT) {
+      return this.getHeaderListGovernment(list, call);
+    } else {
+      return this.getHeaderListContractor(list, call);
+    }
+  }
+
+  private getHeaderListGovernment(list: List, call: Call) {
+    list.id = call.id;
+    list.description = call.description;
+    
+    list.status = !call.status ? '' : call.status.name;
+    list.dateCreated = moment(call.dateCreated).toISOString();
+    if (call.dateEnded) {
+      list.dateEnded = moment(call.dateEnded).toISOString();
+    }
+
+    list.user = !call.user ? '' : call.user.name;
+    list.group = !call.group ? '' : call.group.name;
+
+    return list;
+  }
+
+  private getHeaderListContractor(list: List, call: Call) {
+    const order = call.orders[0];
+    list.id = order.id;
+    list.description = order.description;
+
+    list.status = !order.status ? '' : order.status.name;
+    list.dateCreated = moment(order.dateCreated).toISOString();
+    if (list.dateEnded) {
+      list.dateEnded = moment(order.dateEnded).toISOString();
+    }
+
+    list.user = !order.user ? '' : order.user.name;
+    list.group = !order.group ? '' : order.group.name;
+
+    return list;
   }
 
   public ngOnDestroy(): void {
