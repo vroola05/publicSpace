@@ -1,7 +1,7 @@
-import { OnDestroy, OnInit, Directive } from '@angular/core';
+import { OnDestroy, OnInit, Directive, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../../model/page';
-import { ActionTypeEnum, DomainTypeEnum, PageLayoutType } from '../../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, PageLayoutType } from '../../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { AuthorisationService } from '../../services/authorisation/authorisation.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
@@ -13,10 +13,13 @@ import { Call } from '../../../model/call';
 import { ConfigService } from '../../services/config/config.service';
 import { DomainType } from '../../../model/domain-type';
 import moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {
   public pageLayoutType: PageLayoutType = PageLayoutType.page;
+  
+  protected subscriptions: Subscription[] = [];
 
   public domainType: DomainType;
   public page: Page;
@@ -51,7 +54,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.domainType = this.config.getDomainType();
 
     this.transform.clearVariable();
-    this.transform.setVariable('user', this.authorisation.user);
+    // this.transform.setVariable('user', this.authorisation.user);
     this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
     this.navigationService.title = (this.activatedRoute.snapshot.data && this.activatedRoute.snapshot.data.title)
       ? this.activatedRoute.snapshot.data.title
@@ -61,7 +64,9 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
 
 
     this.action.register(ActionTypeEnum.ASSIGN_GROUP, () => { return this.assignGroup(); });
-    this.action.register(ActionTypeEnum.ASSIGN_PERSON, () => { return this.assignPerson(); });
+    this.action.register(ActionTypeEnum.ASSIGN_USER, () => { return this.assignUser(); });
+    this.action.register(ActionTypeEnum.ASSIGN_GROUP_AND_USER, () => { return this.assignUserAndGroup(); });
+    
     this.action.register(ActionTypeEnum.CALL_CREATE, () => { return this.callCreate(); });
     this.action.register(ActionTypeEnum.CALL_CLOSE, () => { return this.callClose(); });
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return this.callKill(); });
@@ -80,6 +85,9 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
   }
 
   public getHeaderList(call: Call): List {
+    if (!call.id) {
+      return;
+    }
     const list = new List();
 
     list.casenumber = call.casenumber;
@@ -139,6 +147,24 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.transform.clearVariable();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  protected loadComponent(viewContainerRef: ViewContainerRef, dynamicPanel: any) {
+    if (!viewContainerRef || !dynamicPanel) {
+      return;
+    }
+    viewContainerRef.clear();
+    const componentRef = viewContainerRef.createComponent<DynamicPanel>(dynamicPanel);
+
+    componentRef.instance.pageConfig = this.pageConfig;
+    componentRef.instance.call = this.call;
+
+    this.subscriptions.push(componentRef.instance.changed.subscribe($event => this.changed($event)));
+  }
+
+
+  public changed($event: {action: string, data: any}): void {
   }
 
   public notImplemented(): Promise<boolean> {
@@ -177,7 +203,12 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
 
-  public assignPerson(): Promise<boolean> {
+  public assignUser(): Promise<boolean> {
+    console.error('Not implemented');
+    return this.notImplemented();
+  }
+
+  public assignUserAndGroup(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }

@@ -3,11 +3,17 @@ import { ListPanelOrderComponent } from "../lib/components/list/components/list-
 import { PanelInfoComponent } from "../lib/components/panel/components/panel-info/panel-info.component";
 import { PanelOrderComponent } from "../lib/components/panel/components/panel-order/panel-order.component";
 import { PanelOrderSecondComponent } from "../lib/components/panel/components/panel-order-second/panel-order-second.component";
+import { PanelAssignGOrUComponent } from "../lib/components/panel/components/panel-assign-g-or-u/panel-assign-g-or-u.component";
+import { PanelAssignGAndUComponent } from "../lib/components/panel/components/panel-assign-g-and-u/panel-assign-g-and-u.component";
+import { PanelInfoSecondComponent } from "../lib/components/panel/components/panel-info-second/panel-info-second.component";
 
 export class ComponentType {
     public ListPanelComponent = ListPanelComponent;
     public ListPanelOrderComponent = ListPanelOrderComponent;
     public PanelInfoComponent = PanelInfoComponent;
+    public PanelInfoSecondComponent = PanelInfoSecondComponent;
     public PanelOrderComponent = PanelOrderComponent;
     public PanelOrderSecondComponent = PanelOrderSecondComponent;
+    public PanelAssignGOrUComponent = PanelAssignGOrUComponent;
+    public PanelAssignGAndUComponent = PanelAssignGAndUComponent;
   }

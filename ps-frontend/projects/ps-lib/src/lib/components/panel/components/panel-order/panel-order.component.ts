@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DynamicPanel, StatusTypes } from '../../../../../model/intefaces';
 import { Order } from '../../../../../model/order';
 import { Call } from '../../../../../model/call';
+import { PageConfig } from '../../../../../model/domain-type-config';
 
 @Component({
   selector: 'lib-panel-order',
@@ -19,6 +20,7 @@ export class PanelOrderComponent implements DynamicPanel, OnInit {
   }
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+  @Input() public pageConfig: PageConfig;
   
   @Input() public title = '';
   @Input() public orders: Order[];

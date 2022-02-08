@@ -34,9 +34,37 @@
                 {"id": "getCall", "endpoint": "getCallByOrderId"}
             ],
             "components": [
-                {"id": "left", "component": "PanelInfoComponent"},
+                {"id": "left", "component": "PanelInfoSecondComponent"},
                 {"id": "right", "component": "PanelOrderSecondComponent"}
                 
+            ]
+        }
+    },
+    "assign" : {
+        "government": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallById"},
+                {"id": "getGroups", "endpoint": "getGroups"},
+                {"id": "getUsers", "endpoint": "getUsersOfGroup"},
+                {"id": "putGroup", "endpoint": "putCallGroup"},
+                {"id": "putUser", "endpoint": "putCallUser"},
+                {"id": "putGroupAndUser", "endpoint": "putCallGroupAndUser"}
+            ],
+            "components": [
+                {"id": "assign", "component": "PanelAssignGOrUComponent"}
+            ]
+        },
+        "contractor": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallByOrderId"},
+                {"id": "getGroups", "endpoint": "getGroups"},
+                {"id": "getUsers", "endpoint": "getUsersOfGroup"},
+                {"id": "putGroup", "endpoint": "putOrderGroup"},
+                {"id": "putUser", "endpoint": "putOrderUser"},
+                {"id": "putGroupAndUser", "endpoint": "putCallGroupAndUser"}
+            ],
+            "components": [
+                {"id": "assign", "component": "PanelAssignGAndUComponent"}
             ]
         }
     } 

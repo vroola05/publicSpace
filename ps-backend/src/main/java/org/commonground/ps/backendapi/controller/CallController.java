@@ -1,15 +1,11 @@
 package org.commonground.ps.backendapi.controller;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.CallService;
 import org.commonground.ps.backendapi.core.ContractService;
@@ -19,24 +15,7 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
-import org.commonground.ps.backendapi.jpa.entities.CallEntity;
-import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
-import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
-import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
-import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
-import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
-import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
-import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
-import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
-import org.commonground.ps.backendapi.jpa.entities.UserEntity;
-import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
-import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
-import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
-import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
-import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
-import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Call;
-import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Order;
@@ -123,6 +102,21 @@ public class CallController extends Controller {
 		@Valid @PutCallGroupValidator @RequestBody Group groupNew) throws BadRequestException {
 
 		Optional<Call> callOptional = callService.setGroup(getUser(), id, groupNew);
+
+		if (callOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+		return callOptional.get();
+	}
+
+	@Secured(identifier = "putCallGroupAndUser", domainType = DomainTypeEnum.GOVERNMENT)
+	@PutMapping(value = "/{id}/group/{groupId}", consumes = "application/json", produces = "application/json")
+	public Call putCallGroupAndUser(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long groupId,
+		@Valid @PutCallUserValidator @RequestBody User userNew) throws BadRequestException {
+
+		Optional<Call> callOptional = callService.setGroupAndUser(getUser(), id, groupId, userNew);
 
 		if (callOptional.isEmpty()) {
 			throw new BadRequestException();

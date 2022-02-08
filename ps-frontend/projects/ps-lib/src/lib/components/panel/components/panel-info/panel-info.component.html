@@ -5,10 +5,11 @@
     <p>{{call.description}}</p>
   </div>
   <div class="col-sm-12 details-main-created-by">
-    <h4>Gemeld door</h4>
-    <lib-panel-supervisor [image]="getImage(call.createdBy)"></lib-panel-supervisor>
+    <h4>Medewerker</h4>
+    <lib-panel-user [image]="getImage(call.user)" *ngIf="call?.user"></lib-panel-user>
   </div>
   <div class="col-sm-12 details-main-created-by">
+    <h4>Melder</h4>
     <lib-panel-person [person]="call?.person"></lib-panel-person>
   </div>
   <div class="col-sm-12 details-main-location-and-images">
@@ -19,7 +20,7 @@
       </div>
       <div class="col-sm-12 col-md-4 details-block">
         <h4>Foto toevoegen</h4>
-        <!-- <lib-image-button [urlImage]="urlImage" [documents]="call.documents"></lib-image-button> -->
+        <lib-image-button [urlImage]="urlImage" [documents]="call.documents"></lib-image-button>
       </div>
     </div>
   </div>

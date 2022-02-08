@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomainType } from '../../../ps-lib/src/model/domain-type';
 import { PageConfig, PageConfigContainer } from '../../../ps-lib/src/model/domain-type-config';
 import { DomainTypeEnum } from '../../../ps-lib/src/model/intefaces';
-import pageConfig from '../../../ps-lib/src/page-config.json'
+import pageConfig from '../../../ps-lib/src/page-config.json' //Eventualy this will be added to the main-config file.
 import { Page } from 'projects/ps-lib/src/model/page';
 
 @Component({

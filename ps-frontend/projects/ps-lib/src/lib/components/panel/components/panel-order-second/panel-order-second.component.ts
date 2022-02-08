@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DynamicPanel } from '../../../../../model/intefaces';
 import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
-import { Category } from '../../../../../model/category';
+
+import { PageConfig } from '../../../../..//model/domain-type-config';
 
 @Component({
   selector: 'lib-panel-order-second',
@@ -20,7 +21,8 @@ export class PanelOrderSecondComponent implements DynamicPanel, OnInit {
   }
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
-
+  @Input() public pageConfig: PageConfig;
+  
   @Input() public title = '';
   @Input() public order: Order;
   @Input() public action: 'view' | 'confirm' = 'view';

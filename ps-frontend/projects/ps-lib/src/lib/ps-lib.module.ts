@@ -28,7 +28,7 @@ import { PopupComponent } from './components/popup/popup.component';
 import { ImageComponent } from './components/images/image/image.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { PanelInfoSecondComponent } from './components/panel/components/panel-info-second/panel-info-second.component';
-import { PanelSupervisorComponent } from './components/panel/components/panel-supervisor/panel-supervisor.component';
+import { PanelUserComponent } from './components/panel/components/panel-user/panel-user.component';
 import { ImageButtonComponent } from './components/images/image-button/image-button.component';
 import { ImageGalleryComponent } from './components/images/image-gallery/image-gallery.component';
 import { ImageViewerComponent } from './components/images/image-viewer/image-viewer.component';
@@ -138,6 +138,9 @@ import { DynamicDirective } from './directives/dynamic.directive';
 import { DynamicLeftDirective } from './directives/dynamic-left.directive';
 import { DynamicRightDirective } from './directives/dynamic-right.directive';
 import { ComponentService } from './services/component/component.service';
+import { AssignComponent } from './components/pages/assign/assign/assign.component';
+import { PanelAssignGOrUComponent } from './components/panel/components/panel-assign-g-or-u/panel-assign-g-or-u.component';
+import { PanelAssignGAndUComponent } from './components/panel/components/panel-assign-g-and-u/panel-assign-g-and-u.component';
 
 
 @NgModule({
@@ -196,7 +199,7 @@ import { ComponentService } from './services/component/component.service';
     PanelToggleComponent,
     PanelOrderComponent,
     PanelOrderInfoComponent,
-    PanelSupervisorComponent,
+    PanelUserComponent,
     PanelPersonComponent,
     PanelPersonSimpleComponent,
     PanelSettingsComponent,
@@ -229,6 +232,7 @@ import { ComponentService } from './services/component/component.service';
     OrderConfirmationComponent,
     MailComponent,
     ToastComponent,
+    AssignComponent,
     AssignPOrGComponent,
     AssignPAndGComponent,
     SendMailComponent,
@@ -253,7 +257,9 @@ import { ComponentService } from './services/component/component.service';
     ListPanelContractContractorComponent,
     DynamicDirective,
     DynamicLeftDirective,
-    DynamicRightDirective
+    DynamicRightDirective,
+    PanelAssignGOrUComponent,
+    PanelAssignGAndUComponent
   ],
   imports: [
     CommonModule,
@@ -316,7 +322,7 @@ import { ComponentService } from './services/component/component.service';
     PanelOrderComponent,
     PanelOrderSecondComponent,
     PanelOrderInfoComponent,
-    PanelSupervisorComponent,
+    PanelUserComponent,
     PanelPersonComponent,
     PanelPersonSimpleComponent,
     PanelSettingsComponent,
@@ -347,6 +353,7 @@ import { ComponentService } from './services/component/component.service';
     OrderConfirmationComponent,
     MailComponent,
     ToastComponent,
+    AssignComponent,
     AssignPOrGComponent,
     AssignPAndGComponent,
     SendMailComponent,
@@ -364,7 +371,9 @@ import { ComponentService } from './services/component/component.service';
     CreateConditionComponent,
     CreateOverviewColumnsComponent,
     CreateOverviewColumnComponent,
-    PanelSettingsContractsComponent
+    PanelSettingsContractsComponent,
+    PanelAssignGOrUComponent,
+    PanelAssignGAndUComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

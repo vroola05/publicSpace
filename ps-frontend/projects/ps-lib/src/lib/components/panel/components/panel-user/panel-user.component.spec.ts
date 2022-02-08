@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { PersonComponent } from './panel-supervisor.component';
+import { PanelUserComponent } from './panel-user.component';
 
-describe('PersonComponent', () => {
-  let component: PersonComponent;
-  let fixture: ComponentFixture<PersonComponent>;
+describe('PanelUserComponent', () => {
+  let component: PanelUserComponent;
+  let fixture: ComponentFixture<PanelUserComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PersonComponent ]
+      declarations: [ PanelUserComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonComponent);
+    fixture = TestBed.createComponent(PanelUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,6 +2,7 @@ import { EventEmitter } from '@angular/core';
 import { Call } from './call';
 import { Company } from './company';
 import { Domain } from './domain';
+import { PageConfig } from './domain-type-config';
 import { ListTemplateT } from './template';
 
 export enum RolesEnum {
@@ -33,7 +34,7 @@ export enum StatusTypes {
 }
 
 export enum ActionTypeEnum {
-  ASSIGN_PERSON = 0,
+  ASSIGN_USER = 0,
   ASSIGN_GROUP =  1,
   CALL_CREATE = 2,
   CALL_CLOSE = 3,
@@ -47,7 +48,8 @@ export enum ActionTypeEnum {
   ORDER_CANCEL = 11,
   BACK = 12,
   CANCEL = 13,
-  NEXT = 14
+  NEXT = 14,
+  ASSIGN_GROUP_AND_USER = 15
 }
 
 export enum PageLayoutType {
@@ -89,6 +91,7 @@ export interface DynamicBase {
 
 export interface DynamicPanel extends DynamicBase {
   changed: EventEmitter<any>;
+  pageConfig: PageConfig;
 }
 
 export interface DynamicListPanel extends DynamicBase {

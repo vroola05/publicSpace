@@ -1,27 +1,23 @@
 package org.commonground.ps.backendapi.core;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.commonground.ps.backendapi.convertor.Convert;
-import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
-import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
-import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
-import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
-import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.jpa.repositories.OrderRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
@@ -36,9 +32,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-	private CallRepository callRepository;
-    
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -47,6 +40,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private GroupRepository groupRepository;
@@ -73,6 +69,23 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+    public Optional<OrderEntity> getOrderEntityById(User user, Long id) {
+		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(id, user.getDomain().getId());
+
+        if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get())) {
+            return Optional.empty();
+        }
+        
+        return orderEntityOptional;
+    }
+	
+    public boolean hasAccess(User user, OrderEntity orderEntity) {
+        return user.getGroups().stream().anyMatch(group -> group.getId() == orderEntity.getGroup().getId())
+            || (orderEntity.getUser() != null && user.getId() == orderEntity.getUser().getId())
+			|| (orderEntity.getUser() == null && user.getRoles().stream().anyMatch(role -> role.equalsIgnoreCase("ROLE_SUPER_USER") || role.equalsIgnoreCase("ROLE_ADMIN")));
+    }
+
+	@Override
 	public Optional<List<Order>> save(User user, Long id, List<Order> orders) {
 		Optional<CallEntity> callEntityOptional = callService.getCallEntityById(user, id);
 
@@ -80,11 +93,13 @@ public class OrderServiceImpl implements OrderService {
 			return Optional.empty();
 		}
 
+		Map<Long, OrderEntity> existingOrders = new HashMap<>();
 		CallEntity callEntity = callEntityOptional.get();
+		for (OrderEntity o : callEntity.getOrders()) {
+			existingOrders.put(o.getId(), o);
+		}
 
 		List<ContractEntity> contractEntities = contractRepository.getContractByGovernmentDomainIdAccepted(user.getDomain().getId(), true);
-
-		List<OrderEntity> orderEntities = new ArrayList<>();
 
 		for (Order order: orders) {
 			OrderEntity orderEntity = new OrderEntity();
@@ -97,12 +112,6 @@ public class OrderServiceImpl implements OrderService {
 			}
 
 			ContractEntity contractEntity = contractEntityOptional.get();
-			Optional<ActionEntity> actionEntityOptional = actionService.getEntity(domainId, ActionEnum.ORDER_CREATE);
-			if (actionEntityOptional.isEmpty() || actionEntityOptional.get().getStatus() == null) {
-				return Optional.empty();
-			}
-
-			orderEntity.setStatus(actionEntityOptional.get().getStatus());
 			orderEntity.setDateCreated(new Date());
 			orderEntity.setDescription(order.getDescription());
 			orderEntity.setDomain(contractEntity.getDomainContractor());
@@ -126,16 +135,12 @@ public class OrderServiceImpl implements OrderService {
 					return Optional.empty();
 				}
 			}
-
-
-			orderEntities.add(orderEntity);
-
-		}
-		if (!orderEntities.isEmpty()) {
-			callRepository.save(callEntity);
+			if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE)) {
+				return Optional.empty();
+			}
+			order = Convert.orderEntity(orderRepository.save(orderEntity));
 		}
 
-		
 		return Optional.of(orders);
 	}
 
@@ -155,12 +160,64 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Optional<Call> setUser(User user, Long id, User userNew) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, id);
+
+		if (orderEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
+		OrderEntity orderEntity = orderEntityOptional.get();
+
+		Optional<UserEntity> userEntityOptional = userRepository.getUserById(user.getDomain().getId(), userNew.getId());
+
+		if (userEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
+		UserEntity userEntity = userEntityOptional.get();
+
+		if(userEntity.getGroups().stream().noneMatch(group -> group.getId() == orderEntity.getGroup().getId())) {
+			return Optional.empty();
+		}
+
+		orderEntity.setUser(userEntity);
+
+		orderRepository.saveAndFlush(orderEntity);
+
+		actionService.order(user.getDomain().getId(), id, ActionEnum.ASSIGN_PERSON);
+
+		return getCallByOrderId(user, id);
 	}
 
 	@Override
 	public Optional<Call> setGroup(User user, Long id, Group groupNew) {
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, id);
+	
+		if (orderEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
+		OrderEntity orderEntity = orderEntityOptional.get();
+
+		Optional<GroupEntity> groupEntityOptional = groupRepository.getGroupById(groupNew.getId(), user.getDomain().getId());
+
+		if (groupEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
+		GroupEntity groupEntity = groupEntityOptional.get();
+
+		orderEntity.setGroup(groupEntity);
+
+		orderRepository.saveAndFlush(orderEntity);
+
+		actionService.order(user.getDomain().getId(), orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
+
+		return getCallByOrderId(user, id);
+	}
+
+	@Override
+	public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew) {
 		// TODO Auto-generated method stub
 		return null;
 	}

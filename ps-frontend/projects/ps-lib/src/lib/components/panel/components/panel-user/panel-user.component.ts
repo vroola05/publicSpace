@@ -5,11 +5,11 @@ import { Image } from '../../../../../model/image';
 import { ApiService } from '../../../../services/api/api.service';
 
 @Component({
-  selector: 'lib-panel-supervisor',
-  templateUrl: './panel-supervisor.component.html',
-  styleUrls: ['./panel-supervisor.component.scss']
+  selector: 'lib-panel-user',
+  templateUrl: './panel-user.component.html',
+  styleUrls: ['./panel-user.component.scss']
 })
-export class PanelSupervisorComponent implements OnInit, OnDestroy {
+export class PanelUserComponent implements OnInit, OnDestroy {
   public _image: Image;
   @Input() public set image(image: Image) {
     if (!this._image || this._image.url !== image.url) {

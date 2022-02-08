@@ -1,28 +1,26 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { Call } from '../../../../../model/call';
+import { Group } from '../../../../../model/group';
+import { Image } from '../../../../../model/image';
+import { Environment } from '../../../../../model/intefaces';
+import { Message } from '../../../../../model/message';
+import { User } from '../../../../../model/user';
+import { ActionService } from '../../../../services/action/action.service';
+import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
 import { ConfigService, PageTypes } from '../../../../services/config/config.service';
+import { EndpointService } from '../../../../services/endpoint/endpoint.service';
+import { EnvironmentService } from '../../../../services/environment/environment.service';
 import { Loader } from '../../../../services/loader/loader.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
-
-import { PageAbstract } from '../../page';
-
-import { ButtonT } from '../../../../../model/template';
-import { Call } from '../../../../../model/call';
-import { User } from '../../../../../model/user';
-import { Image } from '../../../../../model/image';
-import { Group } from '../../../../../model/group';
-import { Message } from '../../../../../model/message';
-import { Environment } from '../../../../../model/intefaces';
-
 import { ToastService } from '../../../../services/toast/toast.service';
 import { TransformService } from '../../../../services/transform/transform.service';
-import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { EndpointService } from '../../../../services/endpoint/endpoint.service';
-import { ActionService } from '../../../../services/action/action.service';
-import { EnvironmentService } from '../../../../services/environment/environment.service';
+import { PageAbstract } from '../../page';
+
+
+
+
 
 @Component({
   selector: 'lib-assign-p-or-g',
@@ -230,7 +228,7 @@ export class AssignPOrGComponent extends PageAbstract implements OnInit, OnDestr
     });
   }
 
-  public assignPerson(): Promise<boolean> {
+  public assignUser(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if (!this.lock) {
         this.lock = true;

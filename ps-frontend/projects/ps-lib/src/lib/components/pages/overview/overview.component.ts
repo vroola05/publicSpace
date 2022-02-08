@@ -37,7 +37,6 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   public page: Page;
   public pageOverviewTemplate: PageOverviewTemplate;
   private id: number;
-  private subscriptions: Subscription[] = [];
 
   public list = [];
   public endOfList = false;
@@ -105,7 +104,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
     this.dynamicHost.viewContainerRef.clear();
   }
 
-  private loadComponent(viewContainerRef: ViewContainerRef, dynamicPanel: any) {
+  protected loadComponent(viewContainerRef: ViewContainerRef, dynamicPanel: any) {
     if (!viewContainerRef || !dynamicPanel) {
       return;
     }

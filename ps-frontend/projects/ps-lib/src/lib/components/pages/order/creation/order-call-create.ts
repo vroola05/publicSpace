@@ -65,7 +65,7 @@ export abstract class ActionOrderCreate extends PageAbstract implements OnInit, 
                         this.endpoints.post('postOrders', orders).then((orders: Order[]) => {
                             this.loader.remove(this.loaderId);
                             this.lock = false;
-                            //this.onOrderCreated(orders, resolve, reject);
+                            this.onOrderCreated(orders, resolve, reject);
                         }).catch(() => {
                                 this.loader.remove(this.loaderId);
                                 this.lock = false;

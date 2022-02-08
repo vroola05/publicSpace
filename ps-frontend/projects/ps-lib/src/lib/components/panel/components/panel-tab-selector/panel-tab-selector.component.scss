@@ -16,7 +16,8 @@
 
     .tab {
       flex-grow: 1;
-      flex-basis: 0;
+      width: 100%;
+      // flex-basis: 0;
       padding: $default-spacing calc($default-spacing * 2);
       border: $color-primary solid 2px;
       border-left: $color-primary solid 1px;

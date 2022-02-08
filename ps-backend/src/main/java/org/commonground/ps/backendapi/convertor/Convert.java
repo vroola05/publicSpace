@@ -507,11 +507,24 @@ public class Convert {
     order.setDateEnded(orderEntity.getDateEnded());
     order.setContractorDomain(domainEntity(orderEntity.getDomain()));
 
-    order.setStatus(statusEntity(orderEntity.getStatus()));
+    if (orderEntity.getStatus() != null) {
+      order.setStatus(statusEntity(orderEntity.getStatus()));
+    }
     
     for (OrderCategoryEntity orderCategoryEntity: orderEntity.getOrderCategory()) {
-      order.getCategories().add(categoryEntity(orderCategoryEntity.getCategory()));
+      if (orderCategoryEntity.getCategory() != null) {
+        order.getCategories().add(categoryEntity(orderCategoryEntity.getCategory()));
+      }
     }
+
+    if (orderEntity.getUser() != null) {
+      order.setUser(userEntity(orderEntity.getUser()));
+    }
+    
+    if (orderEntity.getGroup() != null) {
+      order.setGroup(groupEntity(orderEntity.getGroup()));
+    }
+
     return order;
   }
 }

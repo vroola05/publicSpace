@@ -26,6 +26,9 @@
     "postCall": { "endpoint": "/call", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "putCallUser": { "endpoint": "/call/${path.id}/user", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "putCallGroup": { "endpoint": "/call/${path.id}/group", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "putCallGroupAndUser": { "endpoint": "/call/${path.id}/group/${group.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "putOrderUser": { "endpoint": "/order/${path.id}/user", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "putOrderGroup": { "endpoint": "/order/${path.id}/group", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "getCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
     "putCompany": {"endpoint": "/company/${company.id}", "roles": ["ROLE_ADMIN"]},
     "postCompany": {"endpoint": "/company", "roles": ["ROLE_ADMIN"]},
@@ -78,8 +81,8 @@
       { "id": "dateCreated", "name": "Datum", "type": "date", "css": "col-md-1 col-lg-1 italic" },
       { "id": "description", "name": "Omschrijving", "type": "text", "css": "d-md-none d-lg-block col-lg-2 italic" },
       { "id": "status", "name": "Status", "type": "string", "css": " col-md-1 col-lg-1" },
-      { "id": "groups", "name": "Groep", "type": "string", "css": " col-md-1 col-lg-1" },
-      { "id": "supervisor", "name": "Behandelaar", "type": "string", "css": " col-md-2 col-lg-2" }
+      { "id": "group", "name": "Groep", "type": "string", "css": " col-md-1 col-lg-1" },
+      { "id": "user", "name": "Behandelaar", "type": "string", "css": " col-md-2 col-lg-2" }
     ],
     "header": {
       "headerMenu": [

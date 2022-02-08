@@ -21,6 +21,7 @@ import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/p
 import { PageAbstract } from '../../page';
 import { DynamicLeftDirective } from '../../../../directives/dynamic-left.directive';
 import { DynamicRightDirective } from '../../../../directives/dynamic-right.directive';
+import { Subscription } from 'rxjs';
 
 
 
@@ -30,7 +31,7 @@ import { DynamicRightDirective } from '../../../../directives/dynamic-right.dire
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy {
-
+  
   @ViewChild(DynamicLeftDirective, {static: false}) private dynamicHostLeft!: DynamicLeftDirective;
   @ViewChild(DynamicRightDirective, {static: false}) private dynamicHostRight!: DynamicRightDirective;
 
@@ -71,7 +72,6 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public getCall(): void {
-    
     this.endpoints.get(this.pageConfig.getEndpoint('getCall')).then((call: Call) => {
       this.transform.setVariable('call', call);
 
@@ -81,16 +81,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
 
-  private loadComponent(viewContainerRef: ViewContainerRef, dynamicPanel: any) {
-    if (!viewContainerRef || !dynamicPanel) {
-      return;
-    }
-    viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent<DynamicPanel>(dynamicPanel);
-    componentRef.instance.call = this.call;
-  }
-
-  public onOrderChanged($event): void {
+  public changed($event): void {
     switch ($event.action) {
       case 'not-accept':
         this.rejectOrder($event.data);

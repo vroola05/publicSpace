@@ -50,7 +50,7 @@ export * from './lib/components/panel/components/panel-toggle/panel-toggle.compo
 export * from './lib/components/panel/components/panel-order-info/panel-order-info.component';
 export * from './lib/components/panel/components/panel-order/panel-order.component';
 export * from './lib/components/panel/components/panel-order-second/panel-order-second.component';
-export * from './lib/components/panel/components/panel-supervisor/panel-supervisor.component';
+export * from './lib/components/panel/components/panel-user/panel-user.component';
 export * from './lib/components/panel/components/panel-person/panel-person.component';
 export * from './lib/components/panel/components/panel-person-simple/panel-person-simple.component';
 
@@ -114,8 +114,11 @@ export * from './lib/components/pages/change/change-location/change-location.com
 export * from './lib/components/pages/change/change-information/change-information.component';
 export * from './lib/components/pages/change/change-confirmation/change-confirmation.component';
 
+export * from './lib/components/pages/assign/assign/assign.component';
 export * from './lib/components/pages/assign/assign-p-or-g/assign-p-or-g.component';
 export * from './lib/components/pages/assign/assign-p-and-g/assign-p-and-g.component';
+export * from './lib/components/panel/components/panel-assign-g-or-u/panel-assign-g-or-u.component';
+export * from './lib/components/panel/components/panel-assign-g-and-u/panel-assign-g-and-u.component';
 export * from './lib/components/pages/overview/overview.component';
 export * from './lib/components/pages/send-mail/send-mail.component';
 

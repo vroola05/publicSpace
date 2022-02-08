@@ -8,7 +8,7 @@ import {
   NewConfirmationComponent,
   NewInformationComponent,
   NewLocationComponent,
-  AssignPOrGComponent,
+  AssignComponent,
   SendMailComponent,
   ChangeConfirmationComponent,
   ChangeLocationComponent,
@@ -79,7 +79,7 @@ const routes: Routes = [
     ]
   },
   { path: 'details/:id', component: DetailsComponent, data: { title: 'Melding informatie' } },
-  { path: 'assign/:id', component: AssignPOrGComponent, data: { title: 'Melding toewijzen' } },
+  { path: 'assign/:id', component: AssignComponent, data: { title: 'Melding toewijzen' } },
   { path: 'new/location', component: NewLocationComponent, data: { title: 'Waar is de melding' } },
   { path: 'new/information', component: NewInformationComponent, data: { title: 'Nieuwe melding maken' } },
   { path: 'new/confirmation', component: NewConfirmationComponent, data: { title: 'Melding controleren' } },

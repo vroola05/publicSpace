@@ -25,7 +25,6 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   @ViewChild('companyComponent') public companyComponent: DropdownFieldComponent;
   @ViewChild('domainComponent') public domainComponent: DropdownFieldComponent;
 
-  private subscriptions: Subscription[] = [];
   public isMenuOpen = false;
   public companyItems: { name: string, value?: string, data?: any }[] = [];
   public domainItems: { name: string, value?: string, data?: any }[] = [];
@@ -59,9 +58,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public ngOnDestroy(): void {
-    this.transform.clearVariable();
-
-    this.subscriptions.forEach(subscription => {subscription.unsubscribe();});
+    super.ngOnDestroy();
   }
 
   public isSelected(path: string): boolean {

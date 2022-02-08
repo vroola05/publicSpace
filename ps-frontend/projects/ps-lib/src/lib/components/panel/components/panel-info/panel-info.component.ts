@@ -6,6 +6,7 @@ import { ConfigService } from '../../../../services/config/config.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
 import { DynamicPanel } from '../../../../../model/intefaces';
+import { PageConfig } from '../../../../../model/domain-type-config';
 
 @Component({
   selector: 'lib-panel-info',
@@ -15,7 +16,8 @@ import { DynamicPanel } from '../../../../../model/intefaces';
 export class PanelInfoComponent implements DynamicPanel, OnInit {
   @Input() public call: Call;
   @Output() public changed: EventEmitter<any> = new EventEmitter<any>();
-
+  @Input() public pageConfig: PageConfig;
+  
   @Input() public urlImages: string;
   @Input() public urlImage: string;
   @Input() public urlImageUpload: string;
@@ -25,22 +27,13 @@ export class PanelInfoComponent implements DynamicPanel, OnInit {
     private popup: Popup
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
-  public getImage(createdBy: User): Image {
+  public getImage(user: User): Image {
     const image = new Image();
-    image.api = false;
-    image.url = 'assets/images/www.png';
-    image.name = 'Webformulier';
-    image.alt = 'Inwoner';
-    const endpoint = this.config.getEndpoint('getProfileImage').endpoint;
-    if (endpoint && createdBy && image.name) {
-      image.api = true;
-      image.url = endpoint + createdBy.profilePhoto;
-      image.name = 'Toezichthouder';
-      image.alt = createdBy.name;
-    }
+    image.name = 'Toezichthouder';
+    image.alt = user.name;
 
     return image;
   }

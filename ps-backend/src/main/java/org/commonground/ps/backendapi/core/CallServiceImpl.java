@@ -177,4 +177,15 @@ public class CallServiceImpl implements CallService {
 
 		return Optional.of(Convert.callEntity(callEntity, user.getDomain().getDomainType()));
 	}
+
+	@Override
+	public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew) {
+		Group group = new Group();
+		group.setId(groupId);
+
+		if (setGroup(user, id, group).isEmpty()) {
+			return Optional.empty();
+		}
+		return setUser(user, id, userNew);
+	}
 }

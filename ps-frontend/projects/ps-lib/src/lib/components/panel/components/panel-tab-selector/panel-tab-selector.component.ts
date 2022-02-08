@@ -12,10 +12,11 @@ export class PanelTabSelectorComponent implements OnInit {
   public _tabs: {name: string, value?: string, data?: any, selected: boolean}[] = [];
   @Input() set tabs(tabs: {name: string, value?: string, data?: any, selected: boolean}[]) {
     this._tabs = tabs;
-    if (this._tabs && this._tabs.length > 0) {
+    if (this._tabs && this._tabs.length > 0 && !this._tabs.find(t => t.selected === true)) {
         this._tabs[0].selected = true;
         this.changed.emit({search: this.search, tab: this._tabs[0]});
     }
+    
   }
 
   @Input() direction: 'tab-row' | 'tab-column' = 'tab-column';

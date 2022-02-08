@@ -13,4 +13,5 @@ public interface CallService {
     public Optional<Call> save(User user, Call call);
     public Optional<Call> setUser(User user, Long id, User userNew);
     public Optional<Call> setGroup(User user, Long id, Group groupNew);
+    public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew);
 }

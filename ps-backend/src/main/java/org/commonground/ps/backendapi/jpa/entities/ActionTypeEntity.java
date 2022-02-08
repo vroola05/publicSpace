@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ActionTypeEntity {
   @Id
   private Long id;
+  @OrderColumn
   private String name;
 
   @ManyToOne(fetch=FetchType.LAZY)

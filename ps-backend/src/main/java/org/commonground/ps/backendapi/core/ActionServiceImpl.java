@@ -10,19 +10,21 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
-import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ActionRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
+import org.commonground.ps.backendapi.jpa.repositories.OrderRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.util.ActionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,6 +45,9 @@ public class ActionServiceImpl implements ActionService {
 	@Autowired
 	private CallRepository callRepository;
 
+	@Autowired
+	private OrderRepository orderRepository;
+
 	public Optional<Action> get(Long domainId, ActionEnum actionEnum) {
 		Optional<ActionEntity> actionEntity = getEntity(domainId, actionEnum);
 		if (actionEntity.isPresent()) {
@@ -59,7 +64,7 @@ public class ActionServiceImpl implements ActionService {
 
 	public List<ActionType> getActionTypes() {
 		List<ActionType> actionTypes = new ArrayList<>();
-		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
+		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
 		actionTypeEntities.forEach(actionTypeEntity -> {
 			actionTypes.add(Convert.actionTypeEntity(actionTypeEntity));
 		});
@@ -158,8 +163,29 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public boolean order(long domainId, long orderId, ActionEnum action) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean order(long domainId, long orderId, ActionEnum actionEnum) {
+		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
+		if (actionEntityOptional.isPresent()) {
+			ActionEntity actionEntity = actionEntityOptional.get();
+			
+			if (actionEntity.getStatus() != null && actionEntity.getStatus().getId() != null) {
+				Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(orderId, domainId);
+				if (orderEntityOptional.isPresent()) {
+					OrderEntity orderEntity = orderEntityOptional.get();
+					orderEntity.setStatus(actionEntity.getStatus());
+					orderRepository.save(orderEntity);
+				}
+			}
+		}
+		return true;
+	}
+	@Override
+	public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum) {
+		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
+		if (actionEntityOptional.isEmpty() || actionEntityOptional.get().getStatus() == null) {
+			return false;
+		}
+		orderEntity.setStatus(actionEntityOptional.get().getStatus());
+		return true;
 	}
 }

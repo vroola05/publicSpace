@@ -23,7 +23,7 @@ public class OrderCategoryEntity {
     private Long id;
 
     @ManyToOne()
-    @JoinColumn(name="order_id", referencedColumnName = "id")
+    @JoinColumn(name="order_id", referencedColumnName = "id", nullable = false)
     private OrderEntity order;
 
     @ManyToOne()

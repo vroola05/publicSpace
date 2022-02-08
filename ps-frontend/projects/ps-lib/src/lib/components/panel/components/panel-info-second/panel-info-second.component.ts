@@ -7,16 +7,35 @@ import { Image } from '../../../../../model/image';
 import { ConfigService } from '../../../../services/config/config.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
+import { DynamicPanel } from '../../../../../model/intefaces';
+import { PageConfig } from '../../../../../model/domain-type-config';
+import { DomainTypeEnum } from '../../../../../model/intefaces';
 
 @Component({
   selector: 'lib-panel-info-second',
   templateUrl: './panel-info-second.component.html',
   styleUrls: ['./panel-info-second.component.scss']
 })
-export class PanelInfoSecondComponent implements OnInit {
-  @Input() public call: Call;
+export class PanelInfoSecondComponent implements DynamicPanel, OnInit {
   @Input() public order: Order;
+  public _call: Call;
+  @Input() public set call(call: Call) {
+    if (call) {
+      this._call = call;
+      if (this.config.getDomainType().id === DomainTypeEnum.CONTRACTOR) {
+        if (this._call.orders && this._call.orders.length > 0) {
+          this.order = this._call.orders[0];
+        }
+      }
+    }
+  }
+  public get call() {
+    return this._call;
+  }
   @Output() public changed: EventEmitter<any> = new EventEmitter<any>();
+  @Input() public pageConfig: PageConfig;
+
+
 
   @Input() public urlImages: string;
   @Input() public urlImage: string;
@@ -27,23 +46,13 @@ export class PanelInfoSecondComponent implements OnInit {
     private popup: Popup
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
   public getImage(user: User, title: string): Image {
     const image = new Image();
-    image.api = false;
-    image.url = 'assets/images/www.png';
-    image.name = 'Webformulier';
-    image.alt = 'Inwoner';
-
-    const endpoint = this.config.getEndpoint('getProfileImage').endpoint;
-    if (endpoint && user && image.name) {
-      image.api = true;
-      image.url = !user.profilePhoto ? '' : endpoint + user.profilePhoto;
-      image.name = title;
-      image.alt = user.name;
-    }
+    image.name = title;
+    image.alt = user.name;
 
     return image;
   }

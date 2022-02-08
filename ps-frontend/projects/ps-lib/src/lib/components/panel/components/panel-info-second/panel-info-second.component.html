@@ -1,4 +1,4 @@
-<!-- <div *ngIf="call" class="row details-main-info">
+<div *ngIf="call" class="row details-main-info">
   <div class="col-sm-12 details-main-description">
     <h4>Melding omschrijving</h4>
     <h4 *ngIf="call.priority">Spoed!</h4>
@@ -7,17 +7,14 @@
   <div class="col-sm-12 details-main-suprvisor">
     <div class="row">
       <div class="col-sm-12 col-md-6 details-block details-main-created-by">
-        <h4>Toezichthouder</h4>
-        <lib-panel-supervisor [image]="getImage(call.supervisor, 'Toezichthouder')"></lib-panel-supervisor>
+        <h4>Medewerker gemeente</h4>
+        <lib-panel-user [image]="getImage(call.user, call.group.name)" *ngIf="call?.user"></lib-panel-user>
       </div>
-      <div class="col-sm-12 col-md-6 details-block details-main-created-by" *ngIf="order?.executor && order?.statusProces?.id < 3">
-        <h4>Medewerker buitendienst</h4>
-        <lib-panel-supervisor [image]="getImage(order?.executor, groupsAsString(order?.executor?.groups))"></lib-panel-supervisor>
+      <div class="col-sm-12 col-md-6 details-block details-main-created-by" *ngIf="order?.user">
+        <h4>Medewerker</h4>
+        <lib-panel-user [image]="getImage(order.user, groupsAsString(order.user?.groups))"></lib-panel-user>
       </div>
     </div>
-  </div>
-  <div class="col-sm-12 details-main-created-by">
-    <lib-panel-person-simple [person]="call?.person"></lib-panel-person-simple>
   </div>
   <div class="col-sm-12 details-main-location-and-images">
     <div class="row">
@@ -41,4 +38,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>

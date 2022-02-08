@@ -35,24 +35,27 @@ public class OrderEntity {
     private Date dateCreated;
     private Date dateEnded;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "call_id", nullable = false)
     private CallEntity call;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "domain_id", nullable = false)
     private DomainEntity domain;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
     private StatusEntity status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", nullable = true)
     private GroupEntity group;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = true)
     private UserEntity user;
 
-    @OneToMany(targetEntity = OrderCategoryEntity.class, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = OrderCategoryEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderCategoryEntity> orderCategory = new ArrayList<>();
 
 }

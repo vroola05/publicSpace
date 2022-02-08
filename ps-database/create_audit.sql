@@ -19,6 +19,7 @@ ALTER TABLE audit.revinfo OWNER TO postgres;
 ALTER TABLE ONLY audit.revinfo
     ADD CONSTRAINT revinfo_rev_pk PRIMARY KEY (rev);
 
+-- Main Category
 CREATE TABLE audit.main_category_aud (
     id integer NOT NULL,
     name text,
@@ -32,6 +33,7 @@ ALTER TABLE audit.main_category_aud OWNER TO postgres;
 ALTER TABLE ONLY audit.main_category_aud
     ADD CONSTRAINT main_catergory_aud_pkey PRIMARY KEY (id, rev);
 
+-- Category
 CREATE TABLE audit.category_aud (
     id integer NOT NULL,
     main_category_id integer,
@@ -49,6 +51,8 @@ ALTER TABLE audit.category_aud OWNER TO postgres;
 ALTER TABLE ONLY audit.category_aud
     ADD CONSTRAINT category_aud_pk PRIMARY KEY (id, rev);
 
+-- Contract
+
 CREATE TABLE audit.contract_aud (
     id integer NOT NULL,
     domain_id_governent integer,
@@ -64,7 +68,7 @@ ALTER TABLE audit.contract_aud OWNER TO postgres;
 ALTER TABLE ONLY audit.contract_aud
     ADD CONSTRAINT contract_aud_id_pk PRIMARY KEY (id, rev);
 
-
+-- Contract main categories
 CREATE TABLE audit.contract_main_category_aud (
     contract_id integer NOT NULL,
     main_category_id integer NOT NULL,
@@ -76,3 +80,17 @@ ALTER TABLE audit.contract_main_category_aud OWNER TO postgres;
 
 ALTER TABLE ONLY audit.contract_main_category_aud
     ADD CONSTRAINT contract_main_category_aud_pkey PRIMARY KEY (contract_id, main_category_id, rev);
+
+-- Groups
+CREATE TABLE audit.groups_aud (
+    id integer NOT NULL,
+    name text,
+    domain_id integer,
+    rev integer NOT NULL,
+    revtype integer NOT NULL
+);
+
+ALTER TABLE audit.groups_aud OWNER TO postgres;
+
+ALTER TABLE ONLY audit.groups_aud
+    ADD CONSTRAINT groups_aud_pkey PRIMARY KEY (id, rev);
