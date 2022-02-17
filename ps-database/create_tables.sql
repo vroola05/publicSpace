@@ -1184,3 +1184,49 @@ CREATE SEQUENCE public.seq_orders_category_id
 
 ALTER SEQUENCE public.seq_orders_category_id
     OWNER TO postgres;
+
+
+--
+-- TOC entry 267 (class 1259 OID 86799)
+-- Name: note_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.note_type (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+ALTER TABLE public.note_type OWNER TO postgres;
+
+ALTER TABLE ONLY public.note_type
+    ADD CONSTRAINT note_type_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 282 (class 1259 OID 22473)
+-- Name: note; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.note (
+    id integer NOT NULL,
+    call_id integer NOT NULL,
+    content text NOT NULL,
+    date_created timestamp with time zone NOT NULL,
+    note_type_id integer NOT NULL,
+    user_id integer,
+    visible boolean
+);
+
+
+ALTER TABLE public.note OWNER TO postgres;
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_call_fk FOREIGN KEY (call_id) REFERENCES public.call(id);
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_note_type_fk FOREIGN KEY (note_type_id) REFERENCES public.users(id) NOT VALID;
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Note } from '../../../../../model/note';
-import { PopupETypes, StatusTypes } from '../../../../../model/intefaces';
+import { ActionTypeEnum, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Order } from '../../../../../model/order';
 import { Popup } from '../../../../services/popup/popup.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
@@ -28,44 +28,59 @@ export class PanelOrderInfoComponent implements OnInit {
     return this.order && this.order.categories && this.order.categories.length > 0;
   }
 
-  public isEditable(): boolean {
-    return (!this.order || !this.order.id) ? true : false;
-  }
-
-  public deleteCategory(category: Category): void {
+  public onOrderDeleteCategory(category: Category): void {
     this.changed.emit({action: 'delete-category', data: this.order, category});
   }
 
-  public edit(): void {
+  public onOrderEdit(): void {
     this.changed.emit({action: 'edit', data: this.order});
   }
 
-  public delete(): void {
+  public onOrderDelete(): void {
     this.changed.emit({action: 'delete', data: this.order});
   }
 
+
+  public isCreating(): boolean {
+    return (!this.order || !this.order.id) ? true : false;
+  }
+
+  public hasActionType(actionTypeId: number): boolean {
+    return this.order && this.order.actionType && this.order.actionType.id === actionTypeId;
+  }
+
+  public isNew(): boolean {
+    return this.hasActionType(ActionTypeEnum.ORDER_CREATE);
+  }
+
   public isDone(): boolean {
-    return this.order && this.order.status && this.order.status.id === StatusTypes.ORDER_DONE;
+    return this.hasActionType(ActionTypeEnum.ORDER_DONE);
   }
 
   public isRejected(): boolean {
-    return this.order && this.order.status && this.order.status.id === StatusTypes.ORDER_REJECTED;
+    return this.hasActionType(ActionTypeEnum.ORDER_REJECT);
+    
   }
 
-  public notAccept(): void {
-    this.popup.add('Notitie niet akkoord', PopupConfirmComponent, {
-    }, [{type: PopupETypes.ok, event: (text: string) => {
+  public onOrderCancel(): void {
+    this.popup.add('Notitie opdracht annuleren', PopupConfirmComponent, {
+    }, [{type: PopupETypes.ok, event: (content: string) => {
         const note = new Note();
-        note.description = text;
-        this.changed.emit({action: 'not-accept', data: {order: this.order, note}});
+        note.content = content;
+        this.changed.emit({action: 'order-cancel', data: {order: this.order, note}});
       }}]);
   }
 
-  public accept(): void {
-    this.changed.emit({action: 'accept', data: this.order});
+  public onOrderReject(): void {
+    this.popup.add('Notitie niet akkoord', PopupConfirmComponent, {
+    }, [{type: PopupETypes.ok, event: (content: string) => {
+        const note = new Note();
+        note.content = content;
+        this.changed.emit({action: 'order-reject', data: {order: this.order, note}});
+      }}]);
   }
 
-  public closeRejected(): void {
-    this.changed.emit({action: 'close-rejected', data: this.order});
+  public onOrderClose(): void {
+    this.changed.emit({action: 'order-close', data: this.order});
   }
 }

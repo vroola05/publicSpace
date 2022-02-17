@@ -11,6 +11,7 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Group;
+import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
@@ -42,7 +43,6 @@ public class OrderController extends Controller {
 
 		return callOptional.get();
 	}
-
 
 	@Secured(identifier = "putOrderUser", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/user", consumes = "application/json", produces = "application/json")
@@ -82,6 +82,16 @@ public class OrderController extends Controller {
 		// 	throw new BadRequestException();
 		// }
 		// return callOptional.get();
+		return null;
+	}
+
+	@Secured(identifier = "putOrderActionType", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}/action/{actionTypeId}", consumes = "application/json", produces = "application/json")
+	public Call putOrderActionType(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long actionTypeId,
+		@Valid @RequestBody Note Note) throws BadRequestException {
+
 		return null;
 	}
 }

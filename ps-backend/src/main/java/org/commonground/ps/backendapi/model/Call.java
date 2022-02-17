@@ -8,8 +8,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -43,4 +41,5 @@ public class Call {
   private User user;
 
   private List<Order> orders = new ArrayList<>();
+  private List<Note> notes = new ArrayList<>();
 }

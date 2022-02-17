@@ -70,3 +70,13 @@ INSERT INTO public.page_button_type VALUES (2, 'containedSecondary');
 INSERT INTO public.page_button_type VALUES (3, 'outlinePrimary');
 INSERT INTO public.page_button_type VALUES (4, 'outlineSecondary');
 INSERT INTO public.page_button_type VALUES (5, 'blank');
+
+--
+-- TOC entry 3139 (class 0 OID 33045)
+-- Dependencies: 236
+-- Data for Name: note_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.note_type (id, name) VALUES (1, 'System');
+INSERT INTO public.note_type (id, name) VALUES (2, 'Algemeen');
+INSERT INTO public.note_type (id, name) VALUES (3, 'Email');

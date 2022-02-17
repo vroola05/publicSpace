@@ -48,6 +48,10 @@ public class OrderEntity {
     private StatusEntity status;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_type_id", nullable = false)
+    private ActionTypeEntity actionTypeEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id", nullable = true)
     private GroupEntity group;
 

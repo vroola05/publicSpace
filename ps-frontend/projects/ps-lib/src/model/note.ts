@@ -1,12 +1,19 @@
+import { User } from "./user";
+
+export class NoteType {
+  public id?: number;
+  public name?: string;
+}
+
 export class Note {
   public id?: number;
-  public description?: string;
-  public type?: string;
-  public supervisor?: string;
-  public date?: string;
+  public content?: string;
+  public type?: NoteType;
+  public user?: User;
+  public dateCreated?: Date;
 
-  public constructor(description: string = '') {
-    this.description = description;
+  public constructor(content: string = '') {
+    this.content = content;
   }
 
 }

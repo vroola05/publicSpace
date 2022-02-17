@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,4 +62,7 @@ public class CallEntity {
 
   @OneToMany(targetEntity = OrderEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<OrderEntity> orders;
+
+  @OneToMany(targetEntity = NoteEntity.class, mappedBy = "call", fetch = FetchType.LAZY)
+  private List<NoteEntity> notes = new ArrayList<>();
 }

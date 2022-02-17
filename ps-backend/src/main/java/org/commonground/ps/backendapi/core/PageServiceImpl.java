@@ -55,7 +55,7 @@ public class PageServiceImpl implements PageService {
 				pageButtonService.updatePageButtons("right", pageEntity, page.getButtonsRight());
 			}
 
-			return Convert.pageEntity(pageRepository.save(pageEntity));
+			return Convert.pageEntity(pageRepository.saveAndFlush(pageEntity));
 		}
 
 		throw new BadRequestException();

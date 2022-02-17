@@ -45,7 +45,7 @@ export class NotesViewerComponent implements IPopup, OnDestroy, OnInit {
   }
 
   public changed(value: string): void {
-    this.note.description = value;
+    this.note.content = value;
   }
 
   public close(): void {
@@ -54,13 +54,12 @@ export class NotesViewerComponent implements IPopup, OnDestroy, OnInit {
 
   public submit(): void {
     if (this.notesRef.validate()) {
-      if (this.note.description && this.note.description.length > 0) {
+      if (this.note.content && this.note.content.length > 0) {
 
         this.endpoints.put('postNote', this.note).then((message: Message) => {
           if (message.status < 300) {
-            this.note.type = 'Aanvullende notitie';
-            this.note.date = moment(new Date()).toISOString();
-            this.note.supervisor = this.authorisation.user.name;
+            this.note.dateCreated = new Date();
+            this.note.user = this.authorisation.user;
             this._notes.unshift(this.note);
 
             this.events.emit({event: PopupETypes.close});

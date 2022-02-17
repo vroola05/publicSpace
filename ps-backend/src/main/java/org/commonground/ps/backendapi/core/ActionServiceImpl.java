@@ -22,6 +22,7 @@ import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.util.ActionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -83,13 +84,11 @@ public class ActionServiceImpl implements ActionService {
 	public void synchronizeActions(Long companyId, Long domainId, User user) {
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, user);
 		if (optionalDomainEntity.isPresent()) {
-			DomainEntity domainEntity = optionalDomainEntity.get();
-
 			List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
-			List<ActionTypeEntity> actionTypeEntitiesAll = actionTypeRepository.findAll();
+			List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
 
-			List<ActionTypeEntity> actionTypeEntities = actionTypeEntitiesAll.stream().filter( actionTypeEntity -> 
-				actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == domainEntity.getDomainType().getId()).collect(Collectors.toList());
+			// List<ActionTypeEntity> actionTypeEntities = actionTypeEntitiesAll.stream().filter( actionTypeEntity -> 
+			// 	actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == domainEntity.getDomainType().getId()).collect(Collectors.toList());
 
 
 			List<ActionTypeEntity> actionTypeEntitiesNew = actionTypeEntities.stream().filter( actionTypeEntity -> 
@@ -155,7 +154,7 @@ public class ActionServiceImpl implements ActionService {
 				if (callEntityOptional.isPresent()) {
 					CallEntity callEntity = callEntityOptional.get();
 					callEntity.setStatus(actionEntity.getStatus());
-					callRepository.saveAndFlush(callEntity);
+					callRepository.save(callEntity);
 				}
 			}
 		}
@@ -164,20 +163,15 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public boolean order(long domainId, long orderId, ActionEnum actionEnum) {
-		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
-		if (actionEntityOptional.isPresent()) {
-			ActionEntity actionEntity = actionEntityOptional.get();
-			
-			if (actionEntity.getStatus() != null && actionEntity.getStatus().getId() != null) {
-				Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(orderId, domainId);
-				if (orderEntityOptional.isPresent()) {
-					OrderEntity orderEntity = orderEntityOptional.get();
-					orderEntity.setStatus(actionEntity.getStatus());
-					orderRepository.save(orderEntity);
-				}
+		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(orderId, domainId);
+		if (orderEntityOptional.isPresent()) {
+			OrderEntity orderEntity = orderEntityOptional.get();
+			if (order(domainId, orderEntity, actionEnum)) {
+				orderRepository.save(orderEntity);
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	@Override
 	public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum) {
@@ -185,7 +179,21 @@ public class ActionServiceImpl implements ActionService {
 		if (actionEntityOptional.isEmpty() || actionEntityOptional.get().getStatus() == null) {
 			return false;
 		}
-		orderEntity.setStatus(actionEntityOptional.get().getStatus());
-		return true;
+		ActionEntity actionEntity = actionEntityOptional.get();
+		StatusEntity statusEntity = actionEntity.getStatus();
+		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
+
+		boolean change = false;
+		if (statusEntity != null && statusEntity.getId() != null) {
+			orderEntity.setStatus(statusEntity);
+			change = true;
+		}
+		if (actionTypeEntity.getDomainType() != null && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+			orderEntity.setActionTypeEntity(actionTypeEntity);
+			change = true;
+		}
+		return change;
 	}
+
+	
 }

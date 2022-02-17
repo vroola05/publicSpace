@@ -14,6 +14,7 @@ import { ConfigService } from '../../services/config/config.service';
 import { DomainType } from '../../../model/domain-type';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
+import { Order } from '../../../model/order';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {
@@ -72,12 +73,12 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return this.callKill(); });
 
     this.action.register(ActionTypeEnum.ORDER_CREATE, () => { return this.orderCreate(); });
-    this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(); });
-    this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(); });
-    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(); });
-    this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(); });
-    this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(); });
-    this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(); });
+    this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(null); });
+    this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(null); });
+    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(null); });
+    this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(null); });
+    this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(null); });
+    this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(null); });
 
     this.action.register(ActionTypeEnum.CANCEL, () => { return this.cancel(); });
     this.action.register(ActionTypeEnum.BACK, () => { return this.back(); });
@@ -233,32 +234,32 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
 
-  public orderAccept(): Promise<boolean> {
+  public orderAccept(order: Order): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderReject(): Promise<boolean> {
+  public orderReject(order: Order): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderCancel(): Promise<boolean> {
+  public orderCancel(order: Order): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderClose(): Promise<boolean> {
+  public orderClose(order: Order): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderDone(): Promise<boolean> {
+  public orderDone(order: Order): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderDoneReject(): Promise<boolean> {
+  public orderDoneReject(order: Order): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }

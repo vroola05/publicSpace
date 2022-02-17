@@ -91,11 +91,11 @@ export class ChangeConfirmationComponent extends PageAbstract implements OnInit,
     }
   }
 
-  public save(text: string) {
+  public save(content: string) {
     const call = new Call();
     call.notes = [];
     const note = new Note();
-    note.description = text;
+    note.content = content;
     call.notes.push(note);
 
     const c = this.storage.getSession('call');

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DynamicPanel, StatusTypes } from '../../../../../model/intefaces';
+import { ActionTypeEnum, DynamicPanel, StatusTypes } from '../../../../../model/intefaces';
 import { Order } from '../../../../../model/order';
 import { Call } from '../../../../../model/call';
 import { PageConfig } from '../../../../../model/domain-type-config';
@@ -47,19 +47,22 @@ export class PanelOrderComponent implements DynamicPanel, OnInit {
   }
 
   public getToggleStyle(order: Order): string {
-    return this.action !== 'full'
-      ? 'default' : (order.status && order.status.id === StatusTypes.ORDER_DONE) ? 'primary'
-      : (order.status && order.status.id === StatusTypes.ORDER_REJECTED) ? 'secondary'
-      : (order.status && (order.status.id === StatusTypes.ORDER_DONE_CLOSED
-        || order.status.id === StatusTypes.ORDER_REJECTED_CLOSED)) ? 'grey' : 'default';
+    return !order.actionType ? 'default' :
+    (order.actionType.id === ActionTypeEnum.ORDER_DONE) ? 'primary' :
+    (order.actionType.id === ActionTypeEnum.ORDER_REJECT) ? 'secondary' :
+    (order.actionType.id === ActionTypeEnum.ORDER_DONE_REJECT) ? 'grey' :
+    (order.actionType.id === ActionTypeEnum.ORDER_CLOSE) ? 'grey' : 'default';
   }
   public getOrderStatus(order: Order): string {
     return order && order.status ? order.status && order.status.name ? order.status.name : 'Nieuw' : '';
   }
 
-  public openOrder(order: Order): boolean {
-    return (this.action === 'new' || this.action === 'full')
-      && (order.status
-      && (order.status.id === StatusTypes.ORDER_DONE || order.status.id === StatusTypes.ORDER_REJECTED) || !order.status);
+  public isOrderOpen(order: Order): boolean {
+    return this.action === 'new' ||
+      order.actionType && (
+        order.actionType.id === ActionTypeEnum.ORDER_CREATE
+        || order.actionType.id === ActionTypeEnum.ORDER_DONE
+        || order.actionType.id === ActionTypeEnum.ORDER_REJECT
+      );
   }
 }

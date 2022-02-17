@@ -1,6 +1,7 @@
 package org.commonground.ps.backendapi.core;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -10,6 +11,8 @@ import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
+import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
+import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
@@ -20,6 +23,7 @@ import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.NoteTypeEnum;
 import org.commonground.ps.backendapi.util.ActionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +34,10 @@ public class CallServiceImpl implements CallService {
 	private CallRepository callRepository;
     
     @Autowired
-	ActionService actionService;
+	private ActionService actionService;
+
+	@Autowired
+	private NoteService noteService;
 
     @Autowired
 	private CategoryRepository categoryRepository;
@@ -75,6 +82,8 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public Optional<Call> save(User user, Call call) {
+		Optional<NoteEntity> noteEntityOptional = noteService.createNoteEntity("Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
+
         Optional<CallEntity> callEntityOptional = convertCall(user, call);
         if (callEntityOptional.isEmpty()) {
             return Optional.empty();
@@ -83,7 +92,15 @@ public class CallServiceImpl implements CallService {
         CallEntity callEntity = callEntityOptional.get();
 		callEntity.setDateCreated(new Date());
 		callEntity.setCasenumber(getCasenumber());
-		CallEntity callEntityNew = callRepository.saveAndFlush(callEntity);
+
+
+		if (noteEntityOptional.isPresent()) {
+			NoteEntity noteEntity = noteEntityOptional.get();
+			noteEntity.setCall(callEntity);
+			callEntity.getNotes().add(noteEntity);
+		}
+
+		CallEntity callEntityNew = callRepository.save(callEntity);
 
 		actionService.call(user.getDomain().getId(), callEntityNew.getId(), ActionEnum.CALL_CREATE);
 

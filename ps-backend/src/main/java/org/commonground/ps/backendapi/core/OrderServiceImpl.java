@@ -135,6 +135,7 @@ public class OrderServiceImpl implements OrderService {
 					return Optional.empty();
 				}
 			}
+			// Action type entity is requiered
 			if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE)) {
 				return Optional.empty();
 			}

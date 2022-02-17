@@ -284,6 +284,13 @@ public class Convert {
     status.setId(statusEntity.getId());
     status.setName(statusEntity.getName());
 
+    if (statusEntity != null) {
+      for (ActionEntity actionEntity: statusEntity.getActions()) {
+
+        status.getActionTypes().add(actionTypeEntity(actionEntity.getActionType()));
+      }
+    }
+
     return status;
   }
 
@@ -510,7 +517,10 @@ public class Convert {
     if (orderEntity.getStatus() != null) {
       order.setStatus(statusEntity(orderEntity.getStatus()));
     }
-    
+    if (orderEntity.getActionTypeEntity() != null) {
+      order.setActionType(actionTypeEntity(orderEntity.getActionTypeEntity()));
+    }
+
     for (OrderCategoryEntity orderCategoryEntity: orderEntity.getOrderCategory()) {
       if (orderCategoryEntity.getCategory() != null) {
         order.getCategories().add(categoryEntity(orderCategoryEntity.getCategory()));

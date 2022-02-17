@@ -15,12 +15,15 @@ public class ActionEntity {
   @SequenceGenerator(name = "seq_action_id", sequenceName = "seq_action_id", allocationSize = 1)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "action_type_id", referencedColumnName = "id")
   private ActionTypeEntity actionType;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "domain_id", referencedColumnName = "id")
   private DomainEntity domain;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "status_id", referencedColumnName = "id")
   private StatusEntity status;
 }

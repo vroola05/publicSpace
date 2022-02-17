@@ -1,3 +1,4 @@
+import { ActionType } from './action-type';
 import { Category } from './category';
 import { Domain } from './domain';
 import { Group } from './group';
@@ -14,6 +15,7 @@ export class Order {
   public contractorDomain?: Domain;
   public categories?: Category[];
   
+  public actionType?: ActionType;
   public status?: Status;
 
   public group?: Group;

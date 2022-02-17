@@ -47,4 +47,33 @@ export class CreateOverviewColumnsComponent implements OnInit {
 
     this.changed.emit({action: 'changed', columns: this.columns});
   }
+
+  public isFirstButton(i: number) : boolean {
+    return i <= 0;
+  }
+
+  public isLastButton(i: number) : boolean {
+    return i >= this.columns.length - 1;
+  }
+
+  public moveUp(i: number): void {
+    if (this.isFirstButton(i)) {
+      return;
+    }
+
+    this.moveButton(i, i-1);
+  }
+
+  public moveDown(i: number): void {
+    if (this.isLastButton(i)) {
+      return;
+    }
+
+    this.moveButton(i, i+1);
+  }
+
+  private moveButton(oldIndex, newIndex) {
+    this.columns.splice(newIndex, 0, this.columns.splice(oldIndex, 1)[0]);
+    this.changed.emit({action: 'changed', columns: this.columns});
+  }
 }

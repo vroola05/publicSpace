@@ -8,7 +8,7 @@
     [id]="'notes-viewer-note'"
     [name]="'notes-viewer-note'"
     [placeholder]="'Nieuwe notitie'"
-    [value]="note.description"
+    [value]="note.content"
     [required]="true"
     [maxLength]="200"
     (changed)="changed($event)" #notesRef></lib-textarea-field>

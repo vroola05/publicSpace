@@ -86,10 +86,10 @@ export class DetailsOrderComponent extends PageAbstract implements OnInit, OnDes
 
   public reject(): void {
     this.popup.add('Notitie bij weigering', PopupConfirmComponent, {},
-    [{type: PopupETypes.ok, event: (text: string) => {
-      if (text) {
+    [{type: PopupETypes.ok, event: (content: string) => {
+      if (content) {
         const note = new Note();
-        note.description = text;
+        note.content = content;
 
         this.order.status = new Status();
         this.order.status.id = StatusTypes.ORDER_REJECTED;

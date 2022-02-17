@@ -81,51 +81,64 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
 
-  public changed($event): void {
+  public changed($event: {action: string, data: any, note?: Note}): void {
+    console.log('$event', $event);
     switch ($event.action) {
-      case 'not-accept':
-        this.rejectOrder($event.data);
+      case 'order-cancel':
+        this.orderCancel($event.data);
         break;
-      case 'accept':
-        this.acceptOrder($event.data);
+      case 'order-reject':
+        this.orderDoneReject($event.data);
+        break;
+      case 'order-close':
+        this.orderClose($event.data);
         break;
       case 'close-rejected':
-        this.closeRejectedOrder($event.data);
+        this.orderClose($event.data);
         break;
     }
   }
 
-  public rejectOrder(data: { order: Order, note: Note }): void {
-    if (data.note && data.note.description) {
-      this.updateStatus(data.order, StatusTypes.ORDER_SEND, data.note);
-    } else {
-      this.toast.error('Het is verplicht een omschrijving te geven.', 5);
-    }
+  public orderAccept(order: Order): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log('orderAccept');
+      reject(false);
+    });
   }
 
-  public acceptOrder(order: Order): void {
-    this.updateStatus(order, StatusTypes.ORDER_DONE_CLOSED, new Note());
+  public orderReject(order: Order): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log('orderReject');
+      reject(false);
+    });
+  }
+  
+  public orderCancel(order: Order): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log('orderCancel');
+      reject(false);
+    });
   }
 
-  public closeRejectedOrder(order: Order): void {
-    this.updateStatus(order, StatusTypes.ORDER_REJECTED_CLOSED, new Note());
+  public orderClose(order: Order): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log('orderClose');
+      reject(false);
+    });
   }
 
-  public updateStatus(order: Order, status: number, note: Note) {
-    const item = this.findOrder(order);
-    if (item) {
-      /*
-      const url = this.navigationService.transformURL(this.config.getEndpoint('putOrderStatus').endpoint, {
-        id: this.call.id,
-        orderId: order.id,
-        status
-      });
-      */
-      this.endpoints.put('putOrderStatus', note).then((mesage: Message) => {
-        this.toast.success('De status is aangepast!', 5);
-        this.getCall();
-      });
-    }
+  public orderDone(order: Order): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log('orderDone');
+      reject(false);
+    });
+  }
+
+  public orderDoneReject(order: Order): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      console.log('orderDoneReject');
+      reject(false);
+    });
   }
 
   public findOrder(order: Order): Order {
@@ -159,11 +172,11 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     return new Promise((resolve, reject) => {
       this.popup.add('Melding afsluiten', PopupConfirmComponent, {
       }, [{
-        type: PopupETypes.ok, event: (text: string) => {
-          if (text && text.length > 0) {
+        type: PopupETypes.ok, event: (content: string) => {
+          if (content && content.length > 0) {
             const loaderId = this.loader.add('Bezig met opslaan!');
             const note = new Note();
-            note.description = text;
+            note.content = content;
 
             this.endpoints.post('postCallClose', note).then((mesage: Message) => {
               this.loader.remove(loaderId);

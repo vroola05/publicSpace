@@ -28,7 +28,7 @@ public class Order {
     private List<Category> categories = new ArrayList<>();
     
     private Status status;
-
+    private ActionType actionType;
     private Group group;
     private User user;
 }

@@ -1,11 +1,14 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -25,4 +28,7 @@ public class StatusEntity {
 
   @ManyToOne(fetch = FetchType.EAGER)
   private DomainEntity domain;
+
+  @OneToMany(targetEntity = ActionEntity.class, mappedBy = "status")
+  private List<ActionEntity> actions;
 }

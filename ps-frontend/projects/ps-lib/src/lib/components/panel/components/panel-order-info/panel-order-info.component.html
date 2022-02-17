@@ -5,30 +5,36 @@
     <h5>Categorie(en)</h5>
     <div class="panel-order-info-categories">
       <div class="panel-order-info-category" *ngFor="let category of order.categories">
-        <span class="panel-order-info-bullet">&#9679;</span><span *ngIf="isEditable()" (click)="deleteCategory(category)" class="field-icon material-icons">delete_forever</span><span>{{category.name}}</span>
+        <span class="panel-order-info-bullet">&#9679;</span><span *ngIf="isCreating()" (click)="onOrderDeleteCategory(category)" class="field-icon material-icons">delete_forever</span><span>{{category.name}}</span>
       </div>
     </div>
-    
   </div>
-  <div *ngIf="isEditable() && action === 'new'" class="row panel-order-info-edit">
+  <div *ngIf="isCreating()" class="row panel-order-info-edit">
     <div class="col-md-6 ml-md-0">
-      <lib-btn-contained [type]="'containedSecondary'" (clicked)="delete()">Verwijderen</lib-btn-contained>
+      <lib-btn-contained [type]="'containedSecondary'" (clicked)="onOrderDelete()">Verwijderen</lib-btn-contained>
     </div>
     <div class="col-md-6 mr-md-0">
-      <lib-btn-contained [type]="'containedPrimary'" (clicked)="edit()">Bewerken</lib-btn-contained>
+      <lib-btn-contained [type]="'containedPrimary'" (clicked)="onOrderEdit()">Bewerken</lib-btn-contained>
     </div>
   </div>
-  <div *ngIf="isDone() && action === 'full'" class="row panel-order-info-edit">
-    <div class="col-md-6 ml-md-0">
-      <lib-btn-contained [type]="'containedSecondary'" (clicked)="notAccept()">Niet akkoord</lib-btn-contained>
+  <ng-container *ngIf="!isCreating()">
+    <div *ngIf="isNew()" class="row panel-order-info-edit">
+      <div class="col-md-6 ml-md-0">
+        <lib-btn-contained [type]="'containedSecondary'" (clicked)="onOrderCancel()">Opdracht annuleren</lib-btn-contained>
+      </div>
     </div>
-    <div class="col-md-6 mr-md-0">
-      <lib-btn-contained [type]="'containedPrimary'" (clicked)="accept()">Akkoord</lib-btn-contained>
+    <div *ngIf="isDone()" class="row panel-order-info-edit">
+      <div class="col-md-6 ml-md-0">
+        <lib-btn-contained [type]="'containedSecondary'" (clicked)="onOrderReject()">Niet akkoord</lib-btn-contained>
+      </div>
+      <div class="col-md-6 mr-md-0">
+        <lib-btn-contained [type]="'containedPrimary'" (clicked)="onOrderClose()">Akkoord</lib-btn-contained>
+      </div>
     </div>
-  </div>
-  <div *ngIf="isRejected() && action === 'full'" class="row panel-order-info-edit">
-    <div class="col-md-6 ml-md-0">
-      <lib-btn-contained [type]="'containedPrimary'" (clicked)="closeRejected()">Gezien</lib-btn-contained>
+    <div *ngIf="isRejected()" class="row panel-order-info-edit">
+      <div class="col-md-6 ml-md-0">
+        <lib-btn-contained [type]="'containedPrimary'" (clicked)="onOrderClose()">Gezien</lib-btn-contained>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </div>

@@ -53,6 +53,7 @@ export abstract class ActionOrderCreate extends PageAbstract implements OnInit, 
 
     public orderCreate(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
+            console.log('lalalal');
             if (!this.lock) {
                 this.lock = true;
                 const callData = this.storage.getSession('call');
