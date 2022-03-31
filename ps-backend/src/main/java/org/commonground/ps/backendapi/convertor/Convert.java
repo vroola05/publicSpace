@@ -216,13 +216,13 @@ public class Convert {
 			call.setStatus(statusEntity(callEntity.getStatus()));
 		}
 
-    if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
-      if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
-        for (OrderEntity orderEntity: callEntity.getOrders()) {
-          call.getOrders().add(orderEntity(orderEntity));
-        }
-      }
-    }
+    // if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+    //   if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
+    //     for (OrderEntity orderEntity: callEntity.getOrders()) {
+    //       call.getOrders().add(orderEntity(orderEntity));
+    //     }
+    //   }
+    // }
 
 		call.setDomain(domainEntity(callEntity.getDomain()));    
     return call;

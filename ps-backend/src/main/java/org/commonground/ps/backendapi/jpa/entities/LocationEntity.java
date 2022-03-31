@@ -25,7 +25,7 @@ public class LocationEntity {
   private Double y;
 
   
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "call_id", referencedColumnName = "id")
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "call_id", referencedColumnName = "id", nullable = false)
   private CallEntity call;
 }

@@ -27,7 +27,8 @@ public class Person {
 
   private String street;
 
-  @PositiveOrZero(message = "Alleen nummers toegestaan")
+  @Size(min = 0, max = 6, message = "Waarde is minimaal 0 en maximaal 6 tekens")
+  // @PositiveOrZero(message = "Alleen nummers toegestaan")
   private String number;
   private String letter;
   private String postal;

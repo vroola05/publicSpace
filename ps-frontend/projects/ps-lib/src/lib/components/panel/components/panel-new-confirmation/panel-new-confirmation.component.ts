@@ -74,7 +74,7 @@ export class PanelNewConfirmationComponent implements OnInit, OnDestroy {
       return '';
     }
 
-    return (!this.call.person.lastname ? '' : this.call.person.lastname)
+    return (!this.call.person.name ? '' : this.call.person.name)
       + '<br />'
       + (!this.call.person.email ? '' : this.call.person.email)
       + ' / '

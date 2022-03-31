@@ -26,10 +26,7 @@ export class PanelPersonComponent implements OnInit {
     if (!this.showContact || !this.person) {
       return '';
     }
-    name = (!this.person.firstname ? '' : this.person.firstname)
-      + (this.person.firstname && this.person.lastname ? ' ' : '')
-      + (!this.person.lastname ? '' : this.person.lastname);
-
+    name = (!this.person.name ? '' : this.person.name);
     contact = (!this.person.email ? '' : this.person.email)
       + (this.person.email && this.person.phone ? ' / ' : '')
       + (!this.person.phone ? '' : this.person.phone);

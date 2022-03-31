@@ -1230,3 +1230,15 @@ ALTER TABLE ONLY public.note
 
 ALTER TABLE ONLY public.note
     ADD CONSTRAINT note_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
+
+
+CREATE SEQUENCE public.seq_note_id
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_note_id
+    OWNER TO postgres;
+    

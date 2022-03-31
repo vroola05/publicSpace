@@ -38,7 +38,7 @@ public class CallEntity {
   @JoinColumn(name = "category_id", referencedColumnName = "id")
   private CategoryEntity category;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "call")
+  @OneToOne(targetEntity = LocationEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private LocationEntity location;
 
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "call")
@@ -63,6 +63,6 @@ public class CallEntity {
   @OneToMany(targetEntity = OrderEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<OrderEntity> orders;
 
-  @OneToMany(targetEntity = NoteEntity.class, mappedBy = "call", fetch = FetchType.LAZY)
+  @OneToMany(targetEntity = NoteEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<NoteEntity> notes = new ArrayList<>();
 }

@@ -3,9 +3,11 @@ package org.commonground.ps.backendapi.core;
 import java.util.Date;
 import java.util.Optional;
 
+import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
+import org.commonground.ps.backendapi.jpa.repositories.NoteRepository;
 import org.commonground.ps.backendapi.jpa.repositories.NoteTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.User;
@@ -21,6 +23,8 @@ public class NoteServiceImpl implements NoteService {
 	@Autowired
 	private NoteTypeRepository noteTypeRepository;
 	
+	@Autowired
+	private NoteRepository noteRepository;
 
 	@Override
 	public Optional<NoteEntity> createNoteEntity(String content, Long noteTypeId, User user, boolean visible) {
@@ -42,6 +46,24 @@ public class NoteServiceImpl implements NoteService {
 		noteEntity.setVisible(visible);
 
 		return Optional.of(noteEntity);
+	}
+
+
+
+	@Override
+	public Optional<NoteEntity> save(CallEntity callEntity, String content, Long noteTypeId, User user,
+			boolean visible) {
+		Optional<NoteEntity> noteEntityOptional = createNoteEntity(content, noteTypeId, user, visible);
+		if (noteEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
+		NoteEntity noteEntity = noteEntityOptional.get();
+		noteEntity.setCall(callEntity);
+		
+		noteRepository.save(noteEntity);
+
+		return null;
 	}
 
 }

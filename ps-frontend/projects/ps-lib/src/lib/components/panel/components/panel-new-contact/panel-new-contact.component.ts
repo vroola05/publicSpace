@@ -94,7 +94,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
     this.getCall();
     if (this.askContact) {
       this.call.person = new Person();
-      this.call.person.lastname = '';
+      this.call.person.name = '';
       this.call.person.email = '';
       this.call.person.phone = '';
       this.call.person.city = '';
@@ -117,7 +117,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   public onNameChanged($event) {
     if (this.nameComponent.validate()) {
       this.getCall();
-      this.call.person.lastname = $event;
+      this.call.person.name = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
     }
   }

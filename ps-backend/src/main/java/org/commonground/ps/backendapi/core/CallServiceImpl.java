@@ -82,7 +82,6 @@ public class CallServiceImpl implements CallService {
 
     @Override
     public Optional<Call> save(User user, Call call) {
-		Optional<NoteEntity> noteEntityOptional = noteService.createNoteEntity("Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
 
         Optional<CallEntity> callEntityOptional = convertCall(user, call);
         if (callEntityOptional.isEmpty()) {
@@ -93,14 +92,9 @@ public class CallServiceImpl implements CallService {
 		callEntity.setDateCreated(new Date());
 		callEntity.setCasenumber(getCasenumber());
 
-
-		if (noteEntityOptional.isPresent()) {
-			NoteEntity noteEntity = noteEntityOptional.get();
-			noteEntity.setCall(callEntity);
-			callEntity.getNotes().add(noteEntity);
-		}
-
 		CallEntity callEntityNew = callRepository.save(callEntity);
+
+		noteService.save(callEntityNew, "Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
 
 		actionService.call(user.getDomain().getId(), callEntityNew.getId(), ActionEnum.CALL_CREATE);
 
