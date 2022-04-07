@@ -10,7 +10,7 @@ import { ValidationService } from '../../../services/validation/validation.servi
 export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestroy {
   @ViewChild('fieldRef') public fieldRef: ElementRef;
   @Input() icon = '';
-  @Input() type: 'text' | 'number' | 'time' = 'text';
+  @Input() type: 'text' | 'number' | 'email' | 'time' = 'text';
 
   constructor(protected validation: ValidationService) {
     super(validation);
@@ -33,5 +33,35 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
     if (this.fieldRef) {
       this.fieldRef.nativeElement.focus();
     }
+  }
+
+  public validate(): boolean {
+    if(!super.validate()) {
+      return false;
+    }
+
+    const value = this.value ? this.value.toString() : '';
+    if (value.length > 0) {
+      if (this.type === 'number') {
+        if (isNaN(Number(this.value))) {
+          this.errors.push({message: `Alleen numerieke waardes toegestaan.`});
+          return false;
+        }
+      } else if (this.type === 'email') {
+        
+        if (!RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(value)) {
+          this.errors.push({message: `Ongeldig e-mailadres.`});
+          return false;
+        }
+      } else if (this.type === 'time') {
+        if (!RegExp(/^([0-1][0-9]|2[0-3]):([0-5][0-9])$/).test(value)) {
+          this.errors.push({message: `Ongeldige tijd.`});
+          return false;
+        }
+        
+      }
+    }
+    
+    return true;
   }
 }

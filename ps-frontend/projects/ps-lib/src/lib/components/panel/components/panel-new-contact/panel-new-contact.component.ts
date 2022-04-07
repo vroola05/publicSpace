@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
+import { ValidationService } from '../../../../services/validation/validation.service';
 
 @Component({
   selector: 'lib-panel-new-contact',
@@ -36,7 +37,8 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   constructor(
     private endpoints: EndpointService,
     private storage: StorageService,
-    private authorisation: AuthorisationService
+    private authorisation: AuthorisationService,
+    private validation: ValidationService
   ) {
 
     this.getCall();
@@ -115,7 +117,8 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onNameChanged($event) {
-    if (this.nameComponent.validate()) {
+    console.log(this.validation.validateField('new-call-information', 'name'));
+    if (this.validation.validateField('new-call-information', 'name')) {
       this.getCall();
       this.call.person.name = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -123,7 +126,8 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onEmailChanged($event) {
-    if (this.emailComponent.validate()) {
+    console.log(this.validation.validateField('new-call-information', 'email'));
+    if (this.validation.validateField('new-call-information', 'email')) {
       this.getCall();
       this.call.person.email = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -131,7 +135,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onPhoneChanged($event) {
-    if (this.phoneComponent.validate()) {
+    if (this.validation.validateField('new-call-information', 'phone')) {
       this.getCall();
       this.call.person.phone = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -139,7 +143,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onCityChanged($event) {
-    if (this.cityComponent.validate()) {
+    if (this.validation.validateField('new-call-information', 'city')) {
       this.getCall();
       this.call.person.city = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -147,7 +151,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onStreetChanged($event) {
-    if (this.streetComponent.validate()) {
+    if (this.validation.validateField('new-call-information', 'street')) {
       this.getCall();
       this.call.person.street = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -155,7 +159,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onNumberChanged($event) {
-    if (this.numberComponent.validate()) {
+    if (this.validation.validateField('new-call-information', 'number')) {
       this.getCall();
       this.call.person.number = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -163,7 +167,7 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onLetterChanged($event) {
-    if (this.letterComponent.validate()) {
+    if (this.validation.validateField('new-call-information', 'letter')) {
       this.getCall();
       this.call.person.letter = $event;
       this.storage.setSession('call', JSON.stringify(this.call), true);
@@ -175,22 +179,10 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onChannelChanged($event) {
-    if (this.channelComponent.validate()) {
+    if (this.validation.validateField('new-call-information', 'channel')) {
       this.getCall();
       this.call.channel = $event.value;
       this.storage.setSession('call', JSON.stringify(this.call), true);
     }
-  }
-
-  public validateChannel(): boolean {
-
-    return !this.isCC || (this.isCC && this.channelComponent.validate() );
-  }
-
-  public validate(): boolean {
-    const c = this.validateChannel()
-    const d = this.nameComponent.validate();
-    const e = this.emailComponent.validate();
-    return d && e && c;
   }
 }

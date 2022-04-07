@@ -2,7 +2,7 @@
   <div class="col-sm-12 col-md-6">
     <h4>Hoofdcategorie</h4>
     <div class="field-wrapper">
-      <lib-dropdown-field [id]="'mainCategorie'" [required]="true" [name]="'mainCategorie'"
+      <lib-dropdown-field [form]="'new-call-information'" [id]="'mainCategorie'" [required]="true" [name]="'mainCategorie'"
         [placeholder]="'Selecteer een hoofdcategorie'" (changed)="onMainCategoryChanged($event)"
         #mainCategorieComponent>
       </lib-dropdown-field>
@@ -11,7 +11,7 @@
   <div class="col-sm-12 col-md-6">
     <h4>Sub-categorie</h4>
     <div class="field-wrapper">
-      <lib-dropdown-field [id]="'categorie'" [required]="true" [name]="'categorie'"
+      <lib-dropdown-field [form]="'new-call-information'" [id]="'categorie'" [required]="true" [name]="'categorie'"
         [placeholder]="'Selecteer een categorie'" (changed)="onCategoryChanged($event)" #categoryComponent>
       </lib-dropdown-field>
     </div>
@@ -21,7 +21,7 @@
   <div class="col-sm-12">
     <h4>Omschrijving</h4>
     <div class="field-wrapper">
-      <lib-textarea-field [id]="'notes-viewer-note'" [name]="'notes-viewer-note'" [placeholder]="'Nieuwe notitie'"
+      <lib-textarea-field [form]="'new-call-information'" [id]="'description'" [name]="'description'" [placeholder]="'Melding omschrijving'"
         [value]="call?.description" [required]="true" [maxLength]="200" (changed)="onDescriptionChanged($event)"
         #descriptionComponent></lib-textarea-field>
     </div>

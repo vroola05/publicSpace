@@ -48,6 +48,14 @@ export class ValidationService {
     return this._errors.asObservable();
   }
 
+  public validateField(form: string, field: string): boolean {
+    if (this._register.has(form)) {
+      const f = this._register.get(form).find(f => f.name === field);
+      return f && f.validate();
+    }
+    return false;
+  }
+
   public validate(form: string): boolean {
     if (this._register.has(form)) {
       let valid = true;

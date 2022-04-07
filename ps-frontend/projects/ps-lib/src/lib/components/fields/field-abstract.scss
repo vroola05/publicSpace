@@ -1,6 +1,7 @@
 @import "../../../../../assets/scss/styles.scss";
 
 .field {
+  position: relative;
   display: flex;
   flex-direction: row;
 
@@ -21,6 +22,13 @@
     color: $black;
     font-size: $large-font-size;
     caret-color: $color-primary;
+  }
+  
+  &.required:after {
+    position: absolute;
+    right: calc($default-spacing / 2);
+    content:" *";
+    color: red;
   }
 
   &.filled {

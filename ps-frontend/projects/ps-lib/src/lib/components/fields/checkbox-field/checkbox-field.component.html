@@ -1,5 +1,5 @@
 
-<label class="checkbox checkbox-label {{type}} {{style}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
+<label class="checkbox checkbox-label {{type}} {{style}}" [ngClass]="{'required': required, 'readonly': readonly, 'disabled': disabled}">
   <input type="checkbox" class="checkbox-input" [id]="id" [name]="name" (change)="onChanged($event)" (click)="onClicked($event)" [checked]="value" [disabled]="readonly" [readonly]="readonly" />
   <span class="checkbox-mark"></span>
   <span class="checkbox-content">

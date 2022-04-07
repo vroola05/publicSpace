@@ -15,6 +15,8 @@ import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.MainCategoryEntity;
+import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
+import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
@@ -39,6 +41,8 @@ import org.commonground.ps.backendapi.model.DomainType;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.model.MainCategory;
+import org.commonground.ps.backendapi.model.Note;
+import org.commonground.ps.backendapi.model.NoteType;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageButton;
@@ -216,13 +220,17 @@ public class Convert {
 			call.setStatus(statusEntity(callEntity.getStatus()));
 		}
 
-    // if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
-    //   if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
-    //     for (OrderEntity orderEntity: callEntity.getOrders()) {
-    //       call.getOrders().add(orderEntity(orderEntity));
-    //     }
-    //   }
-    // }
+    if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+      // if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
+      //   for (OrderEntity orderEntity: callEntity.getOrders()) {
+      //     call.getOrders().add(orderEntity(orderEntity));
+      //   }
+      // }
+
+      for (NoteEntity noteEntity : callEntity.getNotes()) {
+        call.getNotes().add(noteEntity(noteEntity));
+      }
+    }
 
 		call.setDomain(domainEntity(callEntity.getDomain()));    
     return call;
@@ -536,5 +544,24 @@ public class Convert {
     }
 
     return order;
+  }
+
+  public static NoteType noteTypeEntity(NoteTypeEntity noteTypeEntity) {
+    NoteType noteType = new NoteType();
+    noteType.setId(noteTypeEntity.getId());
+    noteType.setName(noteTypeEntity.getName());
+    return noteType;
+  }
+
+  public static Note noteEntity(NoteEntity noteEntity) {
+    Note note = new Note();
+    note.setId(noteEntity.getId());
+    note.setContent(noteEntity.getContent());
+    note.setDateCreated(noteEntity.getDateCreated());
+
+    note.setType(noteTypeEntity(noteEntity.getNoteType()));
+    note.setUser(userEntity(noteEntity.getUser()));
+
+    return note;
   }
 }

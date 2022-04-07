@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="field-wrapper">
-      <lib-checkbox-field [id]="'askContact'" [name]="'askContact'" [value]="askContact"
+      <lib-checkbox-field [form]="'new-call-information'" [name]="'askContact'" [value]="askContact"
         (changed)="onAskContactChanged($event)">Ik wil inwonergegevens invoeren zodat hij/zij op de hoogte gehouden
         wordt
       </lib-checkbox-field>
@@ -13,8 +13,8 @@
     <div class="col-sm-6">
       <h4>Naam</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [placeholder]="'Naam'"
-          [value]="call?.person?.lastname" [required]="askContact" [maxLength]="100" (changed)="onNameChanged($event)"
+        <lib-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'name'" [placeholder]="'Naam'"
+          [value]="call?.person?.name" [required]="askContact" [maxLength]="100" (changed)="onNameChanged($event)"
           #nameComponent></lib-text-field>
       </div>
     </div>
@@ -23,7 +23,7 @@
     <div class="col-sm-6">
       <h4>Email</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'email'" [name]="'email'" [placeholder]="'Email'"
+        <lib-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'email'" [type]="'email'" [placeholder]="'Email'"
           [value]="call?.person?.email" [maxLength]="100" [required]="askContact" (changed)="onEmailChanged($event)"
           #emailComponent></lib-text-field>
       </div>
@@ -31,7 +31,7 @@
     <div class="col-sm-6">
       <h4>Telefoonnummer</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'phone'" [name]="'phone'" [placeholder]="'Telefoonnummer'"
+        <lib-text-field [form]="'new-callh23s-information'" [style]="'filled'" [name]="'phone'" [placeholder]="'Telefoonnummer'"
           [value]="call?.person?.phone" [maxLength]="100" (changed)="onPhoneChanged($event)" #phoneComponent>
         </lib-text-field>
       </div>
@@ -41,7 +41,7 @@
     <div class="col-sm-12 col-md-3">
       <h4>Plaats</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'city'" [name]="'city'" [placeholder]="'Woonplaats'"
+        <lib-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'city'" [placeholder]="'Woonplaats'"
           [value]="call?.person?.city" [maxLength]="100" (changed)="onCityChanged($event)" #cityComponent>
         </lib-text-field>
       </div>
@@ -49,7 +49,7 @@
     <div class="col-sm-12 col-md-3">
       <h4>Straat</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'street'" [name]="'street'" [placeholder]="'Straat'"
+        <lib-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'street'" [placeholder]="'Straat'"
           [value]="call?.person?.street" [maxLength]="100" (changed)="onStreetChanged($event)" #streetComponent>
         </lib-text-field>
       </div>
@@ -57,7 +57,7 @@
     <div class="col-sm-12 col-md-3">
       <h4>Huisnummer</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'number'" [name]="'number'" [placeholder]="'Huisnummer'"
+        <lib-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'number'" [type]="'number'" [placeholder]="'Huisnummer'"
           [value]="call?.person?.number" [maxLength]="8" (changed)="onNumberChanged($event)" #numberComponent>
         </lib-text-field>
       </div>
@@ -65,7 +65,7 @@
     <div class="col-sm-12 col-md-3">
       <h4>Toevoeging</h4>
       <div class="field-wrapper">
-        <lib-text-field [style]="'filled'" [id]="'letter'" [name]="'letter'" [placeholder]="'Toevoeging'"
+        <lib-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'letter'" [placeholder]="'Toevoeging'"
           [value]="call?.person?.letter" [maxLength]="100" (changed)="onLetterChanged($event)" #letterComponent>
         </lib-text-field>
       </div>
@@ -75,14 +75,14 @@
 <div class="row">
   <div class="col-sm-12 col-md-3">
     <h4>Bestanden</h4>
-    <lib-file-field [style]="'filled'" [id]="'files'" [name]="'files'" [placeholder]="'Upload bestanden'"
+    <lib-file-field [form]="'new-call-information'" [style]="'filled'" [id]="'files'" [name]="'files'" [placeholder]="'Upload bestanden'"
       [maxLength]="100" [files]="files" (changed)="onFilesChanged($event)"></lib-file-field>
   </div>
 </div>
 <div class="row" *ngIf="isCC">
   <div class="col-sm-12 col-md-3">
     <h4>Kanaal</h4>
-    <lib-dropdown-field [id]="'channel'" [required]="true" [name]="'channel'"
+    <lib-dropdown-field [form]="'new-call-information'" [required]="true" [name]="'channel'"
         [placeholder]="'Selecteer een kanaal'" (changed)="onChannelChanged($event)"
         #channelComponent>
       </lib-dropdown-field>
