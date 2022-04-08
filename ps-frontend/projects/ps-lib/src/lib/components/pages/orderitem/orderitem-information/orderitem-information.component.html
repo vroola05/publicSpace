@@ -27,7 +27,6 @@
               <div class="orderitem-item-amount">
                 <lib-text-field
                   [id]="'orderitem-amount-'+orderitem?.data?.quotationNumber"
-                  [style]="'small'"
                   [data]="orderitem"
                   [type]="'number'"
                   [value]="orderitem?.data?.amount"
@@ -55,7 +54,6 @@
                 <div class="orderitem-misc-name">
                   <lib-text-field
                   [id]="'orderitem-misc-name-' + i"
-                  [style]="'small'"
                   [data]="orderitem"
                   [value]="orderitem?.data?.name"
                   [placeholder]="'Omschrijving'"
@@ -68,7 +66,6 @@
                 <div class="orderitem-misc-amount">
                   <lib-text-field
                     [id]="'orderitem-misc-amount-' + i"
-                    [style]="'small'"
                     [data]="orderitem"
                     [type]="'number'"
                     [value]="orderitem?.data?.amount"
@@ -80,7 +77,6 @@
                 <div class="orderitem-misc-unit">
                   <lib-text-field
                   [id]="'orderitem-misc-unit-' + i"
-                  [style]="'small'"
                   [data]="orderitem"
                   [value]="orderitem?.data?.unit"
                   [placeholder]="'Eenheid'"
@@ -91,7 +87,6 @@
                 <div class="orderitem-misc-cost">
                   <lib-text-field
                     [id]="'orderitem-misc-cost-' + i"
-                    [style]="'small'"
                     [data]="orderitem"
                     [type]="'number'"
                     [value]="orderitem?.data?.cost"

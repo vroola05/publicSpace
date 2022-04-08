@@ -1,11 +1,17 @@
-
-<label class="checkbox checkbox-label {{type}} {{style}}" [ngClass]="{'required': required, 'readonly': readonly, 'disabled': disabled}">
-  <input type="checkbox" class="checkbox-input" [id]="id" [name]="name" (change)="onChanged($event)" (click)="onClicked($event)" [checked]="value" [disabled]="readonly" [readonly]="readonly" />
-  <span class="checkbox-mark"></span>
-  <span class="checkbox-content">
-    <ng-content></ng-content>
-  </span>
-</label>
-<div class="field-errors" *ngIf="errors.length > 0">
-  <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+<div class="field-wrapper">
+  <label>
+    <ng-container *ngIf="label">
+      <span class="field-label" [ngClass]="{'required': required}">{{label}}</span>
+    </ng-container>
+    <span class="checkbox checkbox-label {{type}} {{style}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
+      <input type="checkbox" class="checkbox-input" [id]="id" [name]="name" (change)="onChanged($event)" (click)="onClicked($event)" [checked]="value" [disabled]="readonly" [readonly]="readonly" />
+      <span class="checkbox-mark"></span>
+      <span class="checkbox-content">
+        <ng-content></ng-content>
+      </span>
+    </span>
+  </label>
+  <div class="field-errors" *ngIf="errors.length > 0">
+    <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+  </div>
 </div>

@@ -14,28 +14,13 @@
       </div>
       <div class="col-sm-12 col-md-6">
         <div class="order-action">
-          <h4>Kies een aannemer</h4>
-          <div class="field-wrapper">
-            <lib-dropdown-field [id]="'contractor'" [form]="'order'" [required]="true" [name]="'contractor'"
-              [placeholder]="'Kies een aannemer'" (changed)="onContractorChanged($event)" #contractorComponent>
-            </lib-dropdown-field>
-          </div>
-
-          <h4>Opdracht omschrijving</h4>
-          <div class="field-wrapper">
-            <lib-textarea-field [form]="'order'" [id]="'description'" [name]="'description'"
-                [placeholder]="'Omschrijf de opdracht'"
-                [value]="order?.description"
-                [required]="true" [maxLength]="500" (changed)="onDescriptionChanged($event)">
-            </lib-textarea-field>
-          </div>
-
-          <h4>Opdracht categorie</h4>
-          <div class="field-wrapper">
-            <lib-select-field class="category-list" [form]="'order'" (changed)="onCategoryChanged($event)" [search]="true"
+          <lib-dropdown-field [id]="'contractor'" [form]="'order'" [required]="true" [name]="'contractor'" [label]="'Kies een aannemer'"
+          (changed)="onContractorChanged($event)" #contractorComponent>
+          </lib-dropdown-field>
+          <lib-textarea-field [form]="'order'" [id]="'description'" [name]="'description'" [label]="'Opdracht omschrijving'" [placeholder]="'Omschrijf de opdracht'"
+            [value]="order?.description" [required]="true" [maxLength]="500" (changed)="onDescriptionChanged($event)"></lib-textarea-field>
+          <lib-select-field class="category-list" [form]="'order'" (changed)="onCategoryChanged($event)" [search]="true" [label]="'Opdracht categorie'"
             [id]="'category'" [name]="'category'" [options]="_categoryItems" [style]="'filled'" [classes]="'max-height'"></lib-select-field>
-          </div>
-
         </div>
       </div>
 

@@ -11,7 +11,7 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
 
   public errors: FieldError[] = [];
   @Input() form = 'default';
-  @Input() style: 'default' | 'small' | 'filled' = 'default';
+  @Input() style: 'default' | 'large' | 'filled' = 'default';
   @Input() id = '';
   @Input() name = '';
   @Input() classes = '';
@@ -19,6 +19,7 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
   @Input() maxLength: number;
   @Input() readonly = false;
   @Input() disabled = false;
+  @Input() label = '';
   @Input() placeholder = '';
   @Input() validator: {pattern: RegExp, text: string}[] = [];
   @Input() value: any;
@@ -103,5 +104,9 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
       }
     }
     return true;
+  }
+
+  public getPlaceholder(): string {
+    return this.placeholder !== '' ? this.placeholder : this.label !== '' ? this.label : '';
   }
 }

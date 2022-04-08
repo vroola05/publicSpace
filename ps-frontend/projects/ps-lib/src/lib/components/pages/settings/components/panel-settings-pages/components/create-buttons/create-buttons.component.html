@@ -3,13 +3,8 @@
         <div class="row" *ngFor="let button of buttons; let i = index">
             <div class="col-md-11">
                 <div class="button" >
-                    <lib-create-button [button]="button" 
-                    [buttonTypeItems]="buttonTypeItems"
-                    [actionTypeItems]="actionTypeItems"
-                    [roleItems]="roleItems"
-                    [index]="i"
-                    [prefix]="getId('[' +i + ']')"
-                    (changed)="onButtonChanged($event)"></lib-create-button>
+                    <lib-create-button [button]="button" [buttonTypeItems]="buttonTypeItems" [actionTypeItems]="actionTypeItems"
+                        [roleItems]="roleItems" [index]="i" [prefix]="getId('[' +i + ']')" (changed)="onButtonChanged($event)"></lib-create-button>
                 </div>
             </div>
             <div class="col-md-1 text-right d-flex flex-column">

@@ -4,29 +4,35 @@
   width: 100%;
   position: relative;
 
-  .field {
-    background: $gray-secondary;
+  label {
+    width: 100%;
+    margin: 0px;
 
-    .text-field-input {
-      background: $gray-secondary;
+    .field-label {
+      font-weight: bold;
       font-size: $default-font-size;
-      font-style: italic;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &.required:after {
+        content: " *";
+        color: red;
+      }
+    }
+
+    .field-icon {
+      width: 34px;
+      height: 34px;
+      user-select: none;
+
       cursor: pointer;
+
+      &.invisible {
+        color: $gray-secondary;
+      }
     }
   }
-
-  .field-icon {
-    width: 34px;
-    height: 34px;
-    user-select: none;
-
-    cursor: pointer;
-
-    &.invisible {
-      color: $gray-secondary;
-    }
-  }
-
   .dropdown-field-list {
     position: absolute;
     display: flex;
@@ -49,17 +55,19 @@
       padding: $default-spacing;
       padding-top: calc($default-spacing / 2);
       padding-bottom: calc($default-spacing / 2);
-      
+
       color: $black;
       font-size: $default-font-size;
       caret-color: $color-primary;
 
       user-select: none;
       cursor: pointer;
+
       &.selected {
         background: $gray;
         color: $white;
       }
+
       &:hover {
         background: $default-color-alpha;
       }

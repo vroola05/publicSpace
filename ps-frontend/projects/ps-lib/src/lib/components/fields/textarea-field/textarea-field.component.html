@@ -1,15 +1,15 @@
-<label class="field {{classes}} {{style}}" [ngClass]="{'required': required, 'readonly': readonly, 'disabled': disabled}">
-  <textarea
-    class="text-field-input"
-    [id]="id"
-    [name]="name"
-    [readonly]="readonly"
-    [disabled]="disabled"
-    (change)="onChanged($event)"
-    (keydown)="onKeydown($event)"
-    [placeholder]="placeholder" #fieldRef>{{value}}</textarea>
-
-</label>
-<div class="field-errors" *ngIf="errors.length > 0">
-  <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+<div class="field-wrapper">
+  <label>
+    <ng-container *ngIf="label">
+      <span class="field-label" [ngClass]="{'required': required}">{{label}}</span>
+    </ng-container>
+    <span class="field {{classes}} {{style}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
+      <textarea class="text-field-input" [id]="id" [name]="name" [readonly]="readonly" [disabled]="disabled"
+        (change)="onChanged($event)" (keydown)="onKeydown($event)" [placeholder]="getPlaceholder()"
+        #fieldRef>{{value}}</textarea>
+    </span>
+  </label>
+  <div class="field-errors" *ngIf="errors.length > 0">
+    <div *ngFor="let error of errors" class="field-error">{{error.message}}</div>
+  </div>
 </div>

@@ -1,83 +1,96 @@
 @import "../../../../../assets/scss/styles.scss";
 
-.field {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-
-  width: 100%;
-  margin: 0px;
-  
-  padding: calc($default-spacing / 2);
-
-  color: $gray-primary;
-  background: $white;
-  border-bottom: solid 1px $color-primary;
-
-  textarea, input[class*="-input"] {
+.field-wrapper {
+  label {
     width: 100%;
-    padding: calc($default-spacing / 2);
-    outline: none;
-    border: none;
-    color: $black;
-    font-size: $large-font-size;
-    caret-color: $color-primary;
-  }
-  
-  &.required:after {
-    position: absolute;
-    right: calc($default-spacing / 2);
-    content:" *";
-    color: red;
-  }
+    margin: 0px;
 
-  &.filled {
-    background: $gray-secondary;
-    font-size: $default-font-size;
-
-    textarea, input[class*="-input"] {
-      background: $gray-secondary;
+    .field-label {
+      font-weight: bold;
       font-size: $default-font-size;
-    }
-  }
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
 
-  &.small {
-    font-size: $default-font-size;
-    textarea, input[class*="-input"] {
-      font-size: $default-font-size;
-    }
-  }
-
-  .icon-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .field-icon {
-      width: 34px;
-      height: 34px;
-      line-height: 34px;
-    }
-  }
-  
-  &:focus-within {
-    
-    border-bottom: solid 1px $color-primary-alpha;
-
-    .icon-container {
-      .field-icon {
-        color: $color-primary;
+      &.required:after {
+        content: " *";
+        color: red;
       }
     }
-  }
 
-  &.readonly {
-    border-bottom: solid 1px $gray-primary;
-    textarea, input[class*="-input"] {
+    .field {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+
+      width: 100%;
+      margin: 0px;
+
+      padding: calc($default-spacing / 2);
+
       color: $gray-primary;
-      font-style: italic;
+      background: $white;
+      border-bottom: solid 1px $color-primary;
+
+      textarea, input[class*="-input"] {
+        width: 100%;
+        padding: calc($default-spacing / 2);
+        outline: none;
+        border: none;
+        color: $black;
+        font-size: $default-font-size;
+        caret-color: $color-primary;
+      }
+
+      &.filled {
+        background: $gray-secondary;
+        font-size: $default-font-size;
+
+        textarea, input[class*="-input"] {
+          background: $gray-secondary;
+          font-size: $default-font-size;
+        }
+      }
+
+      &.large {
+        font-size: $large-font-size;
+
+        textarea, input[class*="-input"] {
+          font-size: $large-font-size;
+        }
+      }
+
+      .icon-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .field-icon {
+          width: 34px;
+          height: 34px;
+          line-height: 34px;
+        }
+      }
+
+      &:focus-within {
+        border-bottom: solid 1px $color-primary-alpha;
+
+        .icon-container {
+          .field-icon {
+            color: $color-primary;
+          }
+        }
+      }
+
+      &.readonly {
+        border-bottom: solid 1px $gray-primary;
+
+        textarea, input[class*="-input"] {
+          color: $gray-primary;
+          font-style: italic;
+        }
+      }
     }
-    
   }
 }
 

@@ -1,13 +1,9 @@
 <lib-settings-title></lib-settings-title>
 <div class="row">
   <div class="col-md-12">
-    <h4>hoofdcategorie</h4>
-    <div class="field-wrapper">
-      <lib-dropdown-field [id]="'mainCategories'" [required]="true" [name]="'mainCategories'" [options]="mainCategoryItems"
-        [placeholder]="'Hoofdcategorie'" (changed)="onMainCategoryChanged($event)" #mainCategoryComponent>
-      </lib-dropdown-field>
-    </div>
-
+    <lib-dropdown-field [id]="'mainCategories'" [required]="true" [name]="'mainCategories'" [options]="mainCategoryItems"
+      [label]="'Hoofdcategorie'" (changed)="onMainCategoryChanged($event)" #mainCategoryComponent>
+    </lib-dropdown-field>
   </div>
 </div>
 <div class="row" *ngIf="hasMainCategory()">

@@ -5,7 +5,6 @@
 </div>
 <div class="row search-address-container">
   <div class="col-sm-12 col-md-8 search-address-street">
-    <div class="field-wrapper">
       <lib-text-field-prefill
         [style]="'filled'"
         [id]="'street'"
@@ -16,20 +15,17 @@
         (typing)="getStreetList($event)"
         (changed)="onStreetChanged($event)"
         #streetComponent></lib-text-field-prefill>
-    </div>
   </div>
   <div class="col-sm-12 col-md-2 search-address-number">
-    <div class="field-wrapper">
-      <lib-text-field
-        [style]="'filled'"
-        [type]="'number'"
-        [id]="'number'"
-        [name]="'number'"
-        [placeholder]="'Huisnummer'"
-        [maxLength]="6"
-        (changed)="onNumberChanged($event)"
-        #numberComponent></lib-text-field>
-    </div>
+    <lib-text-field
+      [style]="'filled'"
+      [type]="'number'"
+      [id]="'number'"
+      [name]="'number'"
+      [placeholder]="'Huisnummer'"
+      [maxLength]="6"
+      (changed)="onNumberChanged($event)"
+      #numberComponent></lib-text-field>
   </div>
   <div class="col-sm-12 col-md-2 search-address-button">
     <lib-btn-contained (clicked)="search()">Zoeken</lib-btn-contained>

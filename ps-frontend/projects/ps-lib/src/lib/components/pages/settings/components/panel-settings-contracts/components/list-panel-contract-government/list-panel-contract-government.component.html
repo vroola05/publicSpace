@@ -3,12 +3,9 @@
     <div class="col-md-6 list-panel-block">
       <div class="row">
         <div class="col-md-12">
-          <h4>Domein</h4>
-          <div class="field-wrapper">
-            <lib-dropdown-field [id]="'domains'" [form]="'contract-government'" [disabled]="!isNew" [required]="true" [name]="'domains'" [options]="domainItems"
-                [placeholder]="'Selecteer een domein'" (changed)="onDomainChanged($event)" #domainComponent>
-            </lib-dropdown-field>
-          </div>
+          <lib-dropdown-field [id]="'domains'" [form]="'contract-government'" [disabled]="!isNew" [required]="true" [name]="'domains'" [options]="domainItems"
+            [label]="'Domein'" [placeholder]="'Selecteer een domein'" (changed)="onDomainChanged($event)" #domainComponent>
+          </lib-dropdown-field>
         </div>
       </div>
     </div>

@@ -2,36 +2,23 @@
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
-        <h4>Naam</h4>
-        <div class="field-wrapper">
-          <lib-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [placeholder]="'Naam'"
-            [value]="_domain?.name" [required]="true" [maxLength]="100" (changed)="onNameChanged($event)"
-            #nameComponent></lib-text-field>
-        </div>
+        <lib-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [label]="'Naam'"
+          [value]="_domain?.name" [required]="true" [maxLength]="100" (changed)="onNameChanged($event)"
+          #nameComponent></lib-text-field>
       </div>
       <div class="col-md-12">
-        <h4>Domein</h4>
-        <div class="field-wrapper">
-          <lib-text-field [style]="'filled'" [id]="'domain'" [name]="'domain'" [placeholder]="'Domein'"
-            [value]="_domain?.domain" [required]="true" [maxLength]="50" (changed)="onDomainChanged($event)"
-            #domainComponent></lib-text-field>
-        </div>
+        <lib-text-field [style]="'filled'" [id]="'domain'" [name]="'domain'" [label]="'Domein'"
+          [value]="_domain?.domain" [required]="true" [maxLength]="50" (changed)="onDomainChanged($event)"
+          #domainComponent></lib-text-field>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-12">
-        <h4>Type domein</h4>
-        <div class="field-wrapper">
-          <lib-dropdown-field [id]="'domainType'" [name]="'domainType'" [placeholder]="'Type domein'" [disabled]="!isNew" [required]="true" [options]="domainTypeItems"
-            (changed)="onDomainTypeChanged($event)" #domainTypeComponent>
-          </lib-dropdown-field>
-        </div>
-
+        <lib-dropdown-field [id]="'domainType'" [name]="'domainType'" [label]="'Type domein'" [disabled]="!isNew" [required]="true" [options]="domainTypeItems"
+          (changed)="onDomainTypeChanged($event)" #domainTypeComponent>
+        </lib-dropdown-field>
       </div>
     </div>
-
-
   </div>
   <div class="col-md-6 list-panel-block">
     <div class="row">

@@ -2,18 +2,12 @@
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
-        <h4>Naam</h4>
-        <div class="field-wrapper">
-          <lib-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [placeholder]="'Naam'"
+          <lib-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [label]="'Naam'"
             [value]="_category?.name" [required]="true" [maxLength]="50" (changed)="onNameChanged($event)"
             #nameComponent></lib-text-field>
-        </div>
-        <h4>Groep</h4>
-        <div class="field-wrapper">
-          <lib-dropdown-field [id]="'group'" [required]="true" [name]="'group'" [placeholder]="'Groep'" [options]="groupItems"
-            (changed)="onGroupChanged($event)" #groupComponent>
-          </lib-dropdown-field>
-        </div>
+          <lib-dropdown-field [id]="'group'" [required]="true" [name]="'group'" [label]="'Groep'" [options]="groupItems"
+            (changed)="onGroupChanged($event)" #groupComponent></lib-dropdown-field>
+        
         <h4>Actief</h4>
         <div class="field-wrapper">
           <lib-checkbox-field [id]="'active'" [name]="'active'" [value]="_category?.active"
@@ -25,18 +19,12 @@
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
-        <h4>Startdatum</h4>
-        <div class="field-wrapper">
-          <lib-date-field [style]="'filled'" [id]="'startDate'" [name]="'startDate'" [placeholder]="'Startdatum'"
-          [value]="_category?.startDate" [required]="true" (changed)="onStartDateChanged($event)"
-          #startDateComponent></lib-date-field>
-        </div>
-        <h4>Einddatum</h4>
-        <div class="field-wrapper">
-          <lib-date-field [style]="'filled'" [id]="'endDate'" [name]="'endDate'" [placeholder]="'Einddatum'"
-          [value]="_category?.endDate" [required]="false" (changed)="onEndDateChanged($event)"
-          #endDateComponent></lib-date-field>
-        </div>
+          <lib-date-field [style]="'filled'" [id]="'startDate'" [name]="'startDate'" [label]="'Startdatum'"
+            [value]="_category?.startDate" [required]="true" (changed)="onStartDateChanged($event)"
+            #startDateComponent></lib-date-field>
+          <lib-date-field [style]="'filled'" [id]="'endDate'" [name]="'endDate'" [label]="'Einddatum'"
+            [value]="_category?.endDate" [required]="false" (changed)="onEndDateChanged($event)"
+            #endDateComponent></lib-date-field>
       </div>
     </div>
   </div>

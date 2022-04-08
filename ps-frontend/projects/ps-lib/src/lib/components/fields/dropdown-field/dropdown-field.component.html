@@ -1,15 +1,12 @@
 <div class="field-wrapper">
-  <label (click)="openList($event)" class="field {{classes}}" [ngClass]="{'required': required, 'readonly': readonly, 'disabled': disabled}">
-    <input
-      type="text"
-      class="text-field-input"
-      [id]="id"
-      [name]="name"
-      [readonly]="true"
-      [disabled]="disabled"
-      [value]="value"
-      [placeholder]="placeholder"
-       readonly />
+  <label>
+    <ng-container *ngIf="label">
+      <span class="field-label" [ngClass]="{'required': required}">{{label}}</span>
+    </ng-container>
+    <span (click)="openList($event)" class="field {{classes}} {{style}}"
+      [ngClass]="{'readonly': readonly, 'disabled': disabled}">
+      <input type="text" class="text-field-input" [id]="id" [name]="name" [readonly]="true" [disabled]="disabled"
+        [value]="value" [placeholder]="getPlaceholder()" readonly />
 
       <span *ngIf="!opened" class="field-icon closed material-icons" [ngClass]="{'invisible': !hasItems()}">
         arrow_drop_down
@@ -17,9 +14,11 @@
       <span *ngIf="opened" class="field-icon closed material-icons" [ngClass]="{'invisible': !hasItems()}">
         arrow_drop_up
       </span>
+    </span>
   </label>
   <div *ngIf="hasItems() && opened" class="dropdown-field-list">
-    <div *ngFor="let option of options" (click)="onClick(option)" [ngClass]="{'selected': isSelected(option)}" class="dropdown-field-list-item">
+    <div *ngFor="let option of options" (click)="onClick(option)" [ngClass]="{'selected': isSelected(option)}"
+      class="dropdown-field-list-item">
       {{option.name}}
     </div>
   </div>

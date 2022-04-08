@@ -2,24 +2,17 @@
     <div class="col-md-6 list-panel-block">
       <div class="row">
         <div class="col-md-12">
-          <h4>Naam</h4>
-          <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [form]="'pages'" [id]="'name'" [name]="'name'" [placeholder]="'Naam'"
-            [value]="_page?.name" [required]="true" [maxLength]="100" (changed)="onPageNameChanged($event)"
-            #pageNameComponent></lib-text-field>
-          </div>
+            <lib-text-field [style]="'filled'" [form]="'pages'" [id]="'name'" [name]="'name'" [label]="'Naam'"
+              [value]="_page?.name" [required]="true" [maxLength]="100" (changed)="onPageNameChanged($event)"
+              #pageNameComponent></lib-text-field>
         </div>
       </div>
     </div>
     <div class="col-md-6 list-panel-block">
       <div class="row">
         <div class="col-md-12">
-          <h4>Groep</h4>
-          <div class="field-wrapper">
-            <lib-dropdown-field [id]="'layoutType'" [required]="true" [name]="'layoutType'" [placeholder]="'Soort layout'" [options]="layoutTypeItems"
-              (changed)="onLayoutTypeChanged($event)" #layoutTypeComponent>
-            </lib-dropdown-field>
-          </div>
+            <lib-dropdown-field [id]="'layoutType'" [required]="true" [name]="'layoutType'" [label]="'Soort layout'" [options]="layoutTypeItems"
+              (changed)="onLayoutTypeChanged($event)" #layoutTypeComponent></lib-dropdown-field>
         </div>
       </div>
     </div>

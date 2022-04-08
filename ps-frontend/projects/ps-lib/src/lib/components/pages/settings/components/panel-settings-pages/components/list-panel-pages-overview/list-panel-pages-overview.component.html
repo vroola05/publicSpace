@@ -1,52 +1,27 @@
 <div class="row list-panel">
     <div class="col-md-6 list-panel-block">
-        <h4>Naam</h4>
-        <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [id]="getId('name')" [name]="'name'" [placeholder]="'Naam'"
-                [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="100"
-                (changed)="onNameChanged($event)" #nameComponent></lib-text-field>
-        </div>
-        <h4>Icoon</h4>
-        <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [id]="getId('icon')" [name]="'icon'" [placeholder]="'Icoon'"
-                [value]="_pageOverviewTemplate?.icon" [required]="true" [maxLength]="80"
-                (changed)="onIconChanged($event)" #iconComponent></lib-text-field>
-        </div>
-        <h4>Route</h4>
-        <div class="field-wrapper">
-            <lib-text-field [style]="'filled'" [id]="getId('route')" [name]="'route'" [placeholder]="'Route'"
-                [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="1000"
-                (changed)="onRouteChanged($event)" #routeComponent></lib-text-field>
-        </div>
-        <h4>Lijst grootte</h4>
-        <div class="field-wrapper">
-            <lib-dropdown-field [id]="getId('size')" [name]="'size'" [placeholder]="'Lijst grootte'" [options]="_sizes" [required]="true"
-                (changed)="onSizeChanged($event)" #sizeComponent></lib-dropdown-field>
-        </div>
-        <h4>Status</h4>
-        <div class="field-wrapper">
-            <lib-select-field class="statusses-list" (changed)="onStatussesChanged($event)" [search]="false"
-                [name]="'statusses'" [options]="_statusItems" [style]="'filled'"></lib-select-field>
-        </div>
+        <lib-text-field [style]="'filled'" [id]="getId('name')" [name]="'name'" [label]="'Naam'"
+            [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="100"
+            (changed)="onNameChanged($event)" #nameComponent></lib-text-field>
+        <lib-text-field [style]="'filled'" [id]="getId('icon')" [name]="'icon'" [label]="'Icoon'"
+            [value]="_pageOverviewTemplate?.icon" [required]="true" [maxLength]="80"
+            (changed)="onIconChanged($event)" #iconComponent></lib-text-field>
+        <lib-text-field [style]="'filled'" [id]="getId('route')" [name]="'route'" [label]="'Route'"
+            [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="1000"
+            (changed)="onRouteChanged($event)" #routeComponent></lib-text-field>
+        <lib-dropdown-field [id]="getId('size')" [name]="'size'" [label]="'Lijst grootte'" [options]="_sizes" [required]="true"
+            (changed)="onSizeChanged($event)" #sizeComponent></lib-dropdown-field>
+        <lib-select-field class="statusses-list" (changed)="onStatussesChanged($event)" [label]="'Status'" [search]="false"
+            [name]="'statusses'" [options]="_statusItems" [style]="'filled'"></lib-select-field>
     </div>
     <div class="col-md-6 list-panel-block">
-        <h4>Toggle</h4>
-        <div class="field-wrapper">
-            <lib-checkbox-field [name]="'toggle'" [value]="_pageOverviewTemplate?.toggle"
-                (changed)="onToggleChanged($event)">Toggle</lib-checkbox-field>
-        </div>
-        <h4>Prioriteit</h4>
-        <div class="field-wrapper">
-            <lib-checkbox-field [name]="'priority'" [value]="_pageOverviewTemplate?.priority"
-                (changed)="onPriorityChanged($event)">Prioriteit</lib-checkbox-field>
-        </div>
-        <h4>Persoonlijk</h4>
-        <div class="field-wrapper">
-            <lib-checkbox-field [name]="'personal'" [value]="_pageOverviewTemplate?.personal"
-                (changed)="onIsPersonalChanged($event)">Persoonlijk</lib-checkbox-field>
-        </div>
+        <lib-checkbox-field [name]="'toggle'" [value]="_pageOverviewTemplate?.toggle" [label]="'Toggle'"
+            (changed)="onToggleChanged($event)">Toggle</lib-checkbox-field>
+        <lib-checkbox-field [name]="'priority'" [value]="_pageOverviewTemplate?.priority" [label]="'Prioriteit'"
+            (changed)="onPriorityChanged($event)">Prioriteit</lib-checkbox-field>
+        <lib-checkbox-field [name]="'personal'" [value]="_pageOverviewTemplate?.personal" [label]="'Persoonlijk'"
+            (changed)="onIsPersonalChanged($event)">Persoonlijk</lib-checkbox-field>
     </div>
-
     <div class="col-md-12">
         <h4>Kolommen in de lijst</h4>
         <div class="field-wrapper">
@@ -54,8 +29,6 @@
                 (changed)="onColumnsChanged($event)"></lib-create-overview-columns>
         </div>
     </div>
-
-
     <div class="col-md-12">
         <h4>Knoppen links</h4>
         <lib-panel-toggle [style]="'blanc'" [title]="['Knoppen links']">

@@ -1,7 +1,6 @@
 <div class="row" *ngIf="pageOverviewTemplate">
   <div class="col-md-12">
     <div class="row" *ngFor="let p of pageOverviewTemplate; let i = index">
-
         <div class="col-md-11">
           <lib-panel-toggle [style]="'blanc'" [title]="[getValueOr(p.name, 'Nieuwe overzichtspagina')]">
             <div class="page">

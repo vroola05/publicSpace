@@ -2,12 +2,8 @@
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
-        <h4>Status</h4>
-        <div class="field-wrapper">
-          <lib-dropdown-field [id]="'status'" [name]="'status'" [placeholder]="'Status'" [options]="statusItems"
-            (changed)="onStatusChanged($event)" #statusComponent>
-          </lib-dropdown-field>
-        </div>
+        <lib-dropdown-field [id]="'status'" [name]="'status'" [label]="'Status'" [options]="statusItems"
+          (changed)="onStatusChanged($event)" #statusComponent></lib-dropdown-field>
       </div>
     </div>
   </div>
