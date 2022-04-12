@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-md-4">
-        <lib-dropdown-field [form]="'pages'" [id]="getId('field')" [name]="'buttonConditionField'" [label]="'Veld'"
+        <lib-dropdown-field [style]="'filled'" [form]="'pages'" [id]="getId('field')" [name]="'buttonConditionField'" [label]="'Veld'"
             [options]="_fields" [required]="true" (changed)="onFieldChanged($event)"
             #fieldComponent></lib-dropdown-field>
     </div>
     <div class="col-md-3">
-        <lib-dropdown-field [name]="'buttonConditionEq'" [form]="'pages'" [id]="getId('operator')" [label]="'Operator'" [required]="true" [options]="_operators"
+        <lib-dropdown-field [style]="'filled'" [name]="'buttonConditionEq'" [form]="'pages'" [id]="getId('operator')" [label]="'Operator'" [required]="true" [options]="_operators"
             (changed)="onOperatorChanged($event)" #operatorComponent></lib-dropdown-field>
     </div>
     <div class="col-md-4">

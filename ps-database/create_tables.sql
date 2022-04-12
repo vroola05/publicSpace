@@ -1122,7 +1122,8 @@ CREATE TABLE public.orders (
     description text NOT NULL,
     status_id integer NOT NULL,
     user_id integer,
-    group_id integer NOT NULL
+    group_id integer NOT NULL,
+    action_type_id integer NOT NULL
 );
 
 
@@ -1142,6 +1143,9 @@ ALTER TABLE ONLY public.orders
 
 ALTER TABLE ONLY public.orders
     ADD CONSTRAINT order_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT order_action_type_fk FOREIGN KEY (action_type_id) REFERENCES public.action_type(id) NOT VALID;
 
 CREATE SEQUENCE public.seq_order_id
     INCREMENT 1

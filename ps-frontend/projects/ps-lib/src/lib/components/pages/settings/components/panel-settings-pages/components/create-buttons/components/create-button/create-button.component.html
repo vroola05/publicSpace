@@ -6,7 +6,7 @@
             #buttonNameComponent></lib-text-field>
     </div>
     <div class="col-md-4">
-        <lib-dropdown-field [id]="getId('type')" [form]="'pages'" [name]="'byttonType'" [label]="'Type'"
+        <lib-dropdown-field [style]="'filled'" [id]="getId('type')" [form]="'pages'" [name]="'byttonType'" [label]="'Type'"
             [options]="_buttonTypeItems" [required]="true" (changed)="onButtonTypeChanged($event)" #buttonTypeComponent></lib-dropdown-field>
     </div>
     <div class="col-md-4">
@@ -14,7 +14,7 @@
             [value]="_button?.route" [maxLength]="512" (changed)="onButtonRouteChanged($event)" #buttonRouteComponent></lib-text-field>
     </div>
     <div class="col-md-4">
-        <lib-dropdown-field [id]="getId('action')" [form]="'pages'" [name]="'action'" [label]="'Actie'" [options]="_actionTypeItems"
+        <lib-dropdown-field [style]="'filled'" [id]="getId('action')" [form]="'pages'" [name]="'action'" [label]="'Actie'" [options]="_actionTypeItems"
             (changed)="onActionChanged($event)" #actionComponent></lib-dropdown-field>
     </div>
     <div class="col-md-4">

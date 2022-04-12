@@ -9,7 +9,7 @@
         <lib-text-field [style]="'filled'" [id]="getId('route')" [name]="'route'" [label]="'Route'"
             [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="1000"
             (changed)="onRouteChanged($event)" #routeComponent></lib-text-field>
-        <lib-dropdown-field [id]="getId('size')" [name]="'size'" [label]="'Lijst grootte'" [options]="_sizes" [required]="true"
+        <lib-dropdown-field [style]="'filled'" [id]="getId('size')" [name]="'size'" [label]="'Lijst grootte'" [options]="_sizes" [required]="true"
             (changed)="onSizeChanged($event)" #sizeComponent></lib-dropdown-field>
         <lib-select-field class="statusses-list" (changed)="onStatussesChanged($event)" [label]="'Status'" [search]="false"
             [name]="'statusses'" [options]="_statusItems" [style]="'filled'"></lib-select-field>

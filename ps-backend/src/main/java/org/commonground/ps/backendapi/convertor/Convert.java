@@ -221,11 +221,11 @@ public class Convert {
 		}
 
     if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
-      // if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
-      //   for (OrderEntity orderEntity: callEntity.getOrders()) {
-      //     call.getOrders().add(orderEntity(orderEntity));
-      //   }
-      // }
+      if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
+        for (OrderEntity orderEntity: callEntity.getOrders()) {
+          call.getOrders().add(orderEntity(orderEntity));
+        }
+      }
 
       for (NoteEntity noteEntity : callEntity.getNotes()) {
         call.getNotes().add(noteEntity(noteEntity));

@@ -182,13 +182,13 @@ public class ActionServiceImpl implements ActionService {
 		ActionEntity actionEntity = actionEntityOptional.get();
 		StatusEntity statusEntity = actionEntity.getStatus();
 		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
-
+		System.out.println("Lalalalalal " + actionTypeEntity.getName());
 		boolean change = false;
 		if (statusEntity != null && statusEntity.getId() != null) {
 			orderEntity.setStatus(statusEntity);
 			change = true;
 		}
-		if (actionTypeEntity.getDomainType() != null && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+		if (actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
 			orderEntity.setActionTypeEntity(actionTypeEntity);
 			change = true;
 		}

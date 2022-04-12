@@ -4,7 +4,7 @@
             <div class="col-md-4">
                 <h4>Naam</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [id]="getId('name')" [name]="'name'" [placeholder]="'Naam'" [options]="_name" [required]="true"
+                    <lib-dropdown-field [style]="'filled'" [id]="getId('name')" [name]="'name'" [placeholder]="'Naam'" [options]="_name" [required]="true"
                         (changed)="onNameChanged($event)" #nameComponent></lib-dropdown-field>
                 </div>
             </div>
@@ -19,14 +19,14 @@
             <div class="col-md-4">
                 <h4>Type</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'type'" [id]="getId('type')" [placeholder]="'Type'" [options]="_types" [required]="true"
+                    <lib-dropdown-field [style]="'filled'" [name]="'type'" [id]="getId('type')" [placeholder]="'Type'" [options]="_types" [required]="true"
                         (changed)="onTypeChanged($event)" #typeComponent></lib-dropdown-field>
                 </div>
             </div>
             <div class="col-md-4">
                 <h4>Filter</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'filter'" [id]="getId('filter')" [placeholder]="'Filter'" [options]="_filters"
+                    <lib-dropdown-field [style]="'filled'" [name]="'filter'" [id]="getId('filter')" [placeholder]="'Filter'" [options]="_filters"
                         [required]="true" (changed)="onFilterChanged($event)" #filterComponent></lib-dropdown-field>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="col-md-4">
                 <h4>Mobiel</h4>
                 <div class="field-wrapper">
-                    <lib-dropdown-field [name]="'mobile'" [id]="getId('mobile')" [placeholder]="'Mobiel'" [options]="_mobile"
+                    <lib-dropdown-field [style]="'filled'" [name]="'mobile'" [id]="getId('mobile')" [placeholder]="'Mobiel'" [options]="_mobile"
                         (changed)="onMobileChanged($event)" #mobileComponent></lib-dropdown-field>
                 </div>
             </div>

@@ -95,9 +95,14 @@ public class OrderServiceImpl implements OrderService {
 
 		Map<Long, OrderEntity> existingOrders = new HashMap<>();
 		CallEntity callEntity = callEntityOptional.get();
+		if (callEntity.getOrders() == null) {
+			callEntity.setOrders(new ArrayList<>());
+		}
+	
 		for (OrderEntity o : callEntity.getOrders()) {
 			existingOrders.put(o.getId(), o);
 		}
+		
 
 		List<ContractEntity> contractEntities = contractRepository.getContractByGovernmentDomainIdAccepted(user.getDomain().getId(), true);
 
@@ -135,13 +140,16 @@ public class OrderServiceImpl implements OrderService {
 					return Optional.empty();
 				}
 			}
+			System.out.println("Hier");
 			// Action type entity is requiered
 			if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE)) {
+				System.out.println("Leeg");
 				return Optional.empty();
 			}
+			System.out.println("Klaar");
 			order = Convert.orderEntity(orderRepository.save(orderEntity));
 		}
-
+		//orderRepository.saveAll(entities)
 		return Optional.of(orders);
 	}
 
