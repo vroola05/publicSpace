@@ -21,7 +21,7 @@
       <div class="ps-header-new">
         <lib-header-button [icon]="'add'" [name]="'Nieuwe melding maken'" [route]="'/new/location'" [store]="true"></lib-header-button>
       </div>
-      <div class="ps-header-dropdown" [ngClass]="{'uncollapsed': !collapsed}">
+      <div class="ps-header-dropdown" id="ps-header-dropdown" [ngClass]="{'uncollapsed': !collapsed}">
         <div class="ps-header-profile-info" (click)="toggleProfile($event)">
           <div class="ps-header-profile-info-mobile">
             <div class="profile-info">

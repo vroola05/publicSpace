@@ -3,10 +3,10 @@
 </div>
 <div class="notes-viewer-footer">
   <div class="notes-viewer-note-container">
-    <h4>Nieuwe notitie toevoegen</h4>
     <lib-textarea-field
-    [id]="'notes-viewer-note'"
     [name]="'notes-viewer-note'"
+    [style]="'filled'"
+    [label]="'Nieuwe notitie toevoegen'"
     [placeholder]="'Nieuwe notitie'"
     [value]="note.content"
     [required]="true"
@@ -19,13 +19,6 @@
     </div>
     <div class="col-md-6 pr-md-0 mr-md-0">
       <lib-btn-contained [type]="'containedPrimary'" (clicked)="submit()">Notitie opslaan</lib-btn-contained>
-    </div>
-  </div>
-</div>
-<div class="notes-viewer-footer">
-  <div class="row m-0 p-0 notes-viewer-buttons">
-    <div class="col-md-12 pl-md-0 ml-md-0">
-      <lib-btn-contained [type]="'containedSecondary'" (clicked)="close()">Sluiten</lib-btn-contained>
     </div>
   </div>
 </div>

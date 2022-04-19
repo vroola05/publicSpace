@@ -28,12 +28,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public title = '';
   private subscriptions: Subscription[] = [];
 
+  public removeDropdownListener;
+
   constructor(
     public sanitizer: DomSanitizer,
     private navigationService: NavigationService,
     private authorisation: AuthorisationService,
     private apiService: ApiService,
-    
     private config: ConfigService
   ) {
 
@@ -133,8 +134,39 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.navigationService.navigate(['login']);
   }
 
+
+  public onRemoveDropdownListener() {
+    this.removeDropdownListener = (e) => {
+      const psHeaderDropdown = document.getElementById('ps-header-dropdown');
+      if (psHeaderDropdown == null) {
+        document.removeEventListener('click', this.removeDropdownListener);
+      } else if (!psHeaderDropdown.contains(e.target)) {
+        this.closeProfile();
+      }
+    };
+    setTimeout(() => {
+      document.addEventListener('click', this.removeDropdownListener);
+    });
+  }
+
+  public openProfile() {
+    this.onRemoveDropdownListener();
+    this.collapsed = false;
+  }
+
+  public closeProfile() {
+    this.collapsed = true;
+    if (this.removeDropdownListener) {
+      document.removeEventListener('click', this.removeDropdownListener);
+    }
+  }
+
   public toggleProfile($event?) {
-    this.collapsed = !this.collapsed;
+    if (this.collapsed) {
+      this.openProfile();
+    } else {
+      this.closeProfile();
+    }
   }
 
   public toggleGroups() {

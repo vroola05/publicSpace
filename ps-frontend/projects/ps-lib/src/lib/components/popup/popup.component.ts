@@ -1,16 +1,10 @@
 import {
-  Component,
-  ComponentFactory,
-  ComponentFactoryResolver,
+  Component, ComponentFactoryResolver,
   Input,
   OnDestroy,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-  ViewContainerRef } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Subscription } from 'rxjs';
+  OnInit, ViewChild
+} from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { PopupETypes } from '../../../model/intefaces';
 import { DynamicDirective } from '../../directives/dynamic.directive';
 
@@ -27,6 +21,8 @@ export class PopupComponent implements OnInit, OnDestroy {
 
   @Input() public title: string;
   public closeEvent: BehaviorSubject<PopupComponent> = new BehaviorSubject<PopupComponent>(null);
+  
+  public clickBackdropListener;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
@@ -43,6 +39,8 @@ export class PopupComponent implements OnInit, OnDestroy {
     return this.closeEvent.asObservable();
   }
   public close() {
+    document.removeEventListener('click', this.clickBackdropListener);
+
     return this.closeEvent.next(this);
   }
 
@@ -52,6 +50,7 @@ export class PopupComponent implements OnInit, OnDestroy {
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent<T>(component as any);  
     const instance = componentRef.instance;
+
     
     for (const propery in properties) {
       if (propery in instance) {
@@ -75,6 +74,18 @@ export class PopupComponent implements OnInit, OnDestroy {
         }
       }));
     }
+    this.addClickBackdrop();
+  }
+
+  public addClickBackdrop() {
+    setTimeout(() => {
+      this.clickBackdropListener = (e) => {
+        if (!document.getElementById('ps-popup').contains(e.target)) {
+          this.close();
+        }
+      };
+      document.addEventListener('click', this.clickBackdropListener);
+    });
   }
 
   private onEvent(event: {event: PopupETypes, data: any}): void {
