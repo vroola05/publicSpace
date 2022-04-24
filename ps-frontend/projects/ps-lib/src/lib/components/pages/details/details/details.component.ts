@@ -82,12 +82,14 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public changed($event: {action: string, data: any, note?: Note}): void {
-    console.log('$event', $event);
     switch ($event.action) {
       case 'order-cancel':
-        this.orderCancel($event.data);
+        this.orderCancel($event.data, $event.note);
         break;
       case 'order-reject':
+        this.orderDoneReject($event.data);
+        break;
+      case 'order-accept':
         this.orderDoneReject($event.data);
         break;
       case 'order-close':
@@ -113,10 +115,16 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
   
-  public orderCancel(order: Order): Promise<boolean> {
+  public orderCancel(order: Order, note: Note): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log('orderCancel');
-      reject(false);
+      this.transform.setVariable('order', order);
+      this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
+      this.endpoints.put('putOrderActionTypeGovernment', note).then((call: Call) => {
+        resolve(true);
+      })
+      .catch(err => {
+        reject(false);
+      });
     });
   }
 

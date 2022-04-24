@@ -9,6 +9,7 @@ export class PageConfig {
     endpoints: {id: string, endpoint: string}[];
     
     public getEndpoint(id: string) : string {
+        console.log(this.endpoints, id);
         const endpoint = this.endpoints.find(e => e.id === id);
         if (endpoint) {
             return endpoint.endpoint;

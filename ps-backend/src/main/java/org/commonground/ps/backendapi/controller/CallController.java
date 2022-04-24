@@ -18,6 +18,8 @@ import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.Group;
+import org.commonground.ps.backendapi.model.Message;
+import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
@@ -142,5 +144,23 @@ public class CallController extends Controller {
 	@GetMapping(value = "/{id}/order/contract")
 	public List<Contract> getOrderContracts() {
 		return contractService.getContracts(getUser().getDomain().getId(), true);
+	}
+
+	@Secured(identifier = "putOrderActionTypeGovernment", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}/order/{orderId}/action/{actionTypeId}", consumes = "application/json", produces = "application/json")
+	public Message putOrderActionTypeGovernment(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long orderId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long actionTypeId,
+		@Valid @RequestBody Note note) throws BadRequestException {
+
+
+		orderService.updateOrderActionType(getUser(), id, orderId, note);
+
+		Message message = new Message();
+		message.setStatus(200);
+		message.setMessage("Ok");
+
+		return message;
 	}
 }

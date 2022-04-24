@@ -15,6 +15,7 @@ import { DomainType } from '../../../model/domain-type';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { Order } from '../../../model/order';
+import { Note } from '../../../model/note';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {
@@ -75,7 +76,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.ORDER_CREATE, () => { return this.orderCreate(); });
     this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(null); });
     this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(null); });
-    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(null); });
+    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(null, null); });
     this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(null); });
     this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(null); });
     this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(null); });
@@ -244,7 +245,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
 
-  public orderCancel(order: Order): Promise<boolean> {
+  public orderCancel(order: Order, note: Note): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }

@@ -67,7 +67,7 @@ export class PanelOrderInfoComponent implements OnInit {
     }, [{type: PopupETypes.ok, event: (content: string) => {
         const note = new Note();
         note.content = content;
-        this.changed.emit({action: 'order-cancel', data: {order: this.order, note}});
+        this.changed.emit({action: 'order-cancel', data: this.order, note});
       }}]);
   }
 
@@ -78,6 +78,10 @@ export class PanelOrderInfoComponent implements OnInit {
         note.content = content;
         this.changed.emit({action: 'order-reject', data: {order: this.order, note}});
       }}]);
+  }
+
+  public onOrderAccept(): void {
+    this.changed.emit({action: 'order-accept', data: this.order});
   }
 
   public onOrderClose(): void {

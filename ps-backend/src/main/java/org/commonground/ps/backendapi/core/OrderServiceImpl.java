@@ -24,6 +24,7 @@ import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.Group;
+import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.util.ActionEnum;
@@ -227,6 +228,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Optional<Order> updateOrderActionType(User user, Long callId, Long id, Note note) {
 		// TODO Auto-generated method stub
 		return null;
 	}

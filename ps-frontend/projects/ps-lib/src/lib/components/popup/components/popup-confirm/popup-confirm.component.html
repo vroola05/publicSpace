@@ -3,11 +3,11 @@
     <p *ngIf="description">
       {{description}}
     </p>
-    <h4>Omscrhijving</h4>
     <lib-textarea-field
     [id]="'description'"
     [name]="'description'"
-    [placeholder]="'Omschrijving'"
+    [style]="'filled'"
+    [label]="'Omschrijving'"
     [required]="true"
     [maxLength]="500"
     (changed)="onTextChanged($event)"
