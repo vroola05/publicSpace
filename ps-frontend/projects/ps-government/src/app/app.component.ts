@@ -123,7 +123,7 @@ export class AppComponent {
         for(const i in pageConfigContainer.contractor.components) {
           const component = this.componentService.get(pageConfigContainer.contractor.components[i].component)
           if (component) {
-            pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
+            pageConfig.components.push({id:pageConfigContainer.contractor.components[i].id , component});
           }
         }
         pageConfig.endpoints = pageConfigContainer.contractor.endpoints;

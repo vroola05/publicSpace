@@ -65,6 +65,7 @@ export * from './lib/components/pages/settings/components/panel-settings-status/
 export * from './lib/components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
 export * from './lib/components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
+export * from './lib/components/pages/settings/components/panel-settings-order-specifications/panel-settings-order-specifications.component';
 export * from './lib/components/pages/settings/components/settings-title/settings-title.component';
 
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/panel-page-overview/panel-page-overview.component';
@@ -106,6 +107,10 @@ export * from './lib/components/pages/orderitem/orderitem-creation/orderitem-cre
 export * from './lib/components/pages/orderitem/orderitem-information/orderitem-information.component';
 export * from './lib/components/pages/orderitem/orderitem-confirmation/orderitem-confirmation.component';
 
+export * from './lib/components/pages/order-specifications/order-specifications-select/order-specifications-select.component';
+export * from './lib/components/pages/order-specifications/order-specifications-handle/order-specifications-handle.component';
+export * from './lib/components/pages/order-specifications/order-specifications-confirmation/order-specifications-confirmation.component';
+
 export * from './lib/components/pages/new/new-location/new-location.component';
 export * from './lib/components/pages/new/new-information/new-information.component';
 export * from './lib/components/pages/new/new-confirmation/new-confirmation.component';
@@ -115,8 +120,6 @@ export * from './lib/components/pages/change/change-information/change-informati
 export * from './lib/components/pages/change/change-confirmation/change-confirmation.component';
 
 export * from './lib/components/pages/assign/assign/assign.component';
-export * from './lib/components/pages/assign/assign-p-or-g/assign-p-or-g.component';
-export * from './lib/components/pages/assign/assign-p-and-g/assign-p-and-g.component';
 export * from './lib/components/panel/components/panel-assign-g-or-u/panel-assign-g-or-u.component';
 export * from './lib/components/panel/components/panel-assign-g-and-u/panel-assign-g-and-u.component';
 export * from './lib/components/pages/overview/overview.component';

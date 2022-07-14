@@ -85,4 +85,5 @@ on linux you can run:
 chromium-browser --disable-web-security --user-data-dir="/home/.../ChromiumTemp"
 
 On windows you can run:
-chrome.exe --disable-web-security --user-data-dir="/home/.../ChromiumTemp"
+chrome.exe --disable-web-security --user-data-dir="%USERPROFILE%\temp\chrome"
+'C:\Program Files\Google\Chrome\Application\chrome.exe' --disable-web-security --user-data-dir=$env:USERPROFILE\temp\chrome

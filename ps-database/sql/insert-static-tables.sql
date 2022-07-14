@@ -41,6 +41,7 @@ INSERT INTO public.action_type (id, name, domain_type) VALUES (11, 'Opdracht ann
 INSERT INTO public.action_type (id, name, domain_type) VALUES (12, 'Terug', NULL);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (13, 'Annuleren', NULL);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (14, 'Volgende', NULL);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (15, 'Toewijzen persoon en groep', NULL);
 
 
 --

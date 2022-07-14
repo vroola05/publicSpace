@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angu
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicDirective } from '../../../../directives/dynamic.directive';
 import { Call } from '../../../../../model/call';
-import { ActionTypeEnum, DynamicPanel, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, PopupETypes, StatusTypes } from '../../../../../model/intefaces';
 import { Message } from '../../../../../model/message';
 import { Note } from '../../../../../model/note';
 import { Order } from '../../../../../model/order';
@@ -76,6 +76,11 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
       this.transform.setVariable('call', call);
 
       this.call = call;
+
+      if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
+        this.transform.setVariable('order', call.orders[0]);
+      }
+
       this.loadComponent(this.dynamicHostLeft.viewContainerRef, this.pageConfig.getComponent('left'));
       this.loadComponent(this.dynamicHostRight.viewContainerRef, this.pageConfig.getComponent('right'));
     });

@@ -12,7 +12,6 @@ import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
-import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;

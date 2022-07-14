@@ -15,7 +15,6 @@ import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
-import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
@@ -186,7 +185,7 @@ public class OrderServiceImpl implements OrderService {
 
 		UserEntity userEntity = userEntityOptional.get();
 
-		if(userEntity.getGroups().stream().noneMatch(group -> group.getId() == orderEntity.getGroup().getId())) {
+		if (userEntity.getGroups().stream().noneMatch(group -> group.getId() == orderEntity.getGroup().getId())) {
 			return Optional.empty();
 		}
 
@@ -228,8 +227,13 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew) {
-		// TODO Auto-generated method stub
-		return null;
+		Group group = new Group();
+		group.setId(groupId);
+
+		if (setGroup(user, id, group).isEmpty()) {
+			return Optional.empty();
+		}
+		return setUser(user, id, userNew);
 	}
 
 	@Override

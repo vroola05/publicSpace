@@ -44,8 +44,6 @@ export class ListPanelContractContractorComponent implements ListPanelContractCo
 
   public ngOnInit(): void {
     this.transform.setVariable('environment', { company: this.authorisation.user.company, domain: this.authorisation.user.domain });
-    
-    
   }
 
   public getContractById(): void {

@@ -189,6 +189,37 @@ public class PageController extends Controller {
 		return putPage(companyId, domainId, pageId, page);
 	}
 
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderSpecificationSelect", consumes = "application/json")
+	public Page putPageOrderSpecificationSelectImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderSpecificationHandle", consumes = "application/json")
+	public Page putPageOrderSpecificationHandleImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderSpecificationConfirmation", consumes = "application/json")
+	public Page putPageOrderSpecificationConfirmationImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
 	public Page putPage(
 		Long companyId,
 		Long domainId,

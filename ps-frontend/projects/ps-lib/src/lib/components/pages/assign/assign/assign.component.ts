@@ -60,7 +60,7 @@ export class AssignComponent extends PageAbstract implements OnInit {
 
     this.page = this.config.getPage(PageTypes.assign);
     this.pageConfig = this.page.pageConfig;
-
+    console.log('lalal');
     this.getCall();
   }
 

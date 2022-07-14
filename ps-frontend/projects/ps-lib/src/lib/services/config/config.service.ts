@@ -20,6 +20,9 @@ export enum PageTypes {
   newConfirm = 'newConfirm',
   orderCreation = 'orderCreation',
   orderConfirm = 'orderConfirm',
+  orderSpecificationSelect = 'orderSpecificationSelect',
+  orderSpecificationHandle = 'orderSpecificationHandle',
+  orderSpecificationConfirmation = 'orderSpecificationConfirmation',
 }
 
 @Injectable({

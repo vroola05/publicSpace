@@ -3,7 +3,7 @@
     <h4><span>{{title}}</span><span class="right">{{getDays(order?.dateCreated)}}</span></h4>
     {{order.description}}
   </div>
-  <div class="order-info-category" *ngIf="action == 'view' && hasOrdertypes()">
+  <div class="order-info-category" *ngIf="action == 'view'">
     <h4>Bestek categorie(en)</h4>
     {{getCategories()}}
   </div>

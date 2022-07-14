@@ -31,6 +31,7 @@
         <div *ngIf="showDomain()">
           <lib-settings-button [name]="'Domeinen'" (clicked)="buttonClicked()" [icon]="'domain'" [route]="'/settings/domains'" [selected]="isSelected('/settings/domains')"></lib-settings-button>
           <lib-settings-button [name]="'Contracten'" (clicked)="buttonClicked()" [icon]="'payments'" [route]="'/settings/contracts'" [selected]="isSelected('/settings/contracts')"></lib-settings-button>
+          <lib-settings-button [name]="'Bestekposten'" (clicked)="buttonClicked()" [icon]="'receipt_long'" [route]="'/settings/order-specifications'" [selected]="isSelected('/settings/order-specifications')"></lib-settings-button>
           <lib-settings-button [name]="'Hoofdcategorie'" (clicked)="buttonClicked()" [icon]="'label'" [route]="'/settings/main-category'" [selected]="isSelected('/settings/main-category')"></lib-settings-button>
           <lib-settings-button [name]="'Categorie'" (clicked)="buttonClicked()" [icon]="'label'" [route]="'/settings/category'" [selected]="isSelected('/settings/category')"></lib-settings-button>
         </div>

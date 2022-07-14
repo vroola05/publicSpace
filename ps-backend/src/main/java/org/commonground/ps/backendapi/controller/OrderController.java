@@ -69,20 +69,19 @@ public class OrderController extends Controller {
 			return callOptional.get();
 	}
 
-	@Secured(identifier = "putCallGroupAndUser", domainType = DomainTypeEnum.CONTRACTOR)
+	@Secured(identifier = "putOrderGroupAndUser", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/group/{groupId}", consumes = "application/json", produces = "application/json")
 	public Call putCallGroupAndUser(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long groupId,
 		@Valid @PutCallUserValidator @RequestBody User userNew) throws BadRequestException {
 
-		// Optional<Call> callOptional = callService.setGroupAndUser(getUser(), id, groupId, userNew);
+		Optional<Call> orderOptional = orderService.setGroupAndUser(getUser(), id, groupId, userNew);
+		if (orderOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
 
-		// if (callOptional.isEmpty()) {
-		// 	throw new BadRequestException();
-		// }
-		// return callOptional.get();
-		return null;
+		return orderOptional.get();
 	}
 
 	@Secured(identifier = "putOrderActionType", domainType = DomainTypeEnum.CONTRACTOR)

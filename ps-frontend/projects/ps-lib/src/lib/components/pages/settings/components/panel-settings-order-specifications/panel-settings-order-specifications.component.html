@@ -1,0 +1,20 @@
+<lib-settings-title></lib-settings-title>
+<div class="row">
+  <div class="col-md-12">
+    <lib-dropdown-field [id]="'contracts'" [required]="true" [name]="'contracts'" [options]="contractItems"
+      [label]="'Contract'" (changed)="onContractChanged($event)" #contractComponent>
+    </lib-dropdown-field>
+  </div>
+</div>
+<div class="row" *ngIf="hasContract()">
+  <div class="col-md-12">
+    <lib-panel-settings
+      [titleNew]="'Bestek'"
+      [data]="data"
+      [isNew]="isNew"
+      [open]="open"
+      [listTemplate]="listTemplate"
+      (onEvent)="events($event)">
+    </lib-panel-settings>
+  </div>
+</div>
