@@ -1,0 +1,11 @@
+.contract-specification-item {
+    display: flex;
+    flex-direction: row;
+
+    .contract-specification-item-fields {
+        flex-grow: 1;
+    }
+    .contract-specification-item-delete {
+        width: 30px;
+    }
+}

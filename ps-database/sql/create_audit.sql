@@ -71,7 +71,7 @@ ALTER TABLE ONLY audit.contract_aud
 -- Contract main categories
 CREATE TABLE audit.contract_main_category_aud (
     contract_id integer NOT NULL,
-    main_category_id integer NOT NULL,
+    main_category_id integer,
     rev integer NOT NULL,
     revtype integer NOT NULL
 );
@@ -80,6 +80,45 @@ ALTER TABLE audit.contract_main_category_aud OWNER TO postgres;
 
 ALTER TABLE ONLY audit.contract_main_category_aud
     ADD CONSTRAINT contract_main_category_aud_pkey PRIMARY KEY (contract_id, main_category_id, rev);
+
+-- Contract specification
+
+CREATE TABLE audit.contract_specification_aud (
+    id integer NOT NULL,
+    contract_id integer,
+    description text,
+    date_created timestamp with time zone DEFAULT now(),
+    date_start date,
+    date_end date,
+    active boolean,
+    rev integer NOT NULL,
+    revtype integer NOT NULL
+);
+
+ALTER TABLE audit.contract_specification_aud OWNER TO postgres;
+
+ALTER TABLE ONLY audit.contract_specification_aud
+    ADD CONSTRAINT contract_specification_aud_pk PRIMARY KEY (id, rev);
+
+-- Contract specification items
+
+CREATE TABLE audit.contract_specification_items_aud (
+    id integer NOT NULL,
+    contract_specification_id integer,
+    specification_number text,
+    name text,
+    unit text,
+    price text,
+    active boolean,
+    rev integer NOT NULL,
+    revtype integer NOT NULL
+);
+
+ALTER TABLE audit.contract_specification_items_aud OWNER TO postgres;
+
+ALTER TABLE ONLY audit.contract_specification_items_aud
+    ADD CONSTRAINT contract_specification_items_aud_pk PRIMARY KEY (id, rev);
+
 
 -- Groups
 CREATE TABLE audit.groups_aud (

@@ -17,35 +17,40 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.commonground.ps.backendapi.model.Contract;
+import org.commonground.ps.backendapi.model.ContractSpecification;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { PostContractValidator.Validator.class })
-public @interface PostContractValidator {
+@Constraint(validatedBy = { PostContractSpecificationValidator.Validator.class })
+public @interface PostContractSpecificationValidator {
 	String message() default "Field value should be from list of ";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
 
-	class Validator implements ConstraintValidator<PostContractValidator, Contract> {
+	class Validator implements ConstraintValidator<PostContractSpecificationValidator, ContractSpecification> {
 
 		@Override
-		public void initialize(PostContractValidator postContract) {
+		public void initialize(PostContractSpecificationValidator postContractSpecificationValidator) {
 		}
 
 		@Override
-		public boolean isValid(Contract contract, ConstraintValidatorContext context) {
+		public boolean isValid(ContractSpecification contractSpecification, ConstraintValidatorContext context) {
 			
-			if (contract.getId() != null) {
+			if (contractSpecification.getId() != null) {
 				setMessage(context, "id", "Waarde moet leeg zijn");
 				return false;
 			}
 
-			if (contract.getDomain() == null || contract.getDomain().getId() == null) {
-				setMessage(context, "domains", "Waarde is verplicht");
+			if (contractSpecification.getDescription() == null || contractSpecification.getDescription().isBlank()) {
+				setMessage(context, "description", "Waarde is verplicht");
+				return false;
+			}
+
+			if (contractSpecification.getDateStart() == null) {
+				setMessage(context, "startDate", "Waarde is verplicht");
 				return false;
 			}
 

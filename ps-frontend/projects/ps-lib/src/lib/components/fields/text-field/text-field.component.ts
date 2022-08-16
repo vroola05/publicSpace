@@ -10,7 +10,7 @@ import { ValidationService } from '../../../services/validation/validation.servi
 export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestroy {
   @ViewChild('fieldRef') public fieldRef: ElementRef;
   @Input() icon = '';
-  @Input() type: 'text' | 'number' | 'email' | 'time' = 'text';
+  @Input() type: 'text' | 'number' | 'email' | 'time' | 'currency' = 'text';
 
   constructor(protected validation: ValidationService) {
     super(validation);
@@ -27,6 +27,31 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
 
   public hasIcon(): boolean {
     return this.icon.length > 0;
+  }
+
+  public onChanged(event): void {
+    if (this.type === 'currency') {
+      const value = '' + parseFloat(event.target.value.replace(',', '.')).toFixed(2);
+      if (isNaN(Number(value))) {
+        this.value = event.target.value;
+      } else {
+        
+        console.log('value', value);
+        this.value = value.replace('.', ',');
+        if (this.fieldRef) {
+          this.fieldRef.nativeElement.value = this.value;
+        }
+        console.log('this.value', this.value);
+      }
+    } else {
+      this.value = event.target.value;
+    }
+    
+    if (this.data) {
+      this.changed.emit({value: event.target.value, data: this.data});
+    } else {
+      this.changed.emit(event.target.value);
+    }
   }
 
   public focus(): void {
@@ -48,7 +73,6 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
           return false;
         }
       } else if (this.type === 'email') {
-        
         if (!RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(value)) {
           this.errors.push({message: `Ongeldig e-mailadres.`});
           return false;
@@ -56,6 +80,12 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
       } else if (this.type === 'time') {
         if (!RegExp(/^([0-1][0-9]|2[0-3]):([0-5][0-9])$/).test(value)) {
           this.errors.push({message: `Ongeldige tijd.`});
+          return false;
+        }
+        
+      } else if (this.type === 'currency') {
+        if (!RegExp(/^(\d+(\,\d{0,2})?|\,?\d{1,2})$/).test(value)) {
+          this.errors.push({message: `Ongeldig bedrag.`});
           return false;
         }
         

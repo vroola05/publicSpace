@@ -142,7 +142,10 @@ import { PanelAssignGAndUComponent } from './components/panel/components/panel-a
 import { OrderSpecificationsSelectComponent } from './components/pages/order-specifications/order-specifications-select/order-specifications-select.component';
 import { OrderSpecificationsHandleComponent } from './components/pages/order-specifications/order-specifications-handle/order-specifications-handle.component';
 import { OrderSpecificationsConfirmationComponent } from './components/pages/order-specifications/order-specifications-confirmation/order-specifications-confirmation.component';
-import { PanelSettingsOrderSpecificationsComponent } from './components/pages/settings/components/panel-settings-order-specifications/panel-settings-order-specifications.component';
+import { PanelSettingsContractSpecificationsComponent } from './components/pages/settings/components/panel-settings-contract-specifications/panel-settings-contract-specifications.component';
+import { ListPanelContractSpecificationComponent } from './components/pages/settings/components/panel-settings-contract-specifications/components/list-panel-contract-specification/list-panel-contract-specification.component';
+import { PanelContractSpecificationItemComponent } from './components/pages/settings/components/panel-settings-contract-specifications/components/panel-contract-specification-item/panel-contract-specification-item.component';
+import { PanelOrderSelectComponent } from './components/panel/components/panel-order-select/panel-order-select.component';
 
 
 @NgModule({
@@ -263,7 +266,10 @@ import { PanelSettingsOrderSpecificationsComponent } from './components/pages/se
     OrderSpecificationsSelectComponent,
     OrderSpecificationsHandleComponent,
     OrderSpecificationsConfirmationComponent,
-    PanelSettingsOrderSpecificationsComponent
+    PanelSettingsContractSpecificationsComponent,
+    ListPanelContractSpecificationComponent,
+    PanelContractSpecificationItemComponent,
+    PanelOrderSelectComponent
   ],
   imports: [
     CommonModule,
@@ -379,7 +385,10 @@ import { PanelSettingsOrderSpecificationsComponent } from './components/pages/se
     OrderSpecificationsSelectComponent,
     OrderSpecificationsHandleComponent,
     OrderSpecificationsConfirmationComponent,
-    PanelSettingsOrderSpecificationsComponent
+    PanelSettingsContractSpecificationsComponent,
+    ListPanelContractSpecificationComponent,
+    PanelContractSpecificationItemComponent,
+    PanelOrderSelectComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

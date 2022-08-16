@@ -1107,6 +1107,71 @@ CREATE SEQUENCE public.seq_contract_main_category_id
 ALTER SEQUENCE public.seq_contract_main_category_id
     OWNER TO postgres;
 
+--
+-- TOC entry 256 (class 1259 OID 41088)
+-- Name: contract_specification; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contract_specification (
+    id integer NOT NULL,
+    contract_id integer NOT NULL,
+    description text NOT NULL,
+    date_created timestamp with time zone DEFAULT now() NOT NULL,
+    date_start date NOT NULL,
+    date_end date,
+    accepted boolean
+);
+
+ALTER TABLE public.contract_specification OWNER TO postgres;
+
+ALTER TABLE ONLY public.contract_specification
+    ADD CONSTRAINT contract_specification_pk PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.contract_specification
+    ADD CONSTRAINT contract_specification_contract_fk FOREIGN KEY (contract_id) REFERENCES public.contract(id) NOT VALID;
+
+CREATE SEQUENCE public.seq_contract_specification
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_contract_specification
+    OWNER TO postgres;
+
+--
+-- TOC entry 256 (class 1259 OID 41088)
+-- Name: contract_specification_items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.contract_specification_items (
+    id integer NOT NULL,
+    contract_specification_id integer NOT NULL,
+    specification_number text NOT NULL,
+    name text NOT NULL,
+    unit text NOT NULL,
+    price text,
+    accepted boolean
+);
+
+ALTER TABLE public.contract_specification_items OWNER TO postgres;
+
+ALTER TABLE ONLY public.contract_specification_items
+    ADD CONSTRAINT contract_specification_items_pk PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.contract_specification_items
+    ADD CONSTRAINT contract_specification_items_contr_spec_fk FOREIGN KEY (contract_specification_id) REFERENCES public.contract_specification(id) NOT VALID;
+
+CREATE SEQUENCE public.seq_contract_specification_items
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_contract_specification_items
+    OWNER TO postgres;
 
 --
 -- TOC entry 267 (class 1259 OID 86799)

@@ -10,7 +10,7 @@ import { Category } from '../../../../../../../../model/category';
 import { TextFieldComponent } from '../../../../../../fields/text-field/text-field.component';
 import { DateFieldComponent } from '../../../../../../fields/date-field/date-field.component';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
-import { Group } from 'projects/ps-lib/src/model/group';
+import { Group } from '../../../../../../../../model/group';
 
 @Component({
   selector: 'lib-list-panel-category',

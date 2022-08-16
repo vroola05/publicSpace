@@ -65,7 +65,9 @@ export * from './lib/components/pages/settings/components/panel-settings-status/
 export * from './lib/components/pages/settings/components/panel-settings-actions/panel-settings-actions.component';
 export * from './lib/components/pages/settings/components/panel-settings-pages/panel-settings-pages.component';
 export * from './lib/components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
-export * from './lib/components/pages/settings/components/panel-settings-order-specifications/panel-settings-order-specifications.component';
+export * from './lib/components/pages/settings/components/panel-settings-contract-specifications/panel-settings-contract-specifications.component';
+export * from './lib/components/pages/settings/components/panel-settings-contract-specifications/components/list-panel-contract-specification/list-panel-contract-specification.component';
+export * from './lib/components/pages/settings/components/panel-settings-contract-specifications/components/panel-contract-specification-item/panel-contract-specification-item.component';
 export * from './lib/components/pages/settings/components/settings-title/settings-title.component';
 
 export * from './lib/components/pages/settings/components/panel-settings-pages/components/panel-page-overview/panel-page-overview.component';
@@ -110,6 +112,8 @@ export * from './lib/components/pages/orderitem/orderitem-confirmation/orderitem
 export * from './lib/components/pages/order-specifications/order-specifications-select/order-specifications-select.component';
 export * from './lib/components/pages/order-specifications/order-specifications-handle/order-specifications-handle.component';
 export * from './lib/components/pages/order-specifications/order-specifications-confirmation/order-specifications-confirmation.component';
+export * from './lib/components/panel/components/panel-order-select/panel-order-select.component';
+
 
 export * from './lib/components/pages/new/new-location/new-location.component';
 export * from './lib/components/pages/new/new-information/new-information.component';

@@ -78,11 +78,12 @@
         },
         "contractor": {
             "endpoints": [
-                {"id": "getCall", "endpoint": "getCallByOrderId"}
+                {"id": "getCall", "endpoint": "getCallByOrderId"},
+                {"id": "getContractSpecificationItems", "endpoint": "getContractSpecificationItemsByOrderId"}
             ],
             "components": [
                 {"id": "left", "component": "PanelInfoSecondComponent"},
-                {"id": "right", "component": "PanelOrderSecondComponent"}
+                {"id": "right", "component": "PanelOrderSelectComponent"}
             ]
         }
     },

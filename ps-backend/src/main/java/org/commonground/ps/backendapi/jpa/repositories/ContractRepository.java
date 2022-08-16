@@ -26,6 +26,9 @@ public interface ContractRepository extends JpaRepository<ContractEntity, Long> 
   @Query("select c from ContractEntity c where c.domainGovernment.id = :#{#domainIdGovernment} and c.domainContractor.id = :#{#domainIdContractor}")
   Optional<ContractEntity> getContractBy(@Param("domainIdGovernment") Long domainIdGovernment, @Param("domainIdContractor") Long domainIdContractor);
 
+  @Query("select c from ContractEntity c where c.domainContractor.id = :#{#domainIdContractor} and c.id = :#{#contractId}")
+  Optional<ContractEntity> getContractByContractorDomainIdAndId(@Param("domainIdContractor") Long domainIdContractor, @Param("contractId") Long contractId);
+
   @Query("select c from ContractEntity c where c.id = :#{#id}")
   Optional<ContractEntity> getContractById(@Param("id") Long id);
 }

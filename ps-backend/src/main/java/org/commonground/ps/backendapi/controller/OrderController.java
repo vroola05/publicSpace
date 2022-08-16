@@ -1,15 +1,19 @@
 package org.commonground.ps.backendapi.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.commonground.ps.backendapi.core.ContractSpecificationItemService;
 import org.commonground.ps.backendapi.core.OrderService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
+import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.model.Call;
+import org.commonground.ps.backendapi.model.ContractSpecificationItem;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.User;
@@ -33,9 +37,13 @@ public class OrderController extends Controller {
 	@Autowired
 	private OrderService orderService;
 	
+	@Autowired
+	private ContractSpecificationItemService contractSpecificationItemService;
+
 	@Secured(identifier = "getCallByOrderId", domainType = DomainTypeEnum.CONTRACTOR)
 	@GetMapping("/{id}")
 	public Call getCallByOrderId(@PathVariable long id) {
+
 		Optional<Call> callOptional = orderService.getCallByOrderId(getUser(), id);
 		if (callOptional.isEmpty()) {
 			throw new NotFoundException();
@@ -94,4 +102,20 @@ public class OrderController extends Controller {
 		return null;
 	}
 
+
+	@Secured(identifier = "getContractSpecificationItemsByOrderId")
+	@GetMapping(value = "/{id}/specification-items")
+	public List<ContractSpecificationItem> getContractSpecificationItemsByOrderId(
+			@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
+
+		User user = getUser();
+		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
+		if (orderEntityOptional.isEmpty()) {
+
+		}
+
+		OrderEntity orderEntity = orderEntityOptional.get();
+
+		return contractSpecificationItemService.getContractSpecificationItems(orderEntity.getCall().getDomain().getId(), user.getDomain().getId());
+	}
 }

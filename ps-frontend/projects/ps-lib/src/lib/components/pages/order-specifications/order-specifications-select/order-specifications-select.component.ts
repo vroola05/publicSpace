@@ -8,6 +8,7 @@ import { PageAbstract } from '../../page';
 import { Page } from '../../../../../model/page';
 import { DomainTypeEnum } from '../../../../../model/intefaces';
 import { Call } from '../../../../../model/call';
+import { ContractSpecificationItem } from '../../../../../model/contract-specification-item';
 
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
@@ -19,7 +20,6 @@ import { EndpointService } from '../../../../services/endpoint/endpoint.service'
 import { Loader } from '../../../../services/loader/loader.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { ToastService } from '../../../../services/toast/toast.service';
-
 
 @Component({
   selector: 'lib-order-specifications-select',

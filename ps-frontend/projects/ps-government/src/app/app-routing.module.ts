@@ -21,7 +21,7 @@ import {
   PanelSettingsUsersComponent,
   PanelSettingsGroupsComponent,
   PanelSettingsMainCategoryComponent,
-  PanelSettingsOrderSpecificationsComponent,
+  PanelSettingsContractSpecificationsComponent,
   PanelSettingsCategoryComponent,
   PanelSettingsStatusComponent,
   PanelSettingsActionsComponent,
@@ -70,7 +70,7 @@ const routes: Routes = [
       },
       {
         path: 'order-specifications',
-        component: PanelSettingsOrderSpecificationsComponent, data: { title: 'Bestekposten' }
+        component: PanelSettingsContractSpecificationsComponent, data: { title: 'Bestekposten' }
       },
       
       {

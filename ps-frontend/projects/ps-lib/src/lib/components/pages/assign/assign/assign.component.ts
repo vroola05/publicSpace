@@ -60,7 +60,6 @@ export class AssignComponent extends PageAbstract implements OnInit {
 
     this.page = this.config.getPage(PageTypes.assign);
     this.pageConfig = this.page.pageConfig;
-    console.log('lalal');
     this.getCall();
   }
 
@@ -84,7 +83,6 @@ export class AssignComponent extends PageAbstract implements OnInit {
 
   public assignGroup(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      console.log('assignGroup');
       if (!this.lock) {
         this.lock = true;
         const group = this.transform.getVariable('group') as Group;
@@ -93,9 +91,7 @@ export class AssignComponent extends PageAbstract implements OnInit {
           this.lock = false;
           resolve(false);
         }
-        console.log('assignGroup 1');
         const loaderId = this.loader.add('Bezig met opslaan!');
-        console.log('assignGroup', this.pageConfig.getEndpoint('putGroup'), group);
         this.endpoints.put(this.pageConfig.getEndpoint('putGroup'), group).then((message: Message) => {
           this.loader.remove(loaderId);
           this.lock = false;
