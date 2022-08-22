@@ -170,7 +170,7 @@ export class CreateOverviewColumnComponent implements OnInit {
   }
 */
 
-public onDeleteClick($event): void {
-  this.changed.emit({action: 'delete', index: this.index, column: this._column});
-}
+  public onDeleteClick($event): void {
+    this.changed.emit({action: 'delete', index: this.index, column: this._column});
+  }
 }

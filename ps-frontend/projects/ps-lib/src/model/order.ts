@@ -1,5 +1,6 @@
 import { ActionType } from './action-type';
 import { Category } from './category';
+import { ContractSpecificationItem } from './contract-specification-item';
 import { Domain } from './domain';
 import { Group } from './group';
 import { Status } from './status';
@@ -14,7 +15,8 @@ export class Order {
 
   public contractorDomain?: Domain;
   public categories?: Category[];
-  
+  public contractSpecificationItems: ContractSpecificationItem[];
+
   public actionType?: ActionType;
   public status?: Status;
 

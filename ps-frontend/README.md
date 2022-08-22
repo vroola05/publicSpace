@@ -15,6 +15,7 @@ for 127.0.0.1
 ng serve --host 0.0.0.0 --disable-host-check --project=ps-government
 
 chromium-browser --disable-web-security --user-data-dir="~/ChromiumTemp"
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir="%HOMEPATH%\Documents\Temp\Chrome"
 
 De statussen in de applicatie zijn dynamisch. Binnen de applicatie zijn er een gelimiteerd aantal acties. Aan deze acties kun je een status hangen. Daarnaast is het mogelijk om er communicatie aan te hangen.
 

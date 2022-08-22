@@ -61,11 +61,67 @@
                 {"id": "getUsers", "endpoint": "getUsersOfGroup"},
                 {"id": "putGroup", "endpoint": "putOrderGroup"},
                 {"id": "putUser", "endpoint": "putOrderUser"},
-                {"id": "putGroupAndUser", "endpoint": "putCallGroupAndUser"}
+                {"id": "putGroupAndUser", "endpoint": "putOrderGroupAndUser"}
             ],
             "components": [
                 {"id": "assign", "component": "PanelAssignGAndUComponent"}
             ]
         }
-    } 
+    },
+    "orderSpecificationSelect": {
+        "government": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallById"}
+            ],
+            "components": [
+            ]
+        },
+        "contractor": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallByOrderId"},
+                {"id": "getContractSpecificationItems", "endpoint": "getContractSpecificationItemsByOrderId"}
+            ],
+            "components": [
+                {"id": "left", "component": "PanelInfoSecondComponent"},
+                {"id": "right", "component": "PanelOrderSelectComponent"}
+            ]
+        }
+    },
+    "orderSpecificationHandle": {
+        "government": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallById"}
+            ],
+            "components": [
+            ]
+        },
+        "contractor": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallByOrderId"}
+            ],
+            "components": [
+                {"id": "left", "component": "PanelInfoSecondComponent"},
+                {"id": "right", "component": "PanelOrderHandleComponent"}
+            ]
+        }
+    },
+    "orderSpecificationConfirmation": {
+        "government": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallById"}
+            ],
+            "components": [
+            ]
+        },
+        "contractor": {
+            "endpoints": [
+                {"id": "getCall", "endpoint": "getCallByOrderId"}
+            ],
+            "components": [
+                {"id": "left", "component": "PanelInfoSecondComponent"},
+                {"id": "right", "component": "PanelOrderSecondComponent"}
+            ]
+        }
+    }
+    
 }

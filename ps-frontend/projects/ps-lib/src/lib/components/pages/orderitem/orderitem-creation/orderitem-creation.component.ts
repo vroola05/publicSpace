@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ActionService } from '../../../../services/action/action.service';
 import { AuthorisationService } from '../../../../services/authorisation/authorisation.service';
-import { ConfigService } from '../../../../services/config/config.service';
+import { ConfigService, PageTypes } from '../../../../services/config/config.service';
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { TransformService } from '../../../../services/transform/transform.service';
@@ -13,6 +13,9 @@ import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
 import { Orderitem } from '../../../../../model/order-item';
 import { ButtonT } from '../../../../../model/template';
+import { DomainTypeEnum } from '../../../../../model/intefaces';
+import { DynamicRightDirective } from '../../../../directives/dynamic-right.directive';
+import { DynamicLeftDirective } from '../../../../directives/dynamic-left.directive';
 
 @Component({
   selector: 'lib-orderitem-creation',
@@ -20,6 +23,9 @@ import { ButtonT } from '../../../../../model/template';
   styleUrls: ['./orderitem-creation.component.scss']
 })
 export class OrderitemCreationComponent extends PageAbstract implements OnInit, OnDestroy {
+  @ViewChild(DynamicLeftDirective, {static: false}) private dynamicHostLeft!: DynamicLeftDirective;
+  @ViewChild(DynamicRightDirective, {static: false}) private dynamicHostRight!: DynamicRightDirective;
+
   private subscription: Subscription[] = [];
   public order: Order;
   public getUrlImage: string;
@@ -41,6 +47,9 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
 
+    this.page = this.config.getPage(PageTypes.details);    
+    this.pageConfig = this.page.pageConfig;
+
     const order = this.storage.getSession('order');
     if (order) {
       this.order = JSON.parse(order) as Order;
@@ -50,7 +59,9 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
 
   public ngOnInit(): void {
     super.ngOnInit();
+
     this.getCall();
+
     // this.buttonsLeft = this.config.template.order.creation.buttonsLeft;
     // this.buttonsRight = this.config.template.order.creation.buttonsRight;
     // if (this.config.template.order.creation.pageType) {
@@ -90,19 +101,31 @@ export class OrderitemCreationComponent extends PageAbstract implements OnInit, 
   }
 
   public getCall(): void {
-    this.endpoints.get('getDetailCall').then((call: Call) => {
+    this.endpoints.get(this.pageConfig.getEndpoint('getCall')).then((call: Call) => {
       this.transform.setVariable('call', call);
+
       this.call = call;
-      if (! this.order && this.call.orders && this.call.orders.length > 0) {
-        this.order = this.call.orders[0];
-        this.transform.setVariable('order', this.order);
-        this.storage.setSession('order', JSON.stringify(this.order), true);
+
+      if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
+        this.transform.setVariable('order', call.orders[0]);
       }
 
-      this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
-
-      this.getOrderitems();
+      this.loadComponent(this.dynamicHostLeft.viewContainerRef, this.pageConfig.getComponent('left'));
+      this.loadComponent(this.dynamicHostRight.viewContainerRef, this.pageConfig.getComponent('right'));
     });
+    // this.endpoints.get('getDetailCall').then((call: Call) => {
+    //   this.transform.setVariable('call', call);
+    //   this.call = call;
+    //   if (! this.order && this.call.orders && this.call.orders.length > 0) {
+    //     this.order = this.call.orders[0];
+    //     this.transform.setVariable('order', this.order);
+    //     this.storage.setSession('order', JSON.stringify(this.order), true);
+    //   }
+
+    //   this.getUrlImage = this.transform.URL(this.config.getEndpoint('getImage').endpoint);
+
+    //   this.getOrderitems();
+    // });
   }
 
   public getSelectedOrderitems(): Orderitem[] {

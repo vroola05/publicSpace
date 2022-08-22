@@ -9,6 +9,8 @@ import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
+import org.commonground.ps.backendapi.jpa.entities.ContractSpecificationEntity;
+import org.commonground.ps.backendapi.jpa.entities.ContractSpecificationItemEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
@@ -36,6 +38,8 @@ import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.Company;
 import org.commonground.ps.backendapi.model.Contract;
+import org.commonground.ps.backendapi.model.ContractSpecification;
+import org.commonground.ps.backendapi.model.ContractSpecificationItem;
 import org.commonground.ps.backendapi.model.Domain;
 import org.commonground.ps.backendapi.model.DomainType;
 import org.commonground.ps.backendapi.model.Group;
@@ -512,6 +516,30 @@ public class Convert {
     contract.setAccepted(contractEntity.getAccepted());
     contract.setDateCreated(contractEntity.getDateCreated());
     return contract;
+  }
+
+  public static ContractSpecification contractSpecificationEntity(ContractSpecificationEntity contractSpecificationEntity) {
+    ContractSpecification contractSpecification = new ContractSpecification();
+    contractSpecification.setId(contractSpecificationEntity.getId());
+    contractSpecification.setDescription(contractSpecificationEntity.getDescription());
+    contractSpecification.setDateCreated(contractSpecificationEntity.getDateCreated());
+    contractSpecification.setDateStart(contractSpecificationEntity.getDateStart());
+    contractSpecification.setDateEnd(contractSpecificationEntity.getDateEnd());
+    contractSpecification.setActive(contractSpecificationEntity.getActive());
+    
+    return contractSpecification;
+  }
+
+  public static ContractSpecificationItem contractSpecificationItemEntity(ContractSpecificationItemEntity contractSpecificationItemEntity) {
+    ContractSpecificationItem contractSpecificationItem = new ContractSpecificationItem();
+    contractSpecificationItem.setId(contractSpecificationItemEntity.getId());
+    contractSpecificationItem.setSpecificationNumber(contractSpecificationItemEntity.getSpecificationNumber());
+    contractSpecificationItem.setName(contractSpecificationItemEntity.getName());
+    contractSpecificationItem.setPrice(contractSpecificationItemEntity.getPrice());
+    contractSpecificationItem.setUnit(contractSpecificationItemEntity.getUnit());
+    contractSpecificationItem.setActive(contractSpecificationItemEntity.getActive());
+    
+    return contractSpecificationItem;
   }
 
   public static Order orderEntity(OrderEntity orderEntity) {

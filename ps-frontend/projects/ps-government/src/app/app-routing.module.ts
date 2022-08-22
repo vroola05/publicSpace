@@ -21,15 +21,19 @@ import {
   PanelSettingsUsersComponent,
   PanelSettingsGroupsComponent,
   PanelSettingsMainCategoryComponent,
+  PanelSettingsContractSpecificationsComponent,
   PanelSettingsCategoryComponent,
   PanelSettingsStatusComponent,
   PanelSettingsActionsComponent,
   PanelSettingsPagesComponent,
-  PanelSettingsContractsComponent
+  PanelSettingsContractsComponent,
+  OrderSpecificationsSelectComponent,
+  OrderSpecificationsHandleComponent,
+  OrderSpecificationsConfirmationComponent
 } from 'ps-lib';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, data: { title: 'Public space' } },
+  { path: 'login', component: LoginComponent, data: { title: 'Publicspace' } },
   { path: 'overview/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   { path: 'overview/group/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   {
@@ -65,6 +69,11 @@ const routes: Routes = [
         component: PanelSettingsCategoryComponent, data: { title: 'Categorie' }
       },
       {
+        path: 'order-specifications',
+        component: PanelSettingsContractSpecificationsComponent, data: { title: 'Bestekposten' }
+      },
+      
+      {
         path: 'status',
         component: PanelSettingsStatusComponent, data: { title: 'Status' }
       },
@@ -89,6 +98,9 @@ const routes: Routes = [
   { path: 'change/:id/confirmation', component: ChangeConfirmationComponent, data: { title: 'Wijzigingen controleren' } },
   { path: 'details/:id/order/creation', component: OrderCreationComponent, data: { title: 'Opdracht aanmaken' } },
   { path: 'details/:id/order/confirmation', component: OrderConfirmationComponent, data: { title: 'Opdracht controleren' } },
+  { path: 'details/:id/order-specifications/select', component: OrderSpecificationsSelectComponent, data: { title: 'Selecteer opdracht specificaties' } },
+  { path: 'details/:id/order-specifications/handle', component: OrderSpecificationsHandleComponent, data: { title: 'Opdracht afhandelen' } },
+  { path: 'details/:id/order-specifications/confirmation', component: OrderSpecificationsConfirmationComponent, data: { title: 'Opdracht afhandelen' } },
   { path: 'mail/:id/:mailId', component: SendMailComponent, data: { title: 'Verstuur e-mail' } },
   { path: '', component: LoginComponent, data: { title: 'Inloggen' } }
 ];

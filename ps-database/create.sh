@@ -5,7 +5,7 @@ psql -h localhost -U postgres -f create_database.sql
 ###################################################################
 # Compile javaclass for password hash
 ###################################################################
-javac -d sec-class ../ps-backend/src/main/java/org/commonground/ps/backendapi/core/security/SecureHash.java
+
 
 
 ###################################################################
@@ -93,8 +93,8 @@ USER_NAME_CONTR="Administrator"
 USER_EMAIL_CONTR="fake@this-is-no-contr.organisation.com"
 USER_ADMIN_CONTR=false
 
-USER_SALT_CONTR="$(java -cp sec-class org.commonground.ps.backendapi.core.security.SecureHash --function "salt" --password "$USER_PASSWORD_CONTR" --hash-function "$HASH_FUNCTION" --salt-length $SALT_LENGTH --iteration-count $ITERATION_COUNT --key-length $KEY_LENGTH)"
-USER_PASSWORD_ENCRYPT_CONTR="$(java -cp sec-class org.commonground.ps.backendapi.core.security.SecureHash --function "password" --password "$USER_PASSWORD_CONTR" --hash-function "$HASH_FUNCTION" --salt-length $SALT_LENGTH --salt "$USER_SALT_CONTR" --iteration-count $ITERATION_COUNT --key-length $KEY_LENGTH)"
+USER_SALT_CONTR="" #"$(java -cp sec-class org.commonground.ps.backendapi.core.security.SecureHash --function "salt" --password "$USER_PASSWORD_CONTR" --hash-function "$HASH_FUNCTION" --salt-length $SALT_LENGTH --iteration-count $ITERATION_COUNT --key-length $KEY_LENGTH)"
+USER_PASSWORD_ENCRYPT_CONTR="" #"$(java -cp sec-class org.commonground.ps.backendapi.core.security.SecureHash --function "password" --password "$USER_PASSWORD_CONTR" --hash-function "$HASH_FUNCTION" --salt-length $SALT_LENGTH --salt "$USER_SALT_CONTR" --iteration-count $ITERATION_COUNT --key-length $KEY_LENGTH)"
  
 psql -h localhost -U postgres -f insert-domain-tables.sql -v domain_domain="'$DOMAIN_DOMAIN_CONTR'" -v domain_name="'$DOMAIN_NAME_CONTR'" -v domain_type="'$DOMAIN_TYPE_CONTR'" -v domain_group_name1="'$DOMAIN_GROUP_NAME1_CONTR'" -v domain_group_name2="'$DOMAIN_GROUP_NAME2_CONTR'" -v domain_group_name3="'$DOMAIN_GROUP_NAME3_CONTR'"
 psql -h localhost -U postgres -f insert-domain-users.sql -v user_username="'$USER_USERNAME_CONTR'" -v user_password="'$USER_PASSWORD_ENCRYPT_CONTR'" -v user_name="'$USER_NAME_CONTR'" -v user_email="'$USER_EMAIL_CONTR'" -v user_admin="'$USER_ADMIN_CONTR'" -v user_salt="'$USER_SALT_CONTR'" -v hash_function="'$HASH_FUNCTION'" -v iteration_count="'$ITERATION_COUNT'" -v key_length="'$KEY_LENGTH'"

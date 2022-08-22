@@ -1,0 +1,19 @@
+<div class="contract-specification-item">
+    <div class="contract-specification-item-title">
+        <h4>Bestekposten aanvullen</h4>
+    </div>
+</div>
+<div class="contract-specification-items">
+    <div class="contract-specification-item row" *ngFor="let contractSpecificationItem of contractSpecificationItems; let i = index">
+        <div class="contractSpecificationItem-checkbox col-sm-7">
+            <lib-checkbox-field [name]="contractSpecificationItem.name" 
+            [value]="contractSpecificationItem?.selected" (changed)="onContractSpecificationItemChecked($event, i)"
+                >{{contractSpecificationItem?.data?.name}}</lib-checkbox-field>
+        </div>
+        <div class="contractSpecificationItem-amount col-sm-3">
+            <lib-text-field [type]="'number'" [value]="contractSpecificationItem?.data?.amount" [style]="'filled'" [placeholder]="'Aantal'" [required]="true"
+                (changed)="onContractSpecificationItemAmountChanged($event, i)"></lib-text-field>
+        </div>
+        <div class="contractSpecificationItem-unit col-sm-2">{{contractSpecificationItem?.data?.unit}}</div>
+    </div>
+</div>

@@ -67,8 +67,6 @@ import { Popup } from './services/popup/popup.service';
 import { StorageService } from './services/storage/storage.service';
 import { ToastService } from './services/toast/toast.service';
 import { PanelPersonComponent } from './components/panel/components/panel-person/panel-person.component';
-import { AssignPOrGComponent } from './components/pages/assign/assign-p-or-g/assign-p-or-g.component';
-import { AssignPAndGComponent } from './components/pages/assign/assign-p-and-g/assign-p-and-g.component';
 import { PanelTabSelectorComponent } from './components/panel/components/panel-tab-selector/panel-tab-selector.component';
 import { PopupConfirmComponent } from './components/popup/components/popup-confirm/popup-confirm.component';
 import { SendMailComponent } from './components/pages/send-mail/send-mail.component';
@@ -141,6 +139,14 @@ import { ComponentService } from './services/component/component.service';
 import { AssignComponent } from './components/pages/assign/assign/assign.component';
 import { PanelAssignGOrUComponent } from './components/panel/components/panel-assign-g-or-u/panel-assign-g-or-u.component';
 import { PanelAssignGAndUComponent } from './components/panel/components/panel-assign-g-and-u/panel-assign-g-and-u.component';
+import { OrderSpecificationsSelectComponent } from './components/pages/order-specifications/order-specifications-select/order-specifications-select.component';
+import { OrderSpecificationsHandleComponent } from './components/pages/order-specifications/order-specifications-handle/order-specifications-handle.component';
+import { OrderSpecificationsConfirmationComponent } from './components/pages/order-specifications/order-specifications-confirmation/order-specifications-confirmation.component';
+import { PanelSettingsContractSpecificationsComponent } from './components/pages/settings/components/panel-settings-contract-specifications/panel-settings-contract-specifications.component';
+import { ListPanelContractSpecificationComponent } from './components/pages/settings/components/panel-settings-contract-specifications/components/list-panel-contract-specification/list-panel-contract-specification.component';
+import { PanelContractSpecificationItemComponent } from './components/pages/settings/components/panel-settings-contract-specifications/components/panel-contract-specification-item/panel-contract-specification-item.component';
+import { PanelOrderSelectComponent } from './components/panel/components/panel-order-select/panel-order-select.component';
+import { PanelOrderHandleComponent } from './components/panel/components/panel-order-handle/panel-order-handle.component';
 
 
 @NgModule({
@@ -233,8 +239,6 @@ import { PanelAssignGAndUComponent } from './components/panel/components/panel-a
     MailComponent,
     ToastComponent,
     AssignComponent,
-    AssignPOrGComponent,
-    AssignPAndGComponent,
     SendMailComponent,
     HeaderGroupsComponent,
     PanelOrderSecondComponent,
@@ -259,7 +263,15 @@ import { PanelAssignGAndUComponent } from './components/panel/components/panel-a
     DynamicLeftDirective,
     DynamicRightDirective,
     PanelAssignGOrUComponent,
-    PanelAssignGAndUComponent
+    PanelAssignGAndUComponent,
+    OrderSpecificationsSelectComponent,
+    OrderSpecificationsHandleComponent,
+    OrderSpecificationsConfirmationComponent,
+    PanelSettingsContractSpecificationsComponent,
+    ListPanelContractSpecificationComponent,
+    PanelContractSpecificationItemComponent,
+    PanelOrderSelectComponent,
+    PanelOrderHandleComponent
   ],
   imports: [
     CommonModule,
@@ -354,8 +366,6 @@ import { PanelAssignGAndUComponent } from './components/panel/components/panel-a
     MailComponent,
     ToastComponent,
     AssignComponent,
-    AssignPOrGComponent,
-    AssignPAndGComponent,
     SendMailComponent,
     OrderitemCreationComponent,
     OrderitemInformationComponent,
@@ -373,7 +383,15 @@ import { PanelAssignGAndUComponent } from './components/panel/components/panel-a
     CreateOverviewColumnComponent,
     PanelSettingsContractsComponent,
     PanelAssignGOrUComponent,
-    PanelAssignGAndUComponent
+    PanelAssignGAndUComponent,
+    OrderSpecificationsSelectComponent,
+    OrderSpecificationsHandleComponent,
+    OrderSpecificationsConfirmationComponent,
+    PanelSettingsContractSpecificationsComponent,
+    ListPanelContractSpecificationComponent,
+    PanelContractSpecificationItemComponent,
+    PanelOrderSelectComponent,
+    PanelOrderHandleComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

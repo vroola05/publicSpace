@@ -57,4 +57,8 @@ public class ContractEntity {
     contractMainCategories.add(contractMainCategoryEntity);
     mainCategoryEntity.getContractMainCategory().add(contractMainCategoryEntity);
   }
+
+  @OneToMany(targetEntity = ContractSpecificationEntity.class, mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  @OrderBy("dateStart ASC")
+  private List<ContractSpecificationEntity> contractSpecifications = new ArrayList<>();
 }

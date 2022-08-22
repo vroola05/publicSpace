@@ -1,7 +1,7 @@
 package org.commonground.ps.backendapi.controller;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -182,6 +182,37 @@ public class PageController extends Controller {
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/orderConfirm", consumes = "application/json")
 	public Page putPageOrderConfirmImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderSpecificationSelect", consumes = "application/json")
+	public Page putPageOrderSpecificationSelectImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderSpecificationHandle", consumes = "application/json")
+	public Page putPageOrderSpecificationHandleImpl(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
+		@Valid @RequestBody PageImpl page) throws BadRequestException {
+		return putPage(companyId, domainId, pageId, page);
+	}
+
+	@Secured(identifier = "putPage")
+	@PutMapping(value = "/{pageId}/orderSpecificationConfirmation", consumes = "application/json")
+	public Page putPageOrderSpecificationConfirmationImpl(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,

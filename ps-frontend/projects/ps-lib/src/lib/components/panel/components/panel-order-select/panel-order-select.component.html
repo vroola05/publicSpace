@@ -1,0 +1,10 @@
+<div class="contract-specification-item">
+    <div class="contract-specification-item-title">
+        <h4>Selecteer bestekposten</h4>
+    </div>
+    <div class="contract-specification-item-list">
+        <lib-select-field [id]="'contractSpecificationItems'" (changed)="onOrderitemsChanged($event)" [search]="true"
+            [name]="'contractSpecificationItems'" [options]="contractSpecificationItems" [style]="'filled'">
+        </lib-select-field>
+    </div>
+</div>

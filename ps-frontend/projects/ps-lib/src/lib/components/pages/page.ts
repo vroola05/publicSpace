@@ -86,6 +86,10 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.NEXT, () => { return this.next(); });
   }
 
+  public getUser() {
+    return this.authorisation.user;
+  }
+
   public getHeaderList(call: Call): List {
     if (!call.id) {
       return;

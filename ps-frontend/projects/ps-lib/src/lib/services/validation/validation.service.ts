@@ -57,6 +57,7 @@ export class ValidationService {
   }
 
   public validate(form: string): boolean {
+    console.log('this._register', this._register);
     if (this._register.has(form)) {
       let valid = true;
       this._register.get(form).forEach(field => {
