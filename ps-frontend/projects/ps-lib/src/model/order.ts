@@ -15,7 +15,7 @@ export class Order {
 
   public contractorDomain?: Domain;
   public categories?: Category[];
-  public contractSpecificationItem: ContractSpecificationItem[];
+  public contractSpecificationItems: ContractSpecificationItem[];
 
   public actionType?: ActionType;
   public status?: Status;

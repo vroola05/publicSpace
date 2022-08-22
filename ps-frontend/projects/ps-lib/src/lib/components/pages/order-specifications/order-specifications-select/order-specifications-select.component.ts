@@ -8,7 +8,6 @@ import { PageAbstract } from '../../page';
 import { Page } from '../../../../../model/page';
 import { DomainTypeEnum } from '../../../../../model/intefaces';
 import { Call } from '../../../../../model/call';
-import { ContractSpecificationItem } from '../../../../../model/contract-specification-item';
 
 import { NavigationService } from '../../../../services/navigation/navigation.service';
 import { StorageService } from '../../../../services/storage/storage.service';

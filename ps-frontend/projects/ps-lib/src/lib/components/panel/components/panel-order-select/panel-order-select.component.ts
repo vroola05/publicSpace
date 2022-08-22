@@ -23,6 +23,7 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit {
     const order = this.storage.getSession('order');
     if (order) {
       this.order = JSON.parse(order) as Order;
+      console.log(this.order.contractSpecificationItems);
     } else {
       this.order = call.orders[0];
       this.storage.setSession('order', JSON.stringify(this.order), true);
@@ -49,18 +50,22 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit {
     
     this.endpoints.get(this.pageConfig.getEndpoint('getContractSpecificationItems')).then((contractSpecificationItems: ContractSpecificationItem[]) => {
       contractSpecificationItems.forEach(contractSpecificationItem => {
+        const contractSpecificationItemExisting = this.getContractSpecificationItem(contractSpecificationItem.id);
         this.contractSpecificationItems.push({
           name: contractSpecificationItem.specificationNumber + ' - ' + contractSpecificationItem.name, value: '' + contractSpecificationItem.id, 
-          data: contractSpecificationItem,
-          selected: this.hasContractSpecificationItem(contractSpecificationItem.id)
+          data: contractSpecificationItemExisting !== null ? contractSpecificationItemExisting : contractSpecificationItem,
+          selected: !!contractSpecificationItemExisting
         });
       });
       
     });
   }
 
-  public hasContractSpecificationItem(id: number): boolean {
-    return id && this.order && this.order.contractSpecificationItem && this.order.contractSpecificationItem.find(contractSpecificationItem => contractSpecificationItem.id === id) != null;
+  public getContractSpecificationItem(id: number): ContractSpecificationItem {
+    if (id && this.order && this.order.contractSpecificationItems) {
+      return this.order.contractSpecificationItems.find(contractSpecificationItem => contractSpecificationItem.id === id);
+    }
+    return null;
   }
 
   public getSelectedOrderitems(): ContractSpecificationItem[] {
@@ -75,8 +80,9 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit {
 
   public onOrderitemsChanged($event): void {
     if (this.order) {
-      this.order.contractSpecificationItem = this.getSelectedOrderitems();
+      this.order.contractSpecificationItems = this.getSelectedOrderitems();
       this.storage.setSession('order', JSON.stringify(this.order), true);
+      console.log(this.order.contractSpecificationItems);
     }
   }
 }

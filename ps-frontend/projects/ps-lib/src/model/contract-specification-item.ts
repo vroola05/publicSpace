@@ -4,5 +4,6 @@ export class ContractSpecificationItem {
   public name: string;
   public unit: string;
   public price: string;
+  public amount: number;
   public active?: boolean;
 }

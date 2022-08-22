@@ -146,6 +146,7 @@ import { PanelSettingsContractSpecificationsComponent } from './components/pages
 import { ListPanelContractSpecificationComponent } from './components/pages/settings/components/panel-settings-contract-specifications/components/list-panel-contract-specification/list-panel-contract-specification.component';
 import { PanelContractSpecificationItemComponent } from './components/pages/settings/components/panel-settings-contract-specifications/components/panel-contract-specification-item/panel-contract-specification-item.component';
 import { PanelOrderSelectComponent } from './components/panel/components/panel-order-select/panel-order-select.component';
+import { PanelOrderHandleComponent } from './components/panel/components/panel-order-handle/panel-order-handle.component';
 
 
 @NgModule({
@@ -269,7 +270,8 @@ import { PanelOrderSelectComponent } from './components/panel/components/panel-o
     PanelSettingsContractSpecificationsComponent,
     ListPanelContractSpecificationComponent,
     PanelContractSpecificationItemComponent,
-    PanelOrderSelectComponent
+    PanelOrderSelectComponent,
+    PanelOrderHandleComponent
   ],
   imports: [
     CommonModule,
@@ -388,7 +390,8 @@ import { PanelOrderSelectComponent } from './components/panel/components/panel-o
     PanelSettingsContractSpecificationsComponent,
     ListPanelContractSpecificationComponent,
     PanelContractSpecificationItemComponent,
-    PanelOrderSelectComponent
+    PanelOrderSelectComponent,
+    PanelOrderHandleComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

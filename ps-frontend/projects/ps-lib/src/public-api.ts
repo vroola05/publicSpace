@@ -113,7 +113,7 @@ export * from './lib/components/pages/order-specifications/order-specifications-
 export * from './lib/components/pages/order-specifications/order-specifications-handle/order-specifications-handle.component';
 export * from './lib/components/pages/order-specifications/order-specifications-confirmation/order-specifications-confirmation.component';
 export * from './lib/components/panel/components/panel-order-select/panel-order-select.component';
-
+export * from './lib/components/panel/components/panel-order-handle/panel-order-handle.component';
 
 export * from './lib/components/pages/new/new-location/new-location.component';
 export * from './lib/components/pages/new/new-information/new-information.component';
