@@ -78,7 +78,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(null); });
     this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(null, null); });
     this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(null); });
-    this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(null); });
+    this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(); });
     this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(null); });
 
     this.action.register(ActionTypeEnum.CANCEL, () => { return this.cancel(); });
@@ -259,7 +259,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
 
-  public orderDone(order: Order): Promise<boolean> {
+  public orderDone(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }

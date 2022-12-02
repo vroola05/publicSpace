@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
@@ -20,13 +21,15 @@ import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.jpa.repositories.OrderRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
+import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.util.ActionEnum;
+import org.commonground.ps.backendapi.model.enums.ActionEnum;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,9 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
+
+	@Autowired
+	private OrderNoteService orderNoteService;
 
     @Autowired
 	ActionService actionService;
@@ -71,6 +77,17 @@ public class OrderServiceImpl implements OrderService {
 	@Override
     public Optional<OrderEntity> getOrderEntityById(User user, Long id) {
 		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(id, user.getDomain().getId());
+
+        if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get())) {
+            return Optional.empty();
+        }
+        
+        return orderEntityOptional;
+    }
+
+	@Override
+    public Optional<OrderEntity> getOrderEntityByIdAndGovernmentDomain(User user, Long id) {
+		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderByIdAndGovernmentId(id, user.getDomain().getId());
 
         if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get())) {
             return Optional.empty();
@@ -237,10 +254,24 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Optional<Order> updateOrderActionType(User user, Long callId, Long id, Note note) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Order setAction(User user, Order order, ActionEnum actionEnum) throws BadRequestException {
 
+		Optional<OrderEntity> orderEntityOptional = (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) 
+			? getOrderEntityByIdAndGovernmentDomain(user, order.getId()) 
+			: getOrderEntityById(user, order.getId());
+		
+		if (orderEntityOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+
+		OrderEntity orderEntity = orderEntityOptional.get();
+
+		orderNoteService.saveNew(orderEntity, order, user, true);
+
+		if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, actionEnum)) {
+			throw new BadRequestException();
+		}
+		return Convert.orderEntity(orderRepository.save(orderEntity));
+	}
 
 }

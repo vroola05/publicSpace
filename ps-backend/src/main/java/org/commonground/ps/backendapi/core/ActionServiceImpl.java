@@ -22,8 +22,8 @@ import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
-import org.commonground.ps.backendapi.util.ActionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -155,6 +155,8 @@ public class ActionServiceImpl implements ActionService {
 					CallEntity callEntity = callEntityOptional.get();
 					callEntity.setStatus(actionEntity.getStatus());
 					callRepository.save(callEntity);
+
+
 				}
 			}
 		}
@@ -173,25 +175,33 @@ public class ActionServiceImpl implements ActionService {
 		}
 		return false;
 	}
+
 	@Override
 	public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum) {
+		System.out.println("Ralllala: " + domainId +" - "+ actionEnum.id);
 		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
-		if (actionEntityOptional.isEmpty() || actionEntityOptional.get().getStatus() == null) {
+		if (actionEntityOptional.isEmpty()) {
 			return false;
 		}
+		
+		
 		ActionEntity actionEntity = actionEntityOptional.get();
-		StatusEntity statusEntity = actionEntity.getStatus();
 		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
-		System.out.println("Lalalalalal " + actionTypeEntity.getName());
 		boolean change = false;
+
+		System.out.println("lala: " + (actionTypeEntity.getDomainType() == null ? "NULL" : actionTypeEntity.getDomainType().getId()));
+		// if (actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+			System.out.println("Yess");
+			orderEntity.setActionTypeEntity(actionTypeEntity);
+			change = true;
+		// }
+
+		StatusEntity statusEntity = actionEntity.getStatus();
 		if (statusEntity != null && statusEntity.getId() != null) {
 			orderEntity.setStatus(statusEntity);
 			change = true;
 		}
-		if (actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-			orderEntity.setActionTypeEntity(actionTypeEntity);
-			change = true;
-		}
+
 		return change;
 	}
 

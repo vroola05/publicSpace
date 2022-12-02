@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.util;
+package org.commonground.ps.backendapi.model.enums;
 
 import java.util.HashMap;
 import java.util.Map;

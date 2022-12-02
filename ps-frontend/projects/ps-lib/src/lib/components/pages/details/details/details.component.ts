@@ -89,7 +89,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   public changed($event: {action: string, data: any, note?: Note}): void {
     switch ($event.action) {
       case 'order-cancel':
-        this.orderCancel($event.data, $event.note);
+        this.orderCancel($event.data);
         break;
       case 'order-reject':
         this.orderDoneReject($event.data);
@@ -120,11 +120,11 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
   
-  public orderCancel(order: Order, note: Note): Promise<boolean> {
+  public orderCancel(order: Order): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.transform.setVariable('order', order);
       this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
-      this.endpoints.put('putOrderActionTypeGovernment', note).then((call: Call) => {
+      this.endpoints.put('putActionOrderCancel', order).then((call: Call) => {
         resolve(true);
       })
       .catch(err => {
@@ -140,7 +140,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
 
-  public orderDone(order: Order): Promise<boolean> {
+  public orderDone(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       console.log('orderDone');
       reject(false);

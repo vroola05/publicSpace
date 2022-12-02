@@ -12,6 +12,11 @@ export enum RolesEnum {
   VIEWER = 'ROLE_VIEWER'
 }
 
+export enum NoteTypeEnum {
+  SYSTEM = 1,
+  GENERIC = 2,
+  EMAIL = 3
+}
 
 export enum DomainTypeEnum {
   GOVERNMENT = 1,

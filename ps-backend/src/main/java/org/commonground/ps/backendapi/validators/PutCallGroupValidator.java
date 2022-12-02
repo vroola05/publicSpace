@@ -13,16 +13,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
-
-import org.commonground.ps.backendapi.model.Group;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { PutCallGroupValidator.Validator.class })
+@Constraint(validatedBy = { PutCallGroupValidatorImpl.class })
 public @interface PutCallGroupValidator {
 	String message() default "Field value should be from list of ";
 
@@ -30,28 +26,4 @@ public @interface PutCallGroupValidator {
 
 	Class<? extends Payload>[] payload() default {};
 
-	class Validator implements ConstraintValidator<PutCallGroupValidator, Group> {
-		@Override
-		public void initialize(PutCallGroupValidator putCallGroupValidator) {
-		}
-
-		@Override
-		public boolean isValid(Group group, ConstraintValidatorContext context) {
-			if (group == null) {
-				setMessage(context, "group", "Not null");
-				return false;
-			}
-			if (group.getId() == null) {
-				setMessage(context, "id", "Waarde is verplicht");
-				return false;
-			}
-
-			return true;
-		}
-
-		public void setMessage(ConstraintValidatorContext context, String name, String message) {
-			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(message).addPropertyNode(name).addConstraintViolation();
-		}
-	}
 }

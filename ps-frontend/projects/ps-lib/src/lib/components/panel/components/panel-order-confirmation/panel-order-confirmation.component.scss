@@ -1,0 +1,13 @@
+.order-info-specifications {
+    .order-info-specifications-table {
+        width: 100%;
+        table-layout: fixed;
+
+        td {
+
+            &.order-info-specifications-small {
+                width: 15%;
+            }
+        }
+    }
+}

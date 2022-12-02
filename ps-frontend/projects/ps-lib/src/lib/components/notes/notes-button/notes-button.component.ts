@@ -16,11 +16,6 @@ export class NotesButtonComponent implements OnInit {
     this._notes = notes;
   }
 
-  public _url: string;
-  @Input() set url(url: string) {
-    this._url = url;
-  }
-
   public _title: string;
   @Input() set title(title: string) {
     this._title = title;
@@ -41,13 +36,8 @@ export class NotesButtonComponent implements OnInit {
   }
 
   public popupNotes($event) {
-    if (this._url) {
-      this.endpoints.get('getClearNotification').then(() => {});
-    }
-
     this.popup.add(this._title, NotesViewerComponent, {
       notes: this._notes,
-      url: this._url
     }, [{type: PopupETypes.close, event: () => {
       this.close.emit(PopupETypes.close);
     }}]);

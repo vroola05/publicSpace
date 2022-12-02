@@ -39,7 +39,7 @@ public class SecuredMethodAspect {
         return joinPoint.proceed();
       }
     }
-
+    
     if (domainType != DomainTypeEnum.NONE) {
       if (userPrincipal.getPrincipal() != null && userPrincipal.getPrincipal().getDomain() != null) {
         if(domainType.id != userPrincipal.getPrincipal().getDomain().getDomainType().getId()) {

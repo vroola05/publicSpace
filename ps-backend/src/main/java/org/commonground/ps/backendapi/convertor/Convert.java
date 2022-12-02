@@ -21,6 +21,7 @@ import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
@@ -48,6 +49,7 @@ import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.NoteType;
 import org.commonground.ps.backendapi.model.Order;
+import org.commonground.ps.backendapi.model.OrderNote;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageButtonCondition;
@@ -296,9 +298,8 @@ public class Convert {
     status.setId(statusEntity.getId());
     status.setName(statusEntity.getName());
 
-    if (statusEntity != null) {
+    if (statusEntity.getActions() != null) {
       for (ActionEntity actionEntity: statusEntity.getActions()) {
-
         status.getActionTypes().add(actionTypeEntity(actionEntity.getActionType()));
       }
     }
@@ -571,6 +572,14 @@ public class Convert {
       order.setGroup(groupEntity(orderEntity.getGroup()));
     }
 
+    if (orderEntity.getOrderNote() != null) {
+      order.setNotes(new ArrayList<>());
+      for (OrderNoteEntity orderNoteEntity: orderEntity.getOrderNote()) {
+        order.getNotes().add(orderNoteEntity(orderNoteEntity));
+      }
+    }
+    
+
     return order;
   }
 
@@ -591,5 +600,15 @@ public class Convert {
     note.setUser(userEntity(noteEntity.getUser()));
 
     return note;
+  }
+
+  public static OrderNote orderNoteEntity(OrderNoteEntity orderNoteEntity) {
+    OrderNote orderNote = new OrderNote();
+    orderNote.setId(orderNoteEntity.getId());
+    orderNote.setContent(orderNoteEntity.getContent());
+    orderNote.setDateCreated(orderNoteEntity.getDateCreated());
+    orderNote.setUser(userEntity(orderNoteEntity.getUser()));
+
+    return orderNote;
   }
 }

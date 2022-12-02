@@ -15,7 +15,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
   @Query("select o from OrderEntity o where o.id = :#{#id} and o.domain.id = :#{#domainId}")
   Optional<OrderEntity> getOrderById(@Param("id") Long id, @Param("domainId") Long domainId);
 
-  // @Query("select o from OrderEntity o where o.call.id = :#{#callId} and o.id = :#{#id}")
-  // Optional<OrderEntity> getOrderById(@Param("callId") Long callId, @Param("id") Long id, @Param("domainId") Long domainId);
+  @Query("select o from OrderEntity o where o.id = :#{#id} and o.call.domain.id = :#{#domainId}")
+  Optional<OrderEntity> getOrderByIdAndGovernmentId(@Param("id") Long id, @Param("domainId") Long domainId);
 
 }

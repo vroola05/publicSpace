@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { PageConfig } from '../../../../../model/domain-type-config';
 import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
@@ -7,31 +7,29 @@ import { DynamicPanel } from '../../../../../model/intefaces';
 import { ContractSpecificationItem } from '../../../../../model/contract-specification-item';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { StorageService } from '../../../../services/storage/storage.service';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'lib-panel-order-select',
   templateUrl: './panel-order-select.component.html',
   styleUrls: ['./panel-order-select.component.scss']
 })
-export class PanelOrderSelectComponent implements DynamicPanel, OnInit {
+export class PanelOrderSelectComponent implements DynamicPanel, OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+  
   @Input() public order: Order;
 
-  private _call: Call;
+  private _call: BehaviorSubject<Call> = new BehaviorSubject(null);
   @Input() public set call( call: Call) {
-    this._call = call;
-
-    const order = this.storage.getSession('order');
-    if (order) {
-      this.order = JSON.parse(order) as Order;
-      console.log(this.order.contractSpecificationItems);
-    } else {
-      this.order = call.orders[0];
-      this.storage.setSession('order', JSON.stringify(this.order), true);
-    }
+    this._call.next(call);
   }
 
   public get call() {
-    return this._call;
+    return this._call.getValue();
+  }
+
+  public get callObservable(): Observable<Call> {
+    return this._call.asObservable();
   }
 
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -47,18 +45,33 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit {
   
 
   public ngOnInit(): void {
-    
-    this.endpoints.get(this.pageConfig.getEndpoint('getContractSpecificationItems')).then((contractSpecificationItems: ContractSpecificationItem[]) => {
-      contractSpecificationItems.forEach(contractSpecificationItem => {
-        const contractSpecificationItemExisting = this.getContractSpecificationItem(contractSpecificationItem.id);
-        this.contractSpecificationItems.push({
-          name: contractSpecificationItem.specificationNumber + ' - ' + contractSpecificationItem.name, value: '' + contractSpecificationItem.id, 
-          data: contractSpecificationItemExisting !== null ? contractSpecificationItemExisting : contractSpecificationItem,
-          selected: !!contractSpecificationItemExisting
+     this.subscriptions.push(this.callObservable.subscribe(call => {
+      if (call === null)
+        return;
+      const order = this.storage.getSession('order');
+      if (order) {
+        this.order = JSON.parse(order) as Order;
+      } else {
+        this.order = call.orders[0];
+        this.storage.setSession('order', JSON.stringify(this.order), true);
+      }
+      this.endpoints.get(this.pageConfig.getEndpoint('getContractSpecificationItems')).then((contractSpecificationItems: ContractSpecificationItem[]) => {
+        const contractSpecificationItemsTemp = [];
+        contractSpecificationItems.forEach(contractSpecificationItem => {
+          const contractSpecificationItemExisting = this.getContractSpecificationItem(contractSpecificationItem.id);
+          contractSpecificationItemsTemp.push({
+            name: contractSpecificationItem.specificationNumber + ' - ' + contractSpecificationItem.name, value: '' + contractSpecificationItem.id, 
+            data: contractSpecificationItemExisting ? contractSpecificationItemExisting : contractSpecificationItem,
+            selected: !!contractSpecificationItemExisting
+          });
         });
+        this.contractSpecificationItems = contractSpecificationItemsTemp;
       });
-      
-    });
+    }));
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   public getContractSpecificationItem(id: number): ContractSpecificationItem {
@@ -82,7 +95,6 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit {
     if (this.order) {
       this.order.contractSpecificationItems = this.getSelectedOrderitems();
       this.storage.setSession('order', JSON.stringify(this.order), true);
-      console.log(this.order.contractSpecificationItems);
     }
   }
 }

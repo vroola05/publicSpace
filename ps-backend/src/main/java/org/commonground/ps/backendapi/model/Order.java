@@ -26,9 +26,12 @@ public class Order {
 
     private Domain contractorDomain;
     private List<Category> categories = new ArrayList<>();
+    private List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<>();
+    private List<OrderNote> notes = new ArrayList<>();
     
     private Status status;
     private ActionType actionType;
+
     private Group group;
     private User user;
 }

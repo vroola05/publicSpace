@@ -1,0 +1,24 @@
+<div class="order-info" *ngIf="order">
+    <h4>Opdracht informatie</h4>
+    <lib-panel-toggle [style]="'grey'" [title]="['Overige informatie']">
+        <div class="order-info-description">
+            {{order.description}}
+        </div>
+        <div class="order-info-category">
+        <h4>Bestek categorie(en)</h4>
+        <p>
+            {{getCategories()}}
+        </p>
+        </div>
+    </lib-panel-toggle>
+    <div class="order-info-specifications" *ngIf="hasContractSpecificationItems()">
+      <h4>Bestekposten</h4>
+      <table class="order-info-specifications-table">
+        <tr *ngFor="let contractSpecificationItem of order?.contractSpecificationItems">
+          <td class="order-info-specifications-small">{{contractSpecificationItem?.specificationNumber}}</td>
+          <td class="order-info-specifications-text">{{contractSpecificationItem?.name}}</td>
+          <td class="order-info-specifications-small">{{contractSpecificationItem?.amount}} {{contractSpecificationItem?.unit}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>

@@ -1,1 +1,20 @@
-<p>order-specifications-confirmation works!</p>
+<lib-panel  
+  [data]="call"
+  [pageLayoutType]="page?.layoutType"
+  [buttonsLeft]="page?.buttonsLeft"
+  [buttonsRight]="page?.buttonsRight">
+  
+  <lib-panel-title [title]="page?.name">
+    <div  class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <lib-details-header [data]="header"></lib-details-header>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <ng-template libDynamicLeft></ng-template>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <ng-template libDynamicRight></ng-template>
+      </div>
+    </div>
+  </lib-panel-title>
+</lib-panel>

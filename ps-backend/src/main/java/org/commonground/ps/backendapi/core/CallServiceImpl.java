@@ -1,7 +1,6 @@
 package org.commonground.ps.backendapi.core;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -11,7 +10,6 @@ import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.LocationEntity;
-import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.PersonEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
@@ -22,8 +20,8 @@ import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.NoteTypeEnum;
-import org.commonground.ps.backendapi.util.ActionEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

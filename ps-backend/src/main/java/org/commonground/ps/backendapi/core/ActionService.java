@@ -10,7 +10,7 @@ import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.util.ActionEnum;
+import org.commonground.ps.backendapi.model.enums.ActionEnum;
 
 public interface ActionService {
   public Optional<Action> get(Long domainId, ActionEnum actionEnum);

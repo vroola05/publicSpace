@@ -13,16 +13,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
-
-import org.commonground.ps.backendapi.model.MainCategory;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { PostMainCategoryValidator.Validator.class })
+@Constraint(validatedBy = { PostMainCategoryValidatorImpl.class })
 public @interface PostMainCategoryValidator {
 	String message() default "Field value should be from list of ";
 
@@ -30,27 +26,4 @@ public @interface PostMainCategoryValidator {
 
 	Class<? extends Payload>[] payload() default {};
 
-	class Validator implements ConstraintValidator<PostMainCategoryValidator, MainCategory> {
-		
-
-		@Override
-		public void initialize(PostMainCategoryValidator postMainCategory) {
-		}
-
-		@Override
-		public boolean isValid(MainCategory mainCategory, ConstraintValidatorContext context) {
-			
-			if (mainCategory.getId() != null) {
-				setMessage(context, "id", "Waarde moet leeg zijn");
-				return false;
-			}
-
-			return true;
-		}
-
-		public void setMessage(ConstraintValidatorContext context, String name, String message) {
-			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(message).addPropertyNode(name).addConstraintViolation();
-		}
-	}
 }

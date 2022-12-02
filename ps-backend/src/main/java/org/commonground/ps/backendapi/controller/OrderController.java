@@ -15,8 +15,9 @@ import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.ContractSpecificationItem;
 import org.commonground.ps.backendapi.model.Group;
-import org.commonground.ps.backendapi.model.Note;
+import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
 import org.commonground.ps.backendapi.validators.PutCallUserValidator;
@@ -37,6 +38,7 @@ public class OrderController extends Controller {
 	@Autowired
 	private OrderService orderService;
 	
+
 	@Autowired
 	private ContractSpecificationItemService contractSpecificationItemService;
 
@@ -92,30 +94,69 @@ public class OrderController extends Controller {
 		return orderOptional.get();
 	}
 
-	@Secured(identifier = "putOrderActionType", domainType = DomainTypeEnum.CONTRACTOR)
-	@PutMapping(value = "/{id}/action/{actionTypeId}", consumes = "application/json", produces = "application/json")
-	public Call putOrderActionType(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long actionTypeId,
-		@Valid @RequestBody Note Note) throws BadRequestException {
-
-		return null;
-	}
-
-
 	@Secured(identifier = "getContractSpecificationItemsByOrderId")
 	@GetMapping(value = "/{id}/specification-items")
 	public List<ContractSpecificationItem> getContractSpecificationItemsByOrderId(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
 
-		User user = getUser();
+		User user = getUser(); 
 		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
 		if (orderEntityOptional.isEmpty()) {
-
+			throw new BadRequestException();
 		}
 
 		OrderEntity orderEntity = orderEntityOptional.get();
 
 		return contractSpecificationItemService.getContractSpecificationItems(orderEntity.getCall().getDomain().getId(), user.getDomain().getId());
+	}
+	
+	@Secured(identifier = "putActionOrderCancel", domainType = DomainTypeEnum.GOVERNMENT)
+	@PutMapping(value = "/{id}/action/cancel", consumes = "application/json", produces = "application/json")
+	public Order putActionOrderCancel(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+
+		return orderService.setAction(getUser(), order, ActionEnum.ORDER_CANCEL);
+	}
+
+	@Secured(identifier = "putActionOrderRejectDone", domainType = DomainTypeEnum.GOVERNMENT)
+	@PutMapping(value = "/{id}/action/reject-done", consumes = "application/json", produces = "application/json")
+	public Order putActionOrderRejectDone(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+
+		return orderService.setAction(getUser(), order, ActionEnum.ORDER_DONE_REJECT);
+	}
+
+	@Secured(identifier = "putActionOrderClose", domainType = DomainTypeEnum.GOVERNMENT)
+	@PutMapping(value = "/{id}/action/close", consumes = "application/json", produces = "application/json")
+	public Order putOrderActionType(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+		return orderService.setAction(getUser(), order, ActionEnum.ORDER_CLOSE);
+	}
+
+	@Secured(identifier = "putActionOrderAccept", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}/action/accept", consumes = "application/json", produces = "application/json")
+	public Order putActionOrderAccept(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+		return orderService.setAction(getUser(), order, ActionEnum.ORDER_ACCEPT);
+	}
+
+	@Secured(identifier = "putActionOrderReject", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}/action/reject", consumes = "application/json", produces = "application/json")
+	public Order putActionOrderReject(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+		return orderService.setAction(getUser(), order, ActionEnum.ORDER_REJECT);
+	}
+
+	@Secured(identifier = "putActionOrderDone", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}/action/done", consumes = "application/json", produces = "application/json")
+	public Order putActionOrderDone(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+		return orderService.setAction(getUser(), order, ActionEnum.ORDER_DONE);
 	}
 }

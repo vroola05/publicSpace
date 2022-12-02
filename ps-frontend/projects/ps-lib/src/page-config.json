@@ -119,7 +119,7 @@
             ],
             "components": [
                 {"id": "left", "component": "PanelInfoSecondComponent"},
-                {"id": "right", "component": "PanelOrderSecondComponent"}
+                {"id": "right", "component": "PanelOrderConfirmationComponent"}
             ]
         }
     }

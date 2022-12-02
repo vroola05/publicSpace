@@ -6,24 +6,26 @@ import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.CallService;
 import org.commonground.ps.backendapi.core.ContractService;
+import org.commonground.ps.backendapi.core.NoteService;
 import org.commonground.ps.backendapi.core.OrderService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
+import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.Group;
-import org.commonground.ps.backendapi.model.Message;
 import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
-import org.commonground.ps.backendapi.util.ActionEnum;
 import org.commonground.ps.backendapi.validators.PostCallValidator;
 import org.commonground.ps.backendapi.validators.PostOrderValidator;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
@@ -53,6 +55,9 @@ public class CallController extends Controller {
 	
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private NoteService noteService;
 
 	@Secured(identifier = "getCallById", domainType = DomainTypeEnum.GOVERNMENT)
 	@GetMapping("/{id}")
@@ -146,21 +151,15 @@ public class CallController extends Controller {
 		return contractService.getContracts(getUser().getDomain().getId(), true);
 	}
 
-	@Secured(identifier = "putOrderActionTypeGovernment", domainType = DomainTypeEnum.CONTRACTOR)
-	@PutMapping(value = "/{id}/order/{orderId}/action/{actionTypeId}", consumes = "application/json", produces = "application/json")
-	public Message putOrderActionTypeGovernment(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long orderId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long actionTypeId,
-		@Valid @RequestBody Note note) throws BadRequestException {
+	@Secured(identifier = "postNote", domainType = DomainTypeEnum.NONE)
+	@PostMapping(value = "/{id}/note")
+	public Note postNote(@PathVariable @NotNull(message = "Waarde is verplicht") Long id, @NotNull(message = "Waarde is verplicht") @RequestBody Note note) {
+		Optional<NoteEntity> noteEntityOptional = noteService.save(id, note.getContent(), note.getType().getId(), getUser(), false);
+		
+		if (noteEntityOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
 
-
-		orderService.updateOrderActionType(getUser(), id, orderId, note);
-
-		Message message = new Message();
-		message.setStatus(200);
-		message.setMessage("Ok");
-
-		return message;
+		return Convert.noteEntity(noteEntityOptional.get());
 	}
 }

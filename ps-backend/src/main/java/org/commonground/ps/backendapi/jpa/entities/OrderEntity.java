@@ -62,4 +62,6 @@ public class OrderEntity {
     @OneToMany(targetEntity = OrderCategoryEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderCategoryEntity> orderCategory = new ArrayList<>();
 
+    @OneToMany(targetEntity = OrderNoteEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderNoteEntity> orderNote = new ArrayList<>();
 }

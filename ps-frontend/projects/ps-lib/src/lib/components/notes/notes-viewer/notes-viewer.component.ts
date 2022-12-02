@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../../../../model/message';
-import { IPopup, PopupETypes } from '../../../../model/intefaces';
-import { Note } from '../../../../model/note';
+import { IPopup, NoteTypeEnum, PopupETypes } from '../../../../model/intefaces';
+import { Note, NoteType } from '../../../../model/note';
 import { TextareaFieldComponent } from '../../fields/textarea-field/textarea-field.component';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
 import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../services/endpoint/endpoint.service';
+import { ValidationService } from '../../../services/validation/validation.service';
 
 @Component({
   selector: 'lib-notes-viewer',
@@ -34,7 +35,9 @@ export class NotesViewerComponent implements IPopup, OnDestroy, OnInit {
 
   constructor(
     private endpoints: EndpointService,
-    private authorisation: AuthorisationService
+    private authorisation: AuthorisationService,
+    private validation: ValidationService
+
   ) { }
 
   public ngOnInit(): void {
@@ -53,17 +56,15 @@ export class NotesViewerComponent implements IPopup, OnDestroy, OnInit {
   }
 
   public submit(): void {
-    if (this.notesRef.validate()) {
+
+    if (this.validation.validate('notes')) {
       if (this.note.content && this.note.content.length > 0) {
+        this.note.type = new NoteType();
+        this.note.type.id = NoteTypeEnum.GENERIC;
 
-        this.endpoints.put('postNote', this.note).then((message: Message) => {
-          if (message.status < 300) {
-            this.note.dateCreated = new Date();
-            this.note.user = this.authorisation.user;
-            this._notes.unshift(this.note);
-
+        this.endpoints.post('postNote', this.note).then((note: Note) => {
+            this._notes.unshift(note);
             this.events.emit({event: PopupETypes.close});
-          }
         });
       }
     }

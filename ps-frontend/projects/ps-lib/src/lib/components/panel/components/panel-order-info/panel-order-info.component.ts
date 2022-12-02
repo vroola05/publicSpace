@@ -5,6 +5,7 @@ import { Order } from '../../../../../model/order';
 import { Popup } from '../../../../services/popup/popup.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
 import { Category } from '../../../../../model/category';
+import { OrderNote } from '../../../../../model/order-note';
 
 
 @Component({
@@ -65,9 +66,11 @@ export class PanelOrderInfoComponent implements OnInit {
   public onOrderCancel(): void {
     this.popup.add('Notitie opdracht annuleren', PopupConfirmComponent, {
     }, [{type: PopupETypes.ok, event: (content: string) => {
-        const note = new Note();
-        note.content = content;
-        this.changed.emit({action: 'order-cancel', data: this.order, note});
+        if (!this.order.notes) {
+          this.order.notes = [];
+        }
+        this.order.notes.push(new OrderNote(content));
+        this.changed.emit({action: 'order-cancel', data: this.order});
       }}]);
   }
 
