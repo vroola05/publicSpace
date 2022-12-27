@@ -40,6 +40,6 @@ export class NotesComponent implements OnInit {
   }
 
   public getDate(date: Date): string {
-    return moment(date).format('DD-MM-YYYY hh:mm');
+    return moment(date).format('DD-MM-YYYY HH:mm');
   }
 }

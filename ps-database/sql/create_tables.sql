@@ -1345,3 +1345,37 @@ CREATE SEQUENCE public.seq_note_id
 ALTER SEQUENCE public.seq_note_id
     OWNER TO postgres;
     
+
+
+--
+-- TOC entry 267 (class 1259 OID 86799)
+-- Name: orders_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_specification_item (
+    id integer NOT NULL,
+    order_id integer NOT NULL,
+    contract_specification_item_id integer NOT NULL,
+    amount text NOT NULL
+);
+
+ALTER TABLE public.orders_specification_item OWNER TO postgres;
+
+ALTER TABLE ONLY public.orders_specification_item
+    ADD CONSTRAINT orders_specification_item_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.orders_specification_item
+    ADD CONSTRAINT orders_specification_item_order_fk FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+ALTER TABLE ONLY public.orders_specification_item
+    ADD CONSTRAINT orders_specification_item_contract_fk FOREIGN KEY (contract_specification_item_id) REFERENCES public.contract_specification_items(id);
+
+CREATE SEQUENCE public.seq_orders_specification_item
+    INCREMENT 1
+    START 1
+    MINVALUE 0
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_orders_specification_item
+    OWNER TO postgres;

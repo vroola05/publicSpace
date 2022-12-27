@@ -1,0 +1,19 @@
+<div class="order-info-specifications" *ngIf="hasOrderSpecificationItems()">
+    <h4>Bestekposten</h4>
+    <div class="panel-order-info-specification-items">
+      <div class="panel-order-info-specification-item" *ngFor="let orderSpecificationItem of order?.orderSpecificationItems">
+        <div class="panel-order-info-specification-item-col">{{orderSpecificationItem?.contractSpecificationItem?.specificationNumber}}</div>
+        <div class="panel-order-info-specification-item-col">{{orderSpecificationItem?.contractSpecificationItem?.name}}</div>
+        <div class="panel-order-info-specification-item-col unit">{{orderSpecificationItem?.amount}} {{orderSpecificationItem?.contractSpecificationItem?.unit}}</div>
+        <div class="panel-order-info-specification-item-col price">€ {{orderSpecificationItem?.contractSpecificationItem?.price}}</div>
+        <div class="panel-order-info-specification-item-col price-sum">€ {{getPrice(orderSpecificationItem)}}</div>
+      </div>
+      <div class="panel-order-info-specification-item">
+        <div class="panel-order-info-specification-item-col"></div>
+        <div class="panel-order-info-specification-item-col"></div>
+        <div class="panel-order-info-specification-item-col unit"></div>
+        <div class="panel-order-info-specification-item-col price">Totaal: </div>
+        <div class="panel-order-info-specification-item-col price-sum total">€ {{getTotalPrice(order?.orderSpecificationItems)}}</div>
+      </div>
+    </div>
+  </div>

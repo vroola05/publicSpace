@@ -4,6 +4,7 @@ import { ContractSpecificationItem } from './contract-specification-item';
 import { Domain } from './domain';
 import { Group } from './group';
 import { OrderNote } from './order-note';
+import { OrderSpecificationItem } from './order-specification-item';
 import { Status } from './status';
 import { User } from './user';
 
@@ -16,7 +17,7 @@ export class Order {
 
   public contractorDomain?: Domain;
   public categories?: Category[];
-  public contractSpecificationItems: ContractSpecificationItem[];
+  public orderSpecificationItems: OrderSpecificationItem[];
   public notes?: OrderNote[];
 
   public actionType?: ActionType;

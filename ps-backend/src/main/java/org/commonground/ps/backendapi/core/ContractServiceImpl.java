@@ -42,7 +42,6 @@ public class ContractServiceImpl implements ContractService {
 
     @Autowired
     private ContractMainCategoryRepository contractMainCategoryRepository;
-    
 
     @Override
     public List<Contract> getContracts(Long domainId) {
@@ -62,8 +61,8 @@ public class ContractServiceImpl implements ContractService {
                 contracts = getContractsContractor(domainEntity.getId(), accepted);
 			}
 		}
+
         return contracts;
-        
     }
 
     public List<Contract> getContractsGovernment(Long domainId, Boolean accepted) {
@@ -74,7 +73,7 @@ public class ContractServiceImpl implements ContractService {
         } else {
             contractEntities = contractRepository.getContractByGovernmentDomainIdAccepted(domainId, accepted);
         }
-        
+
         for (ContractEntity contractEntity:  contractEntities) {
             contracts.add(convertContract(contractEntity, contractEntity.getDomainContractor(), false));
         }

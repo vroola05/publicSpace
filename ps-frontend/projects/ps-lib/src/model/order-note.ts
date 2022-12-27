@@ -5,6 +5,7 @@ export class OrderNote {
   public content?: string;
   public user?: User;
   public dateCreated?: Date;
+  public definite?: boolean;
 
   public constructor(content: string = '') {
     this.content = content;

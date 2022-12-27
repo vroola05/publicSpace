@@ -6,7 +6,7 @@ import { DynamicRightDirective } from '../../../../directives/dynamic-right.dire
 import { PageAbstract } from '../../page';
 
 import { Page } from '../../../../../model/page';
-import { DomainTypeEnum } from '../../../../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum } from '../../../../../model/intefaces';
 import { Call } from '../../../../../model/call';
 
 import { NavigationService } from '../../../../services/navigation/navigation.service';
@@ -19,13 +19,16 @@ import { EndpointService } from '../../../../services/endpoint/endpoint.service'
 import { Loader } from '../../../../services/loader/loader.service';
 import { Popup } from '../../../../services/popup/popup.service';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { ValidationService } from '../../../../services/validation/validation.service';
+import { ActionOrderSpecification } from '../page-order-specification';
+import { ApiService } from '../../../../services/api/api.service';
 
 @Component({
   selector: 'lib-order-specifications-handle',
   templateUrl: './order-specifications-handle.component.html',
   styleUrls: ['./order-specifications-handle.component.scss']
 })
-export class OrderSpecificationsHandleComponent extends PageAbstract implements OnInit, OnDestroy {
+export class OrderSpecificationsHandleComponent extends ActionOrderSpecification implements OnInit, OnDestroy {
   @ViewChild(DynamicLeftDirective, {static: false}) private dynamicHostLeft!: DynamicLeftDirective;
   @ViewChild(DynamicRightDirective, {static: false}) private dynamicHostRight!: DynamicRightDirective;
 
@@ -39,13 +42,15 @@ export class OrderSpecificationsHandleComponent extends PageAbstract implements 
     protected action: ActionService,
     protected transform: TransformService,
     protected authorisation: AuthorisationService,
+    protected apiService: ApiService,
+    protected endpoints: EndpointService,
     protected config: ConfigService,
-    private endpoints: EndpointService,
-    private loader: Loader,
-    private popup: Popup,
-    private toast: ToastService
+    protected loader: Loader,
+    protected popup: Popup,
+    protected toast: ToastService,
+    private validation: ValidationService
   ) {
-    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
+    super(router, activatedRoute, navigationService, storage, action, transform, authorisation, apiService, endpoints, config, loader, toast);
 
     this.page = this.config.getPage(PageTypes.orderSpecificationHandle);    
     this.pageConfig = this.page.pageConfig;
@@ -57,10 +62,18 @@ export class OrderSpecificationsHandleComponent extends PageAbstract implements 
     this.getCall();
   }
 
+  
   public ngOnDestroy(): void {
     super.ngOnDestroy();
 
-    
+    this.action.register(ActionTypeEnum.NEXT, () => { return super.next() });
+  }
+
+  public next(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.validation.clear();
+      resolve(this.validation.validate('handle-order'));
+    });
   }
 
   public getCall(): void {

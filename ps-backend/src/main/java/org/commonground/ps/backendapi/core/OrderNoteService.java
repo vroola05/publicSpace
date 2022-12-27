@@ -8,9 +8,11 @@ import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 
 public interface OrderNoteService {
     public OrderNoteEntity createOrderNoteEntity(String content, UserEntity userEntity);
     public Optional<OrderNoteEntity> save(OrderEntity orderEntity, String content, User user, boolean definite);
-    public Optional<List<OrderNoteEntity>> saveNew(OrderEntity orderEntity, Order order, User user, boolean definite);
+    public void addNew(OrderEntity orderEntity, Order order, User user, boolean definite);
+    public Optional<List<OrderNoteEntity>> saveNew(Order order, User user, boolean definite, DomainTypeEnum domainTypeEnum);
 }

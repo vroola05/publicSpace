@@ -74,12 +74,13 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return this.callKill(); });
 
     this.action.register(ActionTypeEnum.ORDER_CREATE, () => { return this.orderCreate(); });
-    this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(null); });
-    this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(null); });
-    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(null, null); });
-    this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(null); });
+    this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(); });
+    this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(); });
+    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(); });
+    this.action.register(ActionTypeEnum.ORDER_CLOSE, () => { return this.orderClose(); });
     this.action.register(ActionTypeEnum.ORDER_DONE, () => { return this.orderDone(); });
-    this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(null); });
+    this.action.register(ActionTypeEnum.ORDER_SAVE_TEMP, () => { return this.orderSaveTemporary(); });
+    this.action.register(ActionTypeEnum.ORDER_DONE_REJECT, () => { return this.orderDoneReject(); });
 
     this.action.register(ActionTypeEnum.CANCEL, () => { return this.cancel(); });
     this.action.register(ActionTypeEnum.BACK, () => { return this.back(); });
@@ -239,22 +240,22 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
 
-  public orderAccept(order: Order): Promise<boolean> {
+  public orderAccept(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderReject(order: Order): Promise<boolean> {
+  public orderReject(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderCancel(order: Order, note: Note): Promise<boolean> {
+  public orderCancel(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
 
-  public orderClose(order: Order): Promise<boolean> {
+  public orderClose(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
@@ -264,8 +265,14 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
 
-  public orderDoneReject(order: Order): Promise<boolean> {
+  public orderDoneReject(): Promise<boolean> {
     console.error('Not implemented');
     return this.notImplemented();
   }
+
+  public orderSaveTemporary(): Promise<boolean> {
+    console.error('Not implemented');
+    return this.notImplemented();
+  }
+  
 }

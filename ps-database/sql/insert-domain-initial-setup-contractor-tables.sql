@@ -132,7 +132,11 @@ INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES 
 
 INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Vorige', '', get_action_type('Terug'), 0);
 
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Controleren', '/details/${order.id}/order-specifications/confirmation', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Controleren', '/details/${order.id}', get_action_type('Opdracht tijdelijk opslaan'), 0);
+INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_USER'), true);
+INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_ADMIN'), true);
+
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Controleren', '/details/${order.id}/order-specifications/confirmation', NULL, 1);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_USER'), true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_ADMIN'), true);
 

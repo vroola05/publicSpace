@@ -4,11 +4,12 @@ import { Call } from '../../../../../model/call';
 import { Order } from '../../../../../model/order';
 
 import { DynamicPanel } from '../../../../../model/intefaces';
-import { ContractSpecificationItem } from '../../../../../model/contract-specification-item';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ValidationService } from '../../../../services/validation/validation.service';
+import { OrderSpecificationItem } from '../../../../../model/order-specification-item';
+import { OrderNote } from 'projects/ps-lib/src/model/order-note';
 
 @Component({
   selector: 'lib-panel-order-handle',
@@ -37,7 +38,7 @@ export class PanelOrderHandleComponent implements DynamicPanel, OnInit, OnDestro
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
   @Input() public pageConfig: PageConfig;
 
-  public contractSpecificationItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+  public orderSpecificationItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
   constructor(
     private endpoints: EndpointService,
@@ -52,24 +53,34 @@ export class PanelOrderHandleComponent implements DynamicPanel, OnInit, OnDestro
         return;
 
       const order = this.storage.getSession('order');
-      this.note = this.storage.getSession('note');
       if (order) {
         this.order = JSON.parse(order) as Order;
-        if (!this.order.contractSpecificationItems) {
-          this.order.contractSpecificationItems = [];
+
+        if (!this.order.orderSpecificationItems) {
+          this.order.orderSpecificationItems = [];
         }
       } else {
         this.order = call.orders[0];
-        if (!this.order.contractSpecificationItems) {
-          this.order.contractSpecificationItems = [];
+
+        if (!this.order.orderSpecificationItems) {
+          this.order.orderSpecificationItems = [];
         }
-        this.storage.setSession('order', JSON.stringify(this.order), true);
       }
 
-      this.order.contractSpecificationItems.forEach(contractSpecificationItem => {
-        this.contractSpecificationItems.push({
-          name: contractSpecificationItem.specificationNumber + ' - ' + contractSpecificationItem.name, value: '' + contractSpecificationItem.id, 
-          data: contractSpecificationItem,
+      let orderNote = this.order.notes.find(note => note.definite == false);
+      if (!orderNote) {
+        orderNote = new OrderNote();
+        orderNote.content = '';
+        orderNote.definite = false;
+        this.order.notes.push(orderNote);
+      }
+      this.note = orderNote.content;
+      this.storage.setSession('order', JSON.stringify(this.order), true);      
+
+      this.order.orderSpecificationItems.forEach(orderSpecificationItem => {
+        this.orderSpecificationItems.push({
+          name: orderSpecificationItem.contractSpecificationItem.specificationNumber + ' - ' + orderSpecificationItem.contractSpecificationItem.name, value: '' + orderSpecificationItem.contractSpecificationItem.id, 
+          data: orderSpecificationItem,
           selected: true
         });
       });
@@ -80,38 +91,40 @@ export class PanelOrderHandleComponent implements DynamicPanel, OnInit, OnDestro
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  public getSelectedOrderitems(): ContractSpecificationItem[] {
-    const contractSpecificationItems: ContractSpecificationItem[] = [];
-    this.contractSpecificationItems.forEach(contractSpecificationItem => {
-      if (contractSpecificationItem.selected) {
-        contractSpecificationItems.push(contractSpecificationItem.data);
+  public getSelectedOrderitems(): OrderSpecificationItem[] {
+    const orderSpecificationItems: OrderSpecificationItem[] = [];
+    this.orderSpecificationItems.forEach(orderSpecificationItem => {
+      if (orderSpecificationItem.selected) {
+        orderSpecificationItems.push(orderSpecificationItem.data);
       }
     });
-    return contractSpecificationItems;
+    return orderSpecificationItems;
   }
 
-  public onContractSpecificationItemChecked($event, i) {
-    this.contractSpecificationItems[i].selected = $event;
-    if (this.order && this.order.contractSpecificationItems) {
-      this.order.contractSpecificationItems = this.getSelectedOrderitems();
+  public onOrderSpecificationItemChecked($event, i) {
+    this.orderSpecificationItems[i].selected = $event;
+    if (this.order && this.order.orderSpecificationItems) {
+      this.order.orderSpecificationItems = this.getSelectedOrderitems();
       this.storage.setSession('order', JSON.stringify(this.order), true);
     }
   }
 
-  public onContractSpecificationItemAmountChanged($event, i) {
-    if (this.order && this.contractSpecificationItems && this.contractSpecificationItems[i]) {
-      const index = this.order.contractSpecificationItems.findIndex(contractSpecificationItem => contractSpecificationItem.id === this.contractSpecificationItems[i].data.id);
+  public onOrderSpecificationItemAmountChanged($event, i) {
+    if (this.order && this.orderSpecificationItems && this.orderSpecificationItems[i]) {
+      const index = this.order.orderSpecificationItems.findIndex(orderSpecificationItem => orderSpecificationItem.contractSpecificationItem.id === this.orderSpecificationItems[i].data.contractSpecificationItem.id);
       if (index !== -1) {
-        this.order.contractSpecificationItems[index].amount = $event;
+        this.order.orderSpecificationItems[index].amount = $event;
       }
       this.storage.setSession('order', JSON.stringify(this.order), true);
     }
   }
 
-  public onDescriptionChanged($event) {
-    if (this.validation.validateField('handle-order', 'description')) {
+  public onNoteChanged($event) {
+    if (this.validation.validateField('handle-order', 'note')) {
       this.note = $event;
-      this.storage.setSession('note', this.note, true);
+      let orderNote = this.order.notes.find(note => note.definite == false);
+      orderNote.content = $event;
+      this.storage.setSession('order', JSON.stringify(this.order), true);
     }
   }
 }

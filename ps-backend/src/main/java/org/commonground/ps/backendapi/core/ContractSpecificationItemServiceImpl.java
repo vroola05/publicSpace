@@ -60,14 +60,18 @@ public class ContractSpecificationItemServiceImpl implements ContractSpecificati
             Long domainIdContractor) {
         List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<ContractSpecificationItem>();
 
-        List<ContractSpecificationItemEntity> contractSpecificationItemEntities =
-            contractSpecificationItemsRepository.getContractSpecificationItems(domainIdGovernment, domainIdContractor, new Date());
+        List<ContractSpecificationItemEntity> contractSpecificationItemEntities = getContractSpecificationItemEntities(domainIdGovernment, domainIdContractor);
         for (ContractSpecificationItemEntity contractSpecificationItemEntity : contractSpecificationItemEntities) {
             contractSpecificationItems.add(Convert.contractSpecificationItemEntity(contractSpecificationItemEntity));
         }
 
         return contractSpecificationItems;
     }
-    
+
+    @Override
+    public List<ContractSpecificationItemEntity> getContractSpecificationItemEntities(Long domainIdGovernment,
+            Long domainIdContractor) {
+        return contractSpecificationItemsRepository.getContractSpecificationItems(domainIdGovernment, domainIdContractor, new Date());
+    }
 }
 

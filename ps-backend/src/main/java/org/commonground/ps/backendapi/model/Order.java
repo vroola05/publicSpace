@@ -7,8 +7,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +24,7 @@ public class Order {
 
     private Domain contractorDomain;
     private List<Category> categories = new ArrayList<>();
-    private List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<>();
+    private List<OrderSpecificationItem> orderSpecificationItems = new ArrayList<>();
     private List<OrderNote> notes = new ArrayList<>();
     
     private Status status;

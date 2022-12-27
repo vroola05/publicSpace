@@ -13,9 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.envers.NotAudited;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -62,6 +65,11 @@ public class OrderEntity {
     @OneToMany(targetEntity = OrderCategoryEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderCategoryEntity> orderCategory = new ArrayList<>();
 
+    @NotAudited
+    @OneToMany(targetEntity = OrderSpecificationItemEntity.class, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval=true)
+    private List<OrderSpecificationItemEntity> orderSpecificationItems = new ArrayList<>();
+
+    @OrderBy("dateCreated DESC")
     @OneToMany(targetEntity = OrderNoteEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderNoteEntity> orderNote = new ArrayList<>();
 }

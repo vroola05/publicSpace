@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.core.ContractSpecificationItemService;
+import org.commonground.ps.backendapi.core.OrderNoteService;
 import org.commonground.ps.backendapi.core.OrderService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
@@ -38,6 +39,8 @@ public class OrderController extends Controller {
 	@Autowired
 	private OrderService orderService;
 	
+	@Autowired
+	private OrderNoteService orderNoteService;
 
 	@Autowired
 	private ContractSpecificationItemService contractSpecificationItemService;
@@ -100,7 +103,7 @@ public class OrderController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
 
 		User user = getUser(); 
-		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
+		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
 		if (orderEntityOptional.isEmpty()) {
 			throw new BadRequestException();
 		}
@@ -116,7 +119,10 @@ public class OrderController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 
-		return orderService.setAction(getUser(), order, ActionEnum.ORDER_CANCEL);
+		User user = getUser();
+		orderNoteService.saveNew(order, user, true, DomainTypeEnum.GOVERNMENT);
+
+		return orderService.setAction(user, order, ActionEnum.ORDER_CANCEL, DomainTypeEnum.GOVERNMENT);
 	}
 
 	@Secured(identifier = "putActionOrderRejectDone", domainType = DomainTypeEnum.GOVERNMENT)
@@ -124,8 +130,10 @@ public class OrderController extends Controller {
 	public Order putActionOrderRejectDone(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-
-		return orderService.setAction(getUser(), order, ActionEnum.ORDER_DONE_REJECT);
+		
+		User user = getUser();
+		orderNoteService.saveNew(order, user, true, DomainTypeEnum.GOVERNMENT);
+		return orderService.setAction(user, order, ActionEnum.ORDER_DONE_REJECT, DomainTypeEnum.GOVERNMENT);
 	}
 
 	@Secured(identifier = "putActionOrderClose", domainType = DomainTypeEnum.GOVERNMENT)
@@ -133,7 +141,10 @@ public class OrderController extends Controller {
 	public Order putOrderActionType(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-		return orderService.setAction(getUser(), order, ActionEnum.ORDER_CLOSE);
+		
+		User user = getUser();
+		orderNoteService.saveNew(order, user, true, DomainTypeEnum.CONTRACTOR);
+		return orderService.setAction(user, order, ActionEnum.ORDER_CLOSE, DomainTypeEnum.GOVERNMENT);
 	}
 
 	@Secured(identifier = "putActionOrderAccept", domainType = DomainTypeEnum.CONTRACTOR)
@@ -141,7 +152,10 @@ public class OrderController extends Controller {
 	public Order putActionOrderAccept(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-		return orderService.setAction(getUser(), order, ActionEnum.ORDER_ACCEPT);
+
+		User user = getUser();
+		orderNoteService.saveNew(order, user, true, DomainTypeEnum.CONTRACTOR);
+		return orderService.setAction(user, order, ActionEnum.ORDER_ACCEPT, DomainTypeEnum.CONTRACTOR);
 	}
 
 	@Secured(identifier = "putActionOrderReject", domainType = DomainTypeEnum.CONTRACTOR)
@@ -149,7 +163,19 @@ public class OrderController extends Controller {
 	public Order putActionOrderReject(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-		return orderService.setAction(getUser(), order, ActionEnum.ORDER_REJECT);
+		
+		User user = getUser();
+		orderNoteService.saveNew(order, user, true, DomainTypeEnum.CONTRACTOR);
+		return orderService.setAction(user, order, ActionEnum.ORDER_REJECT, DomainTypeEnum.CONTRACTOR);
+	}
+
+	@Secured(identifier = "putActionOrderSaveTemporary", domainType = DomainTypeEnum.CONTRACTOR)
+	@PutMapping(value = "/{id}/action/save/temp", consumes = "application/json", produces = "application/json")
+	public Order putActionOrderSaveTemporary(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@Valid @RequestBody Order order) throws BadRequestException {
+
+		return orderService.update(getUser(), id, order, false);
 	}
 
 	@Secured(identifier = "putActionOrderDone", domainType = DomainTypeEnum.CONTRACTOR)
@@ -157,6 +183,9 @@ public class OrderController extends Controller {
 	public Order putActionOrderDone(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-		return orderService.setAction(getUser(), order, ActionEnum.ORDER_DONE);
+
+		User user = getUser();
+		orderService.update(user, id, order, true);
+		return orderService.setAction(user, order, ActionEnum.ORDER_DONE, DomainTypeEnum.CONTRACTOR);
 	}
 }

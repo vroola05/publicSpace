@@ -6,6 +6,7 @@ import { Popup } from '../../../../services/popup/popup.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
 import { Category } from '../../../../../model/category';
 import { OrderNote } from '../../../../../model/order-note';
+import { OrderSpecificationItem } from '../../../../../model/order-specification-item';
 
 
 @Component({
@@ -27,6 +28,10 @@ export class PanelOrderInfoComponent implements OnInit {
 
   public hasCategories(): boolean {
     return this.order && this.order.categories && this.order.categories.length > 0;
+  }
+
+  public showOrderSpecificationItems(): boolean {
+    return this.hasActionType(ActionTypeEnum.ORDER_DONE) || this.hasActionType(ActionTypeEnum.ORDER_CLOSE);
   }
 
   public onOrderDeleteCategory(category: Category): void {
@@ -77,9 +82,11 @@ export class PanelOrderInfoComponent implements OnInit {
   public onOrderReject(): void {
     this.popup.add('Notitie niet akkoord', PopupConfirmComponent, {
     }, [{type: PopupETypes.ok, event: (content: string) => {
-        const note = new Note();
-        note.content = content;
-        this.changed.emit({action: 'order-reject', data: {order: this.order, note}});
+      if (!this.order.notes) {
+        this.order.notes = [];
+      }
+      this.order.notes.push(new OrderNote(content));
+      this.changed.emit({action: 'order-reject', data: this.order});
       }}]);
   }
 

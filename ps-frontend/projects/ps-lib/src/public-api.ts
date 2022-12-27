@@ -42,6 +42,7 @@ export * from './lib/components/maps/maps.component';
 export * from './lib/components/notes/notes/notes.component';
 export * from './lib/components/notes/notes-viewer/notes-viewer.component';
 export * from './lib/components/notes/notes-button/notes-button.component';
+export * from './lib/components/notes/order-notes/order-notes.component';
 
 export * from './lib/components/pages/page';
 export * from './lib/components/pages/assign/assign/assign.component';
@@ -111,6 +112,7 @@ export * from './lib/components/panel/components/panel-new-confirmation/panel-ne
 export * from './lib/components/panel/components/panel-toggle/panel-toggle.component';
 export * from './lib/components/panel/components/panel-order-info/panel-order-info.component';
 export * from './lib/components/panel/components/panel-order/panel-order.component';
+export * from './lib/components/panel/components/panel-order-specifications/panel-order-specifications.component';
 export * from './lib/components/panel/components/panel-order-second/panel-order-second.component';
 export * from './lib/components/panel/components/panel-user/panel-user.component';
 export * from './lib/components/panel/components/panel-person/panel-person.component';

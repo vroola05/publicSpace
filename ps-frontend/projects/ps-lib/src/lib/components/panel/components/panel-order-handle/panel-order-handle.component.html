@@ -4,21 +4,21 @@
     </div>
 </div>
 <div class="contract-specification-items">
-    <div class="contract-specification-item row" *ngFor="let contractSpecificationItem of contractSpecificationItems; let i = index">
+    <div class="contract-specification-item row" *ngFor="let orderSpecificationItem of orderSpecificationItems; let i = index">
         <div class="contractSpecificationItem-checkbox col-sm-7">
-            <lib-checkbox-field [name]="contractSpecificationItem.name" 
-            [value]="contractSpecificationItem?.selected" (changed)="onContractSpecificationItemChecked($event, i)"
-                >{{contractSpecificationItem?.data?.name}}</lib-checkbox-field>
+            <lib-checkbox-field [form]="'handle-order'" [name]="orderSpecificationItem.name" 
+            [value]="orderSpecificationItem?.selected" (changed)="onOrderSpecificationItemChecked($event, i)"
+                >{{orderSpecificationItem?.data?.contractSpecificationItem?.name}}</lib-checkbox-field>
         </div>
         <div class="contractSpecificationItem-amount col-sm-3">
-            <lib-text-field [type]="'number'" [readonly]="!contractSpecificationItem.selected" [value]="contractSpecificationItem?.data?.amount" [style]="'filled'" [placeholder]="'Aantal'" [required]="true"
-                (changed)="onContractSpecificationItemAmountChanged($event, i)"></lib-text-field>
+            <lib-text-field [form]="'handle-order'" [name]="'amount-'+i" [type]="'number'" [readonly]="!orderSpecificationItem.selected" [value]="orderSpecificationItem?.data?.amount"
+                [style]="'filled'" [placeholder]="'Aantal'" [required]="orderSpecificationItem.selected"
+                (changed)="onOrderSpecificationItemAmountChanged($event, i)"></lib-text-field>
         </div>
-        <div class="contractSpecificationItem-unit col-sm-2">{{contractSpecificationItem?.data?.unit}}</div>
+        <div class="contractSpecificationItem-unit col-sm-2">{{orderSpecificationItem?.data?.contractSpecificationItem?.unit}}</div>
     </div>
 </div>
 <div class="contract-specification-note">
-    <lib-textarea-field [form]="'handle-order'" [style]="'filled'" [name]="'description'" [label]="'Notitie'" [placeholder]="'Notitie'"
-      [value]="note" [required]="true" [maxLength]="200" (changed)="onDescriptionChanged($event)"
-      #descriptionComponent></lib-textarea-field>
+    <lib-textarea-field [form]="'handle-order'" [name]="'note'" [label]="'Notitie'" [placeholder]="'Notitie'" [style]="'filled'"
+      [value]="note" [required]="true" [maxLength]="200" (changed)="onNoteChanged($event)"></lib-textarea-field>
 </div>

@@ -11,14 +11,18 @@
         </p>
         </div>
     </lib-panel-toggle>
-    <div class="order-info-specifications" *ngIf="hasContractSpecificationItems()">
+    <div class="order-info-specifications" *ngIf="hasOrderSpecificationItems()">
       <h4>Bestekposten</h4>
       <table class="order-info-specifications-table">
-        <tr *ngFor="let contractSpecificationItem of order?.contractSpecificationItems">
-          <td class="order-info-specifications-small">{{contractSpecificationItem?.specificationNumber}}</td>
-          <td class="order-info-specifications-text">{{contractSpecificationItem?.name}}</td>
-          <td class="order-info-specifications-small">{{contractSpecificationItem?.amount}} {{contractSpecificationItem?.unit}}</td>
+        <tr *ngFor="let orderSpecificationItem of order?.orderSpecificationItems">
+          <td class="order-info-specifications-small">{{orderSpecificationItem?.contractSpecificationItem?.specificationNumber}}</td>
+          <td class="order-info-specifications-text">{{orderSpecificationItem?.contractSpecificationItem?.name}}</td>
+          <td class="order-info-specifications-small">{{orderSpecificationItem?.amount}} {{orderSpecificationItem?.contractSpecificationItem?.unit}}</td>
         </tr>
       </table>
     </div>
+    <div class="order-info-specifications" *ngIf="hasOrderSpecificationItems()">
+      <h4>Notitie</h4>
+        {{note}}
+      </div>  
   </div>

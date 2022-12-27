@@ -35,6 +35,8 @@ export class PanelOrderConfirmationComponent implements DynamicPanel, OnInit, On
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
   @Input() public pageConfig: PageConfig;
 
+  public note: string = '';
+
   constructor(
     private endpoints: EndpointService,
     private storage: StorageService
@@ -49,8 +51,13 @@ export class PanelOrderConfirmationComponent implements DynamicPanel, OnInit, On
       const order = this.storage.getSession('order');
       if (order) {
         this.order = JSON.parse(order) as Order;
-        if (!this.order.contractSpecificationItems) {
-          this.order.contractSpecificationItems = [];
+        if (!this.order.orderSpecificationItems) {
+          this.order.orderSpecificationItems = [];
+        }
+
+        let orderNote = this.order.notes.find(note => note.definite == false);
+        if (orderNote) {
+          this.note = orderNote.content;
         }
       }
     }));
@@ -71,7 +78,7 @@ export class PanelOrderConfirmationComponent implements DynamicPanel, OnInit, On
     return (days === 0 ? 'Vandaag' : (days === 1 ? days + ' dag' : days + ' dagen'));
   }
 
-  public hasContractSpecificationItems(): boolean {
-    return this.order && this.order.contractSpecificationItems && this.order.contractSpecificationItems.length > 0;
+  public hasOrderSpecificationItems(): boolean {
+    return this.order && this.order.orderSpecificationItems && this.order.orderSpecificationItems.length > 0;
   }
 }

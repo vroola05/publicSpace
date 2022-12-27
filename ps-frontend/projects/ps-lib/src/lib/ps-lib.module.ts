@@ -148,6 +148,8 @@ import { PanelContractSpecificationItemComponent } from './components/pages/sett
 import { PanelOrderSelectComponent } from './components/panel/components/panel-order-select/panel-order-select.component';
 import { PanelOrderHandleComponent } from './components/panel/components/panel-order-handle/panel-order-handle.component';
 import { PanelOrderConfirmationComponent } from './components/panel/components/panel-order-confirmation/panel-order-confirmation.component';
+import { OrderNotesComponent } from './components/notes/order-notes/order-notes.component';
+import { PanelOrderSpecificationsComponent } from './components/panel/components/panel-order-specifications/panel-order-specifications.component';
 
 
 @NgModule({
@@ -265,6 +267,7 @@ import { PanelOrderConfirmationComponent } from './components/panel/components/p
     DynamicRightDirective,
     PanelAssignGOrUComponent,
     PanelAssignGAndUComponent,
+    OrderNotesComponent,
     OrderSpecificationsSelectComponent,
     OrderSpecificationsHandleComponent,
     OrderSpecificationsConfirmationComponent,
@@ -273,7 +276,8 @@ import { PanelOrderConfirmationComponent } from './components/panel/components/p
     PanelContractSpecificationItemComponent,
     PanelOrderSelectComponent,
     PanelOrderHandleComponent,
-    PanelOrderConfirmationComponent
+    PanelOrderConfirmationComponent,
+    PanelOrderSpecificationsComponent
   ],
   imports: [
     CommonModule,
@@ -369,6 +373,7 @@ import { PanelOrderConfirmationComponent } from './components/panel/components/p
     ToastComponent,
     AssignComponent,
     SendMailComponent,
+    OrderNotesComponent,
     OrderitemCreationComponent,
     OrderitemInformationComponent,
     OrderitemConfirmationComponent,
@@ -394,7 +399,8 @@ import { PanelOrderConfirmationComponent } from './components/panel/components/p
     PanelContractSpecificationItemComponent,
     PanelOrderSelectComponent,
     PanelOrderHandleComponent,
-    PanelOrderConfirmationComponent
+    PanelOrderConfirmationComponent,
+    PanelOrderSpecificationsComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

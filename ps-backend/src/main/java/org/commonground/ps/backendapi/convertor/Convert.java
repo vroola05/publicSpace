@@ -22,6 +22,7 @@ import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderSpecificationItemEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonConditionEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonRolesEntity;
@@ -50,6 +51,7 @@ import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.NoteType;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.OrderNote;
+import org.commonground.ps.backendapi.model.OrderSpecificationItem;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.PageButtonCondition;
@@ -229,7 +231,7 @@ public class Convert {
     if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
       if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
         for (OrderEntity orderEntity: callEntity.getOrders()) {
-          call.getOrders().add(orderEntity(orderEntity));
+          call.getOrders().add(orderEntity(orderEntity, domainType));
         }
       }
 
@@ -543,7 +545,15 @@ public class Convert {
     return contractSpecificationItem;
   }
 
-  public static Order orderEntity(OrderEntity orderEntity) {
+  public static OrderSpecificationItem orderSpecificationItemEntity(OrderSpecificationItemEntity orderSpecificationItemEntity) {
+    OrderSpecificationItem orderSpecificationItem = new OrderSpecificationItem();
+    orderSpecificationItem.setId(orderSpecificationItemEntity.getId());
+    orderSpecificationItem.setAmount(orderSpecificationItemEntity.getAmount());
+    orderSpecificationItem.setContractSpecificationItem(contractSpecificationItemEntity(orderSpecificationItemEntity.getContractSpecificationItem()));
+    return orderSpecificationItem;
+  }
+
+  public static Order orderEntity(OrderEntity orderEntity, DomainType domainType) {
     Order order = new Order();
     order.setId(orderEntity.getId());
     order.setDescription(orderEntity.getDescription());
@@ -557,9 +567,8 @@ public class Convert {
     if (orderEntity.getActionTypeEntity() != null) {
       order.setActionType(actionTypeEntity(orderEntity.getActionTypeEntity()));
     }
-
-    for (OrderCategoryEntity orderCategoryEntity: orderEntity.getOrderCategory()) {
-      if (orderCategoryEntity.getCategory() != null) {
+    if (orderEntity.getOrderCategory() != null) {
+      for (OrderCategoryEntity orderCategoryEntity: orderEntity.getOrderCategory()) {
         order.getCategories().add(categoryEntity(orderCategoryEntity.getCategory()));
       }
     }
@@ -572,10 +581,20 @@ public class Convert {
       order.setGroup(groupEntity(orderEntity.getGroup()));
     }
 
+    if (orderEntity.getOrderSpecificationItems() != null) {
+      for (OrderSpecificationItemEntity orderSpecificationItemEntity: orderEntity.getOrderSpecificationItems()) {
+        order.getOrderSpecificationItems().add(orderSpecificationItemEntity(orderSpecificationItemEntity));
+      }
+    }
+
     if (orderEntity.getOrderNote() != null) {
       order.setNotes(new ArrayList<>());
       for (OrderNoteEntity orderNoteEntity: orderEntity.getOrderNote()) {
-        order.getNotes().add(orderNoteEntity(orderNoteEntity));
+        if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id && orderNoteEntity.getDefinite()) {
+          order.getNotes().add(orderNoteEntity(orderNoteEntity));
+        } else if (domainType.getId() == DomainTypeEnum.CONTRACTOR.id) {
+          order.getNotes().add(orderNoteEntity(orderNoteEntity));
+        }
       }
     }
     
@@ -608,6 +627,7 @@ public class Convert {
     orderNote.setContent(orderNoteEntity.getContent());
     orderNote.setDateCreated(orderNoteEntity.getDateCreated());
     orderNote.setUser(userEntity(orderNoteEntity.getUser()));
+    orderNote.setDefinite(orderNoteEntity.getDefinite());
 
     return orderNote;
   }

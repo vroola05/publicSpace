@@ -6,27 +6,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
+import org.commonground.ps.backendapi.jpa.entities.ContractSpecificationItemEntity;
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderSpecificationItemEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.jpa.repositories.OrderRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
-import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Category;
 import org.commonground.ps.backendapi.model.Group;
-import org.commonground.ps.backendapi.model.Note;
 import org.commonground.ps.backendapi.model.Order;
+import org.commonground.ps.backendapi.model.OrderSpecificationItem;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
@@ -43,6 +46,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
 	ActionService actionService;
+
+	@Autowired
+	private ContractSpecificationItemService contractSpecificationItemService;
 
     @Autowired
 	private CategoryRepository categoryRepository;
@@ -68,38 +74,36 @@ public class OrderServiceImpl implements OrderService {
 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user.getDomain().getDomainType());
 
 		List<Order> orders = new ArrayList<>();
-		orders.add(Convert.orderEntity(orderEntityOptional.get()));
+		orders.add(Convert.orderEntity(orderEntityOptional.get(), user.getDomain().getDomainType()));
 
 		call.setOrders(orders);
 		return Optional.of(call);
 	}
 
 	@Override
-    public Optional<OrderEntity> getOrderEntityById(User user, Long id) {
-		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(id, user.getDomain().getId());
+    public Optional<OrderEntity> getOrderEntityById(User user, Long id, DomainTypeEnum domainTypeEnum) {
 
-        if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get())) {
+		Optional<OrderEntity> orderEntityOptional = (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) 
+			? orderRepository.getOrderByIdAndGovernmentId(id, user.getDomain().getId()) 
+			: orderRepository.getOrderById(id, user.getDomain().getId());
+
+        if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get(), domainTypeEnum)) {
             return Optional.empty();
         }
-        
-        return orderEntityOptional;
-    }
 
-	@Override
-    public Optional<OrderEntity> getOrderEntityByIdAndGovernmentDomain(User user, Long id) {
-		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderByIdAndGovernmentId(id, user.getDomain().getId());
-
-        if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get())) {
-            return Optional.empty();
-        }
-        
         return orderEntityOptional;
     }
 	
-    public boolean hasAccess(User user, OrderEntity orderEntity) {
-        return user.getGroups().stream().anyMatch(group -> group.getId() == orderEntity.getGroup().getId())
-            || (orderEntity.getUser() != null && user.getId() == orderEntity.getUser().getId())
-			|| (orderEntity.getUser() == null && user.getRoles().stream().anyMatch(role -> role.equalsIgnoreCase("ROLE_SUPER_USER") || role.equalsIgnoreCase("ROLE_ADMIN")));
+    public boolean hasAccess(User user, OrderEntity orderEntity, DomainTypeEnum domainTypeEnum) {
+		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
+			return user.getGroups().stream().anyMatch(group -> group.getId() == orderEntity.getCall().getGroup().getId())
+            	|| (orderEntity.getCall().getUser() != null && user.getId() == orderEntity.getCall().getUser().getId())
+				|| (orderEntity.getCall().getUser() == null && user.getRoles().stream().anyMatch(role -> role.equalsIgnoreCase("ROLE_SUPER_USER") || role.equalsIgnoreCase("ROLE_ADMIN")));
+		} else {
+			return user.getGroups().stream().anyMatch(group -> group.getId() == orderEntity.getGroup().getId())
+				|| (orderEntity.getUser() != null && user.getId() == orderEntity.getUser().getId())
+				|| (orderEntity.getUser() == null && user.getRoles().stream().anyMatch(role -> role.equalsIgnoreCase("ROLE_SUPER_USER") || role.equalsIgnoreCase("ROLE_ADMIN")));
+		}
     }
 
 	@Override
@@ -164,11 +168,12 @@ public class OrderServiceImpl implements OrderService {
 				return Optional.empty();
 			}
 			System.out.println("Klaar");
-			order = Convert.orderEntity(orderRepository.save(orderEntity));
+			order = Convert.orderEntity(orderRepository.save(orderEntity), user.getDomain().getDomainType());
 		}
 		//orderRepository.saveAll(entities)
 		return Optional.of(orders);
 	}
+
 
 	public void addOrderCategories(Order order, OrderEntity orderEntity, List<CategoryEntity> categoryEntities) {
 		for (Category category:  order.getCategories()) {
@@ -186,7 +191,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Optional<Call> setUser(User user, Long id, User userNew) {
-		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, id);
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
 
 		if (orderEntityOptional.isEmpty()) {
 			return Optional.empty();
@@ -217,7 +222,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Optional<Call> setGroup(User user, Long id, Group groupNew) {
-		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, id);
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
 	
 		if (orderEntityOptional.isEmpty()) {
 			return Optional.empty();
@@ -254,11 +259,47 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order setAction(User user, Order order, ActionEnum actionEnum) throws BadRequestException {
+	public Order update(User user, Long id, Order order, boolean definite) throws BadRequestException {
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId(), DomainTypeEnum.CONTRACTOR);
+		if (orderEntityOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
 
-		Optional<OrderEntity> orderEntityOptional = (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) 
-			? getOrderEntityByIdAndGovernmentDomain(user, order.getId()) 
-			: getOrderEntityById(user, order.getId());
+		OrderEntity orderEntity = orderEntityOptional.get();
+		
+		List<ContractSpecificationItemEntity> contractSpecificationItemEntities = contractSpecificationItemService.getContractSpecificationItemEntities(orderEntity.getCall().getDomain().getId(), user.getDomain().getId());
+
+		List<OrderSpecificationItem> orderSpecificationItems = order.getOrderSpecificationItems();
+		for (OrderSpecificationItem orderSpecificationItem : orderSpecificationItems) {
+			if (orderSpecificationItem.getContractSpecificationItem() != null) {
+				Optional<OrderSpecificationItemEntity> orderSpecificationItemEntityOptional = orderEntity.getOrderSpecificationItems().stream().filter(orderSpecificationItemEntity -> orderSpecificationItem.getContractSpecificationItem().getId() == orderSpecificationItemEntity.getContractSpecificationItem().getId()).findFirst();
+				if (orderSpecificationItemEntityOptional.isPresent()) {
+					OrderSpecificationItemEntity orderSpecificationItemEntity = orderSpecificationItemEntityOptional.get();
+					orderSpecificationItemEntity.setAmount(orderSpecificationItem.getAmount());
+				} else {
+					Optional<ContractSpecificationItemEntity> contractSpecificationItemEntityOptional = contractSpecificationItemEntities.stream().filter(contractSpecificationItemEntity -> contractSpecificationItemEntity.getId() == orderSpecificationItem.getContractSpecificationItem().getId()).findFirst();
+					if (contractSpecificationItemEntityOptional.isEmpty()) {
+						throw new BadRequestException();
+					}
+					OrderSpecificationItemEntity orderSpecificationItemEntity = new OrderSpecificationItemEntity();
+					orderSpecificationItemEntity.setOrder(orderEntity);
+					orderSpecificationItemEntity.setContractSpecificationItem(contractSpecificationItemEntityOptional.get());
+					orderSpecificationItemEntity.setAmount(orderSpecificationItem.getAmount());
+					orderEntity.getOrderSpecificationItems().add(orderSpecificationItemEntity);
+				}
+			}
+		}
+
+		orderEntity.getOrderSpecificationItems().removeIf(orderSpecificationItemEntity -> orderSpecificationItems.stream().noneMatch(orderSpecificationItem -> orderSpecificationItem.getContractSpecificationItem().getId() == orderSpecificationItemEntity.getContractSpecificationItem().getId()));
+
+		orderNoteService.addNew(orderEntity, order, user, definite);
+
+		return Convert.orderEntity(orderRepository.saveAndFlush(orderEntity), user.getDomain().getDomainType());
+	}
+
+	@Override
+	public Order setAction(User user, Order order, ActionEnum actionEnum, DomainTypeEnum domainTypeEnum) throws BadRequestException {
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
 		
 		if (orderEntityOptional.isEmpty()) {
 			throw new BadRequestException();
@@ -266,12 +307,10 @@ public class OrderServiceImpl implements OrderService {
 
 		OrderEntity orderEntity = orderEntityOptional.get();
 
-		orderNoteService.saveNew(orderEntity, order, user, true);
-
 		if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, actionEnum)) {
 			throw new BadRequestException();
 		}
-		return Convert.orderEntity(orderRepository.save(orderEntity));
+		return Convert.orderEntity(orderRepository.save(orderEntity), user.getDomain().getDomainType());
 	}
 
 }

@@ -69,6 +69,9 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
 
     this.action.register(ActionTypeEnum.CALL_CLOSE, () => { return super.callClose() });
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return super.callKill() });
+
+    this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return super.orderCancel(); });
+    this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return super.orderReject(); });
   }
 
   public getCall(): void {
@@ -87,53 +90,73 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public changed($event: {action: string, data: any, note?: Note}): void {
+    this.transform.setVariable('order', $event.data);
+    
+console.log('lala', $event.data);
     switch ($event.action) {
       case 'order-cancel':
-        this.orderCancel($event.data);
+        this.orderCancel();
         break;
       case 'order-reject':
-        this.orderDoneReject($event.data);
+        this.orderDoneReject();
         break;
       case 'order-accept':
-        this.orderDoneReject($event.data);
+        this.orderDoneReject();
         break;
       case 'order-close':
-        this.orderClose($event.data);
+        this.orderClose();
         break;
       case 'close-rejected':
-        this.orderClose($event.data);
+        this.orderClose();
         break;
     }
   }
 
-  public orderAccept(order: Order): Promise<boolean> {
+  public orderAccept(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       console.log('orderAccept');
       reject(false);
     });
   }
 
-  public orderReject(order: Order): Promise<boolean> {
+  public orderReject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log('orderReject');
-      reject(false);
+      try {
+        const order = this.getOrder();
+        this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
+        this.endpoints.put('putActionOrderReject', order).then((order: Order) => {
+          resolve(true);
+        })
+        .catch(err => {
+          reject(false);
+        });
+      } catch (e) {
+        console.error(e);
+        reject(false);
+      }
     });
   }
   
-  public orderCancel(order: Order): Promise<boolean> {
+  public orderCancel(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.transform.setVariable('order', order);
-      this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
-      this.endpoints.put('putActionOrderCancel', order).then((call: Call) => {
-        resolve(true);
-      })
-      .catch(err => {
+      try {
+        const order = this.getOrder();
+        this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
+        this.endpoints.put('putActionOrderCancel', order).then((order: Order) => {
+          resolve(true);
+        })
+        .catch(err => {
+          reject(false);
+        });
+      } catch (e) {
+        console.error(e);
         reject(false);
-      });
+      }
+
     });
   }
 
-  public orderClose(order: Order): Promise<boolean> {
+  public orderClose(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       console.log('orderClose');
       reject(false);
@@ -147,10 +170,21 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
 
-  public orderDoneReject(order: Order): Promise<boolean> {
+  public orderDoneReject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log('orderDoneReject');
-      reject(false);
+      try {
+        const order = this.getOrder();
+        this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_DONE_REJECT});
+        this.endpoints.put('putActionOrderRejectDone', order).then((order: Order) => {
+          resolve(true);
+        })
+        .catch(err => {
+          reject(false);
+        });
+      } catch (e) {
+        console.error(e);
+        reject(false);
+      }
     });
   }
 
@@ -205,4 +239,11 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
 
+  public getOrder(): Order {
+    const order = this.transform.getVariable('order');;
+    if (order) {
+      return order;
+    }
+    throw 'Order not found';
+  }
 }

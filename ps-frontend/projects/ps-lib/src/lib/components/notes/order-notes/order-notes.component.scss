@@ -1,0 +1,32 @@
+@import "../../../../../../assets/scss/styles.scss";
+
+.notes-container {
+    position: relative;
+
+    .show-all {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 0 $default-spacing;
+        font-size: $middle-font-size;
+        cursor: pointer;
+        user-select: none;
+
+    }
+    .note {
+        margin: 0 0 -2px 0;
+        padding: $default-spacing;
+        border: $gray3b solid 1px;
+        border-radius: calc($default-spacing / 2) calc($default-spacing / 2) 0px 0px;
+        border-bottom: none;
+        background: $gray3;
+        &:hover {
+            background: $gray-secondary-alpha;
+        }
+        
+        &:last-child {
+            border-bottom: $gray3b solid 1px;
+            border-radius: calc($default-spacing / 2);
+        }
+    }
+}

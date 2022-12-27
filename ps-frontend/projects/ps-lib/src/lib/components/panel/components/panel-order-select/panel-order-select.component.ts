@@ -8,6 +8,7 @@ import { ContractSpecificationItem } from '../../../../../model/contract-specifi
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { OrderSpecificationItem } from 'projects/ps-lib/src/model/order-specification-item';
 
 @Component({
   selector: 'lib-panel-order-select',
@@ -36,7 +37,7 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit, OnDestro
   @Input() public pageConfig: PageConfig;
   public contractSpecificationItem: ContractSpecificationItem[];
 
-  public contractSpecificationItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
+  public orderSpecificationItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
 
   constructor(
     private endpoints: EndpointService,
@@ -56,16 +57,22 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit, OnDestro
         this.storage.setSession('order', JSON.stringify(this.order), true);
       }
       this.endpoints.get(this.pageConfig.getEndpoint('getContractSpecificationItems')).then((contractSpecificationItems: ContractSpecificationItem[]) => {
-        const contractSpecificationItemsTemp = [];
+        const orderSpecificationItemsTemp = [];
         contractSpecificationItems.forEach(contractSpecificationItem => {
-          const contractSpecificationItemExisting = this.getContractSpecificationItem(contractSpecificationItem.id);
-          contractSpecificationItemsTemp.push({
+          let isSelected = true;
+          let orderSpecificationItem: OrderSpecificationItem = this.getOrderSpecificationItem(contractSpecificationItem.id);
+          if (!orderSpecificationItem) {
+            isSelected = false;
+            orderSpecificationItem = new OrderSpecificationItem();
+            orderSpecificationItem.contractSpecificationItem = contractSpecificationItem;
+          }
+          orderSpecificationItemsTemp.push({
             name: contractSpecificationItem.specificationNumber + ' - ' + contractSpecificationItem.name, value: '' + contractSpecificationItem.id, 
-            data: contractSpecificationItemExisting ? contractSpecificationItemExisting : contractSpecificationItem,
-            selected: !!contractSpecificationItemExisting
+            data: orderSpecificationItem,
+            selected: isSelected
           });
         });
-        this.contractSpecificationItems = contractSpecificationItemsTemp;
+        this.orderSpecificationItems = orderSpecificationItemsTemp;
       });
     }));
   }
@@ -74,26 +81,26 @@ export class PanelOrderSelectComponent implements DynamicPanel, OnInit, OnDestro
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  public getContractSpecificationItem(id: number): ContractSpecificationItem {
-    if (id && this.order && this.order.contractSpecificationItems) {
-      return this.order.contractSpecificationItems.find(contractSpecificationItem => contractSpecificationItem.id === id);
+  public getOrderSpecificationItem(id: number): OrderSpecificationItem {
+    if (id && this.order && this.order.orderSpecificationItems) {
+      return this.order.orderSpecificationItems.find(orderSpecificationItem => orderSpecificationItem.contractSpecificationItem.id === id);
     }
     return null;
   }
 
-  public getSelectedOrderitems(): ContractSpecificationItem[] {
-    const contractSpecificationItems: ContractSpecificationItem[] = [];
-    this.contractSpecificationItems.forEach(contractSpecificationItem => {
-      if (contractSpecificationItem.selected) {
-        contractSpecificationItems.push(contractSpecificationItem.data);
+  public getSelectedOrderitems(): OrderSpecificationItem[] {
+    const orderSpecificationItems: OrderSpecificationItem[] = [];
+    this.orderSpecificationItems.forEach(orderSpecificationItem => {
+      if (orderSpecificationItem.selected) {
+        orderSpecificationItems.push(orderSpecificationItem.data);
       }
     });
-    return contractSpecificationItems;
+    return orderSpecificationItems;
   }
 
   public onOrderitemsChanged($event): void {
     if (this.order) {
-      this.order.contractSpecificationItems = this.getSelectedOrderitems();
+      this.order.orderSpecificationItems = this.getSelectedOrderitems();
       this.storage.setSession('order', JSON.stringify(this.order), true);
     }
   }

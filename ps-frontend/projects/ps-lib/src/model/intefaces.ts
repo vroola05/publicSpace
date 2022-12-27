@@ -54,7 +54,8 @@ export enum ActionTypeEnum {
   BACK = 12,
   CANCEL = 13,
   NEXT = 14,
-  ASSIGN_GROUP_AND_USER = 15
+  ASSIGN_GROUP_AND_USER = 15,
+  ORDER_SAVE_TEMP = 16
 }
 
 export enum PageLayoutType {

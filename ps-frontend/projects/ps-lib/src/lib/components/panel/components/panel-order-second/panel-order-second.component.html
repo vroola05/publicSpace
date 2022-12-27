@@ -7,6 +7,13 @@
     <h4>Bestek categorie(en)</h4>
     {{getCategories()}}
   </div>
+  <div class="order-info-notes">
+    <lib-order-notes [orderNotes]="order?.notes"></lib-order-notes>
+  </div>
+  <div class="order-info-specification-items">
+    <lib-panel-order-specifications [order]="order"></lib-panel-order-specifications>
+  </div>
+
   <!-- <div class="order-info-explanation" *ngIf="order.explanation">
     <h4 *ngIf="action == 'view'"><span>Toelichting</span><span class="right">{{getExecutor()}}</span></h4>
     <h4 *ngIf="action == 'confirm'"><span>Toelichting gereedmelding</span></h4>

@@ -16,6 +16,7 @@ import { ToastService } from "../../../services/toast/toast.service";
 import { TransformService } from "../../../services/transform/transform.service";
 import { PageAbstract } from "../page";
 import { Order } from "../../../../model/order";
+import { OrderNote } from "projects/ps-lib/src/model/order-note";
 
 @Directive()
 export abstract class ActionOrderSpecification extends PageAbstract implements OnInit, OnDestroy {
@@ -47,13 +48,38 @@ export abstract class ActionOrderSpecification extends PageAbstract implements O
   public ngOnDestroy(): void {
     super.ngOnDestroy();
 
+    this.action.register(ActionTypeEnum.ORDER_SAVE_TEMP, () => { return super.orderSaveTemporary() });
     this.action.register(ActionTypeEnum.ORDER_DONE, () => { return super.orderDone() });
   }
 
+  public orderSaveTemporary(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const action = this.config.getAction(ActionTypeEnum.CALL_CREATE);
+      if (!this.lock) {
+        this.lock = true;
+        const orderData = this.storage.getSession('order');
+        if (orderData) {
+          this.loaderId = this.loader.add('Bezig met opslaan!');
+          const order = JSON.parse(orderData) as Order;
+
+          this.endpoints.put('putActionOrderSaveTemporary', order).then((newOrder: Order) => {
+            
+              this.loader.remove(this.loaderId);
+              this.lock = false;
+              resolve(true);
+          })
+            .catch(() => {
+              this.loader.remove(this.loaderId);
+              this.lock = false;
+              this.toast.error('Er is iets foutgegaan bij het opslaan van de opdracht!');
+              reject(false);
+            });
+        }
+      }
+    });
+  }
+
   public orderDone(): Promise<boolean> {
-
-
-
     return new Promise<boolean>((resolve, reject) => {
       const action = this.config.getAction(ActionTypeEnum.CALL_CREATE);
       if (!this.lock) {
@@ -64,7 +90,9 @@ export abstract class ActionOrderSpecification extends PageAbstract implements O
           const order = JSON.parse(orderData) as Order;
 
           this.endpoints.put('putActionOrderDone', order).then((newOrder: Order) => {
-            
+            this.loader.remove(this.loaderId);
+            this.lock = false;
+            resolve(true);
           })
             .catch(() => {
               this.loader.remove(this.loaderId);

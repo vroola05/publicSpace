@@ -78,7 +78,7 @@ public class NoteServiceImpl implements NoteService {
 		
 		CallEntity callEntity;
 		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
+			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
 			if (orderEntityOptional.isEmpty()) {
 				return Optional.empty();
 			}
