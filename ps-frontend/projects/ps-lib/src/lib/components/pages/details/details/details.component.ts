@@ -31,9 +31,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy {
-  
-  @ViewChild(DynamicLeftDirective, {static: false}) private dynamicHostLeft!: DynamicLeftDirective;
-  @ViewChild(DynamicRightDirective, {static: false}) private dynamicHostRight!: DynamicRightDirective;
+
+  @ViewChild(DynamicLeftDirective, { static: false }) private dynamicHostLeft!: DynamicLeftDirective;
+  @ViewChild(DynamicRightDirective, { static: false }) private dynamicHostRight!: DynamicRightDirective;
 
   public page: Page;
   public getUrlImage: string;
@@ -54,7 +54,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   ) {
     super(router, activatedRoute, navigationService, storage, action, transform, authorisation, config);
 
-    this.page = this.config.getPage(PageTypes.details);    
+    this.page = this.config.getPage(PageTypes.details);
     this.pageConfig = this.page.pageConfig;
   }
 
@@ -76,31 +76,37 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
 
   public getCall(): void {
     this.endpoints.get(this.pageConfig.getEndpoint('getCall')).then((call: Call) => {
-      this.transform.setVariable('call', call);
-
-      this.call = call;
-
-      if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
-        this.transform.setVariable('order', call.orders[0]);
-      }
+      this.setCall(call);
 
       this.loadComponent(this.dynamicHostLeft.viewContainerRef, this.pageConfig.getComponent('left'));
       this.loadComponent(this.dynamicHostRight.viewContainerRef, this.pageConfig.getComponent('right'));
     });
   }
 
-  public changed($event: {action: string, data: any, note?: Note}): void {
+  public setCall(call: Call): void {
+    this.transform.setVariable('call', call);
+      this.call = call;
+      if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
+        this.transform.setVariable('order', call.orders[0]);
+      }
+  }
+
+  public getOrder(): Order {
+    const order = this.transform.getVariable('order');
+    if (order) {
+      return order;
+    }
+    throw 'Order not found';
+  }
+
+  public changed($event: { action: string, data: any, note?: Note }): void {
     this.transform.setVariable('order', $event.data);
-    
-console.log('lala', $event.data);
+
     switch ($event.action) {
       case 'order-cancel':
         this.orderCancel();
         break;
       case 'order-reject':
-        this.orderDoneReject();
-        break;
-      case 'order-accept':
         this.orderDoneReject();
         break;
       case 'order-close':
@@ -112,42 +118,44 @@ console.log('lala', $event.data);
     }
   }
 
-  public orderAccept(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      console.log('orderAccept');
-      reject(false);
-    });
-  }
+  // public orderAccept(): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     console.log('orderAccept');
+  //     reject(false);
+  //   });
+  // }
 
   public orderReject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         const order = this.getOrder();
-        this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
-        this.endpoints.put('putActionOrderReject', order).then((order: Order) => {
+        this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_REJECT });
+        this.endpoints.put('putActionOrderReject', order).then((call: Call) => {
+          this.setCall(call);
           resolve(true);
         })
-        .catch(err => {
-          reject(false);
-        });
+          .catch(err => {
+            reject(false);
+          });
       } catch (e) {
         console.error(e);
         reject(false);
       }
     });
   }
-  
+
   public orderCancel(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         const order = this.getOrder();
-        this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_CANCEL});
-        this.endpoints.put('putActionOrderCancel', order).then((order: Order) => {
+        this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CANCEL });
+        this.endpoints.put('putActionOrderCancel', order).then((call: Call) => {
+          this.setCall(call);
           resolve(true);
         })
-        .catch(err => {
-          reject(false);
-        });
+          .catch(err => {
+            reject(false);
+          });
       } catch (e) {
         console.error(e);
         reject(false);
@@ -158,8 +166,20 @@ console.log('lala', $event.data);
 
   public orderClose(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log('orderClose');
-      reject(false);
+      try {
+        const order = this.getOrder();
+        this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CLOSE });
+        this.endpoints.put('putActionOrderClose', order).then((call: Call) => {
+          this.setCall(call);
+          resolve(true);
+        })
+          .catch(err => {
+            reject(false);
+          });
+      } catch (e) {
+        console.error(e);
+        reject(false);
+      }
     });
   }
 
@@ -174,13 +194,14 @@ console.log('lala', $event.data);
     return new Promise((resolve, reject) => {
       try {
         const order = this.getOrder();
-        this.transform.setVariable('actionType', {id: ActionTypeEnum.ORDER_DONE_REJECT});
-        this.endpoints.put('putActionOrderRejectDone', order).then((order: Order) => {
+        this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_DONE_REJECT });
+        this.endpoints.put('putActionOrderRejectDone', order).then((call: Call) => {
+          this.setCall(call);
           resolve(true);
         })
-        .catch(err => {
-          reject(false);
-        });
+          .catch(err => {
+            reject(false);
+          });
       } catch (e) {
         console.error(e);
         reject(false);
@@ -192,58 +213,50 @@ console.log('lala', $event.data);
     return this.call.orders.find(o => o.contractorDomain.id === order.contractorDomain.id);
   }
 
-  public callKill(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.popup.add('Melding afbreken', PopupConfirmComponent, {
-        description: '*** De opdrachten zullen ook afgebroken worden. Dit kan effect hebben op de verdere afhandelingen bij de partijen.'
-      }, [{
-        type: PopupETypes.ok, event: (text: string) => {
-          if (text && text.length > 0) {
-            const loaderId = this.loader.add('Bezig met opslaan!');
-  
-            this.endpoints.put('postCallAbort', text).then((mesage: Message) => {
-              this.loader.remove(loaderId);
-              resolve(true);
-            })
-              .catch(error => {
-                this.loader.remove(loaderId);
-                reject(false);
-              });
-          }
-        }
-      }]);
-    });
-  }
+  // public callKill(): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     this.popup.add('Melding afbreken', PopupConfirmComponent, {
+  //       description: '*** De opdrachten zullen ook afgebroken worden. Dit kan effect hebben op de verdere afhandelingen bij de partijen.'
+  //     }, [{
+  //       type: PopupETypes.ok, event: (text: string) => {
+  //         if (text && text.length > 0) {
+  //           const loaderId = this.loader.add('Bezig met opslaan!');
 
-  public callClose(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.popup.add('Melding afsluiten', PopupConfirmComponent, {
-      }, [{
-        type: PopupETypes.ok, event: (content: string) => {
-          if (content && content.length > 0) {
-            const loaderId = this.loader.add('Bezig met opslaan!');
-            const note = new Note();
-            note.content = content;
+  //           this.endpoints.put('postCallAbort', text).then((mesage: Message) => {
+  //             this.loader.remove(loaderId);
+  //             resolve(true);
+  //           })
+  //             .catch(error => {
+  //               this.loader.remove(loaderId);
+  //               reject(false);
+  //             });
+  //         }
+  //       }
+  //     }]);
+  //   });
+  // }
 
-            this.endpoints.post('postCallClose', note).then((mesage: Message) => {
-              this.loader.remove(loaderId);
-              resolve(true);
-            })
-              .catch(error => {
-                this.loader.remove(loaderId);
-                reject(false);
-              });
-          }
-        }
-      }]);
-    });
-  }
+  // public callClose(): Promise<boolean> {
+  //   return new Promise((resolve, reject) => {
+  //     this.popup.add('Melding afsluiten', PopupConfirmComponent, {
+  //     }, [{
+  //       type: PopupETypes.ok, event: (content: string) => {
+  //         if (content && content.length > 0) {
+  //           const loaderId = this.loader.add('Bezig met opslaan!');
+  //           const note = new Note();
+  //           note.content = content;
 
-  public getOrder(): Order {
-    const order = this.transform.getVariable('order');;
-    if (order) {
-      return order;
-    }
-    throw 'Order not found';
-  }
+  //           this.endpoints.post('postCallClose', note).then((mesage: Message) => {
+  //             this.loader.remove(loaderId);
+  //             resolve(true);
+  //           })
+  //             .catch(error => {
+  //               this.loader.remove(loaderId);
+  //               reject(false);
+  //             });
+  //         }
+  //       }
+  //     }]);
+  //   });
+  // }
 }

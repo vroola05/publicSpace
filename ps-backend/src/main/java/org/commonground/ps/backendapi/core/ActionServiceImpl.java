@@ -178,7 +178,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum) {
-		System.out.println("Ralllala: " + domainId +" - "+ actionEnum.id);
+		
 		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
 		if (actionEntityOptional.isEmpty()) {
 			return false;
@@ -189,7 +189,7 @@ public class ActionServiceImpl implements ActionService {
 		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
 		boolean change = false;
 
-		System.out.println("lala: " + (actionTypeEntity.getDomainType() == null ? "NULL" : actionTypeEntity.getDomainType().getId()));
+		
 		// if (actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
 			System.out.println("Yess");
 			orderEntity.setActionTypeEntity(actionTypeEntity);

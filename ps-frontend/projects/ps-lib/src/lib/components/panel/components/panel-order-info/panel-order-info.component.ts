@@ -90,10 +90,6 @@ export class PanelOrderInfoComponent implements OnInit {
       }}]);
   }
 
-  public onOrderAccept(): void {
-    this.changed.emit({action: 'order-accept', data: this.order});
-  }
-
   public onOrderClose(): void {
     this.changed.emit({action: 'order-close', data: this.order});
   }

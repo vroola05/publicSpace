@@ -115,7 +115,7 @@ public class OrderController extends Controller {
 	
 	@Secured(identifier = "putActionOrderCancel", domainType = DomainTypeEnum.GOVERNMENT)
 	@PutMapping(value = "/{id}/action/cancel", consumes = "application/json", produces = "application/json")
-	public Order putActionOrderCancel(
+	public Call putActionOrderCancel(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 
@@ -127,7 +127,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderRejectDone", domainType = DomainTypeEnum.GOVERNMENT)
 	@PutMapping(value = "/{id}/action/reject-done", consumes = "application/json", produces = "application/json")
-	public Order putActionOrderRejectDone(
+	public Call putActionOrderRejectDone(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
@@ -138,7 +138,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderClose", domainType = DomainTypeEnum.GOVERNMENT)
 	@PutMapping(value = "/{id}/action/close", consumes = "application/json", produces = "application/json")
-	public Order putOrderActionType(
+	public Call putOrderActionType(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
@@ -149,7 +149,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderAccept", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/accept", consumes = "application/json", produces = "application/json")
-	public Order putActionOrderAccept(
+	public Call putActionOrderAccept(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 
@@ -160,7 +160,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderReject", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/reject", consumes = "application/json", produces = "application/json")
-	public Order putActionOrderReject(
+	public Call putActionOrderReject(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
@@ -171,16 +171,17 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderSaveTemporary", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/save/temp", consumes = "application/json", produces = "application/json")
-	public Order putActionOrderSaveTemporary(
+	public Call putActionOrderSaveTemporary(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-
-		return orderService.update(getUser(), id, order, false);
+		User user = getUser();
+		orderService.update(user, id, order, false);
+		return orderService.getCallByOrderId(user, id).get();
 	}
 
 	@Secured(identifier = "putActionOrderDone", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/done", consumes = "application/json", produces = "application/json")
-	public Order putActionOrderDone(
+	public Call putActionOrderDone(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 

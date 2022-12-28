@@ -3,7 +3,7 @@
     <div class="show-all material-icons md-36" (click)="toggle()" *ngIf="hasMoreComments()">comment</div>
     <div class="note" *ngFor="let note of orderNotes; let colIndex = index">
         <span>{{getDate(note.dateCreated)}}, </span>
-        <span>{{note?.user?.name}} - </span>
+        <span><lib-user-hover [user]="note?.user"></lib-user-hover> - </span>
         <span [innerHtml]="note.content">
         </span>
     </div>

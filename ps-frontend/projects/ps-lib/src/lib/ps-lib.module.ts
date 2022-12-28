@@ -150,6 +150,7 @@ import { PanelOrderHandleComponent } from './components/panel/components/panel-o
 import { PanelOrderConfirmationComponent } from './components/panel/components/panel-order-confirmation/panel-order-confirmation.component';
 import { OrderNotesComponent } from './components/notes/order-notes/order-notes.component';
 import { PanelOrderSpecificationsComponent } from './components/panel/components/panel-order-specifications/panel-order-specifications.component';
+import { UserHoverComponent } from './components/user-hover/user-hover.component';
 
 
 @NgModule({
@@ -277,7 +278,8 @@ import { PanelOrderSpecificationsComponent } from './components/panel/components
     PanelOrderSelectComponent,
     PanelOrderHandleComponent,
     PanelOrderConfirmationComponent,
-    PanelOrderSpecificationsComponent
+    PanelOrderSpecificationsComponent,
+    UserHoverComponent
   ],
   imports: [
     CommonModule,
@@ -400,7 +402,8 @@ import { PanelOrderSpecificationsComponent } from './components/panel/components
     PanelOrderSelectComponent,
     PanelOrderHandleComponent,
     PanelOrderConfirmationComponent,
-    PanelOrderSpecificationsComponent
+    PanelOrderSpecificationsComponent,
+    UserHoverComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},

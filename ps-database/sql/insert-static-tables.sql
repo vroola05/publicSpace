@@ -35,7 +35,7 @@ INSERT INTO public.action_type (id, name, domain_type) VALUES (5, 'Opdracht aanm
 INSERT INTO public.action_type (id, name, domain_type) VALUES (6, 'Opdracht accepteren', 2);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (7, 'Opdracht weigeren', 2);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (8, 'Opdracht gereedmelden', 2);
-INSERT INTO public.action_type (id, name, domain_type) VALUES (9, 'Opdracht goedkeuren', 1);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (9, 'Opdracht afsluiten', 1);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (10, 'Opdracht afkeuren', 1);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (11, 'Opdracht annuleren', 1);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (12, 'Terug', NULL);
@@ -43,6 +43,7 @@ INSERT INTO public.action_type (id, name, domain_type) VALUES (13, 'Annuleren', 
 INSERT INTO public.action_type (id, name, domain_type) VALUES (14, 'Volgende', NULL);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (15, 'Toewijzen persoon en groep', NULL);
 INSERT INTO public.action_type (id, name, domain_type) VALUES (16, 'Opdracht tijdelijk opslaan', 2);
+INSERT INTO public.action_type (id, name, domain_type) VALUES (17, 'Alle opdrachten gesloten', 1);
 
 
 --

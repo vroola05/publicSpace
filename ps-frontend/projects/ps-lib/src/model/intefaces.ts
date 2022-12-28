@@ -55,7 +55,8 @@ export enum ActionTypeEnum {
   CANCEL = 13,
   NEXT = 14,
   ASSIGN_GROUP_AND_USER = 15,
-  ORDER_SAVE_TEMP = 16
+  ORDER_SAVE_TEMP = 16,
+  CALL_ALL_ORDERS_CLOSED = 17
 }
 
 export enum PageLayoutType {

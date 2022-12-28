@@ -123,6 +123,7 @@ export * from './lib/components/panel/components/panel-order-confirmation/panel-
 export * from './lib/components/panel/components/panel-assign-g-or-u/panel-assign-g-or-u.component';
 export * from './lib/components/panel/components/panel-assign-g-and-u/panel-assign-g-and-u.component';
 
+export * from './lib/components/user-hover/user-hover.component';
 export * from './lib/components/toast/toast.component';
 export * from './lib/components/popup/components/popup-confirm/popup-confirm.component';
 

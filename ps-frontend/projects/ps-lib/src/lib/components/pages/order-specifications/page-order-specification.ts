@@ -1,8 +1,5 @@
 import { Directive, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Status } from "../../../../model/status";
-import { forkJoin, Observable } from "rxjs";
-import { first } from "rxjs/operators";
 import { ActionTypeEnum } from "../../../../model/intefaces";
 import { ActionService } from "../../../services/action/action.service";
 import { ApiService } from "../../../services/api/api.service";
@@ -16,7 +13,6 @@ import { ToastService } from "../../../services/toast/toast.service";
 import { TransformService } from "../../../services/transform/transform.service";
 import { PageAbstract } from "../page";
 import { Order } from "../../../../model/order";
-import { OrderNote } from "projects/ps-lib/src/model/order-note";
 
 @Directive()
 export abstract class ActionOrderSpecification extends PageAbstract implements OnInit, OnDestroy {

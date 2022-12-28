@@ -14,6 +14,7 @@ export class PanelOrderComponent implements DynamicPanel, OnInit {
   @Input() public set call( call: Call) {
     this._call = call;
     this.orders = call.orders;
+    console.log(call);
   }
   public get call() {
     return this._call;
@@ -22,7 +23,6 @@ export class PanelOrderComponent implements DynamicPanel, OnInit {
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
   @Input() public pageConfig: PageConfig;
   
-  @Input() public title = '';
   @Input() public orders: Order[];
   @Input() public action: 'view' | 'new' | 'full' = 'view';
   
@@ -50,19 +50,19 @@ export class PanelOrderComponent implements DynamicPanel, OnInit {
     return !order.actionType ? 'default' :
     (order.actionType.id === ActionTypeEnum.ORDER_DONE) ? 'primary' :
     (order.actionType.id === ActionTypeEnum.ORDER_REJECT) ? 'secondary' :
-    (order.actionType.id === ActionTypeEnum.ORDER_DONE_REJECT) ? 'grey' :
-    (order.actionType.id === ActionTypeEnum.ORDER_CLOSE) ? 'grey' : 'default';
+    (order.actionType.id === ActionTypeEnum.ORDER_CLOSE) ? 'grey' :
+    (order.actionType.id === ActionTypeEnum.ORDER_CANCEL) ? 'grey' : 'default';
   }
   public getOrderStatus(order: Order): string {
     return order && order.status ? order.status && order.status.name ? order.status.name : 'Nieuw' : '';
   }
 
   public isOrderOpen(order: Order): boolean {
-    return this.action === 'new' ||
-      order.actionType && (
-        order.actionType.id === ActionTypeEnum.ORDER_CREATE
+    return this.action === 'new' 
+      || this.orders.length == 1 
+      || order.actionType 
+        && (order.actionType.id === ActionTypeEnum.ORDER_CREATE
         || order.actionType.id === ActionTypeEnum.ORDER_DONE
-        || order.actionType.id === ActionTypeEnum.ORDER_REJECT
-      );
+        || order.actionType.id === ActionTypeEnum.ORDER_REJECT);
   }
 }

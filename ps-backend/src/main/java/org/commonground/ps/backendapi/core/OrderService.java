@@ -20,5 +20,5 @@ public interface OrderService {
     public Optional<Call> setUser(User user, Long id, User userNew);
     public Optional<Call> setGroup(User user, Long id, Group groupNew);
     public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew);
-    public Order setAction(User user, Order order, ActionEnum actionEnum, DomainTypeEnum domainTypeEnum);
+    public Call setAction(User user, Order order, ActionEnum actionEnum, DomainTypeEnum domainTypeEnum);
 }

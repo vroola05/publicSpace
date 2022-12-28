@@ -34,7 +34,7 @@
         <lib-btn-contained [type]="'containedSecondary'" (clicked)="onOrderReject()">Niet akkoord</lib-btn-contained>
       </div>
       <div class="col-md-6 mr-md-0">
-        <lib-btn-contained [type]="'containedPrimary'" (clicked)="onOrderAccept()">Akkoord</lib-btn-contained>
+        <lib-btn-contained [type]="'containedPrimary'" (clicked)="onOrderClose()">Akkoord</lib-btn-contained>
       </div>
     </div>
     <div *ngIf="isRejected()" class="row panel-order-info-edit">

@@ -28,12 +28,14 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
   public pageConfig: PageConfig;
   public header: List;
 
+  private instances = [];
   private _call: Call;
   public set call(call: Call) {
     this._call = call;
     if (call) {
       this.header = this.getHeaderList(call);
     }
+    this.instances.forEach(instance => instance.call = call);
   }
   
   public get call() {
@@ -166,7 +168,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
 
     componentRef.instance.pageConfig = this.pageConfig;
     componentRef.instance.call = this.call;
-
+    this.instances.push(componentRef.instance);
     this.subscriptions.push(componentRef.instance.changed.subscribe($event => this.changed($event)));
   }
 

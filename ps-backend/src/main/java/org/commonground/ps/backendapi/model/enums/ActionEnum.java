@@ -13,14 +13,15 @@ public enum ActionEnum {
   ORDER_ACCEPT(6L, "Opdracht accepteren"),
   ORDER_REJECT(7L, "Opdracht weigeren"),
   ORDER_DONE(8L, "Opdracht gereedmelden"),
-  ORDER_CLOSE(9L, "Opdracht goedkeuren"),
+  ORDER_CLOSE(9L, "Opdracht afsluiten"),
   ORDER_DONE_REJECT(10L, "Opdracht afkeuren"),
   ORDER_CANCEL(11L, "Opdracht annuleren"),
   CANCEL(12L, "Terug"),
   BACK(13L, "Annuleren"),
   NEXT(14L, "Volgende"),
   ASSIGN_GROUP_AND_USER(15L, "Toewijzen persoon en groep"),
-  ORDER_SAVE_TEMP(16L, "Opdracht tijdelijk opslaan");
+  ORDER_SAVE_TEMP(16L, "Opdracht tijdelijk opslaan"),
+  CALL_ALL_ORDERS_CLOSED(17L, "Alle opdrachten afgesloten");
     
   private static final Map<Long, ActionEnum> BY_ID = new HashMap<>();
   private static final Map<String, ActionEnum> BY_NAME = new HashMap<>();

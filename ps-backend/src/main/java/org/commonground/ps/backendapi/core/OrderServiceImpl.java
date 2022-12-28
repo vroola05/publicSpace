@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.BadRequestException;
+import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
@@ -17,7 +17,6 @@ import org.commonground.ps.backendapi.jpa.entities.ContractSpecificationItemEnti
 import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
-import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderSpecificationItemEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
@@ -27,6 +26,7 @@ import org.commonground.ps.backendapi.jpa.repositories.OrderRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Category;
+import org.commonground.ps.backendapi.model.DomainType;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.OrderSpecificationItem;
@@ -73,11 +73,17 @@ public class OrderServiceImpl implements OrderService {
 		}
 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user.getDomain().getDomainType());
 
-		List<Order> orders = new ArrayList<>();
-		orders.add(Convert.orderEntity(orderEntityOptional.get(), user.getDomain().getDomainType()));
+		addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
 
-		call.setOrders(orders);
 		return Optional.of(call);
+	}
+
+	public void addOrderToCall(DomainType domainType, Call call, OrderEntity orderEntity) {
+		if (domainType.getId() == DomainTypeEnum.CONTRACTOR.id) {
+			List<Order> orders = new ArrayList<>();
+			orders.add(Convert.orderEntity(orderEntity, domainType));
+			call.setOrders(orders);
+		}
 	}
 
 	@Override
@@ -161,13 +167,10 @@ public class OrderServiceImpl implements OrderService {
 					return Optional.empty();
 				}
 			}
-			System.out.println("Hier");
 			// Action type entity is requiered
 			if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE)) {
-				System.out.println("Leeg");
 				return Optional.empty();
 			}
-			System.out.println("Klaar");
 			order = Convert.orderEntity(orderRepository.save(orderEntity), user.getDomain().getDomainType());
 		}
 		//orderRepository.saveAll(entities)
@@ -298,7 +301,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order setAction(User user, Order order, ActionEnum actionEnum, DomainTypeEnum domainTypeEnum) throws BadRequestException {
+	public Call setAction(User user, Order order, ActionEnum actionEnum, DomainTypeEnum domainTypeEnum) throws BadRequestException {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
 		
 		if (orderEntityOptional.isEmpty()) {
@@ -310,7 +313,32 @@ public class OrderServiceImpl implements OrderService {
 		if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, actionEnum)) {
 			throw new BadRequestException();
 		}
-		return Convert.orderEntity(orderRepository.save(orderEntity), user.getDomain().getDomainType());
+		OrderEntity orderEntityUpdated = orderRepository.save(orderEntity);
+
+		CallEntity callEntity = orderEntityUpdated.getCall();
+		if (areAllOrdersClosed(callEntity)) {
+			System.out.println("All closed" );
+			actionService.call(callEntity.getDomain().getId(), callEntity.getId(), ActionEnum.CALL_ALL_ORDERS_CLOSED);
+			orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
+			
+			Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user.getDomain().getDomainType());
+			addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+			return call;
+		} else {
+			Call call = Convert.callEntity(orderEntityUpdated.getCall(), user.getDomain().getDomainType());
+			addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+			return call;
+		}
+	}
+
+	public boolean isOrderClosed(ActionTypeEntity actionTypeEntity) {
+		System.out.println("All " + actionTypeEntity.getName() + " "+actionTypeEntity.getId() + " "+ ActionEnum.ORDER_CANCEL.id + " " + ActionEnum.ORDER_CLOSE.id);
+		return ActionEnum.ORDER_CANCEL.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_CLOSE.id == actionTypeEntity.getId();
+	}
+
+	public boolean areAllOrdersClosed(CallEntity callEntity) {
+		return callEntity.getOrders().stream().allMatch(orderEntity -> isOrderClosed(orderEntity.getActionTypeEntity()));
 	}
 
 }
