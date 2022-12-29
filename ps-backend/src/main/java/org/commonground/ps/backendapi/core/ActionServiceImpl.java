@@ -23,7 +23,6 @@ import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
-import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -154,9 +153,7 @@ public class ActionServiceImpl implements ActionService {
 				if (callEntityOptional.isPresent()) {
 					CallEntity callEntity = callEntityOptional.get();
 					callEntity.setStatus(actionEntity.getStatus());
-					callRepository.save(callEntity);
-
-
+					callRepository.saveAndFlush(callEntity);
 				}
 			}
 		}
@@ -178,31 +175,27 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum) {
-		
+
 		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
 		if (actionEntityOptional.isEmpty()) {
 			return false;
 		}
 		
-		
 		ActionEntity actionEntity = actionEntityOptional.get();
 		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
-		boolean change = false;
-
 		
-		// if (actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-			System.out.println("Yess");
-			orderEntity.setActionTypeEntity(actionTypeEntity);
-			change = true;
-		// }
+		if (orderEntity.getActionTypeEntity() != null && orderEntity.getActionTypeEntity().getId() == actionTypeEntity.getId()) {
+			return false;
+		}
+
+		orderEntity.setActionTypeEntity(actionTypeEntity);
 
 		StatusEntity statusEntity = actionEntity.getStatus();
 		if (statusEntity != null && statusEntity.getId() != null) {
 			orderEntity.setStatus(statusEntity);
-			change = true;
 		}
 
-		return change;
+		return true;
 	}
 
 	

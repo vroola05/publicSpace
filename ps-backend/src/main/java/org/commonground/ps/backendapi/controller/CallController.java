@@ -17,6 +17,7 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
+import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Contract;
@@ -141,6 +142,8 @@ public class CallController extends Controller {
 		if (ordersOptional.isEmpty()) {
 			throw new BadRequestException();
 		}
+
+		actionService.call(getUser().getDomain().getId(), id, ActionEnum.ORDER_CREATE);
 
 		return ordersOptional.get();
 	}

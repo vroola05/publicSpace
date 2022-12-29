@@ -1,10 +1,10 @@
-<div class="user">
-    <div class="information">
+<div class="user" (mouseover)="showInformation($event)" (mouseout)="hideInformation($event)">
+    <div class="information" [ngClass]="{'show': show}" #informationElement>
         <span class="item title">{{_user?.domain?.name}}</span>
         <span class="item">{{getUserGroups()}}</span>
         <span class="item">{{_user.email}}</span>
         <span class="item">{{_user.phone}}</span>
         
     </div>
-    <div class="name">{{_user.name}}</div>
+    <div class="name" #nameElement>{{_user.name}}</div>
 </div>

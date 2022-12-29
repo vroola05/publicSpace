@@ -13,15 +13,19 @@
         position: absolute;
         left: -75px;
         bottom: 0px;
-        min-width: 300px;
+        width: 300px;
         margin-bottom: calc($default-spacing * 3);
         padding: calc($default-spacing / 2);
 
 
-        background: #ededed;
+        background: $white;
         border: $color-tertiary solid 1px;
         border-radius: calc($default-spacing / 2);
-
+        box-shadow: #a5a3a3 2px 2px 3px;
+        
+        &.show {
+            display: block;
+        }
         &:after {
             content: '';
             position: absolute;
@@ -46,10 +50,6 @@
     }
     &:hover {
         .name {
-            color: $color-secondary;
-        }
-        .information {
-            display: block;
             color: $color-secondary;
         }
     }

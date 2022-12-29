@@ -125,11 +125,10 @@ public class OrderServiceImpl implements OrderService {
 		if (callEntity.getOrders() == null) {
 			callEntity.setOrders(new ArrayList<>());
 		}
-	
+
 		for (OrderEntity o : callEntity.getOrders()) {
 			existingOrders.put(o.getId(), o);
 		}
-		
 
 		List<ContractEntity> contractEntities = contractRepository.getContractByGovernmentDomainIdAccepted(user.getDomain().getId(), true);
 
@@ -168,12 +167,12 @@ public class OrderServiceImpl implements OrderService {
 				}
 			}
 			// Action type entity is requiered
-			if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE)) {
-				return Optional.empty();
-			}
+			actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE);
+			
+
 			order = Convert.orderEntity(orderRepository.save(orderEntity), user.getDomain().getDomainType());
 		}
-		//orderRepository.saveAll(entities)
+
 		return Optional.of(orders);
 	}
 
@@ -303,10 +302,15 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Call setAction(User user, Order order, ActionEnum actionEnum, DomainTypeEnum domainTypeEnum) throws BadRequestException {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
-		
+
 		if (orderEntityOptional.isEmpty()) {
 			throw new BadRequestException();
 		}
+
+		if (isOrderClosed(orderEntityOptional.get().getActionTypeEntity())) {
+			throw new BadRequestException("Order is already closed");
+		}
+		
 
 		OrderEntity orderEntity = orderEntityOptional.get();
 
@@ -317,22 +321,40 @@ public class OrderServiceImpl implements OrderService {
 
 		CallEntity callEntity = orderEntityUpdated.getCall();
 		if (areAllOrdersClosed(callEntity)) {
-			System.out.println("All closed" );
 			actionService.call(callEntity.getDomain().getId(), callEntity.getId(), ActionEnum.CALL_ALL_ORDERS_CLOSED);
-			orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
 			
-			Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user.getDomain().getDomainType());
-			addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
-			return call;
-		} else {
-			Call call = Convert.callEntity(orderEntityUpdated.getCall(), user.getDomain().getDomainType());
-			addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
-			return call;
+			orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
+			if (orderEntityOptional.isPresent()) {
+				Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user.getDomain().getDomainType());
+				addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+				return call;
+			}
+		} else if (isCallAction(orderEntityUpdated.getActionTypeEntity())) {
+			actionService.call(callEntity.getDomain().getId(), callEntity.getId(), ActionEnum.valueOfId(orderEntityUpdated.getActionTypeEntity().getId()));
+
+			orderEntityOptional = getOrderEntityById(user, order.getId(), domainTypeEnum);
+			if (orderEntityOptional.isPresent()) {
+				Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user.getDomain().getDomainType());
+				addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+				return call;
+			}
 		}
+
+		Call call = Convert.callEntity(orderEntityUpdated.getCall(), user.getDomain().getDomainType());
+		addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+		return call;
 	}
 
+	public boolean isCallAction(ActionTypeEntity actionTypeEntity) {
+		return ActionEnum.ORDER_CREATE.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_CANCEL.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_ACCEPT.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_REJECT.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_DONE.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_DONE_REJECT.id == actionTypeEntity.getId()
+			|| ActionEnum.ORDER_CLOSE.id == actionTypeEntity.getId();
+	}
 	public boolean isOrderClosed(ActionTypeEntity actionTypeEntity) {
-		System.out.println("All " + actionTypeEntity.getName() + " "+actionTypeEntity.getId() + " "+ ActionEnum.ORDER_CANCEL.id + " " + ActionEnum.ORDER_CLOSE.id);
 		return ActionEnum.ORDER_CANCEL.id == actionTypeEntity.getId()
 			|| ActionEnum.ORDER_CLOSE.id == actionTypeEntity.getId();
 	}
