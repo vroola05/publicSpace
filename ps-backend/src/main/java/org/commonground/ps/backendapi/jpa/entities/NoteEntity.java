@@ -40,4 +40,15 @@ public class NoteEntity {
 
   private Boolean visible;
 
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    NoteEntity o = (NoteEntity) object;
+    return id == o.id;
+  }
 }

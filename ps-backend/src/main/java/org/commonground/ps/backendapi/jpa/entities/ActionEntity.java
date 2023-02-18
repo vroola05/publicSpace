@@ -26,4 +26,16 @@ public class ActionEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "status_id", referencedColumnName = "id")
   private StatusEntity status;
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    ActionEntity o = (ActionEntity) object;
+    return id == o.id;
+  }
 }

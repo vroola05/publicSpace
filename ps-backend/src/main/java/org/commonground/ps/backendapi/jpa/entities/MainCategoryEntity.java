@@ -76,4 +76,5 @@ public class MainCategoryEntity {
   public int hashCode() {
       return Objects.hash(name);
   }
+
 }

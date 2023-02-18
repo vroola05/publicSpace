@@ -29,4 +29,16 @@ public class PersonEntity {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "call_id", referencedColumnName = "id")
   private CallEntity call;
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    PersonEntity o = (PersonEntity) object;
+    return id == o.id;
+  }
 }

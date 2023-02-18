@@ -310,9 +310,12 @@ public class OrderServiceImpl implements OrderService {
 		if (isOrderClosed(orderEntityOptional.get().getActionTypeEntity())) {
 			throw new BadRequestException("Order is already closed");
 		}
-		
 
 		OrderEntity orderEntity = orderEntityOptional.get();
+
+		if (!isAllowedAction(orderEntity.getActionTypeEntity().getId(), user.getDomain().getDomainType())) {
+			throw new BadRequestException();
+		}
 
 		if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, actionEnum)) {
 			throw new BadRequestException();
@@ -343,6 +346,19 @@ public class OrderServiceImpl implements OrderService {
 		Call call = Convert.callEntity(orderEntityUpdated.getCall(), user.getDomain().getDomainType());
 		addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
 		return call;
+	}
+
+	public boolean isAllowedAction(Long actionTypeId, DomainType domainType) {
+		if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+			return actionTypeId == ActionEnum.ORDER_CREATE.id
+				|| actionTypeId == ActionEnum.ORDER_DONE.id
+				|| actionTypeId == ActionEnum.ORDER_REJECT.id;
+		} else if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+			return actionTypeId == ActionEnum.ORDER_CREATE.id
+				|| actionTypeId == ActionEnum.ORDER_ACCEPT.id
+				|| actionTypeId == ActionEnum.ORDER_DONE_REJECT.id;
+		}
+		return false;
 	}
 
 	public boolean isCallAction(ActionTypeEntity actionTypeEntity) {

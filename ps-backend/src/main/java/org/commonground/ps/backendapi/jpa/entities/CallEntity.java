@@ -45,20 +45,20 @@ public class CallEntity {
   @OneToOne(cascade = CascadeType.ALL, mappedBy = "call")
   private PersonEntity person;
 
-  @ManyToOne(fetch=FetchType.LAZY)
-  @JoinColumn(name="domain_id", referencedColumnName = "id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "domain_id", referencedColumnName = "id")
   private DomainEntity domain;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "status_id", referencedColumnName = "id")
   private StatusEntity status;
 
-  @ManyToOne(fetch=FetchType.LAZY)
-  @JoinColumn(name="user_id", referencedColumnName = "id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private UserEntity user;
 
-  @ManyToOne(fetch=FetchType.LAZY)
-  @JoinColumn(name="group_id", referencedColumnName = "id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "group_id", referencedColumnName = "id")
   private GroupEntity group;
 
   @OneToMany(targetEntity = OrderEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -67,4 +67,16 @@ public class CallEntity {
   @OrderBy("dateCreated DESC")
   @OneToMany(targetEntity = NoteEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<NoteEntity> notes = new ArrayList<>();
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    CallEntity o = (CallEntity) object;
+    return id == o.id;
+  }
 }

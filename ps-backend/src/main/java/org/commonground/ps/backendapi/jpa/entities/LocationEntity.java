@@ -28,4 +28,18 @@ public class LocationEntity {
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "call_id", referencedColumnName = "id", nullable = false)
   private CallEntity call;
+
+
+  
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    LocationEntity o = (LocationEntity) object;
+    return id == o.id;
+  }
 }

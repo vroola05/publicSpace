@@ -45,4 +45,16 @@ public class UserEntity {
 
   @ManyToOne(fetch = FetchType.EAGER)
   private DomainEntity domain;
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    UserEntity o = (UserEntity) object;
+    return id == o.id;
+  }
 }

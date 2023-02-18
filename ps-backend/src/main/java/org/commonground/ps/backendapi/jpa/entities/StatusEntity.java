@@ -31,4 +31,16 @@ public class StatusEntity {
 
   @OneToMany(targetEntity = ActionEntity.class, mappedBy = "status")
   private List<ActionEntity> actions;
+  
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    StatusEntity o = (StatusEntity) object;
+    return id == o.id;
+  }
 }

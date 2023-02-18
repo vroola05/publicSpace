@@ -42,4 +42,16 @@ public class CategoryEntity {
   @ManyToOne()
   @JoinColumn(name = "group_id", referencedColumnName = "id")
   private GroupEntity group;
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    CategoryEntity o = (CategoryEntity) object;
+    return id == o.id;
+  }
 }
