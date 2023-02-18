@@ -150,6 +150,9 @@
           }
         }
       }
-    }},
-  "defaultProject": "ps-lib"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
 }
