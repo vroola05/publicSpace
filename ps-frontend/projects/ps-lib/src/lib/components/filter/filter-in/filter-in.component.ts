@@ -3,7 +3,6 @@ import {ConfigService} from '../../../services/config/config.service';
 import {FilterService} from '../../../services/filter/filter.service';
 import {FilterType} from '../../../../model/query-parameters';
 import {KeyValueT} from '../../../../model/template';
-import moment from 'moment';
 
 @Component({
   selector: 'lib-filter-in',

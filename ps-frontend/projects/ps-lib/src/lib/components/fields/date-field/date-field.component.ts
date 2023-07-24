@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FieldAbstract } from '../field-abstract';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ValidationService } from '../../../services/validation/validation.service';
 
@@ -31,7 +31,7 @@ export class DateFieldComponent extends FieldAbstract implements OnInit, OnDestr
   }
 
   public onDateChanged(value: MatDatepickerInputEvent<any>): void {
-    this.value = value.value === null ? '' : moment(value.value).format('YYYY-MM-DD');
+    this.value = value.value === null ? '' : dayjs(value.value).format('YYYY-MM-DD');
     if (this.data) {
       this.changed.emit({value: this.value, data: this.data});
     } else {

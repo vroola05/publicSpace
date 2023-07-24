@@ -1,8 +1,7 @@
-import { ConvertPropertyBindingResult } from '@angular/compiler/src/compiler_util/expression_converter';
-import { ApplicationRef, ComponentFactory, ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injectable, Injector } from '@angular/core';
-import { PopupETypes } from '../../../model/intefaces';
+import { ApplicationRef, createComponent, ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injectable, Injector } from '@angular/core';
+
 import { LoaderComponent } from '../../components/loader/loader.component';
-import { PopupComponent } from '../../components/popup/popup.component';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,7 @@ export class Loader {
 
     const instance = componentRefer.instance as LoaderComponent;
     instance.title = title;
-
+    
     this.appRef.attachView(componentRefer.hostView);
     const elem = (componentRefer.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement;
     document.body.appendChild(elem);

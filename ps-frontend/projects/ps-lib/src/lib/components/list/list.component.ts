@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'lib-list',
@@ -72,7 +72,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public date(id: string, row: any): string {
     const date = row[id] as Date;
     if (date) {
-      return moment(date).format('DD MMM YYYY');
+      return dayjs(date).format('DD MMM YYYY');
     }
     return '';
   }

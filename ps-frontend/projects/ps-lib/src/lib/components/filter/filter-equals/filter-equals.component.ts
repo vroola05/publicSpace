@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {FilterService} from '../../../services/filter/filter.service';
 import {FilterType} from '../../../../model/query-parameters';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'lib-filter-equals',
@@ -43,7 +43,7 @@ export class FilterEqualsComponent implements OnInit, OnDestroy {
   }
 
   public onDateChange(value: MatDatepickerInputEvent<any>) {
-    const date = value.value === null ? '' : moment(value.value).format('YYYY-MM-DD');
+    const date = value.value === null ? '' : dayjs(value.value).format('YYYY-MM-DD');
     this.changeValue(!date ? '' : date);
   }
 
@@ -71,7 +71,7 @@ export class FilterEqualsComponent implements OnInit, OnDestroy {
       return parseInt(this.value, 10);
     }
     if (this.type === 'date') {
-      return moment(this.value).toDate();
+      return dayjs(this.value).toDate();
     }
   }
 

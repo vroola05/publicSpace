@@ -3,14 +3,9 @@ package org.commonground.ps.backendapi.validators;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.UserExtended;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PostUserValidatorImpl  implements ConstraintValidator<PostUserValidator, UserExtended> {
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public void initialize(PostUserValidator postUser) {
     }

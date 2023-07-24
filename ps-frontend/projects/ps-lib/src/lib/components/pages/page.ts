@@ -12,7 +12,7 @@ import { List } from '../../../model/list';
 import { Call } from '../../../model/call';
 import { ConfigService } from '../../services/config/config.service';
 import { DomainType } from '../../../model/domain-type';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Subscription } from 'rxjs';
 import { Order } from '../../../model/order';
 import { Note } from '../../../model/note';
@@ -126,9 +126,9 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     list.description = call.description;
     
     list.status = !call.status ? '' : call.status.name;
-    list.dateCreated = moment(call.dateCreated).toISOString();
+    list.dateCreated = dayjs(call.dateCreated).toISOString();
     if (call.dateEnded) {
-      list.dateEnded = moment(call.dateEnded).toISOString();
+      list.dateEnded = dayjs(call.dateEnded).toISOString();
     }
 
     list.user = !call.user ? '' : call.user.name;
@@ -143,9 +143,9 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     list.description = order.description;
 
     list.status = !order.status ? '' : order.status.name;
-    list.dateCreated = moment(order.dateCreated).toISOString();
+    list.dateCreated = dayjs(order.dateCreated).toISOString();
     if (list.dateEnded) {
-      list.dateEnded = moment(order.dateEnded).toISOString();
+      list.dateEnded = dayjs(order.dateEnded).toISOString();
     }
 
     list.user = !order.user ? '' : order.user.name;

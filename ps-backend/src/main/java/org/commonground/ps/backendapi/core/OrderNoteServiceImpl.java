@@ -1,13 +1,11 @@
 package org.commonground.ps.backendapi.core;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.commonground.ps.backendapi.exception.BadRequestException;
-import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
@@ -31,8 +29,9 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	@Autowired
-	private OrderService orderService;
+	// @Autowired
+	// private OrderService orderService;
+	
 	@Autowired
 	private OrderNoteRepository orderNoteRepository;
 
@@ -90,7 +89,7 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 	}
 
 	@Override
-	public Optional<List<OrderNoteEntity>> saveNew(Order order, User user, boolean definite, DomainTypeEnum domainTypeEnum) throws BadRequestException {
+	public Optional<List<OrderNoteEntity>> saveNew(OrderEntity orderEntity, Order order, User user, boolean definite) throws BadRequestException {
 
 		if (user == null) {
 			throw new BadRequestException();
@@ -105,12 +104,6 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 		if (orderNotes.isEmpty()) {
 			return Optional.empty();
 		}
-
-		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, order.getId(), domainTypeEnum);
-		if (orderEntityOptional.isEmpty()) {
-			throw new BadRequestException();
-		}
-		OrderEntity orderEntity = orderEntityOptional.get();
 
 		addNew(orderEntity, order, user, definite);
 		

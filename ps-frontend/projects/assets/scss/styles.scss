@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
-// @import "~bootstrap/dist/css/bootstrap.css";
 
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins/_breakpoints";
+// @import "node_modules/bootstrap/scss/functions";
+// @import "node_modules/bootstrap/scss/variables";
+// @import "node_modules/bootstrap/scss/mixins/_breakpoints";
 
-//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-//@import '~material-icons/iconfont/material-icons.css';
-//@import "node_modules/ol/ol.css";
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins/breakpoints";
+
 
 @import "../../assets/scss/colors";
 @import "../../assets/scss/typography";

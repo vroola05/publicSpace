@@ -41,8 +41,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	@Autowired
-	private OrderNoteService orderNoteService;
+	// @Autowired
+	// private OrderNoteService orderNoteService;
 
     @Autowired
 	ActionService actionService;
@@ -294,7 +294,7 @@ public class OrderServiceImpl implements OrderService {
 
 		orderEntity.getOrderSpecificationItems().removeIf(orderSpecificationItemEntity -> orderSpecificationItems.stream().noneMatch(orderSpecificationItem -> orderSpecificationItem.getContractSpecificationItem().getId() == orderSpecificationItemEntity.getContractSpecificationItem().getId()));
 
-		orderNoteService.addNew(orderEntity, order, user, definite);
+		// orderNoteService.addNew(orderEntity, order, user, definite);
 
 		return Convert.orderEntity(orderRepository.saveAndFlush(orderEntity), user.getDomain().getDomainType());
 	}

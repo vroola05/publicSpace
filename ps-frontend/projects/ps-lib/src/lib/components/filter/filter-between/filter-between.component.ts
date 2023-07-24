@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { Subscription } from 'rxjs';
 import { FilterService } from '../../../services/filter/filter.service';
 import {FilterType} from '../../../../model/query-parameters';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
@@ -30,10 +30,10 @@ export class FilterBetweenComponent implements OnInit {
     const value = this.filterService.getFilterValue(this.id);
     if (value) {
       if (value.from) {
-        this.valueFrom = moment(new Date(value.from)).format('YYYY-MM-DD');
+        this.valueFrom = dayjs(new Date(value.from)).format('YYYY-MM-DD');
       }
       if (value.to) {
-        this.valueTo = moment(new Date(value.to)).format('YYYY-MM-DD');
+        this.valueTo = dayjs(new Date(value.to)).format('YYYY-MM-DD');
       }
     }
     this.checkHasFilter();
@@ -63,13 +63,13 @@ export class FilterBetweenComponent implements OnInit {
   }
 
   public onDateChangeFrom(value: MatDatepickerInputEvent<any>) {
-    this.valueFrom = value.value === null ? '' : moment(value.value).format('YYYY-MM-DD');
+    this.valueFrom = value.value === null ? '' : dayjs(value.value).format('YYYY-MM-DD');
     this.checkHasFilter();
     this.changeValue();
   }
 
   public onDateChangeTo(value: MatDatepickerInputEvent<any>) {
-    this.valueTo = value.value === null ? '' : moment(value.value).format('YYYY-MM-DD');
+    this.valueTo = value.value === null ? '' : dayjs(value.value).format('YYYY-MM-DD');
     this.checkHasFilter();
     this.changeValue();
   }
@@ -97,7 +97,7 @@ export class FilterBetweenComponent implements OnInit {
       return parseInt(value, 10);
     }
     if (this.type === 'date') {
-      return moment(value).toDate();
+      return dayjs(value).toDate();
     }
   }
 

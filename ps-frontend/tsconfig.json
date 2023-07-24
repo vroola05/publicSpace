@@ -10,10 +10,10 @@
     "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-	"allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -26,7 +26,8 @@
         "dist/ps-lib/ps-lib",
         "dist/ps-lib"
       ]
-    }
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

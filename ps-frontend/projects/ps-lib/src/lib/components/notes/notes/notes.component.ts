@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Note } from '../../../../model/note';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'lib-notes',
@@ -40,6 +40,6 @@ export class NotesComponent implements OnInit {
   }
 
   public getDate(date: Date): string {
-    return moment(date).format('DD-MM-YYYY HH:mm');
+    return dayjs(date).format('DD-MM-YYYY HH:mm');
   }
 }

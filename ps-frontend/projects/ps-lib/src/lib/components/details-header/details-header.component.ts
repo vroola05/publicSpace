@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CallList } from '../../../model/call-list';
 import { ListTemplateColumnT } from '../../../model/template';
 import { ConfigService } from '../../services/config/config.service';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'lib-details-header',
@@ -36,7 +36,7 @@ export class DetailsHeaderComponent implements OnInit {
   public date(id: string): string {
     const date = this.data[id] as Date;
     if (date) {
-      return moment(date).format('DD MMM YYYY');
+      return dayjs(date).format('DD MMM YYYY');
     }
     return '';
   }

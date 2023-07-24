@@ -102,13 +102,8 @@ public class OrderController extends Controller {
 	public List<ContractSpecificationItem> getContractSpecificationItemsByOrderId(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
 
-		User user = getUser(); 
-		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
-		if (orderEntityOptional.isEmpty()) {
-			throw new BadRequestException();
-		}
-
-		OrderEntity orderEntity = orderEntityOptional.get();
+		User user = getUser();
+		OrderEntity orderEntity = getOrderEntity(user, id, DomainTypeEnum.CONTRACTOR);
 
 		return contractSpecificationItemService.getContractSpecificationItems(orderEntity.getCall().getDomain().getId(), user.getDomain().getId());
 	}
@@ -120,7 +115,8 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 
 		User user = getUser();
-		orderNoteService.saveNew(order, user, true, DomainTypeEnum.GOVERNMENT);
+		OrderEntity orderEntity = getOrderEntity(user, order.getId(), DomainTypeEnum.GOVERNMENT);
+		orderNoteService.saveNew(orderEntity, order, user, true);
 
 		return orderService.setAction(user, order, ActionEnum.ORDER_CANCEL, DomainTypeEnum.GOVERNMENT);
 	}
@@ -132,7 +128,8 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
 		User user = getUser();
-		orderNoteService.saveNew(order, user, true, DomainTypeEnum.GOVERNMENT);
+		OrderEntity orderEntity = getOrderEntity(user, order.getId(), DomainTypeEnum.GOVERNMENT);
+		orderNoteService.saveNew(orderEntity, order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_DONE_REJECT, DomainTypeEnum.GOVERNMENT);
 	}
 
@@ -143,7 +140,8 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
 		User user = getUser();
-		orderNoteService.saveNew(order, user, true, DomainTypeEnum.CONTRACTOR);
+		OrderEntity orderEntity = getOrderEntity(user, order.getId(), DomainTypeEnum.CONTRACTOR);
+		orderNoteService.saveNew(orderEntity, order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_CLOSE, DomainTypeEnum.GOVERNMENT);
 	}
 
@@ -154,7 +152,8 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 
 		User user = getUser();
-		orderNoteService.saveNew(order, user, true, DomainTypeEnum.CONTRACTOR);
+		OrderEntity orderEntity = getOrderEntity(user, order.getId(), DomainTypeEnum.CONTRACTOR);
+		orderNoteService.saveNew(orderEntity, order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_ACCEPT, DomainTypeEnum.CONTRACTOR);
 	}
 
@@ -165,7 +164,8 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
 		User user = getUser();
-		orderNoteService.saveNew(order, user, true, DomainTypeEnum.CONTRACTOR);
+		OrderEntity orderEntity = getOrderEntity(user, order.getId(), DomainTypeEnum.CONTRACTOR);
+		orderNoteService.saveNew(orderEntity, order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_REJECT, DomainTypeEnum.CONTRACTOR);
 	}
 
@@ -188,5 +188,13 @@ public class OrderController extends Controller {
 		User user = getUser();
 		orderService.update(user, id, order, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_DONE, DomainTypeEnum.CONTRACTOR);
+	}
+
+	public OrderEntity getOrderEntity(User user, Long id, DomainTypeEnum domainTypeEnum) throws BadRequestException {
+		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, domainTypeEnum);
+		if (orderEntityOptional.isEmpty()) {
+			throw new BadRequestException();
+		}
+		return orderEntityOptional.get();
 	}
 }

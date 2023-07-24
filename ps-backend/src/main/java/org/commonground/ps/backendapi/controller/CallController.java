@@ -19,6 +19,7 @@ import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
+import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.Group;
@@ -157,7 +158,25 @@ public class CallController extends Controller {
 	@Secured(identifier = "postNote", domainType = DomainTypeEnum.NONE)
 	@PostMapping(value = "/{id}/note")
 	public Note postNote(@PathVariable @NotNull(message = "Waarde is verplicht") Long id, @NotNull(message = "Waarde is verplicht") @RequestBody Note note) {
-		Optional<NoteEntity> noteEntityOptional = noteService.save(id, note.getContent(), note.getType().getId(), getUser(), false);
+		User user = getUser();
+
+		CallEntity callEntity;
+		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
+			if (orderEntityOptional.isEmpty()) {
+				throw new BadRequestException();
+			}
+			callEntity = orderEntityOptional.get().getCall();
+		} else {
+			Optional<CallEntity> callEntityOptional = callService.getCallEntityById(user, id);
+			if (callEntityOptional.isEmpty()) {
+				throw new BadRequestException();
+			}
+			callEntity = callEntityOptional.get();
+			
+		}
+
+		Optional<NoteEntity> noteEntityOptional = noteService.save(callEntity, note.getContent(), note.getType().getId(), user, false);
 		
 		if (noteEntityOptional.isEmpty()) {
 			throw new BadRequestException();

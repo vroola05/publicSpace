@@ -1,10 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Message } from '../../../../model/message';
 import { IPopup, NoteTypeEnum, PopupETypes } from '../../../../model/intefaces';
 import { Note, NoteType } from '../../../../model/note';
 import { TextareaFieldComponent } from '../../fields/textarea-field/textarea-field.component';
 import { Subscription } from 'rxjs';
-import moment from 'moment';
 import { AuthorisationService } from '../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../services/endpoint/endpoint.service';
 import { ValidationService } from '../../../services/validation/validation.service';
