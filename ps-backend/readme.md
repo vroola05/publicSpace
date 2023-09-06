@@ -11,3 +11,8 @@
 
 16	"Opdracht tijdelijk opslaan"	2       | 1:  & 2:  Opdracht weigeren, Opdracht gereedmelden
 17	"Alle opdrachten afgesloten"	1       | 1:  & 2: 
+
+
+CREATE USER sonarqube WITH PASSWORD 'qube_sonar_###';
+CREATE DATABASE sonarqube OWNER sonarqube;
+GRANT ALL PRIVILEGES ON DATABASE sonarqube TO sonarqube;

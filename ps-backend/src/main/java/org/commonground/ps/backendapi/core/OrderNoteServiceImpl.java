@@ -16,7 +16,6 @@ import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.OrderNote;
 import org.commonground.ps.backendapi.model.User;
-import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,11 +67,11 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 			throw new BadRequestException();
 		}
 
-		List<OrderNote> orderNotes = order.getNotes().stream().filter(note -> note.getId() == null || !note.getDefinite()).collect(Collectors.toList());;
+		List<OrderNote> orderNotes = order.getNotes().stream().filter(note -> note.getId() == null || !note.getDefinite()).collect(Collectors.toList());
 		for (OrderNote orderNote : orderNotes) {
 			
 			if (orderNote.getId() != null) {
-				Optional<OrderNoteEntity> orderNoteEntityOptional = orderEntity.getOrderNote().stream().filter(noteEntity -> noteEntity.getId() == orderNote.getId()).findFirst();
+				Optional<OrderNoteEntity> orderNoteEntityOptional = orderEntity.getOrderNote().stream().filter(noteEntity -> noteEntity.getId().equals(orderNote.getId())).findFirst();
 				if (orderNoteEntityOptional.isPresent()) {
 					OrderNoteEntity orderNoteEntity = orderNoteEntityOptional.get();
 					orderNoteEntity.setContent(orderNote.getContent());
@@ -100,7 +99,7 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 		}
 
 		// Select all new notes and alle indefinite notes
-		List<OrderNote> orderNotes = order.getNotes().stream().filter(note -> note.getId() == null || !note.getDefinite()).collect(Collectors.toList());;
+		List<OrderNote> orderNotes = order.getNotes().stream().filter(note -> note.getId() == null || !note.getDefinite()).collect(Collectors.toList());
 		if (orderNotes.isEmpty()) {
 			return Optional.empty();
 		}

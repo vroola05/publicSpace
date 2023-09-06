@@ -1,4 +1,4 @@
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injectable, Injector } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injectable, Injector, Type } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PopupETypes } from '../../../model/intefaces';
 import { PopupComponent } from '../../components/popup/popup.component';
@@ -16,7 +16,7 @@ export class Popup {
     private injector: Injector
   ) { }
 
-  public add<T>(title: string, component: T, properies: any, events?: {type: PopupETypes, event: any}[]): number {
+  public add<T>(title: string, component: Type<any>, properies: any, events?: {type: PopupETypes, event: any}[]): number {
     const componentRefer = this.componentFactoryResolver
       .resolveComponentFactory(PopupComponent)
       .create(this.injector);

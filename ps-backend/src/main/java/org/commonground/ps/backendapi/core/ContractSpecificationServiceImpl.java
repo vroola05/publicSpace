@@ -29,13 +29,13 @@ public class ContractSpecificationServiceImpl implements ContractSpecificationSe
 
     @Override
     public List<ContractSpecification> getContractSpecifications(Long domainId, Long contractId) {
-        List<ContractSpecification> contractSpecifications = new ArrayList<ContractSpecification>();
+        List<ContractSpecification> contractSpecifications = new ArrayList<>();
         List<ContractSpecificationEntity> contractSpecificationEntities = contractSpecificationsRepository.getContractSpecificationByContractId(domainId, contractId);
 
         for(ContractSpecificationEntity contractSpecificationEntity: contractSpecificationEntities) {
             ContractSpecification contractSpecification = Convert.contractSpecificationEntity(contractSpecificationEntity);
 
-            List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<ContractSpecificationItem>();
+            List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<>();
             for(ContractSpecificationItemEntity contractSpecificationItemEntity: contractSpecificationEntity.getContractSpecificationItems()) {
                 contractSpecificationItems.add(Convert.contractSpecificationItemEntity(contractSpecificationItemEntity));
             }
@@ -66,8 +66,7 @@ public class ContractSpecificationServiceImpl implements ContractSpecificationSe
 
             contractSpecificationItemService.convertContractSpecificationItems(contractSpecification, contractSpecificationEntity);
 
-            ContractSpecification contractSpecificationResult = Convert.contractSpecificationEntity(contractSpecificationsRepository.save(contractSpecificationEntity));
-            return contractSpecificationResult;
+            return Convert.contractSpecificationEntity(contractSpecificationsRepository.save(contractSpecificationEntity));
         }
 
         return null;
@@ -87,8 +86,7 @@ public class ContractSpecificationServiceImpl implements ContractSpecificationSe
 
             contractSpecificationItemService.convertContractSpecificationItems(contractSpecification, contractSpecificationEntity);
 
-            ContractSpecification contractSpecificationResult = Convert.contractSpecificationEntity(contractSpecificationsRepository.saveAndFlush(contractSpecificationEntity));
-            return contractSpecificationResult;
+            return Convert.contractSpecificationEntity(contractSpecificationsRepository.saveAndFlush(contractSpecificationEntity));
         }
         return null;
     }

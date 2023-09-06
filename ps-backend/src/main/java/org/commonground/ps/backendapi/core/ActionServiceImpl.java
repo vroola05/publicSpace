@@ -65,18 +65,18 @@ public class ActionServiceImpl implements ActionService {
 	public List<ActionType> getActionTypes() {
 		List<ActionType> actionTypes = new ArrayList<>();
 		List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-		actionTypeEntities.forEach(actionTypeEntity -> {
-			actionTypes.add(Convert.actionTypeEntity(actionTypeEntity));
-		});
+		actionTypeEntities.forEach(actionTypeEntity -> 
+			actionTypes.add(Convert.actionTypeEntity(actionTypeEntity))
+		);
 		return actionTypes;
 	}
 
 	public List<Action> getActionByDomainId(Long domainId) {
 		List<Action> actions = new ArrayList<>();
 		List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
-		actionEntities.forEach(actionEntity -> {
-			actions.add(Convert.actionEntity(actionEntity));
-		});
+		actionEntities.forEach(actionEntity -> 
+			actions.add(Convert.actionEntity(actionEntity))
+		);
 		return actions;
 	}
 
@@ -91,7 +91,7 @@ public class ActionServiceImpl implements ActionService {
 
 
 			List<ActionTypeEntity> actionTypeEntitiesNew = actionTypeEntities.stream().filter( actionTypeEntity -> 
-				actionEntities.stream().noneMatch(b -> b.getActionType().getId() == actionTypeEntity.getId())).collect(Collectors.toList());
+				actionEntities.stream().noneMatch(b -> b.getActionType().getId().equals(actionTypeEntity.getId()))).collect(Collectors.toList());
 
 			if (!actionTypeEntitiesNew.isEmpty()) {
 				List<ActionEntity> newActionEntities = new ArrayList<>();
@@ -101,12 +101,12 @@ public class ActionServiceImpl implements ActionService {
 					actionEntity.setDomain(optionalDomainEntity.get());
 					newActionEntities.add(actionEntity);
 				});
-				System.out.println("newActionEntities: " + newActionEntities.size());
+
 				actionRepository.saveAll(newActionEntities);
 			}
 
 			List<ActionEntity> actionDelete = actionEntities.stream().filter( actionEntity -> 
-				actionTypeEntities.stream().noneMatch(b -> b.getId() == actionEntity.getActionType().getId())).collect(Collectors.toList());
+				actionTypeEntities.stream().noneMatch(b -> b.getId().equals(actionEntity.getActionType().getId()))).collect(Collectors.toList());
 
 			if (!actionDelete.isEmpty()) {
 				actionRepository.deleteAll(actionDelete);
@@ -184,7 +184,7 @@ public class ActionServiceImpl implements ActionService {
 		ActionEntity actionEntity = actionEntityOptional.get();
 		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
 		
-		if (orderEntity.getActionTypeEntity() != null && orderEntity.getActionTypeEntity().getId() == actionTypeEntity.getId()) {
+		if (orderEntity.getActionTypeEntity() != null && orderEntity.getActionTypeEntity().getId().equals(actionTypeEntity.getId())) {
 			return false;
 		}
 

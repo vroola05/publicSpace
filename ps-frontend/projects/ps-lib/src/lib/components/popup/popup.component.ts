@@ -2,7 +2,7 @@ import {
   Component, ComponentFactoryResolver,
   Input,
   OnDestroy,
-  OnInit, ViewChild
+  OnInit, Type, ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { PopupETypes } from '../../../model/intefaces';
@@ -44,12 +44,11 @@ export class PopupComponent implements OnInit, OnDestroy {
     return this.closeEvent.next(this);
   }
 
-  public renderHtml<T>(component: T, properties: any, events?: {type: PopupETypes, event: any}[]): void {
+  public renderHtml(component: Type<any>, properties: any, events?: {type: PopupETypes, event: any}[]): void {
     this.events = events;
     const viewContainerRef = this.dynamicHost.viewContainerRef;
     viewContainerRef.clear();
-    const componentRef = viewContainerRef.createComponent<T>(component as any);  
-    const instance = componentRef.instance;
+    const instance = viewContainerRef.createComponent(component).instance;  
 
     
     for (const propery in properties) {

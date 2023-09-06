@@ -30,7 +30,7 @@ public class ListBuilder<T> {
     return PageRequest.of(offset, size, Sort.by(orders));
   }
 
-  public ListBuilder with(QueryParametersFieldFilter filter) {
+  public ListBuilder<T> with(QueryParametersFieldFilter filter) {
     filters.add(filter);
     return this;
   }

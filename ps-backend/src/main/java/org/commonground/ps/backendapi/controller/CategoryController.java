@@ -63,13 +63,13 @@ public class CategoryController extends Controller {
 
     isValid(companyId, domainId);
 
-    List<MainCategory> mainCategories = new ArrayList<MainCategory>();
+    List<MainCategory> mainCategories = new ArrayList<>();
 
     List<MainCategoryEntity> mainCategoryEntities = mainCategoryRepository.getMainCategories(domainId);
 
-    mainCategoryEntities.forEach(mainCategoryEntity -> {
-      mainCategories.add(Convert.mainCategoryEntity(mainCategoryEntity));
-    });
+    mainCategoryEntities.forEach(mainCategoryEntity -> 
+      mainCategories.add(Convert.mainCategoryEntity(mainCategoryEntity))
+    );
 
     return mainCategories;
   }
@@ -103,7 +103,7 @@ public class CategoryController extends Controller {
     isValid(companyId, domainId);
     validateMainCategoryByName(mainCategory.getName(), domainId);
 
-    if (mainCategoryId == mainCategory.getId()) {
+    if (mainCategoryId.equals(mainCategory.getId())) {
       Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, domainId);
       if (mainCategoryEntity.isPresent()) {
         mainCategoryEntity.get().setName(mainCategory.getName());
@@ -123,14 +123,12 @@ public class CategoryController extends Controller {
     
     isValid(companyId, domainId);
 
-    List<Category> categories = new ArrayList<Category>();
+    List<Category> categories = new ArrayList<>();
 
     User user = getUser();
     List<CategoryEntity> categoryEntities = categoryRepository.getCategories(mainCategoryId, new Date(), user);
 
-    categoryEntities.forEach(categoryEntity -> {
-      categories.add(Convert.categoryEntity(categoryEntity));
-    });
+    categoryEntities.forEach(categoryEntity -> categories.add(Convert.categoryEntity(categoryEntity)));
 
     return categories;
   }
@@ -143,7 +141,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
 
     isValid(companyId, domainId);
-    List<Category> categories = new ArrayList<Category>();
+    List<Category> categories = new ArrayList<>();
 
     User user = getUser();
     List<CategoryEntity> categoryEntities = categoryRepository.getCategoriesAll(mainCategoryId, user);
@@ -197,7 +195,7 @@ public class CategoryController extends Controller {
     isValid(companyId, domainId);
     validateCategoryByName(category.getName(), domainId, mainCategoryId, categoryId);
 
-    if (categoryId == category.getId()) {
+    if (categoryId.equals(category.getId())) {
       Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.getCategoryById(mainCategoryId, categoryId, domainId);
       if (optionalCategoryEntity.isPresent()) {
         CategoryEntity categoryEntity = optionalCategoryEntity.get();
@@ -224,7 +222,7 @@ public class CategoryController extends Controller {
 
   private void validateCategoryByName(String name, Long domainId, Long mainCategoryId, Long categoryId) throws BadRequestException {
     Optional<CategoryEntity> categoryEntity = categoryRepository.getCategoryByName(mainCategoryId, name, domainId);
-    if (categoryEntity.isPresent() && (categoryId == null || categoryId != categoryEntity.get().getId())) {
+    if (categoryEntity.isPresent() && (categoryId == null || !categoryId.equals(categoryEntity.get().getId()))) {
       BadRequestException badRequestException = new BadRequestException();
       badRequestException.addError(new FieldValue("name", "Waarde is niet uniek"));
       throw badRequestException;

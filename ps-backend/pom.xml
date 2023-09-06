@@ -9,7 +9,7 @@
 	<name>ps-backend</name>
 	<description>Public space api</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<start-class>org.commonground.ps.backendapi.BackendApiApplication</start-class>
 	</properties>
 	<parent>
