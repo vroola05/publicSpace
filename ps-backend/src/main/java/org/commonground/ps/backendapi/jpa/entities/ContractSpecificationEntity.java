@@ -39,6 +39,7 @@ public class ContractSpecificationEntity {
   private Date dateCreated;
   private Date dateStart;
   private Date dateEnd;
+  private Boolean accepted;
   private Boolean active;
 
   @ManyToOne(fetch = FetchType.EAGER)

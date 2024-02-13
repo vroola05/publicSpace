@@ -1119,7 +1119,8 @@ CREATE TABLE public.contract_specification (
     date_created timestamp with time zone DEFAULT now() NOT NULL,
     date_start date NOT NULL,
     date_end date,
-    accepted boolean
+    accepted boolean,
+    active boolean
 );
 
 ALTER TABLE public.contract_specification OWNER TO postgres;
@@ -1152,7 +1153,7 @@ CREATE TABLE public.contract_specification_items (
     name text NOT NULL,
     unit text NOT NULL,
     price text,
-    accepted boolean
+    active boolean
 );
 
 ALTER TABLE public.contract_specification_items OWNER TO postgres;
@@ -1264,7 +1265,8 @@ CREATE TABLE public.orders_note (
     order_id integer NOT NULL,
     content text NOT NULL,
     date_created timestamp with time zone NOT NULL,
-    user_id integer
+    user_id integer,
+    definite boolean
 );
 
 ALTER TABLE public.orders_note OWNER TO postgres;
