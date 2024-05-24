@@ -2,7 +2,7 @@ package org.commonground.ps.backendapi.jpa.entities;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

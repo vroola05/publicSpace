@@ -180,7 +180,7 @@ public class ContractServiceImpl implements ContractService {
         Optional<ContractEntity> contractEntityOptional = contractRepository.getContractById(id);
         if (contractEntityOptional.isPresent()) {
             ContractEntity contractEntity = contractEntityOptional.get();
-            if (contractEntity.getDomainContractor().getId() == domainIdContractor) {
+            if (contractEntity.getDomainContractor().getId().equals(domainIdContractor)) {
                 contractEntity.setAccepted(contract.getAccepted());
 
                 updateContractMainCategories(contract.getMainCategories(), contractEntity);

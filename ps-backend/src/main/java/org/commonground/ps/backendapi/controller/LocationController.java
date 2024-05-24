@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/location", produces = { "application/json; charset=utf-8" })
 public class LocationController {
   
-  
+  public LocationController() {
+    
+  }
   @Autowired
 	private LocationService locationService;
 

@@ -7,6 +7,7 @@ import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
+import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
 import org.commonground.ps.backendapi.jpa.repositories.NoteRepository;
 import org.commonground.ps.backendapi.jpa.repositories.NoteTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
@@ -17,12 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class NoteServiceImpl implements NoteService {
 
-	// @Autowired
-	// private CallService callService;
-
-	// @Autowired
-	// private OrderService orderService;
-
 	@Autowired
 	private UserRepository userRepository;
 
@@ -32,8 +27,11 @@ public class NoteServiceImpl implements NoteService {
 	@Autowired
 	private NoteRepository noteRepository;
 
+	@Autowired
+	private CallRepository callRepository;
+
 	@Override
-	public Optional<NoteEntity> createNoteEntity(String content, Long noteTypeId, User user, boolean visible) {
+	public Optional<NoteEntity> createNoteEntity(Long callId, String content, Long noteTypeId, User user, boolean visible) {
 		NoteEntity noteEntity = new NoteEntity();
 		noteEntity.setContent(content);
 		if (user != null) {
@@ -43,12 +41,19 @@ public class NoteServiceImpl implements NoteService {
 			}
 		}
 
+		Optional<CallEntity> callEntityOptional = callRepository.findById(callId);
+		if (callEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+		noteEntity.setCall(callEntityOptional.get());
+
 		Optional<NoteTypeEntity> noteTypeOptional = noteTypeRepository.findById(noteTypeId);
 		if (noteTypeOptional.isEmpty()) {
 			return Optional.empty();
 		}
-		noteEntity.setDateCreated(new Date());
 		noteEntity.setNoteType(noteTypeOptional.get());
+
+		noteEntity.setDateCreated(new Date());
 		noteEntity.setVisible(visible);
 
 		return Optional.of(noteEntity);
@@ -57,15 +62,13 @@ public class NoteServiceImpl implements NoteService {
 
 
 	@Override
-	public Optional<NoteEntity> save(CallEntity callEntity, String content, Long noteTypeId, User user,
-			boolean visible) {
-		Optional<NoteEntity> noteEntityOptional = createNoteEntity(content, noteTypeId, user, visible);
+	public Optional<NoteEntity> save(Long callId, String content, Long noteTypeId, User user, boolean visible) {
+		Optional<NoteEntity> noteEntityOptional = createNoteEntity(callId, content, noteTypeId, user, visible);
 		if (noteEntityOptional.isEmpty()) {
 			return Optional.empty();
 		}
 
 		NoteEntity noteEntity = noteEntityOptional.get();
-		noteEntity.setCall(callEntity);
 		
 		return Optional.of(noteRepository.save(noteEntity));
 	}

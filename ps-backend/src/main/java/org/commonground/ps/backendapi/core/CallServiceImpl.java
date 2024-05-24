@@ -91,10 +91,6 @@ public class CallServiceImpl implements CallService {
 
 		CallEntity callEntityNew = callRepository.save(callEntity);
 
-		noteService.save(callEntityNew, "Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
-
-		actionService.call(user.getDomain().getId(), callEntityNew.getId(), ActionEnum.CALL_CREATE);
-
 		return Optional.of(Convert.callEntity(callEntityNew, user.getDomain().getDomainType()));
     }
 

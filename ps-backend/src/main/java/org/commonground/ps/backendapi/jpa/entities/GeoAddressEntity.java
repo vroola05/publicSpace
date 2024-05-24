@@ -2,7 +2,7 @@ package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import org.locationtech.jts.geom.Geometry;
 

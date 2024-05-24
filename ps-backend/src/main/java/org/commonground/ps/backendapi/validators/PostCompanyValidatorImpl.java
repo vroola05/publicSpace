@@ -2,8 +2,8 @@ package org.commonground.ps.backendapi.validators;
 
 import java.util.Optional;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;

@@ -40,12 +40,11 @@ public class SecuredMethodAspect {
       }
     }
     
-    if (domainType != DomainTypeEnum.NONE) {
-      if (userPrincipal.getPrincipal() != null && userPrincipal.getPrincipal().getDomain() != null) {
-        if(domainType.id != userPrincipal.getPrincipal().getDomain().getDomainType().getId()) {
-          throw new ForbiddenException();
-        }
-      }
+    if (
+      domainType != DomainTypeEnum.NONE 
+      && userPrincipal.getPrincipal() != null
+      && userPrincipal.getPrincipal().getDomain() != null && domainType.id != userPrincipal.getPrincipal().getDomain().getDomainType().getId()) {
+      throw new ForbiddenException();
     }
 
     Template template = (Template)userPrincipal.getDetails();

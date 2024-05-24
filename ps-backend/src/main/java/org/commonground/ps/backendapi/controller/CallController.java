@@ -2,9 +2,10 @@ package org.commonground.ps.backendapi.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.lang.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ActionService;
@@ -28,6 +29,7 @@ import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
+import org.commonground.ps.backendapi.model.enums.NoteTypeEnum;
 import org.commonground.ps.backendapi.validators.PostCallValidator;
 import org.commonground.ps.backendapi.validators.PostOrderValidator;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
@@ -75,6 +77,8 @@ public class CallController extends Controller {
 	@Secured(identifier = "postCall")
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public Call postCall(@Valid @PostCallValidator @RequestBody Call call) throws BadRequestException {
+		User user = getUser();
+
 		Optional<ActionEntity> actionEntityOptional = actionService.getEntity(getUser().getDomain().getId(), ActionEnum.CALL_CREATE);
 		if (!actionEntityOptional.isPresent() || actionEntityOptional.get().getStatus() == null) {
 			BadRequestException badRequest = new BadRequestException();
@@ -82,11 +86,18 @@ public class CallController extends Controller {
 			throw badRequest;
 		}
 
-		Optional<Call> callNew = callService.save(getUser(), call);
-		
+		// First save the new call
+		Optional<Call> callNew = callService.save(user, call);
+
 		if (callNew.isEmpty()) {
 			throw new BadRequestException();
 		}
+
+		// Second add some additional note
+		noteService.save(callNew.get().getId(), "Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
+
+		// Third call action
+		actionService.call(user.getDomain().getId(), callNew.get().getId(), ActionEnum.CALL_CREATE);
 
 		return callNew.get();
 	}
@@ -151,7 +162,7 @@ public class CallController extends Controller {
 
 	@Secured(identifier = "getOrderContracts", domainType = DomainTypeEnum.CONTRACTOR)
 	@GetMapping(value = "/{id}/order/contract")
-	public List<Contract> getOrderContracts() {
+	public List<Contract> getOrderContracts(@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
 		return contractService.getContracts(getUser().getDomain().getId(), true);
 	}
 
@@ -160,28 +171,60 @@ public class CallController extends Controller {
 	public Note postNote(@PathVariable @NotNull(message = "Waarde is verplicht") Long id, @NotNull(message = "Waarde is verplicht") @RequestBody Note note) {
 		User user = getUser();
 
-		CallEntity callEntity;
+		Optional<NoteEntity> noteEntityOptional;
 		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
 			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
 			if (orderEntityOptional.isEmpty()) {
 				throw new BadRequestException();
 			}
-			callEntity = orderEntityOptional.get().getCall();
+			noteEntityOptional = noteService.save(orderEntityOptional.get().getCall().getId(), note.getContent(), note.getType().getId(), user, false);
+			
 		} else {
 			Optional<CallEntity> callEntityOptional = callService.getCallEntityById(user, id);
 			if (callEntityOptional.isEmpty()) {
 				throw new BadRequestException();
 			}
-			callEntity = callEntityOptional.get();
-			
+			noteEntityOptional = noteService.save(callEntityOptional.get().getId(), note.getContent(), note.getType().getId(), user, false);
 		}
 
-		Optional<NoteEntity> noteEntityOptional = noteService.save(callEntity, note.getContent(), note.getType().getId(), user, false);
-		
 		if (noteEntityOptional.isEmpty()) {
 			throw new BadRequestException();
 		}
-
+		
 		return Convert.noteEntity(noteEntityOptional.get());
+	}
+
+	public static void main(String[] args) {
+		// 3 Fizz
+		// 5 Buzz
+		// 3 en 5 FizBuz
+		int bla = 0;
+		float i = 1; 
+		while (true) {
+			
+			boolean fizz = i / 3 == Math.round(i / 3);
+			boolean buzz = i / 5 == Math.round(i / 5);
+
+			if (buzz && fizz) {
+				System.out.println("fizzbuzz");
+				bla++;
+			}
+			else if (fizz) {
+				System.out.println("fizz");
+				bla++;
+			}
+			else if (buzz) {
+				System.out.println("buzz");
+				bla++;
+			} else {
+				// System.out.println(i);
+			}
+			i++;
+			if (bla == 100)
+				break;
+		}
+		
+
+		// System.out.println();
 	}
 }

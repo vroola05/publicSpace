@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.security.Secured;

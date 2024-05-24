@@ -3,7 +3,7 @@ package org.commonground.ps.backendapi.jpa.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

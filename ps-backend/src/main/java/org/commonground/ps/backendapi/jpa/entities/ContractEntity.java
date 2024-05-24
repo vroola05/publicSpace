@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -46,7 +46,7 @@ public class ContractEntity {
   @JoinColumn(name = "domain_id_contractor", nullable = false)
   private DomainEntity domainContractor;
 
-  @OrderBy("mainCategory DESC")
+  // @OrderBy("mainCategory DESC")
   @OneToMany(targetEntity = ContractMainCategoryEntity.class, mappedBy = "contract", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<ContractMainCategoryEntity> contractMainCategories = new ArrayList<>();
 
@@ -57,6 +57,6 @@ public class ContractEntity {
   }
 
   @OneToMany(targetEntity = ContractSpecificationEntity.class, mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  @OrderBy("dateStart ASC")
+  // @OrderBy("dateStart ASC")
   private List<ContractSpecificationEntity> contractSpecifications = new ArrayList<>();
 }

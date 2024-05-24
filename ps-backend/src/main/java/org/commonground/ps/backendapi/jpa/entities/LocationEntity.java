@@ -1,6 +1,6 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,6 @@ public class LocationEntity {
   private String letter;
   private String postal;
   private String city;
-  //private Integer area;
   private Double x;
   private Double y;
 

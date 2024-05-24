@@ -1,9 +1,10 @@
 package org.commonground.ps.backendapi.core.security;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
@@ -19,7 +20,7 @@ public class ApiSecurityFilter extends AbstractPreAuthenticatedProcessingFilter 
         String referer = request.getHeader("referer");
         if (referer != null) {
             try {
-                URL url = new URL(referer);
+                URL url = URI.create(referer).toURL();
                 return url.getHost() + url.getPath();
             } catch (MalformedURLException e) {
             }

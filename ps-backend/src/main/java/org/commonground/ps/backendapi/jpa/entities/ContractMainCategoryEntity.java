@@ -2,7 +2,7 @@ package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.Objects;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;

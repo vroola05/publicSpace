@@ -1,7 +1,7 @@
 package org.commonground.ps.backendapi.validators;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.commonground.ps.backendapi.model.Call;
 
