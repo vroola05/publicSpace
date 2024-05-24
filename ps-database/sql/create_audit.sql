@@ -90,6 +90,7 @@ CREATE TABLE audit.contract_specification_aud (
     date_created timestamp with time zone DEFAULT now(),
     date_start date,
     date_end date,
+    accepted boolean,
     active boolean,
     rev integer NOT NULL,
     revtype integer NOT NULL
