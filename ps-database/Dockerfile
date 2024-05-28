@@ -1,12 +1,6 @@
-FROM postgres:14
+FROM postgis/postgis:16-3.4
+USER postgres
 
-RUN apt-get update \
-    && apt-get install wget -y \
-    && apt-get install postgresql-14-postgis-3 -y \
-    && apt-get install postgis -y
+ADD ./init.sql /docker-entrypoint-initdb.d/
 
-# RUN ./create.sh
-
-# COPY ./sql /publicspace/sql
-# COPY ./create.sh /publicspace/sql/create.sh
-# ENTRYPOINT /publicspace/sql/create.sh
+CMD ["postgres"]

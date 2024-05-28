@@ -1,13 +1,10 @@
-version: "3.8"
 services:
   ps-database:
-    container_name: postgres_container
+    container_name: ps-database-container
     build: ./ps-database
     restart: always
     ports:
       - "5432:5432"
-    expose:
-      - "5432"
     environment:
       POSTGRES_DB: publicspace
       POSTGRES_USER: postgres
@@ -15,9 +12,13 @@ services:
       PGDATA: /var/lib/postgresql/data
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      publicspace:
+        aliases:
+          - ps-database.docker
 
   pgadmin:
-    container_name: pgadmin4_container
+    container_name: ps-pgadmin4_container
     image: dpage/pgadmin4
     restart: always
     environment:
@@ -28,41 +29,40 @@ services:
       - "5050:5050"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      publicspace:
+        aliases:
+          - pgadmin4.docker
 
-  ps-backend:  
+
+  ps-frontend:
+    container_name: ps-frontend-container
+    build: ./ps-frontend
+    restart: always
+    ports:
+      - "4200:4200"
+    networks:
+      publicspace:
+        aliases:
+          - frontend.docker
+
+
+  ps-backend:
+    container_name: ps-backend-container
     build: ./ps-backend
+    restart: always
     ports:
       - "8080:8080"
-    links:
-      - ps-database
-
+    networks:
+      publicspace:
+        aliases:
+          - backend.docker
 
 volumes:
   db-data:
   pgadmin-data:
 
-  # ps-database:  
-  #   build: ./ps-database
-  #   restart: always
-  #   ports:
-  #     - "5432:5432"
-  #   expose:
-  #     - "5432"
-  #   volumes_from:
-  #     - ps-database-data
-
-  # pgadmin:
-  #   container_name: pgadmin4_container
-  #   image: dpage/pgadmin4
-  #   restart: always
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@admin.com
-  #     PGADMIN_DEFAULT_PASSWORD: postgresPassword
-  #   ports:
-  #     - "5050:80"
-
-  # ps-database-data:  
-  #   image: cogniteev/echo
-  #   command: echo 'Data Container for PostgreSQL'
-  #   volumes:
-  #     - /var/lib/postgresql/data
+networks:
+  publicspace:
+    name: publicspace
+    external: false

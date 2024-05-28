@@ -194,37 +194,4 @@ public class CallController extends Controller {
 		return Convert.noteEntity(noteEntityOptional.get());
 	}
 
-	public static void main(String[] args) {
-		// 3 Fizz
-		// 5 Buzz
-		// 3 en 5 FizBuz
-		int bla = 0;
-		float i = 1; 
-		while (true) {
-			
-			boolean fizz = i / 3 == Math.round(i / 3);
-			boolean buzz = i / 5 == Math.round(i / 5);
-
-			if (buzz && fizz) {
-				System.out.println("fizzbuzz");
-				bla++;
-			}
-			else if (fizz) {
-				System.out.println("fizz");
-				bla++;
-			}
-			else if (buzz) {
-				System.out.println("buzz");
-				bla++;
-			} else {
-				// System.out.println(i);
-			}
-			i++;
-			if (bla == 100)
-				break;
-		}
-		
-
-		// System.out.println();
-	}
 }

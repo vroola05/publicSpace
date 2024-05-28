@@ -1,15 +1,21 @@
-FROM maven:3.8.5-openjdk-11 AS build
-COPY ./src /app/
-COPY pom.xml /app/pom.xml
-WORKDIR /app
-RUN mvn clean package
+FROM openjdk:21-jdk
 
-FROM tomcat:9.0
+COPY target/ps-backend.war ps-backend.war
+ENTRYPOINT ["java","-jar","/ps-backend.war"]
 
-RUN rm -rf /usr/local/tomcat/webapps/ROOT
 
-COPY --from=build /app/target/ps-backend.war /usr/local/tomcat/webapps/ROOT.war
+# FROM maven:3.8.5-openjdk-11 AS build
+# COPY ./src /app/
+# COPY pom.xml /app/pom.xml
+# WORKDIR /app
+# RUN mvn clean package
 
-EXPOSE 8080
+# FROM tomcat:9.0
 
-CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]  
+# RUN rm -rf /usr/local/tomcat/webapps/ROOT
+
+# COPY --from=build /app/target/ps-backend.war /usr/local/tomcat/webapps/ROOT.war
+
+# EXPOSE 8080
+
+# CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]  
