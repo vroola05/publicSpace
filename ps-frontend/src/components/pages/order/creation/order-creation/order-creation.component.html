@@ -1,0 +1,29 @@
+<app-panel *ngIf="page && call" 
+  [data]="call"
+  [buttonsLeft]="page?.buttonsLeft"
+  [buttonsRight]="page?.buttonsRight"
+  [pageLayoutType]="page?.layoutType">
+
+  <app-panel-title>
+    <div class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <app-details-header [data]="header"></app-details-header>
+      </div>
+      <div class="col-sm-12 col-md-6 details-main-info">
+        <app-panel-info [call]="call" [urlImage]="getUrlImage"></app-panel-info>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div class="order-action">
+          <app-dropdown-field [id]="'contractor'" [form]="'order'" [required]="true" [style]="'filled'" [name]="'contractor'" [label]="'Kies een aannemer'"
+          (changed)="onContractorChanged($event)" #contractorComponent>
+          </app-dropdown-field>
+          <app-textarea-field [form]="'order'" [id]="'description'" [name]="'description'" [style]="'filled'" [label]="'Opdracht omschrijving'" [placeholder]="'Omschrijf de opdracht'"
+            [value]="order?.description" [required]="true" [maxLength]="500" (changed)="onDescriptionChanged($event)"></app-textarea-field>
+          <app-select-field class="category-list" [form]="'order'" (changed)="onCategoryChanged($event)" [search]="true" [label]="'Opdracht categorie'"
+            [id]="'category'" [name]="'category'" [options]="_categoryItems" [style]="'filled'" [classes]="'max-height'"></app-select-field>
+        </div>
+      </div>
+
+    </div>
+  </app-panel-title>
+</app-panel>

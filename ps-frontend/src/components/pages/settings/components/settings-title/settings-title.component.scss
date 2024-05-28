@@ -1,0 +1,26 @@
+@import "../../../../../assets/scss/styles.scss";
+
+.layout-title {
+  padding-top: calc($default-spacing * 2);
+  h1 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-weight: bold;
+  }
+  h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
+
+}
+
+@include media-breakpoint-down(sm) {
+  .layout-title {
+    padding-top: unset;
+    h3 {
+      display: none;
+    }
+  }
+}

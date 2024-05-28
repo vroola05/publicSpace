@@ -1,0 +1,56 @@
+@import "../../assets/scss/styles.scss";
+
+.user {
+    display: inline;
+    position: relative;
+
+    .name {
+        display: inline;
+        text-decoration: underline;
+    }
+    .information {
+        display: none;
+        position: absolute;
+        left: -75px;
+        bottom: 0px;
+        width: 300px;
+        margin-bottom: calc($default-spacing * 3);
+        padding: calc($default-spacing / 2);
+
+
+        background: $white;
+        border: $color-tertiary solid 1px;
+        border-radius: calc($default-spacing / 2);
+        box-shadow: #a5a3a3 2px 2px 3px;
+        
+        &.show {
+            display: block;
+        }
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border: 15px solid transparent;
+            border-top-color: $color-tertiary;
+            border-bottom: 0;
+            border-left: 0;
+            margin-left: -10px;
+            margin-bottom: -15px;
+        }
+
+        .item {
+            display: block;
+            &.title {
+                font-weight: bold;
+            }
+        }
+    }
+    &:hover {
+        .name {
+            color: $color-secondary;
+        }
+    }
+}

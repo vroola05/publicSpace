@@ -1,0 +1,9 @@
+<!--app-filter [title]="title" [hasFilter]="hasFilter" *ngIf="areas?.length > 0"-->
+<app-filter [title]="title" [hasFilter]="hasFilter">
+  <div class="filter-dropdown-title">Filteren op:</div>
+  <ul class="filter-list">
+    <li class="filter-list-item" *ngFor="let item of list; let colIndex = index">
+        <app-checkbox-field [data]="item" [value]="checked[colIndex]" (changed)="onChange($event)">{{item?.value}}</app-checkbox-field>
+    </li>
+  </ul>
+</app-filter>

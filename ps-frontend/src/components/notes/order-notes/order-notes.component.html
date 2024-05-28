@@ -1,0 +1,10 @@
+<div class="notes-container"  *ngIf="hasComments()">
+    <h4>Notities</h4>
+    <div class="show-all material-icons md-36" (click)="toggle()" *ngIf="hasMoreComments()">comment</div>
+    <div class="note" *ngFor="let note of orderNotes; let colIndex = index">
+        <span>{{getDate(note.dateCreated)}}, </span>
+        <span><app-user-hover [user]="note?.user"></app-user-hover> - </span>
+        <span [innerHtml]="note.content">
+        </span>
+    </div>
+</div>

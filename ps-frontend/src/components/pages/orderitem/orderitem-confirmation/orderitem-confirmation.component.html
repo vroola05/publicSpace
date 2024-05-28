@@ -1,0 +1,16 @@
+<app-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType" [buttonsRight]="buttonsRight">
+  <app-panel-title>
+    <div  class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <app-details-header [data]="header"></app-details-header>
+      </div>
+      <app-panel-info-second class="d-none d-xl-block col-xl-6" 
+        [call]="call" 
+        [order]="order" 
+        [urlImage]="getUrlImage"></app-panel-info-second>
+      <div class="col-12 col-xl-6">
+        <app-panel-order-second [action]="'full'" [title]="'Opdracht omschrijving'" [action]="'confirm'" [order]="order"></app-panel-order-second>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel>

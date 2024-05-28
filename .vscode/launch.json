@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BackendApiApplication<ps-backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.commonground.ps.backendapi.BackendApiApplication",
+            "projectName": "ps-backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+<div class="row">
+    <div *ngIf="buttons" class="col-md-12">
+        <div class="row" *ngFor="let button of buttons; let i = index">
+            <div class="col-md-11">
+                <div class="button" >
+                    <app-create-button [button]="button" [buttonTypeItems]="buttonTypeItems" [actionTypeItems]="actionTypeItems"
+                        [roleItems]="roleItems" [index]="i" [prefix]="getId('[' +i + ']')" (changed)="onButtonChanged($event)"></app-create-button>
+                </div>
+            </div>
+            <div class="col-md-1 text-right d-flex flex-column">
+                <button class="button-default-style material-icons" [disabled]="isFirstButton(i)" (click)="moveUp(i)">keyboard_arrow_up</button>
+                <button class="button-default-style material-icons" [disabled]="isLastButton(i)" (click)="moveDown(i)">keyboard_arrow_down</button>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-md-12">
+        <div class="float-end w-25">
+            <app-btn-contained [type]="'containedPrimary'" (clicked)="onAddClick($event)">Knop toevoegen</app-btn-contained>
+        </div>
+    </div>
+</div>

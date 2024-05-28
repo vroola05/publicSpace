@@ -1,0 +1,47 @@
+<div *ngIf="_call" class="row list-panel">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Melding omschrijving</h4>
+        <h4 *ngIf="_call.priority">Spoed!</h4>
+        {{_call.description}}
+      </div>
+      <div class="col-md-12 list-panel-spacer">
+        <app-panel-person-simple [person]="_call.person"></app-panel-person-simple>
+      </div>
+      <div class="col-md-12" *ngIf="_call.notes && _call.notes.length > 0">
+        Er zijn {{_call.notes.length}} notities.
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="list-panel-block" [ngClass]="{'col-md-8': hasImages(), 'col-md-12': !hasImages()}">
+        <h4>Plaats op de kaart</h4>
+        <app-maps (click)="popupMap($event)" [classes]="'button'" [location]="_call.location"></app-maps>
+      </div>
+      <div class="col-md-4 list-panel-block" *ngIf="hasImages()">
+        <h4>Bijgevoegde foto(s)</h4>
+        <app-image-button [urlImage]="getUrlImage" [documents]="_call.documents"></app-image-button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div *ngIf="buttonsLeft.length > 0 || buttonsRight.length > 0" class="row buttons">
+      <div class="col-md-6 text-left">
+        <div class="row">
+          <div class="col-md-4" *ngFor="let button of buttonsLeft; let rowIndex = index">
+            <app-btn-contained [type]="button.type" (clicked)="navigate(button.route)">{{button.name}}</app-btn-contained>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div class="col-md-4" *ngFor="let button of buttonsRight; let rowIndex = index">
+            <app-btn-contained [type]="button.type" (clicked)="navigate(button.route)">{{button.name}}</app-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

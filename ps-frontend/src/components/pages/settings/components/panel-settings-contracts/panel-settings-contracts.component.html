@@ -1,0 +1,11 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuw contract'"
+  [data]="data"
+  [hasNew]="isGovernment"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <ng-template libDynamic></ng-template>
+</app-panel-settings>

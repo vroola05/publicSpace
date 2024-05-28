@@ -1,0 +1,54 @@
+@import "../../../assets/scss/styles.scss";
+
+.notes {
+  width: 100%;
+  max-width: unset;
+  margin: 0px;
+  padding: 0px;
+
+  .note-row-header {
+    margin: 0px;
+    padding: 0;
+    padding-top: $default-spacing;
+    padding-bottom: $default-spacing;
+    background: $gray3b;
+
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+
+  }
+
+  .note-row {
+    margin: 0px;
+    background: $gray-secondary;
+
+    .note-cols {
+      margin: 0px;
+      padding: $default-spacing;
+      border-bottom: $gray solid 1px;
+      cursor: pointer;
+
+      .note-col {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .note-toggle {
+      margin: 0px;
+      padding: $default-spacing;
+      padding-bottom: calc($default-spacing * 2);
+      border-bottom: $gray solid 1px;
+
+      background: $gray-secondary;
+
+      font-size: $small-font-size;
+    }
+    &:hover {
+      background: $gray3b;
+    }
+  }
+}

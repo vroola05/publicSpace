@@ -1,0 +1,55 @@
+<div class="row list-panel" *ngIf="_domain">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <app-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [label]="'Naam'"
+          [value]="_domain?.name" [required]="true" [maxLength]="100" (changed)="onNameChanged($event)"
+          #nameComponent></app-text-field>
+      </div>
+      <div class="col-md-12">
+        <app-text-field [style]="'filled'" [id]="'domain'" [name]="'domain'" [label]="'Domein'"
+          [value]="_domain?.domain" [required]="true" [maxLength]="50" (changed)="onDomainChanged($event)"
+          #domainComponent></app-text-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <app-dropdown-field [id]="'domainType'" [name]="'domainType'" [label]="'Type domein'" [disabled]="!isNew" [required]="true" [options]="domainTypeItems"
+          (changed)="onDomainTypeChanged($event)" #domainTypeComponent>
+        </app-dropdown-field>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row buttons">
+      <div class="col-md-6 text-left">
+        <div *ngIf="!isNew" class="row">
+          <div class="col-md-8">
+            <app-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+              (changed)="onDeleteChanged($event)">Verwijderen</app-checkbox-field>
+          </div>
+          <div *ngIf="delete" class="col-md-4">
+            <app-btn-contained [type]="'outlineSecondary'">Verwijderen</app-btn-contained>
+          </div>
+          
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div *ngIf="isNew" class="col-md-4">
+            <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
+          </div>
+          <div class="col-md-4">
+            <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

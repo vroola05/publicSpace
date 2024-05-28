@@ -1,9 +1,0 @@
-@import "../../../../../../assets/scss/styles.scss";
-
-@include media-breakpoint-down(sm) {
-  .mail-main {
-    .mail-main-info {
-      display: none;
-    }
-  }
-}

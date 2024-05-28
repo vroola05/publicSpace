@@ -1,0 +1,24 @@
+<div class="popup-confirm">
+  <div class="popup-confirm-description-container">
+    <p *ngIf="description">
+      {{description}}
+    </p>
+    <app-textarea-field
+    [id]="'description'"
+    [name]="'description'"
+    [style]="'filled'"
+    [label]="'Omschrijving'"
+    [required]="true"
+    [maxLength]="500"
+    (changed)="onTextChanged($event)"
+    #ref></app-textarea-field>
+  </div>
+  <div class="row m-0 p-0 notes-viewer-buttons">
+    <div class="col-md-6 pl-md-0 ml-md-0">
+      <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
+    </div>
+    <div class="col-md-6 pr-md-0 mr-md-0">
+      <app-btn-contained [type]="'containedPrimary'" (clicked)="ok()">Ok</app-btn-contained>
+    </div>
+  </div>
+</div>

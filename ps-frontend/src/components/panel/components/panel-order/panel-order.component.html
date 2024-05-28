@@ -1,0 +1,8 @@
+<div *ngIf="orders && orders.length > 0">
+  <h4>Opdrachten</h4>
+  <div *ngFor="let order of orders">
+    <app-panel-toggle [toggle]="isOrderOpen(order)" [style]="getToggleStyle(order)" [title]="[order.contractorDomain.name, getDays(order.dateCreated), getOrderStatus(order)]">
+      <app-panel-order-info [action]="action" [order]="order" (changed)="onChanged($event)"></app-panel-order-info>
+  </app-panel-toggle>
+  </div>
+</div>

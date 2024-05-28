@@ -1,0 +1,13 @@
+<app-panel [data]="call" [pageLayoutType]="page?.layoutType" [buttonsLeft]="page?.buttonsLeft"
+    [buttonsRight]="page?.buttonsRight">
+    <app-panel-title [title]="page?.name">
+        <div class="row">
+            <div class="col-sm-12">
+                <app-details-header [data]="header"></app-details-header>
+            </div>
+            <div class="col-sm-12">
+                <ng-template libDynamic></ng-template>
+            </div>
+        </div>
+    </app-panel-title>
+</app-panel>

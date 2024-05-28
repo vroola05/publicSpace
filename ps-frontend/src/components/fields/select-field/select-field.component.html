@@ -1,0 +1,31 @@
+<div class="field-wrapper">
+  <label>
+    <ng-container *ngIf="label">
+      <span class="field-label" [ngClass]="{'required': required}">{{label}}</span>
+    </ng-container>
+    <div *ngIf="hasItems()" class="selectbox {{classes}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
+      <div class="selectbox-search" *ngIf="search">
+      <app-text-field
+        [name]="'search'"
+        [icon]="'search'"
+        [readonly]="readonly"
+        [disabled]="disabled"
+        [placeholder]="'Zoeken...'"
+        (typing)="onTyping($event)"
+        ></app-text-field>
+      </div>
+      <div class="selectbox-items">
+        <div class="selectbox-item" *ngFor="let option of options">
+          <app-checkbox-field
+                [id]="'option-'"
+                [form]="'pages'"
+                [data]="option"
+                [name]="name"
+                [style]="style"
+                [value]="option?.selected"
+                (changed)="onChecked($event)">{{option.name}}</app-checkbox-field>
+        </div>
+      </div>
+    </div>
+  </label>
+</div>

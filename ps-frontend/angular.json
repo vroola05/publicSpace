@@ -3,156 +3,118 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ps-lib": {
-      "projectType": "library",
-      "root": "projects/ps-lib",
-      "sourceRoot": "projects/ps-lib/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "projects/ps-lib/tsconfig.lib.json",
-            "project": "projects/ps-lib/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/ps-lib/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/ps-lib/src/test.ts",
-            "tsConfig": "projects/ps-lib/tsconfig.spec.json",
-            "karmaConfig": "projects/ps-lib/karma.conf.js"
-          }
-        }
-      }
-    },
-    "ps-government": {
+    "ps-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
         }
       },
-      "root": "projects/ps-government",
-      "sourceRoot": "projects/ps-government/src",
+      "root": "",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "preserveSymlinks": true,
-            "outputPath": "dist/ps-government",
-            "index": "projects/ps-government/src/index.html",
-            "main": "projects/ps-government/src/main.ts",
-            "polyfills": "projects/ps-government/src/polyfills.ts",
-            "tsConfig": "projects/ps-government/tsconfig.app.json",
+            "outputPath": "dist/ps-frontend",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/ps-government/src/favicon.ico",
-              "projects/ps-government/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
               "./node_modules/ol/ol.css",
-              "projects/ps-government/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "server": "src/main.server.ts",
+            "prerender": true,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/ps-government/src/environments/environment.ts",
-                  "with": "projects/ps-government/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "6mb",
-                  "maximumError": "8mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "150kb",
-                  "maximumError": "150kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
-              ]
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "ps-government:build"
-          },
           "configurations": {
             "production": {
-              "browserTarget": "ps-government:build:production"
+              "buildTarget": "ps-frontend:build:production"
+            },
+            "development": {
+              "buildTarget": "ps-frontend:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ps-government:build"
+            "buildTarget": "ps-frontend:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ps-government/src/test.ts",
-            "polyfills": "projects/ps-government/src/polyfills.ts",
-            "tsConfig": "projects/ps-government/tsconfig.spec.json",
-            "karmaConfig": "projects/ps-government/karma.conf.js",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/ps-government/src/favicon.ico",
-              "projects/ps-government/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
               "./node_modules/ol/ol.css",
-              "projects/ps-government/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/ps-government/e2e/protractor.conf.js",
-            "devServerTarget": "ps-government:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "ps-government:serve:production"
-            }
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

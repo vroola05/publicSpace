@@ -1,0 +1,27 @@
+@import "../../assets/scss/styles.scss";
+
+.ps-maps {
+  height: 200px;
+
+  &.bigger {
+    height: 500px;
+  }
+  &.big {
+    height: 500px;
+  }
+  &.button {
+    cursor: pointer;
+  }
+}
+
+
+@include media-breakpoint-down(sm) {
+  .ps-maps {
+    &.bigger {
+      height: 300px;
+    }
+    &.big {
+      height: 100%;
+    }
+  }
+}

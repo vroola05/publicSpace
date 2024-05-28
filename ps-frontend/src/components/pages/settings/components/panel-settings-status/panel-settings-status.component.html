@@ -1,0 +1,10 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuwe status'"
+  [data]="data"
+  [open]="open"
+  [isNew]="isNew"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-status [isNew]="isNew" [status]="selectedStatus" (onEvent)="events($event)"></app-list-panel-status>
+</app-panel-settings>

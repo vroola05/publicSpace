@@ -1,0 +1,95 @@
+@import "../../../../assets/scss/styles.scss";
+
+.panel-toggle {
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  box-shadow: $gray2 0px 1px 2px 0px;
+
+  &.open {
+    margin-bottom: $default-spacing;
+    box-shadow: $gray2 0px 2px 5px 0px;
+  }
+  
+  
+  &.filled {
+    background: $gray-secondary;
+  }
+
+  &.primary {
+    .panel-toggle-title {
+      background: $color-primary-alpha;
+    }
+  }
+  &.secondary {
+    .panel-toggle-title {
+      background: $color-secondary-alpha
+    }
+  }
+  &.grey {
+    .panel-toggle-title {
+      background: $gray-secondary-alpha;
+      color: $gray-primary;
+    }
+  }
+  &.blanc {
+    box-shadow: unset;
+
+    .panel-toggle-title {
+      border: #eee solid 1px;
+    }
+    .panel-toggle-toggle {
+      border-top: none;
+    }
+  }
+  .panel-toggle-title {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+
+    cursor: pointer;
+
+    &:first-child:hover {
+      background: $gray3b;
+    }
+
+    .toggle-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+
+      .toggle-col {
+        flex-grow: 1;
+        flex-basis: 0;
+        margin: 0px;
+        padding: $default-spacing;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+      }
+    }
+    .toggle-icon {
+      position: absolute;
+      right: 0px;
+
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  
+  .panel-toggle-toggle {
+    margin: 0px;
+    padding: $default-spacing;
+    padding-bottom: calc($default-spacing * 2);
+
+    border-top: $gray solid 1px;
+    font-size: $small-font-size;
+  }
+}

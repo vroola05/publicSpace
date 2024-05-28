@@ -1,0 +1,39 @@
+@import "../../../assets/scss/styles.scss";
+
+.image-viewer {
+  display: grid;
+  grid-template-areas:
+    'image'
+    'gallery';
+  grid-template-rows: auto min-content;
+  height: 100%;
+  width: 100%;
+
+  .image-viewer-image {
+    grid-area: image;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    max-height: calc(100vh - $image-size + ($default-spacing * 6) + 1);
+    app-image {
+      max-height: 100%;
+      max-width: 100%;
+      display: contents;
+    }
+  }
+  .image-viewer-gallery {
+    grid-area: gallery;
+    border-top: $gray-secondary solid 1px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .image-viewer {
+    .image-viewer-image {
+      max-height: calc(100vh - ($default-spacing * 6) + ($image-size / 2) + 1);
+    }
+  }
+}

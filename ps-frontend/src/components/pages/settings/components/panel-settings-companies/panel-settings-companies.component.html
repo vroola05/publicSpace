@@ -1,0 +1,10 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuw bedrijf'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-company [isNew]="isNew" [company]="selectedCompany" (onEvent)="events($event)"></app-list-panel-company>
+</app-panel-settings>

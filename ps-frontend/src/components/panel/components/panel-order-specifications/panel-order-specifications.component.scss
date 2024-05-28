@@ -1,0 +1,42 @@
+@import "../../../../assets/scss/styles.scss";
+
+.order-info-specifications {
+    padding-top: calc($default-spacing * 2);
+
+    .panel-order-info-specification-items {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+
+      .panel-order-info-specification-item {
+        display: table-row;
+
+
+        .panel-order-info-specification-item-col {
+          display: table-cell;
+
+          &:first-child {
+            padding-right: calc($default-spacing / 2);
+            text-align: right;
+          }
+          &.unit {
+            width: 80px;
+            padding-left: calc($default-spacing / 2);
+          }
+          &.price {
+            width: 80px;
+            padding-left: calc($default-spacing / 2);
+          }
+          &.price-sum {
+            width: 80px;
+            padding-left: calc($default-spacing / 2);
+            border-left: 1px solid $gray2;
+
+            &.total {
+              border-top: 1px solid $gray2;
+            }
+          }
+        }
+      }
+    }
+  }

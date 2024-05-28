@@ -1,0 +1,31 @@
+<div class="layout-container {{pageLayoutType}}">
+  <div class="layout-header">
+    <app-header class="header-component" [pageLayoutType]="pageLayoutType"></app-header>
+  </div>
+  <div class="layout-toast">
+    <app-toast></app-toast>
+  </div>
+  <div class="layout-body">
+    <div class="layout-main">
+      <div class="layout-body-container">
+        <ng-content></ng-content>
+      </div>
+    </div>
+    <div class="row layout-footer">
+      <div class="col-md-6">
+        <div class="row" *ngIf="buttonsLeftFiltered">
+          <div class="layout-footer-botton-container col-md-4" *ngFor="let button of buttonsLeftFiltered; let rowIndex = index">
+            <app-btn-contained [type]="button.type" (clicked)="onClick(button)">{{button.name}}</app-btn-contained>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row justify-content-end" *ngIf="buttonsRightFiltered">
+          <div class="layout-footer-botton-container col-md-4" *ngFor="let button of buttonsRightFiltered; let rowIndex = index">
+            <app-btn-contained [type]="button.type" (clicked)="onClick(button)">{{button.name}}</app-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="row list-panel" *ngIf="_company">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <app-text-field [style]="'filled'" [id]="'company'" [name]="'company'" [label]="'Bedrijf'"
+          [value]="_company?.name" [required]="true" [maxLength]="50" (changed)="onCompanyChanged($event)"
+          #companyComponent></app-text-field>
+        <app-text-field [style]="'filled'" [id]="'code'" [name]="'code'" [label]="'Gemeentecode'"
+          [value]="_company?.code" [required]="true" [maxLength]="50" (changed)="onCodeChanged($event)"
+          #codeComponent></app-text-field>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Centerpunt gemeente</h3>
+            <app-text-field [style]="'filled'" [id]="'srid'" [name]="'srid'" [label]="'SRID'"
+              [value]="_company?.srid" [required]="true" [maxLength]="50" (changed)="onSridChanged($event)"
+              #sridComponent></app-text-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <app-text-field [style]="'filled'" [id]="'xCoordinate'" [name]="'xCoordinate'" [label]="'X coördinaat'"
+              [value]="_company?.x" [required]="true" [maxLength]="50" (changed)="onXChanged($event)"
+              #latitudeComponent></app-text-field>
+          </div>
+          <div class="col-md-6">
+            <app-text-field [style]="'filled'" [id]="'yCoordinate'" [name]="'yCoordinate'" [label]="'Y coördinaat'"
+              [value]="_company?.y" [required]="true" [maxLength]="50" (changed)="onYChanged($event)"
+              #longitudeComponent></app-text-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row buttons">
+      <div class="col-md-6 text-left">
+        <div *ngIf="!isNew" class="row">
+          <div class="col-md-8">
+            <app-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+              (changed)="onDeleteChanged($event)">Verwijderen</app-checkbox-field>
+          </div>
+          <div *ngIf="delete" class="col-md-4">
+            <app-btn-contained [type]="'outlineSecondary'">Verwijderen</app-btn-contained>
+          </div>
+          
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div *ngIf="isNew" class="col-md-4">
+            <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
+          </div>
+          <div class="col-md-4">
+            <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

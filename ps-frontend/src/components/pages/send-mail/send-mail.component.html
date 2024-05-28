@@ -1,0 +1,27 @@
+<app-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType" [buttonsRight]="buttonsRight">
+  <app-panel-title>
+    <div class="row mail-main">
+      <div class="col-sm-12 mail-main-header">
+        <app-details-header [data]="header"></app-details-header>
+      </div>
+      <div class="col-sm-12 col-md-6 mail-main-info">
+        <app-panel-info [call]="call"
+          [urlImage]="getUrlImage"></app-panel-info>
+      </div>
+      <div class="col-sm-12 col-md-6 mail-main-content">
+        <div class="">
+          <h4>{{label}}</h4>
+          <div class="field-wrapper">
+            <app-textarea-field class="content-field" [id]="'content'" [name]="'content'" [placeholder]="label"
+              [required]="true" [maxLength]="500" (typing)="onTyping($event)" (changed)="onContentChanged($event)"
+              #descriptionField>
+            </app-textarea-field>
+          </div>
+        </div>
+        <div>
+          <app-mail [title]="label"></app-mail>
+        </div>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel>

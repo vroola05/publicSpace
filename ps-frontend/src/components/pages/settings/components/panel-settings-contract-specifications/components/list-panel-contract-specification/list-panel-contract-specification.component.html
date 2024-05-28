@@ -1,0 +1,82 @@
+<div class="row list-panel" *ngIf="_contractSpecification">
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+            <app-text-field 
+              [form]="'contract-specification'"
+              [style]="'filled'" [id]="'description'" [name]="'description'" [label]="'Omschrijving'"
+              [value]="_contractSpecification?.description" [required]="true" [maxLength]="250" (changed)="onDescriptionChanged($event)"
+              #descriptionComponent></app-text-field>
+          
+          <h4>Actief</h4>
+          <div class="field-wrapper">
+            <app-checkbox-field [form]="'contract-specification'" [id]="'active'" [name]="'active'" [value]="_contractSpecification?.active"
+              (changed)="onActiveChanged($event)">Actief</app-checkbox-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+            <app-date-field [form]="'contract-specification'" [style]="'filled'" [id]="'startDate'" [name]="'startDate'" [label]="'Startdatum'"
+              [value]="_contractSpecification?.dateStart" [required]="true" (changed)="onStartDateChanged($event)"
+              #startDateComponent></app-date-field>
+            <app-date-field [form]="'contract-specification'" [style]="'filled'" [id]="'endDate'" [name]="'endDate'" [label]="'Einddatum'"
+              [value]="_contractSpecification?.dateEnd" [required]="false" (changed)="onEndDateChanged($event)"
+              #endDateComponent></app-date-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <app-panel-toggle [style]="'blanc'" [title]="['Bestekpost items']">
+        <div class="row">
+          <div class="col-md-12" *ngIf="_contractSpecification?.contractSpecificationItems">
+              <div class="contractSpecificationItem row" *ngFor="let contractSpecificationItem of _contractSpecification?.contractSpecificationItems; let i = index">
+                  <div class="col-md-12">
+                    <app-panel-contract-specification-item
+                      [index]="i"
+                      [prefix]="'contractSpecificationItem[' + i + ']'"
+                      [contractSpecificationItem]="contractSpecificationItem"
+                      (changed)="onContractSpecificationItemChanged($event)"></app-panel-contract-specification-item>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-12">
+              <div class="row">
+                  <div class="col-md-3">
+                      <app-btn-contained  [type]="'containedPrimary'"
+                          (clicked)="onContractSpecificationItemAddClick($event)">Item toevoegen</app-btn-contained>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </app-panel-toggle>
+    </div>
+    <div class="col-md-12">
+      <div class="row buttons">
+        <div class="col-md-6 text-left">
+          <div *ngIf="!isNew" class="row">
+            <div class="col-md-8">
+              <app-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+                (changed)="onDeleteChanged($event)">Verwijderen</app-checkbox-field>
+            </div>
+            <div *ngIf="delete" class="col-md-4">
+              <app-btn-contained [type]="'outlineSecondary'">Verwijderen</app-btn-contained>
+            </div>
+            
+          </div>
+        </div>
+        <div class="col-md-6 text-right">
+          <div class="row">
+            <div *ngIf="isNew" class="col-md-4">
+              <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
+            </div>
+            <div class="col-md-4">
+              <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

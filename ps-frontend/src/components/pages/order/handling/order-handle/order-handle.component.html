@@ -1,0 +1,29 @@
+<!-- <app-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType"
+  [buttonsRight]="buttonsRight">
+  <app-panel-title>
+    <div class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <app-details-header [data]="header"></app-details-header>
+      </div>
+      <app-panel-info-second class="col-sm-12 col-md-6" [call]="call" [urlImage]="getUrlImage">
+      </app-panel-info-second>
+      <div class="col-sm-12 col-md-6">
+        <div class="order-info" *ngIf="order">
+          <div class="order-info-description">
+            <h4><span>Opdracht omschrijving</span><span class="right">{{getDays(order?.dateSend)}}</span></h4>
+            {{order.description}}
+          </div>
+          <div class="order-explanation">
+            <h4>Toelichting</h4>
+            <app-textarea-field class="explanation-field" 
+              [id]="'explanation'" [name]="'explanation'"
+              [value]="order?.explanation" [placeholder]="'Vul uw notitie van maximaal 1000 karakters in'"
+              [required]="true" [maxLength]="1000" (changed)="onExplanationChanged($event)"
+              #explanationField>
+            </app-textarea-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel> -->

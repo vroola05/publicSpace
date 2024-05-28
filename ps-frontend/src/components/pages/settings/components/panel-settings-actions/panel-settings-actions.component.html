@@ -1,0 +1,9 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [data]="data"
+  [open]="open"
+  [titleNew]="''"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-action [action]="selectedAction" (onEvent)="events($event)"></app-list-panel-action>
+</app-panel-settings>

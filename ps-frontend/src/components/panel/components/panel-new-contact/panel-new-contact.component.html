@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="field-wrapper">
+      <app-checkbox-field [form]="'new-call-information'" [name]="'askContact'" [value]="askContact"
+        (changed)="onAskContactChanged($event)">Ik wil inwonergegevens invoeren zodat hij/zij op de hoogte gehouden
+        wordt
+      </app-checkbox-field>
+    </div>
+  </div>
+</div>
+<div class="askContact" [ngClass]="{'hidden': !askContact}">
+  <div class="row">
+    <div class="col-sm-6">
+      <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'name'" [label]="'Naam'"
+        [value]="call?.person?.name" [required]="askContact" [maxLength]="100" (changed)="onNameChanged($event)"
+        #nameComponent></app-text-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'email'" [type]="'email'" [label]="'Email'"
+        [value]="call?.person?.email" [maxLength]="100" [required]="askContact" (changed)="onEmailChanged($event)"
+        #emailComponent></app-text-field>
+    </div>
+    <div class="col-sm-6">
+      <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'phone'" [label]="'Telefoonnummer'"
+        [value]="call?.person?.phone" [maxLength]="100" (changed)="onPhoneChanged($event)" #phoneComponent>
+      </app-text-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-3">
+      <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'street'" [label]="'Straat'"
+        [value]="call?.person?.street" [maxLength]="100" (changed)="onStreetChanged($event)" #streetComponent>
+      </app-text-field>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'number'" [type]="'number'" [label]="'Huisnummer'"
+        [value]="call?.person?.number" [maxLength]="8" (changed)="onNumberChanged($event)" #numberComponent>
+      </app-text-field>
+    </div>
+    <div class="col-sm-12 col-md-3">
+        <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'letter'" [label]="'Toevoeging'"
+          [value]="call?.person?.letter" [maxLength]="100" (changed)="onLetterChanged($event)" #letterComponent>
+        </app-text-field>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <app-text-field [form]="'new-call-information'" [style]="'filled'" [name]="'city'" [label]="'Woonplaats'"
+        [value]="call?.person?.city" [maxLength]="100" (changed)="onCityChanged($event)" #cityComponent>
+      </app-text-field>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-3">
+    <app-file-field [form]="'new-call-information'" [style]="'filled'" [id]="'files'" [name]="'files'" [label]="'Bestanden'" [placeholder]="'Upload bestanden'"
+      [maxLength]="100" [files]="files" (changed)="onFilesChanged($event)"></app-file-field>
+  </div>
+</div>
+<div class="row" *ngIf="isCC">
+  <div class="col-sm-12 col-md-3">
+    <app-dropdown-field [form]="'new-call-information'" [required]="true" [name]="'channel'"
+        [label]="'Kanaal'" [placeholder]="'Selecteer een kanaal'" (changed)="onChannelChanged($event)"
+        #channelComponent>
+      </app-dropdown-field>
+</div>

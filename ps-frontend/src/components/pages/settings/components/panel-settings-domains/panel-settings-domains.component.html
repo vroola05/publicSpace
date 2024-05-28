@@ -1,0 +1,11 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuw domein'"
+  [data]="data"
+  [hasNew]="isAdmin()"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-domain [isNew]="isNew" [domain]="selectedDomain" (onEvent)="events($event)"></app-list-panel-domain>
+</app-panel-settings>

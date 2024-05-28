@@ -1,0 +1,24 @@
+<app-panel *ngIf="call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType" [buttonsRight]="buttonsRight">
+  <app-panel-title>
+    <div  class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <app-details-header [data]="header"></app-details-header>
+      </div>
+      <app-panel-info-second class="d-none d-xl-block col-xl-6" 
+        [call]="call" 
+        [order]="order"
+        [urlImage]="getUrlImage"></app-panel-info-second>
+      <div class="col-12 col-xl-6">
+        <div  class="orderitem-handle">
+          <div class="orderitem-handle-title">
+            <h4>Selecteer bestekposten</h4>
+          </div>
+          <div class="orderitem-handle-list">
+            <app-select-field class="orderitems-list" [id]="'orderitems'" (changed)="onOrderitemsChanged($event)" [search]="true" [name]="'orderitems'" [options]="orderitems"
+              [style]="'filled'"></app-select-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel>

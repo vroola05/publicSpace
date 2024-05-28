@@ -1,0 +1,14 @@
+@import "../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .panel-title {
+    display: none;
+  }
+}
+@include media-breakpoint-up(md) {
+  .panel-title {
+    h1 {
+      text-align: center;
+    }
+  }
+}

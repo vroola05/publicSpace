@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-sm-12 col-md-6">
+      <app-dropdown-field [form]="'new-call-information'" [style]="'filled'" [required]="true" [name]="'mainCategorie'"
+        [label]="'Hoofdcategorie'" [placeholder]="'Selecteer een hoofdcategorie'" (changed)="onMainCategoryChanged($event)"
+        #mainCategorieComponent>
+      </app-dropdown-field>
+    
+  </div>
+  <div class="col-sm-12 col-md-6">
+    <app-dropdown-field [form]="'new-call-information'" [style]="'filled'" [required]="true" [name]="'categorie'"
+      [label]="'Sub-categorie'" [placeholder]="'Selecteer een categorie'" (changed)="onCategoryChanged($event)" #categoryComponent>
+    </app-dropdown-field>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <app-textarea-field [form]="'new-call-information'" [style]="'filled'" [name]="'description'" [label]="'Omschrijving'" [placeholder]="'Melding omschrijving'"
+      [value]="call?.description" [required]="true" [maxLength]="200" (changed)="onDescriptionChanged($event)"
+      #descriptionComponent></app-textarea-field>
+  </div>
+</div>

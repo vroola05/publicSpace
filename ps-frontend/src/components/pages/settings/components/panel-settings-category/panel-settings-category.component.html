@@ -1,0 +1,21 @@
+<app-settings-title></app-settings-title>
+<div class="row">
+  <div class="col-md-12">
+    <app-dropdown-field [id]="'mainCategories'" [required]="true" [name]="'mainCategories'" [options]="mainCategoryItems"
+      [label]="'Hoofdcategorie'" (changed)="onMainCategoryChanged($event)" #mainCategoryComponent>
+    </app-dropdown-field>
+  </div>
+</div>
+<div class="row" *ngIf="hasMainCategory()">
+  <div class="col-md-12">
+    <app-panel-settings
+      [titleNew]="'Nieuwe categorie'"
+      [data]="data"
+      [isNew]="isNew"
+      [open]="open"
+      [listTemplate]="listTemplate"
+      (onEvent)="events($event)">
+      <app-list-panel-category [isNew]="isNew" [mainCategory]="selectedMainCategory" [category]="selectedCategory" (onEvent)="events($event)"></app-list-panel-category>
+    </app-panel-settings>
+  </div>
+</div>

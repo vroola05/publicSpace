@@ -1,0 +1,8 @@
+@import "'../../../../../../assets/scss/styles.scss";
+
+.btn-container-pages {
+  app-header-button {
+    display: block;
+    margin-top: calc($default-spacing / 2);
+  }
+}

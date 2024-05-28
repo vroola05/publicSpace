@@ -1,0 +1,39 @@
+@import "../../../../../../../assets/scss/styles.scss";
+
+.list-panel {
+  margin-top: calc($default-spacing * 2);
+  margin-bottom: calc($default-spacing * 2);
+  margin-left: calc($default-spacing * 3);
+  margin-right: calc($default-spacing * 3);
+
+  .list-panel-spacer {
+    margin-top: $default-spacing;
+  }
+
+  .buttons {
+    margin-top: calc($default-spacing * 2);
+
+    app-btn-contained {
+      margin: $default-spacing;
+    }
+
+    app-btn-contained:first-child {
+      margin-left: 0;
+    }
+    app-btn-contained:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .list-panel {
+    margin-left: 0;
+    margin-right: 0;
+
+    .list-panel-block {
+      margin-top: $default-spacing;
+      margin-bottom: $default-spacing;
+    }
+  }
+}

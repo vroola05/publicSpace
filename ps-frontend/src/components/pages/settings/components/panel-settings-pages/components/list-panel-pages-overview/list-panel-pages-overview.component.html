@@ -1,0 +1,52 @@
+<div class="row list-panel">
+    <div class="col-md-6 list-panel-block">
+        <app-text-field [style]="'filled'" [id]="getId('name')" [name]="'name'" [label]="'Naam'"
+            [value]="_pageOverviewTemplate?.name" [required]="true" [maxLength]="100"
+            (changed)="onNameChanged($event)" #nameComponent></app-text-field>
+        <app-text-field [style]="'filled'" [id]="getId('icon')" [name]="'icon'" [label]="'Icoon'"
+            [value]="_pageOverviewTemplate?.icon" [required]="true" [maxLength]="80"
+            (changed)="onIconChanged($event)" #iconComponent></app-text-field>
+        <app-text-field [style]="'filled'" [id]="getId('route')" [name]="'route'" [label]="'Route'"
+            [value]="_pageOverviewTemplate?.route" [required]="true" [maxLength]="1000"
+            (changed)="onRouteChanged($event)" #routeComponent></app-text-field>
+        <app-dropdown-field [style]="'filled'" [id]="getId('size')" [name]="'size'" [label]="'Lijst grootte'" [options]="_sizes" [required]="true"
+            (changed)="onSizeChanged($event)" #sizeComponent></app-dropdown-field>
+        <app-select-field class="statusses-list" (changed)="onStatussesChanged($event)" [label]="'Status'" [search]="false"
+            [name]="'statusses'" [options]="_statusItems" [style]="'filled'"></app-select-field>
+    </div>
+    <div class="col-md-6 list-panel-block">
+        <app-checkbox-field [name]="'toggle'" [value]="_pageOverviewTemplate?.toggle" [label]="'Toggle'"
+            (changed)="onToggleChanged($event)">Toggle</app-checkbox-field>
+        <app-checkbox-field [name]="'priority'" [value]="_pageOverviewTemplate?.priority" [label]="'Prioriteit'"
+            (changed)="onPriorityChanged($event)">Prioriteit</app-checkbox-field>
+        <app-checkbox-field [name]="'personal'" [value]="_pageOverviewTemplate?.personal" [label]="'Persoonlijk'"
+            (changed)="onIsPersonalChanged($event)">Persoonlijk</app-checkbox-field>
+    </div>
+    <div class="col-md-12">
+        <h4>Kolommen in de lijst</h4>
+        <div class="field-wrapper">
+            <app-create-overview-columns class="conditions-list" [prefix]="getId('columns')" [columns]="_pageOverviewTemplate?.columns"
+                (changed)="onColumnsChanged($event)"></app-create-overview-columns>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <h4>Knoppen links</h4>
+        <app-panel-toggle [style]="'blanc'" [title]="['Knoppen links']">
+          <app-create-buttons [prefix]="'buttonsLeft'" [buttons]="_pageOverviewTemplate?.buttonsLeft" (changed)="onButtonsLeftChanged($event)"></app-create-buttons>
+        </app-panel-toggle>
+      </div>
+      <div class="col-md-12">
+        <h4>Knoppen rechts</h4>
+      <app-panel-toggle [style]="'blanc'" [title]="['Knoppen rechts']">
+        <app-create-buttons [prefix]="'buttonsRight'" [buttons]="_pageOverviewTemplate?.buttonsRight" (changed)="onButtonsRightChanged($event)"></app-create-buttons>
+      </app-panel-toggle>
+      </div>
+
+    <div class="col-md-12">
+        <div class="float-end w-25">
+            <app-btn-contained [type]="'containedSecondary'"
+                (clicked)="onDeleteClick($event)">Verwijderen</app-btn-contained>
+        </div>
+    </div>
+</div>
+<hr />

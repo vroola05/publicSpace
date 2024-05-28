@@ -1,0 +1,10 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuwe hoofdcategorie'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-main-category [isNew]="isNew" [mainCategory]="selectedMainCategory" (onEvent)="events($event)"></app-list-panel-main-category>
+</app-panel-settings>

@@ -1,0 +1,48 @@
+<!-- <app-panel *ngIf="state === 0 && call" [data]="call" [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType"
+  [buttonsRight]="buttonsRight">
+  <app-panel-title>
+    <div class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <app-details-header [data]="headerData"></app-details-header>
+      </div>
+      <app-panel-info-second class="col-sm-12 col-md-6" [call]="call" [urlImage]="getUrlImage">
+      </app-panel-info-second>
+      <div class="col-sm-12 col-md-6">
+        <div class="order-info" *ngIf="order">
+          <div class="order-info-description">
+            <h4><span>Opdracht omschrijving</span><span class="right">{{getDays(order?.dateSend)}}</span></h4>
+            {{order.description}}
+          </div>
+          <div class="order-explanation">
+            <h4>Toelichting</h4>
+            <app-textarea-field class="explanation-field" 
+              [id]="'explanation'" [name]="'explanation'"
+              [value]="order?.explanation" [placeholder]="'Vul uw notitie van maximaal 1000 karakters in'"
+              [required]="true" [maxLength]="1000" (changed)="onExplanationChanged($event)"
+              #explanationField>
+            </app-textarea-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel>
+<app-panel *ngIf="state === 1" [pageLayoutType]="pageLayoutType" [title]="'Opdracht is afgesloten'">
+  <app-panel-title [title]="'Opdracht is afgesloten'">
+    <div class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <p>De opdracht is opgeslagen. U kunt de huidige pagina afsluiten. De link uit de e-mail is niet meer geldig.</p>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel>
+<app-panel *ngIf="state === 2" [pageLayoutType]="pageLayoutType" [title]="'Ongeldige pagina'">
+  <app-panel-title [title]="'Ongeldige pagina'">
+    <div class="row details-main">
+      <div class="col-sm-12 details-main-header">
+        <p>De pagina die u probeert te bezoeken bestaat niet meer. De opdracht is al afgesloten of de link is niet de
+          juiste. Controleer de link en probeer het opnieuw.</p>
+      </div>
+    </div>
+  </app-panel-title>
+</app-panel> -->

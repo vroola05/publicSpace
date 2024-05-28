@@ -1,0 +1,61 @@
+@import "../../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .details-main {
+    .details-main-header {
+      // display: none;
+    }
+  }
+}
+
+.details-main {
+  .details-main-header {
+    padding-top: $default-spacing;
+    padding-bottom: $default-spacing;
+  }
+}
+.order-info {
+  margin-bottom: $default-spacing;
+
+  h4 {
+    .right {
+      float: right;
+      font-weight: normal;
+    }
+  }
+  .order-info-description {
+    
+  }
+  .order-info-specifications {
+    .order-info-specifications-table {
+      width: 100%;
+      table-layout: fixed;
+      td {
+        
+        &.order-info-specifications-small {
+          width: 15%;
+        }
+      }
+    }
+  }
+}
+@include media-breakpoint-up(md) {
+  .order-info {
+    .order-info-specifications {
+      .order-info-specifications-table {
+        td {
+          &.order-info-specifications-small {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          &.order-info-specifications-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}

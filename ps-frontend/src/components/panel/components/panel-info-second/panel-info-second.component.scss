@@ -1,0 +1,30 @@
+@import "../../../../assets/scss/styles.scss";
+
+.details-main-info {
+  .details-main-description {
+
+  }
+  .details-main-suprvisor {
+    margin-bottom: $default-spacing;
+
+    .details-main-created-by {
+
+    }
+  }
+  .details-main-location-and-images {
+
+  }
+  .details-main-info-buttons {
+    padding-top: $default-spacing;
+    app-notes-button {
+      width: 100%;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .details-block {
+    margin-top: $default-spacing;
+    margin-bottom: $default-spacing;
+  }
+}

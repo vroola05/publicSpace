@@ -1,0 +1,20 @@
+@import "../../../../assets/scss/styles.scss";
+
+.search-address-container {
+  margin-bottom: $default-spacing;
+}
+
+.field-errors {
+  display: flex;
+  flex-direction: column;
+
+  width: calc(100% - ($default-spacing * 2));
+  margin: $default-spacing;
+  margin-bottom: $default-spacing;
+  color: $red;
+}
+.current-address-container {
+  .current-address {
+    text-align: right;
+  }
+}

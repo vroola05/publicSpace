@@ -1,0 +1,46 @@
+
+<div class="row list-panel" *ngIf="_contract">
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+          <app-text-field [style]="'filled'" [form]="'contract-contractor'" [id]="'domain'" [readonly]="true" [name]="'domain'" [label]="'Domein gemeente'"
+            [value]="_contract?.domain?.name" [required]="true"
+            #domainComponent></app-text-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Geaccepteerd</h4>
+          <div class="field-wrapper">
+            <app-checkbox-field [id]="'accepted'" [form]="'contract-contractor'" [name]="'accepted'" (changed)="onAcceptedChanged($event)" [value]="_contract?.accepted">Geaccepteerd</app-checkbox-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+          <app-select-field class="mainCategory-list" [form]="'contract-contractor'" (changed)="onMainCategoryChanged($event)" [search]="false"
+            [label]="'Hoofdcategorie'" [id]="'mainCategory'" [name]="'mainCategory'" [options]="_mainCategoryItems" [style]="'filled'" [classes]="'max-height'"></app-select-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="row buttons">
+        <div class="col-md-6 text-left">
+        </div>
+        <div class="col-md-6 text-right">
+          <div class="row">
+            <div *ngIf="isNew" class="col-md-4">
+              <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
+            </div>
+            <div class="col-md-4">
+              <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

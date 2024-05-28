@@ -1,0 +1,5 @@
+<div class="btn-container-pages">
+  <app-header-button *ngFor="let headerItem of headerItems; let i = index"
+    [icon]="headerItem.icon" [name]="headerItem.name" [route]="headerItem.route" [classes]="'group'" [selected]="headerItem.selected" [iconSrc]="headerItem.iconSrc"
+  ></app-header-button>
+</div>

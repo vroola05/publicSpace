@@ -1,0 +1,26 @@
+@import "../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+    app-panel-tab-selector {
+        display: block;
+        padding-top: 0;
+    }
+}
+@include media-breakpoint-up(md) {
+    app-panel-tab-selector {
+        display: block;
+        padding-top: calc($default-spacing * 2);
+
+        .tab-search {
+            border-left: solid 1px $color-primary;
+            border-right: solid 1px $color-primary;
+        }
+
+        .no-items {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: $default-spacing;
+        }
+    }
+}

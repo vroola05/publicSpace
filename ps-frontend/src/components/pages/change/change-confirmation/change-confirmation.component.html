@@ -1,0 +1,5 @@
+<app-panel [buttonsLeft]="buttonsLeft" [pageLayoutType]="pageLayoutType" [buttonsRight]="buttonsRight">
+  <app-panel-title>
+    <app-panel-change-confirmation [call]="call" (changed)="onChanged($event)" #panelChangeConfirmationComponent></app-panel-change-confirmation>
+  </app-panel-title>
+</app-panel>

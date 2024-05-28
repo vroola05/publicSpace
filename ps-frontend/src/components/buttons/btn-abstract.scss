@@ -1,0 +1,22 @@
+@import "../../assets/scss/styles.scss";
+
+.ps-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  
+  padding: $default-spacing calc($default-spacing * 2);
+
+  color: $color-primary;
+  font-size: $default-font-size;
+  &.full {
+    max-width: unset;
+  }
+
+  &:hover {
+    background-color: $white-transparent;
+    border: $color-secondary solid 2px;
+  }
+}

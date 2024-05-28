@@ -1,0 +1,57 @@
+<div class="row list-panel" *ngIf="_category">
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+          <app-text-field [style]="'filled'" [id]="'name'" [name]="'name'" [label]="'Naam'"
+            [value]="_category?.name" [required]="true" [maxLength]="50" (changed)="onNameChanged($event)"
+            #nameComponent></app-text-field>
+          <app-dropdown-field [id]="'group'" [required]="true" [name]="'group'" [label]="'Groep'" [options]="groupItems"
+            (changed)="onGroupChanged($event)" #groupComponent></app-dropdown-field>
+        
+        <h4>Actief</h4>
+        <div class="field-wrapper">
+          <app-checkbox-field [id]="'active'" [name]="'active'" [value]="_category?.active"
+            (changed)="onActiveChanged($event)">Actief</app-checkbox-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 list-panel-block">
+    <div class="row">
+      <div class="col-md-12">
+          <app-date-field [style]="'filled'" [id]="'startDate'" [name]="'startDate'" [label]="'Startdatum'"
+            [value]="_category?.startDate" [required]="true" (changed)="onStartDateChanged($event)"
+            #startDateComponent></app-date-field>
+          <app-date-field [style]="'filled'" [id]="'endDate'" [name]="'endDate'" [label]="'Einddatum'"
+            [value]="_category?.endDate" [required]="false" (changed)="onEndDateChanged($event)"
+            #endDateComponent></app-date-field>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row buttons">
+      <div class="col-md-6 text-left">
+        <div *ngIf="!isNew" class="row">
+          <div class="col-md-8">
+            <app-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
+              (changed)="onDeleteChanged($event)">Verwijderen</app-checkbox-field>
+          </div>
+          <div *ngIf="delete" class="col-md-4">
+            <app-btn-contained [type]="'outlineSecondary'">Verwijderen</app-btn-contained>
+          </div>
+          
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <div class="row">
+          <div *ngIf="isNew" class="col-md-4">
+            <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
+          </div>
+          <div class="col-md-4">
+            <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

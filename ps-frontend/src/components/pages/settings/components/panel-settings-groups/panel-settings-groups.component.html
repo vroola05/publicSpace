@@ -1,0 +1,10 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuwe groep'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-group [isNew]="isNew" [group]="selectedGroup" (onEvent)="events($event)"></app-list-panel-group>
+</app-panel-settings>

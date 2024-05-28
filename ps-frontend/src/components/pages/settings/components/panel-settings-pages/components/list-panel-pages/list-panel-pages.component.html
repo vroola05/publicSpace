@@ -1,0 +1,48 @@
+<div class="row list-panel" *ngIf="_page">
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+            <app-text-field [style]="'filled'" [form]="'pages'" [id]="'name'" [name]="'name'" [label]="'Naam'"
+              [value]="_page?.name" [required]="true" [maxLength]="100" (changed)="onPageNameChanged($event)"
+              #pageNameComponent></app-text-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 list-panel-block">
+      <div class="row">
+        <div class="col-md-12">
+            <app-dropdown-field [style]="'filled'" [id]="'layoutType'" [required]="true" [name]="'layoutType'" [label]="'Soort layout'" [options]="layoutTypeItems"
+              (changed)="onLayoutTypeChanged($event)" #layoutTypeComponent></app-dropdown-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="showPage('overview')">
+      <h4>Overzichtspagina's</h4>
+        <app-panel-page-overview [prefix]="'pageOverviewTemplate'" [page]="_page"></app-panel-page-overview>  
+    </div>
+    <div class="col-md-12" *ngIf="!showPage('overview')">
+      <h4>Knoppen links</h4>
+      <app-panel-toggle [style]="'blanc'" [title]="['Knoppen links']">
+        <app-create-buttons [prefix]="'buttonsLeft'" [buttons]="_page?.buttonsLeft" (changed)="onButtonsLeftChanged($event)"></app-create-buttons>
+      </app-panel-toggle>
+    </div>
+    <div class="col-md-12" *ngIf="!showPage('overview')">
+      <h4>Knoppen rechts</h4>
+    <app-panel-toggle [style]="'blanc'" [title]="['Knoppen rechts']">
+      <app-create-buttons [prefix]="'buttonsRight'" [buttons]="_page?.buttonsRight" (changed)="onButtonsRightChanged($event)"></app-create-buttons>
+    </app-panel-toggle>
+    </div>
+    <div class="col-md-12">
+      <div class="row buttons">
+        <div class="col-md-6 text-left">
+        </div>
+        <div class="col-md-6 text-right">
+          <div class="row">
+            <div class="col-md-4">
+              <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

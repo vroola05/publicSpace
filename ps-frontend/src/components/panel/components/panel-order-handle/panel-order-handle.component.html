@@ -1,0 +1,24 @@
+<div class="contract-specification-item">
+    <div class="contract-specification-item-title">
+        <h4>Bestekposten aanvullen</h4>
+    </div>
+</div>
+<div class="contract-specification-items">
+    <div class="contract-specification-item row" *ngFor="let orderSpecificationItem of orderSpecificationItems; let i = index">
+        <div class="contractSpecificationItem-checkbox col-sm-7">
+            <app-checkbox-field [form]="'handle-order'" [name]="orderSpecificationItem.name" 
+            [value]="orderSpecificationItem?.selected" (changed)="onOrderSpecificationItemChecked($event, i)"
+                >{{orderSpecificationItem?.data?.contractSpecificationItem?.name}}</app-checkbox-field>
+        </div>
+        <div class="contractSpecificationItem-amount col-sm-3">
+            <app-text-field [form]="'handle-order'" [name]="'amount-'+i" [type]="'number'" [readonly]="!orderSpecificationItem.selected" [value]="orderSpecificationItem?.data?.amount"
+                [style]="'filled'" [placeholder]="'Aantal'" [required]="orderSpecificationItem.selected"
+                (changed)="onOrderSpecificationItemAmountChanged($event, i)"></app-text-field>
+        </div>
+        <div class="contractSpecificationItem-unit col-sm-2">{{orderSpecificationItem?.data?.contractSpecificationItem?.unit}}</div>
+    </div>
+</div>
+<div class="contract-specification-note">
+    <app-textarea-field [form]="'handle-order'" [name]="'note'" [label]="'Notitie'" [placeholder]="'Notitie'" [style]="'filled'"
+      [value]="note" [required]="true" [maxLength]="200" (changed)="onNoteChanged($event)"></app-textarea-field>
+</div>

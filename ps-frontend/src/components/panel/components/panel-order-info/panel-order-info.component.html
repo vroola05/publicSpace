@@ -1,0 +1,46 @@
+<div class="panel-order-info" *ngIf="order">
+  <h4>Opdrachtomschrijving voor de {{order.contractorDomain.name}}</h4>
+  <p>{{order.description}}</p>
+  <div *ngIf="hasCategories()">
+    <h4>Categorie(en)</h4>
+    <div class="panel-order-info-categories">
+      <div class="panel-order-info-category" *ngFor="let category of order.categories">
+        <span class="panel-order-info-bullet">&#9679;</span><span *ngIf="isCreating()" (click)="onOrderDeleteCategory(category)" class="field-icon material-icons">delete_forever</span><span>{{category.name}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="order-info-specifications" >
+    <app-order-notes [orderNotes]="order?.notes"></app-order-notes>
+  </div>
+  <div *ngIf="showOrderSpecificationItems()">
+    <app-panel-order-specifications [order]="order"></app-panel-order-specifications>
+  </div>
+  <div *ngIf="isCreating()" class="row panel-order-info-edit">
+    <div class="col-md-6 ml-md-0">
+      <app-btn-contained [type]="'containedSecondary'" (clicked)="onOrderDelete()">Verwijderen</app-btn-contained>
+    </div>
+    <div class="col-md-6 mr-md-0">
+      <app-btn-contained [type]="'containedPrimary'" (clicked)="onOrderEdit()">Bewerken</app-btn-contained>
+    </div>
+  </div>
+  <ng-container *ngIf="!isCreating()">
+    <div *ngIf="isNew()" class="row panel-order-info-edit">
+      <div class="col-md-6 ml-md-0">
+        <app-btn-contained [type]="'containedSecondary'" (clicked)="onOrderCancel()">Opdracht annuleren</app-btn-contained>
+      </div>
+    </div>
+    <div *ngIf="isDone()" class="row panel-order-info-edit">
+      <div class="col-md-6 ml-md-0">
+        <app-btn-contained [type]="'containedSecondary'" (clicked)="onOrderReject()">Niet akkoord</app-btn-contained>
+      </div>
+      <div class="col-md-6 mr-md-0">
+        <app-btn-contained [type]="'containedPrimary'" (clicked)="onOrderClose()">Akkoord</app-btn-contained>
+      </div>
+    </div>
+    <div *ngIf="isRejected()" class="row panel-order-info-edit">
+      <div class="col-md-6 ml-md-0">
+        <app-btn-contained [type]="'containedPrimary'" (clicked)="onOrderClose()">Gezien</app-btn-contained>
+      </div>
+    </div>
+  </ng-container>
+</div>

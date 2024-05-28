@@ -1,0 +1,10 @@
+<app-settings-title></app-settings-title>
+<app-panel-settings
+  [titleNew]="'Nieuwe gebruiker'"
+  [data]="data"
+  [isNew]="isNew"
+  [open]="open"
+  [listTemplate]="listTemplate"
+  (onEvent)="events($event)">
+  <app-list-panel-user [roles]="roles" [groups]="groups" [isNew]="isNew" [user]="selectedUser" (onEvent)="events($event)"></app-list-panel-user>
+</app-panel-settings>

@@ -1,0 +1,14 @@
+<div class="row" >
+    <div class="col-md-12" *ngIf="conditions">
+        <div class="condition" *ngFor="let condition of conditions; let i = index">
+            <app-create-condition [index]="i" [prefix]="getId('[' + i + ']')" [condition]="condition" (changed)="onConditionChanged($event)"></app-create-condition>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="col-md-3">
+                <app-btn-contained [type]="'containedPrimary'" (clicked)="onAddClick($event)">Conditie toevoegen</app-btn-contained>
+            </div>
+        </div>
+    </div>
+</div>

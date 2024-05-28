@@ -1,0 +1,32 @@
+@import "../../../assets/scss/styles.scss";
+
+.search-box-search-field-container {
+  label {
+    display: block;
+    width: 100%;
+
+  }
+  .field-label {
+
+  }
+  .field-input-container {
+    display: flex;
+    flex-direction: row;
+
+    .field-input {
+      width: 100%;
+      margin: 0px;
+      color: $gray-primary;
+      background: $white;
+      padding: $default-spacing $default-spacing $default-spacing 44px;
+      font-size: 15px;
+      border: $white solid 2px;
+      caret-color: $color-primary;
+    }
+    .field-input::-webkit-inner-spin-button, 
+    .field-input::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
+    }
+  }
+}

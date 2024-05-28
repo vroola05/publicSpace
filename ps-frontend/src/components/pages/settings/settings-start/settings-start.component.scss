@@ -1,0 +1,104 @@
+@import "../../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .layout-container {
+    position: fixed;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      'toast toast toast'
+      'main main main';
+    grid-template-rows: $header-mobile-height min-content auto;
+
+    height: 100%;
+    width: 100%;
+
+    background: $color-primary;
+
+    .layout-header {
+      grid-area: header;
+    }
+    .layout-toast {
+      grid-area: toast;
+    }
+    .layout-settings-main-container {
+      display: block;
+      position: relative;
+      grid-area: main;
+      overflow-y: auto;
+      background: $white;
+
+      .layout-settings-menu {
+        .layout-settings-menu-mobile-header {
+          display: flex;
+          flex-direction: row-reverse;
+          font-size: $header-font-size;
+          
+          app-btn-icon {
+            height: 64px;
+          }
+        }
+        .settings-menu {
+          display: none;
+          &.opened {
+            display: block;
+          }
+        }
+      }
+
+      .menu-domain {
+        display: none;        
+      }
+      .layout-settings-content {
+        padding-left: calc($default-spacing + 15px);
+        padding-right: calc($default-spacing + 15px);
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .layout-container {
+    position: fixed;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      'toast toast toast'
+      'main main main';
+    grid-template-rows: $header-mobile-height min-content auto;
+
+    height: 100%;
+    width: 100%;
+
+    .layout-header {
+      grid-area: header;
+    }
+    .layout-toast {
+      grid-area: toast;
+    }
+    .layout-settings-main-container {
+      position: relative;
+      grid-area: main;
+      overflow-y: auto;
+
+      .layout-settings-menu {
+        padding-top: calc($default-spacing * 2);
+        padding-right: 0px;
+
+        background: $gray-secondary;
+        border-right: $gray-primary solid 1px;
+
+        .layout-settings-menu-mobile-header {
+          display: none;
+        }
+      }
+      .layout-settings-content {
+        padding-right: calc($default-spacing * 3);
+      }
+
+      
+      
+  
+    }
+  }
+}

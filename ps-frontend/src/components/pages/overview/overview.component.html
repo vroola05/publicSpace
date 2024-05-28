@@ -1,0 +1,36 @@
+
+<div class="layout-container">
+  <div class="layout-header">
+    <app-header [pageLayoutType]="pageLayoutType"></app-header>
+  </div>
+  <div class="layout-toast">
+    <app-toast></app-toast>
+  </div>
+  <div class="search-container d-flex flex-col justify-content-center">
+    <app-text-field-big
+    [id]="'search'"
+    [name]="'search'"
+    [icon]="'search'"
+    [style]="'large'"
+    [class]="'search-field col-md-4 italic'"
+    [placeholder]="title"
+    [value]="search"
+    (typing)="onSearch($event)"></app-text-field-big>
+  </div>  
+  <div class="overview-list-container" #tableContainer>
+    <div class="overview-list-container-inner">
+      <app-list
+        [listTemplate]="listTemplate"
+        [data]="list" 
+        (clicked)="clicked($event)"
+        (positionChanged)="setPosition($event)"
+        (filterChanged)="filterChanged($event)">
+        <ng-template libDynamic></ng-template>
+      </app-list>
+    </div>
+    <div *ngIf="!endOfList" class="overview-load-more">
+        <app-btn-contained (clicked)="loadMoreItems()">Meer meldingen ophalen...</app-btn-contained>
+    </div>
+  </div>
+  
+</div>

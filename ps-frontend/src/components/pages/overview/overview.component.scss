@@ -1,0 +1,107 @@
+@import "../../../assets/scss/styles.scss";
+
+@include media-breakpoint-down(sm) {
+  .layout-container {
+    position: fixed;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      'search search search'
+      'toast toast toast'
+      'main main main';
+    grid-template-rows: $header-mobile-height min-content min-content auto;
+
+    height: 100%;
+    width: 100%;
+
+    background: $color-primary;
+
+    .layout-header {
+      grid-area: header;
+    }
+    .layout-toast {
+      grid-area: toast;
+    }
+    .search-container {
+      grid-area: search;
+
+      margin-top: $default-spacing;
+      margin-bottom: $default-spacing;
+      margin-left: $default-spacing;
+      margin-right: $default-spacing;
+
+      app-text-field-big {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
+    .overview-list-container {
+      position: relative;
+      grid-area: main;
+      overflow-y: auto;
+
+      background: $white;
+
+      .overview-load-more {
+        margin: auto;
+        padding: calc($default-spacing * 2);
+        text-align: center;
+
+        app-btn-contained {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .layout-container {
+    position: fixed;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      'toast toast toast'
+      'search search search'
+      'main main main';
+    grid-template-rows: $header-height min-content min-content auto;
+
+    height: 100%;
+    width: 100%;
+
+    .layout-header {
+      grid-area: header;
+    }
+    .layout-toast {
+      grid-area: toast;
+    }
+    .search-container {
+      grid-area: search;
+
+      margin-top: calc($default-spacing * 4);
+      margin-bottom: calc($default-spacing * 4);
+    }
+    .overview-list-container {
+      position: relative;
+      grid-area: main;
+      overflow-y: auto;
+
+      .overview-list-container-inner {
+        width: 90%;
+        margin: auto;
+      }
+
+      .overview-load-more {
+        max-width: 300px;
+        margin: auto;
+        padding: calc($default-spacing * 2);
+        text-align: center;
+
+        app-btn-contained {
+          width: 100%;
+          max-width: $max-button-size;
+        }
+      }
+    }
+  }
+}

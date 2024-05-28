@@ -1,0 +1,25 @@
+<div class="notes-viewer-notes">
+  <app-notes [notes]="_notes"></app-notes>
+</div>
+<div class="notes-viewer-footer">
+  <div class="notes-viewer-note-container">
+    <app-textarea-field
+    [form]="'notes'"
+    [name]="'notes-viewer-note'"
+    [style]="'filled'"
+    [label]="'Nieuwe notitie toevoegen'"
+    [placeholder]="'Nieuwe notitie'"
+    [value]="note.content"
+    [required]="true"
+    [maxLength]="200"
+    (changed)="changed($event)" #notesRef></app-textarea-field>
+  </div>
+  <div class="row m-0 p-0 notes-viewer-buttons">
+    <div class="col-md-6 pl-md-0 ml-md-0">
+      <app-btn-contained [type]="'containedSecondary'" (clicked)="close()">Sluiten</app-btn-contained>
+    </div>
+    <div class="col-md-6 pr-md-0 mr-md-0">
+      <app-btn-contained [type]="'containedPrimary'" (clicked)="submit()">Notitie opslaan</app-btn-contained>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="login-wrapper">
+  <app-toast class="toasts"></app-toast>
+  <div class="login-container">
+    <div class="login-input-container">
+      <h1 class="login-form-title">Wachtwoord vergeten</h1>
+      <form id="login-form">
+        <div class="field-wrapper">
+          Vul uw gebruikersnaam in om een mail te ontvangen met de link om het wachtwoord te opnieuw in te stellen.
+        </div>
+        <div class="field-wrapper">
+          <app-text-field
+            [id]="'username'"
+            [name]="'username'"
+            [icon]="'person'"
+            [style]="'large'"
+            [placeholder]="'Gebruikersnaam'"
+            [value]="username"
+            [required]="true"
+            (typing)="onTyping($event)"
+            (changed)="onUsernameChanged($event)" #usernameComponent></app-text-field>
+        </div>
+        <div class="btn-container">
+          <app-btn-contained (clicked)="submit()" [classes]="'full'">Versturen</app-btn-contained>
+        </div>
+        <div class="field-errors" *ngIf="error">
+          {{error.message}}
+        </div>
+        <div class="field-wrapper">
+          <span class="link" (click)="backToLogin()">Terug naar het inlogscherm</span>
+        </div>
+        <div class="field-success" *ngIf="send">
+          U ontvangt een email als deze gebruikersnaam bij ons bekend is.
+        </div>
+      </form>
+    </div>
+    <div class="login-logo-container">
+      <img class="company-logo"
+         src="{{getLogo()}}"
+         alt="Logo organisatie"/>
+    </div>
+  </div>
+</div>

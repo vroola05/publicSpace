@@ -1,0 +1,130 @@
+@import "../../assets/scss/styles.scss";
+
+.layout-container.pageStickyButtons {
+  .layout-body {
+    .layout-footer {
+      position: sticky;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .layout-container {
+    position: fixed;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      'toast toast toast'
+      'main main main';
+    grid-template-rows: $header-mobile-height min-content auto;
+
+    height: 100%;
+    width: 100%;
+
+    background: $color-primary;
+
+    .layout-header {
+      grid-area: header;
+      height: $header-mobile-height;
+
+      .header-component {
+        height: $header-mobile-height;
+      }
+    }
+
+    .layout-toast {
+      grid-area: toast;
+    }
+
+    .layout-body {
+      grid-area: main;
+
+      padding: calc($default-spacing * 2);
+      padding-top: 0px;
+      padding-bottom: 0px;
+
+      overflow-y: auto;
+      background: #fff;
+
+      .layout-footer {
+        bottom: 0px;
+        
+        background: $gray6;
+        z-index: 1001;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .layout-container {
+    position: fixed;
+    display: grid;
+    grid-template-areas:
+      'header header header'
+      'toast toast toast'
+      'main main main';
+    grid-template-rows: $header-height min-content auto;
+
+    height: 100%;
+    width: 100%;
+
+    .layout-header {
+      grid-area: header;
+    }
+
+    .layout-toast {
+      grid-area: toast;
+    }
+
+    .layout-body {
+      grid-area: main;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      
+      margin: auto;
+      margin-top: calc($default-spacing * 4);
+      margin-bottom: $default-spacing;
+      padding-left: $default-spacing;
+      padding-right: $default-spacing;
+      max-height: calc(100vh - (($default-spacing * 6) + $header-height));
+      overflow-x: hidden;
+      overflow-y: auto;
+  
+
+      .layout-main {
+        display: flex;
+        flex-direction: column;
+        padding: calc($default-spacing * 2);
+        margin-bottom: $default-spacing;
+        box-shadow: 0 1px 5px 0px rgba(0,0,0,.65);
+
+        background: #fff;
+
+        .layout-title {
+          h1 {
+            text-align: center;
+            font-weight: bold;
+          }
+        }
+      }
+      .layout-footer {
+        bottom: 0px;
+        background: $gray6;
+        z-index: 1001;
+
+        display: flex;
+        flex-direction: row;
+        padding-top: $default-spacing;
+
+        .layout-footer-botton-container {
+          app-btn-contained {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
