@@ -10,4 +10,3 @@ sudo systemctl status postgresql
 sudo pg_isready
 
 
-

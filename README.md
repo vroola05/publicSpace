@@ -86,4 +86,11 @@ chromium-browser --disable-web-security --user-data-dir="/home/.../ChromiumTemp"
 
 On windows you can run:
 chrome.exe --disable-web-security --user-data-dir="%USERPROFILE%\temp\chrome"
-'C:\Program Files\Google\Chrome\Application\chrome.exe' --disable-web-security --user-data-dir=$env:USERPROFILE\temp\chrome
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir=$env:USERPROFILE\temp\chrome
+
+# User password creation
+Create salt:
+java -cp sec-class org.commonground.ps.backendapi.core.security.SecureHash --function "salt" --password "@dministrator" --hash-function "PBKDF2WithHmacSHA1" --salt-length 20 --iteration-count 1000 --key-length 512
+
+Create password:
+java -cp sec-class org.commonground.ps.backendapi.core.security.SecureHash --function "password" --password "@dministrator" --hash-function "PBKDF2WithHmacSHA1" --salt-length 20 --salt "PUT_YOUR_SALT_HERE" --iteration-count 1000 --key-length 512

@@ -171,10 +171,16 @@ INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nex
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Melding afsluiten'), get_last_id('public.seq_domain_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'Afgesloten'));
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Melding afbreken'), get_last_id('public.seq_domain_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'Afgesloten'));
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht aanmaken'), get_last_id('public.seq_domain_id'), get_status_by_name(get_last_id('public.seq_domain_id'), 'In behandeling'));
-INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht goedkeuren'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht accepteren'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht weigeren'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht gereedmelden'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht afsluiten'), get_last_id('public.seq_domain_id'), NULL);
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht afkeuren'), get_last_id('public.seq_domain_id'), NULL);
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht annuleren'), get_last_id('public.seq_domain_id'), NULL);
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Terug'), get_last_id('public.seq_domain_id'), NULL);
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Annuleren'), get_last_id('public.seq_domain_id'), NULL);
 INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Volgende'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Toewijzen persoon en groep'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Opdracht tijdelijk opslaan'), get_last_id('public.seq_domain_id'), NULL);
+INSERT INTO public.action (id, action_type_id, domain_id, status_id) VALUES (nextval('public.seq_action_id'), get_action_type('Alle opdrachten gesloten'), get_last_id('public.seq_domain_id'), NULL);
 

@@ -60,6 +60,9 @@ INSERT INTO public.page_type VALUES (5, 'newInformation');
 INSERT INTO public.page_type VALUES (6, 'newConfirm');
 INSERT INTO public.page_type VALUES (7, 'orderCreation');
 INSERT INTO public.page_type VALUES (8, 'orderConfirm');
+INSERT INTO public.page_type VALUES (9, 'orderSpecificationSelect');
+INSERT INTO public.page_type VALUES (10, 'orderSpecificationHandle');
+INSERT INTO public.page_type VALUES (11, 'orderSpecificationConfirmation');
 
 
 --

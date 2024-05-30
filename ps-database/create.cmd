@@ -66,7 +66,7 @@ set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f sql/create_fu
 
 set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f sql/insert-static-tables.sql
 
-set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f sql/insert-company-tables.sql -v comany_name="'%COMPANY_NAME%'" -v comany_code="'%COMPANY_CODE%'" -v comany_srid="'%COMPANY_SRID%'" -v comany_center="'%COMPANY_CENTER%'"
+set PGPASSWORD=postgresPassword&& psql -h localhost -U postgres -f sql/insert-company-tables.sql -v company_name="'%COMPANY_NAME%'" -v company_code="'%COMPANY_CODE%'" -v company_srid="'%COMPANY_SRID%'" -v company_center="'%COMPANY_CENTER%'"
 
 @REM ###################################################################
 @REM # Add government tables

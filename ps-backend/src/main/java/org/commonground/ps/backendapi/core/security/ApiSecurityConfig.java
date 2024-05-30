@@ -1,6 +1,7 @@
 package org.commonground.ps.backendapi.core.security;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -23,22 +24,24 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableAspectJAutoProxy
 @EnableWebSecurity
-public class ApiSecurityConfig  {
+@EnableMethodSecurity
+public class ApiSecurityConfig {
   @Autowired
   private SessionRepository sessionRepository;
 
@@ -48,8 +51,12 @@ public class ApiSecurityConfig  {
   @Value("${sec.session.time}")
   private int secSessionTime;
 
+  @Value("${sec.allowed.origins}")
+  private String secAllowedOrigins;
+
   @Autowired
   ConfigService configService;
+
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -90,40 +97,32 @@ public class ApiSecurityConfig  {
       });
 
       return httpSecurity
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(requests -> requests.requestMatchers("/config").permitAll())
-        .authorizeHttpRequests(requests -> requests.requestMatchers("/login/**").permitAll())
-        .authorizeHttpRequests(requests -> requests.requestMatchers("/**").authenticated())
-        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilter(apiSecurityFilter)
-        .build();
-        
-
-
-
-
-
-
-
-
-
-
-
-        // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        //   .and().addFilter(apiSecurityFilter).authorizeRequests().anyRequest().authenticated();
-
-        
-
-      // http.apply(customDsl());
-      // return http.build();
+              .csrf(csrf -> csrf.disable())
+              .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                      .authorizeHttpRequests(requests -> requests.requestMatchers("/config").permitAll())
+                      .authorizeHttpRequests(requests -> requests.requestMatchers("/login/**").permitAll())
+                      .authorizeHttpRequests(requests -> requests.requestMatchers("/**").authenticated())
+                      .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                      .addFilter(apiSecurityFilter)
+                      .build();
   }
 
-  // @Override
-  // protected void configure(HttpSecurity httpSecurity) throws Exception {
-    
+  private CorsConfigurationSource corsConfigurationSource() {
+    final var configuration = new CorsConfiguration();
+        String[] allowedOrigins = secAllowedOrigins.split(",");
+        if (allowedOrigins != null && allowedOrigins.length > 0) {
+          configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
+        }
 
-    
-  // }
+        configuration.setAllowedMethods(Arrays.asList("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("*"));
+        
+        final var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+  }
 
   private UserEntity getUserByApikey(String apikey) throws SecurityException {
     Optional<SessionEntity> session = sessionRepository.findOne(Example.of(new SessionEntity(apikey)));

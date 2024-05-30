@@ -4,13 +4,9 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Data
 @NoArgsConstructor
 @Entity

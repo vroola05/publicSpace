@@ -6,7 +6,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: publicspace
+      # POSTGRES_DB: publicspace
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgresPassword
       PGDATA: /var/lib/postgresql/data
@@ -41,6 +41,8 @@ services:
     restart: always
     ports:
       - "4200:4200"
+    volumes:
+      - frontend-data:/usr/src/app
     networks:
       publicspace:
         aliases:
@@ -53,6 +55,8 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    volumes:
+      - backend-data:/usr/src/app
     networks:
       publicspace:
         aliases:
@@ -61,6 +65,8 @@ services:
 volumes:
   db-data:
   pgadmin-data:
+  frontend-data:
+  backend-data:
 
 networks:
   publicspace:

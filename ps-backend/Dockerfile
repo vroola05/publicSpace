@@ -1,7 +1,10 @@
 FROM openjdk:21-jdk
 
-COPY target/ps-backend.war ps-backend.war
-ENTRYPOINT ["java","-jar","/ps-backend.war"]
+WORKDIR "/usr/src/app"
+
+
+COPY target/ps-backend.war /usr/src/app/ps-backend.war
+ENTRYPOINT ["java","-jar","/usr/src/app/ps-backend.war"]
 
 
 # FROM maven:3.8.5-openjdk-11 AS build

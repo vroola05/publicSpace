@@ -77,71 +77,71 @@ public class SecureHash {
     return true;
   }
 
-  // public static void main(String[] args) {
+  public static void amain(String[] args) {
 
-  //   String error = "Required parameters:\n"
-  //     + "\t--function = either: \"salt\" or \"password\"\n"
-  //     + "\t--password = Het wachtwoord\n"
-  //     + "\t--hash-function = De hash functie\n"
-  //     + "\t--salt = Alleen bij --function=\"password\". Geef de salt mee\n"
-  //     + "\t--salt-length = de lengthe van de salt\n"
-  //     + "\t--iteration-count = Aantal iteraties\n"
-  //     + "\t--key-length = Grootte sleutel\n";
-  //   if (args == null || (args.length != 12 && args.length != 14)) {
-  //     System.out.println(error);
-  //     return;
-  //   }
+    String error = "Required parameters:\n"
+      + "\t--function = either: \"salt\" or \"password\"\n"
+      + "\t--password = Het wachtwoord\n"
+      + "\t--hash-function = De hash functie\n"
+      + "\t--salt = Alleen bij --function=\"password\". Geef de salt mee\n"
+      + "\t--salt-length = de lengthe van de salt\n"
+      + "\t--iteration-count = Aantal iteraties\n"
+      + "\t--key-length = Grootte sleutel\n";
+    if (args == null || (args.length != 12 && args.length != 14)) {
+      System.out.println(error);
+      return;
+    }
 
-  //   String function = "";
-  //   String password = "";
-  //   String defaultHashFunction = "";
-  //   String salt = "";
-  //   int defaultSaltLength = 20;
-  //   int defaultIterationCount = 1000;
-  //   int defaultKeyLength=512;
+    String function = "";
+    String password = "";
+    String defaultHashFunction = "";
+    String salt = "";
+    int defaultSaltLength = 20;
+    int defaultIterationCount = 1000;
+    int defaultKeyLength=512;
 
-  //   try {
-  //     for(int i = 0; i < args.length; i += 2) {
-  //       if (args[i].equals("--function")) {
-  //         function= args[i + 1];
-  //       }
-  //       else if (args[i].equals("--password")) {
-  //         password=args[i + 1];
-  //       }
-  //       else if (args[i].equals("--hash-function")) {
-  //         defaultHashFunction=args[i + 1];
-  //       }
-  //       else if (args[i].equals("--salt-length")) {
-  //         defaultSaltLength= Integer.parseInt(args[i + 1]);
-  //       }
-  //       else if (args[i].equals("--salt")) {
-  //         salt= args[i + 1];
-  //       }
-  //       else if (args[i].equals("--iteration-count")) {
-  //         defaultIterationCount= Integer.parseInt(args[i + 1]);
-  //       }
-  //       else if (args[i].equals("--key-length")) {
-  //         defaultKeyLength= Integer.parseInt(args[i + 1]);
-  //       }
-  //       else {
-  //         System.out.println(error);
-  //         return;
-  //       }
-  //     }
+    try {
+      for(int i = 0; i < args.length; i += 2) {
+        if (args[i].equals("--function")) {
+          function= args[i + 1];
+        }
+        else if (args[i].equals("--password")) {
+          password=args[i + 1];
+        }
+        else if (args[i].equals("--hash-function")) {
+          defaultHashFunction=args[i + 1];
+        }
+        else if (args[i].equals("--salt-length")) {
+          defaultSaltLength= Integer.parseInt(args[i + 1]);
+        }
+        else if (args[i].equals("--salt")) {
+          salt= args[i + 1];
+        }
+        else if (args[i].equals("--iteration-count")) {
+          defaultIterationCount= Integer.parseInt(args[i + 1]);
+        }
+        else if (args[i].equals("--key-length")) {
+          defaultKeyLength= Integer.parseInt(args[i + 1]);
+        }
+        else {
+          System.out.println(error);
+          return;
+        }
+      }
   
-  //     if (function.equals("password") && (args.length != 14 || salt.isEmpty())) {
-  //       return;
-  //     }
+      if (function.equals("password") && (args.length != 14 || salt.isEmpty())) {
+        return;
+      }
 
-  //     SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount, defaultKeyLength);
-  //     if (function.equals("salt")) {
-  //       System.out.print(secureHash.generateSalt(defaultSaltLength));
-  //     } else if (function.equals("password")) {
-  //       System.out.print(secureHash.generateHashBase64(password, salt, defaultIterationCount, defaultKeyLength, defaultHashFunction));
-  //     }
+      SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount, defaultKeyLength);
+      if (function.equals("salt")) {
+        System.out.print(secureHash.generateSalt(defaultSaltLength));
+      } else if (function.equals("password")) {
+        System.out.print(secureHash.generateHashBase64(password, salt, defaultIterationCount, defaultKeyLength, defaultHashFunction));
+      }
       
-  //   } catch(NumberFormatException | SecurityException e) {
-  //     return;
-  //   }
-  // }
+    } catch(NumberFormatException | SecurityException e) {
+      return;
+    }
+  }
 }

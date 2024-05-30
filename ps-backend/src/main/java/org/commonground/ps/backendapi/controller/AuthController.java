@@ -64,21 +64,18 @@ public class AuthController extends Controller {
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<User> login(@RequestHeader("${sec.header.config}") String referer,
 			@Valid @RequestBody Login login) throws ForbiddenException, NotFoundException {
-
 		try {
 			Template template = configService.find(referer);
 
 			if (template.getDomain() == null || template.getDomain().getId() == null) {
 				throw new NotFoundException();
 			}
-
 			Optional<UserEntity> userEntityOptional = userRepository.getUserByUsername(template.getDomain().getId(), login.getUsername());
 
 			if (userEntityOptional.isPresent()) {
 				UserEntity userEntity = userEntityOptional.get();
 
-				SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount,
-						defaultKeyLength);
+				SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount, defaultKeyLength);
 				String hash = secureHash.generateHashBase64(
 						login.getPassword(),
 						userEntity.getPasswordSalt(),
@@ -109,7 +106,6 @@ public class AuthController extends Controller {
 		} catch (SecurityException ex) {
 			throw new NotFoundException();
 		}
-
 		throw new ForbiddenException();
 	}
 }

@@ -48,7 +48,7 @@ psql -h localhost -U postgres -f create_functions.sql
 
 psql -h localhost -U postgres -f insert-static-tables.sql
 
-psql -h localhost -U postgres -f insert-company-tables.sql -v comany_name="'$COMPANY_NAME'" -v comany_code="'$COMPANY_CODE'" -v comany_srid="'$COMPANY_SRID'" -v comany_center="'$COMPANY_CENTER'"
+psql -h localhost -U postgres -f insert-company-tables.sql -v company_name="'$COMPANY_NAME'" -v company_code="'$COMPANY_CODE'" -v company_srid="'$COMPANY_SRID'" -v company_center="'$COMPANY_CENTER'"
 
 ###################################################################
 # Add government tables
