@@ -18,7 +18,7 @@ import jakarta.persistence.OrderColumn;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
-import org.hibernate.envers.NotAudited;
+
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -65,7 +65,7 @@ public class OrderEntity {
     @OneToMany(targetEntity = OrderCategoryEntity.class, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderCategoryEntity> orderCategory = new ArrayList<>();
 
-    @NotAudited
+    
     @OneToMany(targetEntity = OrderSpecificationItemEntity.class, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<OrderSpecificationItemEntity> orderSpecificationItems = new ArrayList<>();
 

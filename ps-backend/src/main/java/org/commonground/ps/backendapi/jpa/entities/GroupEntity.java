@@ -9,14 +9,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
-import org.hibernate.envers.NotAudited;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Data
 @NoArgsConstructor
 @Entity
@@ -28,7 +23,7 @@ public class GroupEntity {
   private Long id;
   private String name;
 
-  @NotAudited
+  
   @ManyToOne(fetch = FetchType.LAZY)
   private DomainEntity domain;
 }

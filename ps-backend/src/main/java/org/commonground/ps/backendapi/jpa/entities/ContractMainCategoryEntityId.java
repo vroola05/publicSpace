@@ -8,7 +8,6 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class ContractMainCategoryEntityId implements Serializable {
-    
 
     @Column(name = "contract_id")
     private Long contractId;
