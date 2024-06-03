@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.model.template;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.commonground.ps.backendapi.model.Status;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class InfoT {
+public class InfoT implements Serializable {
   private Long company;
   private Long domain;
   private String apikey;

@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,7 +10,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Group {
+public class Group implements Serializable {
+  private static final long serialVersionUID = 1L;
+  
   private Long id;
 
   @NotNull(message = "Waarde is verplicht")

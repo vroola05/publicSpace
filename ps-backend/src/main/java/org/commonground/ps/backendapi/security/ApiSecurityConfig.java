@@ -1,27 +1,22 @@
-package org.commonground.ps.backendapi.core.security;
+package org.commonground.ps.backendapi.security;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ConfigService;
-import org.commonground.ps.backendapi.jpa.entities.SessionEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
-import org.commonground.ps.backendapi.jpa.repositories.SessionRepository;
 import org.commonground.ps.backendapi.model.User;
+import org.commonground.ps.backendapi.model.UserSession;
 import org.commonground.ps.backendapi.model.security.UserPrincipal;
 import org.commonground.ps.backendapi.model.template.Template;
-import org.commonground.ps.backendapi.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.data.domain.Example;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -33,6 +28,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,9 +37,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableAspectJAutoProxy
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableRedisHttpSession
 public class ApiSecurityConfig {
-  @Autowired
-  private SessionRepository sessionRepository;
 
   @Value("${sec.header.apikey}")
   private String principalRequestHeader;
@@ -59,36 +54,43 @@ public class ApiSecurityConfig {
 
 
   @Bean
+	public LettuceConnectionFactory connectionFactory() {
+		return new LettuceConnectionFactory(); 
+	}
+
+
+  @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    
+
     ApiSecurityFilter apiSecurityFilter = new ApiSecurityFilter(principalRequestHeader);
       apiSecurityFilter.setAuthenticationManager(new AuthenticationManager() {
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
           try {
-            String referer = (String) authentication.getPrincipal();
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            if (userPrincipal == null) {
+              throw new SecurityException("No session");
+            }
+
             String apikey = (String) authentication.getCredentials();
-            if (apikey == null || apikey.isEmpty() || referer == null || referer.isEmpty()) {
+            if (apikey == null || apikey.isEmpty() || userPrincipal.getReferer() == null || userPrincipal.getReferer().isEmpty()) {
               throw new SecurityException("No host or apikey: " + (String) authentication.getPrincipal());
             }
 
-            UserEntity userEntity = getUserByApikey(apikey);
+            if (!apikey.equals(userPrincipal.getApikey())) {
+              throw new SecurityException("Invalid session");
+            }
 
-            User user = Convert.userEntity(userEntity);
+            User user = userPrincipal.getPrincipal();
 
             String domain = user.getDomain().getDomain();
-            if (!configService.checkUserDomain(domain, (String) authentication.getPrincipal())) {
-              throw new SecurityException("Wrong domain: " + (String) authentication.getPrincipal());
+            if (!configService.checkUserDomain(domain, userPrincipal.getReferer())) {
+              throw new SecurityException("Wrong domain: " + userPrincipal.getReferer());
             }
 
             Template template = configService.get(domain);
-
-            UserPrincipal userPrincipal = new UserPrincipal();
-            userPrincipal.setName((String) authentication.getPrincipal());
-            userPrincipal.setPrincipal(user);
             userPrincipal.setDetails(template);
-            userPrincipal.setAuthorities(getAuthorities(user.getRoles()));
-            userPrincipal.setAuthenticated(true);
+
             return userPrincipal;
           } catch (SecurityException e) {
             throw new BadCredentialsException("The API key was not found or not the expected value.");
@@ -102,7 +104,8 @@ public class ApiSecurityConfig {
                       .authorizeHttpRequests(requests -> requests.requestMatchers("/config").permitAll())
                       .authorizeHttpRequests(requests -> requests.requestMatchers("/login/**").permitAll())
                       .authorizeHttpRequests(requests -> requests.requestMatchers("/**").authenticated())
-                      .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                      .sessionManagement(httpSecuritySessionManagementConfigurer -> 
+                          httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.NEVER))
                       .addFilter(apiSecurityFilter)
                       .build();
   }
@@ -124,36 +127,7 @@ public class ApiSecurityConfig {
         return source;
   }
 
-  private UserEntity getUserByApikey(String apikey) throws SecurityException {
-    Optional<SessionEntity> session = sessionRepository.findOne(Example.of(new SessionEntity(apikey)));
-    if (!session.isPresent()) {
-      throw new SecurityException("No session found.");
-    }
 
-    if (session.get().getDateModified().before(DateUtil.minusMinutes(secSessionTime))) {
-      sessionRepository.delete(session.get());
-      sessionRepository.flush();
-      throw new SecurityException("Session expired.");
-    }
-
-    if (session.get().getUsers() == null) {
-      throw new SecurityException("No user found.");
-    }
-
-    SessionEntity sessionEntity = session.get();//
-    sessionEntity.setDateModified(new Date());
-
-    sessionRepository.saveAndFlush(sessionEntity);
-
-    return sessionEntity.getUsers();
-  }
-
-  private Collection<? extends GrantedAuthority> getAuthorities(List<String> roles) {
-    List<GrantedAuthority> authorities = new ArrayList<>();
-    for (String role : roles) {
-      authorities.add(new SimpleGrantedAuthority(role));
-    }
-    return authorities;
-  }
+  
 
 }

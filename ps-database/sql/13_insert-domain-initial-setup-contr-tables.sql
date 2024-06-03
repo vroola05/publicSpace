@@ -93,7 +93,7 @@ INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES 
 INSERT INTO public.page_button_condition (id, page_button_id, field, operator, value) VALUES (nextval('public.seq_page_button_condition_id'), currval('public.seq_page_button_id'), 'order.status.name', 'neq', 'Nieuwe opdracht');
 
 
-INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Opdracht maken', '/details/${order.id}/order/handle/select', NULL, 0);
+INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'right', get_page_button_type('containedPrimary'), 'Opdracht afhandelen', '/details/${order.id}/order-specifications/select', NULL, 0);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_USER'), true);
 INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES (nextval('public.seq_page_button_role_id'), currval('public.seq_page_button_id'), get_role('ROLE_ADMIN'), true);
 INSERT INTO public.page_button_condition (id, page_button_id, field, operator, value) VALUES (nextval('public.seq_page_button_condition_id'), currval('public.seq_page_button_id'), 'order.status.name', 'eq', 'In behandeling');
@@ -116,7 +116,7 @@ INSERT INTO public.page_button_condition (id, page_button_id, field, operator, v
 -- Pagina - Selecteer bestekposten
 -- ------------------------------
 
-INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderSpecificationSelect'), 'Opdracht afhandelen - selecteren', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderSpecificationSelect'), 'Bestekposten selecteren', 'page');
 
 INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Annuleren', '', get_action_type('Annuleren'), 0);
 
@@ -128,7 +128,7 @@ INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES 
 -- Pagina - Bestekposten invullen
 -- ------------------------------
 
-INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderSpecificationHandle'), 'Opdracht afhandelen - invullen', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderSpecificationHandle'), 'Invullen opdrachtgegevens', 'page');
 
 INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Vorige', '', get_action_type('Terug'), 0);
 
@@ -144,7 +144,7 @@ INSERT INTO public.page_button_roles(id, page_button_id, role_id, allow) VALUES 
 -- Pagina - Bestekposten controleren
 -- ------------------------------
 
-INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderSpecificationConfirmation'), 'Opdracht afhandelen - controleren', 'page');
+INSERT INTO public.page (id, domain_id, page_type_id, name, layout_type) VALUES (nextval('public.seq_page_id'), get_last_id('public.seq_domain_id'), get_page_type('orderSpecificationConfirmation'), 'Gegevens controleren', 'page');
 
 INSERT INTO public.page_button (id, page_id, page_overview_id, location, button_type_id, name, route, action_type_id, sort) VALUES (nextval('public.seq_page_button_id'), currval('public.seq_page_id'), NULL, 'left', get_page_button_type('containedSecondary'), 'Vorige', '', get_action_type('Terug'), 0);
 

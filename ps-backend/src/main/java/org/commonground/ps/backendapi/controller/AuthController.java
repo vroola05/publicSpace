@@ -1,27 +1,37 @@
 package org.commonground.ps.backendapi.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.commonground.ps.backendapi.core.ConfigService;
-import org.commonground.ps.backendapi.core.security.SecureHash;
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.ForbiddenException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
-import org.commonground.ps.backendapi.jpa.entities.SessionEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
-import org.commonground.ps.backendapi.jpa.repositories.SessionRepository;
+
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Login;
+import org.commonground.ps.backendapi.model.UserSession;
+import org.commonground.ps.backendapi.model.security.UserPrincipal;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.template.Template;
+import org.commonground.ps.backendapi.security.ApiSecurityFilter;
+import org.commonground.ps.backendapi.security.SecureHash;
 import org.commonground.ps.backendapi.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,13 +66,10 @@ public class AuthController extends Controller {
 	private UserRepository userRepository;
 
 	@Autowired
-	private SessionRepository sessionRepository;
-
-	@Autowired
 	ConfigService configService;
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
-	public ResponseEntity<User> login(@RequestHeader("${sec.header.config}") String referer,
+	public ResponseEntity<User> login(HttpServletRequest request, HttpSession session, @RequestHeader("${sec.header.config}") String referer,
 			@Valid @RequestBody Login login) throws ForbiddenException, NotFoundException {
 		try {
 			Template template = configService.find(referer);
@@ -84,22 +91,28 @@ public class AuthController extends Controller {
 						userEntity.getPasswordHashFunction());
 
 				if (userEntity.getPassword().equals(hash)) {
-					String apikey = (UUID.randomUUID().toString() + UUID.randomUUID().toString()).replaceAll("-", "");
+					String apikey = (UUID.randomUUID().toString() + UUID.randomUUID().toString());
 
-					sessionRepository.deleteByDateModifiedLessThan(DateUtil.minusMinutes(secSessionTime));
-					Date now = new Date();
-					SessionEntity sessionEntity = new SessionEntity();
-					sessionEntity.setApiKey(apikey);
-					sessionEntity.setDateCreated(now);
-					sessionEntity.setDateModified(now);
-					sessionEntity.setUsers(userEntity);
-					sessionRepository.save(sessionEntity);
+					// UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 
-					sessionRepository.flush();
 					User user = Convert.userEntity(userEntity);
+					UserPrincipal userPrincipal = new UserPrincipal();
+					userPrincipal.setName(user.getName());
+					userPrincipal.setPrincipal(user);
+					userPrincipal.setDetails(template);
+					userPrincipal.setAuthorities(getAuthorities(user.getRoles()));
+					userPrincipal.setAuthenticated(true);
+					userPrincipal.setApikey(apikey);
 					user.setApikey(apikey);
-					return ResponseEntity.ok()
-							.body(user);
+					// System.out.println(session.getId());
+					
+					// session.invalidate();
+					// HttpSession newSession = request.getSession();
+					
+					session.setAttribute("userPrincipal", userPrincipal);
+					
+					System.out.println(session.getId());
+					return ResponseEntity.ok().body(user);
 				}
 			}
 
@@ -108,4 +121,12 @@ public class AuthController extends Controller {
 		}
 		throw new ForbiddenException();
 	}
+
+	private Collection<? extends GrantedAuthority> getAuthorities(List<String> roles) {
+    List<GrantedAuthority> authorities = new ArrayList<>();
+    for (String role : roles) {
+      authorities.add(new SimpleGrantedAuthority(role));
+    }
+    return authorities;
+  }
 }

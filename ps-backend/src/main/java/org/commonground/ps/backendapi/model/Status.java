@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Status {
+public class Status implements Serializable {
   private Long id;
 
   @NotNull(message = "Waarde is verplicht")

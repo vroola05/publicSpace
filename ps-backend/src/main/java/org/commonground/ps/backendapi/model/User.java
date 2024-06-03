@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   private Long id;
 
   @NotNull(message = "Waarde is verplicht")
@@ -26,7 +29,6 @@ public class User {
   @Email(message = "Geen geldig email")
   private String email;
   private boolean admin;
-  
   private String apikey;
 
   private List<String> roles = new ArrayList<>();
@@ -35,4 +37,5 @@ public class User {
 
   private Domain domain;
   private Company company;
+
 }

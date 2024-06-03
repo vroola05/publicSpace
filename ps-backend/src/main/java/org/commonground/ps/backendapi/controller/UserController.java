@@ -7,9 +7,7 @@ import java.util.Optional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import org.commonground.ps.backendapi.core.security.SecureHash;
 import org.commonground.ps.backendapi.convertor.Convert;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
@@ -23,6 +21,8 @@ import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.UserExtended;
+import org.commonground.ps.backendapi.security.SecureHash;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.validators.PostUserValidator;
 import org.commonground.ps.backendapi.validators.PutUserValidator;
 

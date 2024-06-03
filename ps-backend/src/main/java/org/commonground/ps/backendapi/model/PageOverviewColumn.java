@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PageOverviewColumn {
+public class PageOverviewColumn implements Serializable {
   private Long id;
   @NotNull(message = "Waarde is verplicht")
   @Size(min = 1, max = 100, message = "Waarde is minimaal 1 en maximaal 100 tekens")

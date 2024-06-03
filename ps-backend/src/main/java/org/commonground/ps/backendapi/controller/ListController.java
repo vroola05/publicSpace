@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.core.ActionService;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.repositories.CallListRepository;
 import org.commonground.ps.backendapi.jpa.repositories.OrderListRepository;
@@ -27,6 +26,7 @@ import org.commonground.ps.backendapi.model.QueryParametersFilterValue;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 import org.commonground.ps.backendapi.model.template.Template;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.validators.QueryParametersValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

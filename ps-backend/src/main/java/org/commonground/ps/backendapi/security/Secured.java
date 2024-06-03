@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.core.security;
+package org.commonground.ps.backendapi.security;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

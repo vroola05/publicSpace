@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.model.template;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +15,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Template {
+public class Template implements Serializable {
   private InfoT info;
   private Company company;
   private Domain domain;
   private List<Action> actions;
   private HashMap<String, EndpointT> endpoints = new HashMap<>();
   private ComponentT components;
-  private PagesT pagesOld;
+  // private PagesT pagesOld;
   private Map<String, Page> pages = new HashMap<>();
   
 }

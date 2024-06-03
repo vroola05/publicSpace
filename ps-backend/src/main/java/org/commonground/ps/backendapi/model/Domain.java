@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Domain {
+public class Domain implements Serializable {
+  private static final long serialVersionUID = 1L;
+  
   private Long id;
 
   @NotNull(message = "Waarde is verplicht")

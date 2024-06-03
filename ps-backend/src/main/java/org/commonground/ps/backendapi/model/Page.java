@@ -1,8 +1,9 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface Page {
+public interface Page extends Serializable {
     void setId(Long id);
     Long getId();
 

@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -8,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Role {
+public class Role implements Serializable {
   @NotNull(message = "Waarde is verplicht")
   private Long id;
   @NotNull(message = "Waarde is verplicht")

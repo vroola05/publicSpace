@@ -59,7 +59,7 @@ export class AppComponent {
           this.loaded = true;
         } else {
           //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
-
+console.log(user);
           if (this.storage.getSession('haslogin') !== '1' && this.config.headers.length > 0) {
             this.storage.setSession('haslogin', '1');
             this.navigationService.navigate(['/overview/' + this.config.headers[0].id]);

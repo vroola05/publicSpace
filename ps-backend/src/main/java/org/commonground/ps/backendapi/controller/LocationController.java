@@ -3,10 +3,10 @@ package org.commonground.ps.backendapi.controller;
 import java.util.List;
 
 import org.commonground.ps.backendapi.core.LocationService;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.model.Location;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

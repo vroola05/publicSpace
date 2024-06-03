@@ -1,8 +1,35 @@
 services:
+  ps-redis:
+    container_name: ps-redis-container
+    image: redis:7.0.15-alpine
+    command: ["redis-server", "/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - session-data:/var/redis/data
+      - ./conf/redis.conf:/etc/redis/redis.conf
+    networks:
+      publicspace:
+        aliases:
+          - ps-redis.docker
+
+  ps-redis-commander:
+    container_name: ps-redis-commander-container
+    image: rediscommander/redis-commander:latest
+    # restart: always
+    environment:
+      - REDIS_HOSTS=local:ps-redis.docker:6379
+    ports:
+      - "8081:8081"
+    networks:
+      publicspace:
+        aliases:
+          - ps-redis-commander.docker
+
   ps-database:
     container_name: ps-database-container
     build: ./ps-database
-    restart: always
+    # restart: always
     ports:
       - "5432:5432"
     environment:
@@ -20,7 +47,7 @@ services:
   pgadmin:
     container_name: ps-pgadmin4_container
     image: dpage/pgadmin4
-    restart: always
+    # restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
       PGADMIN_DEFAULT_PASSWORD: postgresPassword
@@ -34,11 +61,10 @@ services:
         aliases:
           - pgadmin4.docker
 
-
   ps-frontend:
     container_name: ps-frontend-container
     build: ./ps-frontend
-    restart: always
+    # restart: always
     ports:
       - "4200:4200"
     volumes:
@@ -52,7 +78,7 @@ services:
   ps-backend:
     container_name: ps-backend-container
     build: ./ps-backend
-    restart: always
+    # restart: always
     ports:
       - "8080:8080"
     volumes:
@@ -67,6 +93,7 @@ volumes:
   pgadmin-data:
   frontend-data:
   backend-data:
+  session-data:
 
 networks:
   publicspace:

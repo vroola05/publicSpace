@@ -8,13 +8,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Status;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.validators.PostStatusValidator;
 import org.commonground.ps.backendapi.validators.PutStatusValidator;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -14,6 +14,8 @@ public class UserPrincipal implements Authentication {
   private String name;
   private User user;
   private Template template;
+  private String referer;
+  private String apikey;
   private Collection<? extends GrantedAuthority> grantedAuthority;
 
   public void setName(String name) {
@@ -36,7 +38,6 @@ public class UserPrincipal implements Authentication {
 
   @Override
   public Object getCredentials() {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -68,5 +69,20 @@ public class UserPrincipal implements Authentication {
     this.isAuthenticated = isAuthenticated;
 
   }
-  
+
+  public void setReferer(String referer) {
+    this.referer = referer;
+  }
+
+  public String getReferer() {
+    return referer;
+  }
+
+  public void setApikey(String apikey) {
+    this.apikey = apikey;
+  }
+
+  public String getApikey() {
+    return apikey;
+  }
 }

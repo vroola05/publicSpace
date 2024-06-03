@@ -7,12 +7,12 @@ import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.core.ContractService;
 import org.commonground.ps.backendapi.core.ContractSpecificationService;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.ContractSpecification;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.validators.PostContractSpecificationValidator;
 import org.commonground.ps.backendapi.validators.PostContractValidator;
 import org.commonground.ps.backendapi.validators.PutContractSpecificationValidator;

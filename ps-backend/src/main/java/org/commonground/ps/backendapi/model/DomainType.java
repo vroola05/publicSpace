@@ -1,11 +1,15 @@
 package org.commonground.ps.backendapi.model;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DomainType {
+public class DomainType implements Serializable {
+  private static final long serialVersionUID = 1L;
+  
   private Long id;
   private String name;
 

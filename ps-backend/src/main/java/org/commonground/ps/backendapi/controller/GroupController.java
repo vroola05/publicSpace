@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
@@ -16,6 +15,7 @@ import org.commonground.ps.backendapi.jpa.entities.GroupEntity;
 import org.commonground.ps.backendapi.jpa.repositories.DomainRepository;
 import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.model.Group;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.validators.PostGroupValidator;
 import org.commonground.ps.backendapi.validators.PutGroupValidator;
 import org.springframework.beans.factory.annotation.Autowired;

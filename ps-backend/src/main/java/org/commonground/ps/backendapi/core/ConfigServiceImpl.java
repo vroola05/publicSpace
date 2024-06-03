@@ -3,6 +3,7 @@ package org.commonground.ps.backendapi.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConfigServiceImpl implements ConfigService {
-  private static HashMap<String, Template> configs = new HashMap<>();;
+  private static HashMap<String, Template> configs = new HashMap<>();
 
   @Autowired
 	private DomainRepository domainRepository;
@@ -43,7 +44,7 @@ public class ConfigServiceImpl implements ConfigService {
   @Override
   public Template find(String referer) throws SecurityException {
     try {
-			URL url = new URL(referer);
+			URL url = URI.create(referer).toURL();
 			List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
 			for (DomainEntity domainEntity: domains) {
 				if (checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {

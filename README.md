@@ -71,14 +71,9 @@ ps-frontend\
 
 npm install
 
-Eerst bouw je de library:
-ng build --project=ps-lib --watch
+ng serve --host 0.0.0.0 --disable-host-check
 
-Vervolgens draai je een van de twee projecten.
-ng serve --project=ps-government
-ng serve --project=ps-government --host 0.0.0.0 --disable-host-check
-
-Default password: @dm1nistrator
+Default password: @dministrator
 
 When you try to open the project within a browser on localhost you will get cors errors.
 on linux you can run:

@@ -8,10 +8,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
-import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.jpa.entities.CompanyEntity;
 import org.commonground.ps.backendapi.jpa.repositories.CompanyRepository;
 import org.commonground.ps.backendapi.model.Company;
+import org.commonground.ps.backendapi.security.Secured;
 import org.commonground.ps.backendapi.validators.PostCompanyValidator;
 import org.commonground.ps.backendapi.validators.PutCompanyValidator;
 import org.locationtech.jts.geom.Coordinate;
