@@ -22,7 +22,6 @@ import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PostDomainValidator;
 import org.commonground.ps.backendapi.validators.PutDomainValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,15 +35,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/company/{companyId}/domain", produces = { "application/json; charset=utf-8" })
 public class DomainController extends Controller {
+	private final DomainRepository domainRepository;
+	private final DomainTypeRepository domainTypeRepository;
+	private final CompanyRepository companyRepository;
 
-	@Autowired
-	private DomainRepository domainRepository;
+	public DomainController(
+		CompanyRepository companyRepository,
+		DomainRepository domainRepository,
+		DomainTypeRepository domainTypeRepository) {
+		this.domainRepository = domainRepository;
+		this.domainTypeRepository = domainTypeRepository;
+		this.companyRepository = companyRepository;
 
-	@Autowired
-	private DomainTypeRepository domainTypeRepository;
-
-	@Autowired
-	private CompanyRepository companyRepository;
+	}
 
 	@Secured(identifier = "getDomain")
 	@GetMapping()
@@ -54,13 +57,11 @@ public class DomainController extends Controller {
 		isValid(companyId);
 
 		User user = getUser();
-		List<Domain> domains = new ArrayList<Domain>();
+		List<Domain> domains = new ArrayList<>();
 		List<DomainEntity> domainEntities;
 		if (user.isAdmin()) {
 			domainEntities = domainRepository.getDomains(companyId);
-			domainEntities.forEach(domainEntity -> {
-				domains.add(Convert.domainEntity(domainEntity));
-			});
+			domainEntities.forEach(domainEntity -> domains.add(Convert.domainEntity(domainEntity)));
 		} else {
 			Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(user.getDomain().getId(), user);
 			if (domainEntityOptional.isPresent()) {
@@ -78,7 +79,7 @@ public class DomainController extends Controller {
 
 		isValid(companyId, domainId);
 
-		List<Domain> domains = new ArrayList<Domain>();
+		List<Domain> domains = new ArrayList<>();
 		List<DomainEntity> domainEntities = domainRepository.getDomainsByDomainType(DomainTypeEnum.CONTRACTOR);
 		domainEntities.forEach(domainEntity -> {
 			Domain domain = Convert.domainEntity(domainEntity);
@@ -97,9 +98,7 @@ public class DomainController extends Controller {
 
 		List<DomainType> domainTypes = new ArrayList<>();
 		List<DomainTypeEntity> domainTypeEntities = domainTypeRepository.findAll();
-		domainTypeEntities.forEach(domainTypeEntity -> {
-			domainTypes.add(Convert.domainTypeEntity(domainTypeEntity));
-		});
+		domainTypeEntities.forEach(domainTypeEntity -> domainTypes.add(Convert.domainTypeEntity(domainTypeEntity)));
 		return domainTypes;
 	}
 
@@ -131,7 +130,7 @@ public class DomainController extends Controller {
 		isValid(companyId, id);
 
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(id, getUser());
-		if (optionalDomainEntity.isPresent() && id == domain.getId()) {
+		if (optionalDomainEntity.isPresent() && domain.getId().equals(id)) {
 			DomainEntity domainEntity = optionalDomainEntity.get();
 			domainEntity.setName(domain.getName());
 			domainEntity.setDomain(domain.getDomain());

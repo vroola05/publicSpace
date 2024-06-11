@@ -10,20 +10,23 @@ import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.repositories.PageRepository;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageServiceImpl implements PageService {
+	private final PageRepository pageRepository;
+	private final PageButtonService pageButtonService;
+	private final PageOverviewService pageOverviewService;
 
-	@Autowired
-	private PageRepository pageRepository;
-
-	@Autowired
-	private PageButtonService pageButtonService;
-
-	@Autowired
-	private PageOverviewService pageOverviewService;
+	public PageServiceImpl(
+			PageButtonService pageButtonService,
+			PageOverviewService pageOverviewService,
+			PageRepository pageRepository) {
+		this.pageRepository = pageRepository;
+		this.pageButtonService = pageButtonService;
+		this.pageOverviewService = pageOverviewService;
+	}
 
 	public List<Page> get(Long companyId, Long domainId) {
 		List<Page> pages = new ArrayList<>();

@@ -10,7 +10,6 @@ import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/action", produces = {
 		"application/json; charset=utf-8" })
 public class ActionController extends Controller {
-	@Autowired
-	private ActionService actionService;
+	private final ActionService actionService;
+
+	public ActionController(ActionService actionService) {
+		this.actionService = actionService;
+
+	}
 
 	@Secured(identifier = "getActionTypes")
 	@GetMapping(value = "/type")

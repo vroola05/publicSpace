@@ -17,7 +17,6 @@ import org.commonground.ps.backendapi.validators.PutCompanyValidator;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,17 +31,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company", produces = { "application/json; charset=utf-8" })
 public class CompanyController extends Controller {
 
-	@Autowired
-	private CompanyRepository companyRepository;
+	private final CompanyRepository companyRepository;
+
+	public CompanyController(CompanyRepository companyRepository) {
+		this.companyRepository = companyRepository;
+
+	}
 
 	@Secured(admin = true)
 	@GetMapping()
 	public List<Company> getCompany() {
-		List<Company> companies = new ArrayList<Company>();
+		List<Company> companies = new ArrayList<>();
 		List<CompanyEntity> companyEntities = companyRepository.findAll();
-		companyEntities.forEach(companyEntity -> {
-			companies.add(Convert.companyEntity(companyEntity));
-		});
+		companyEntities.forEach(companyEntity -> companies.add(Convert.companyEntity(companyEntity)));
 
 		return companies;
 	}
@@ -59,7 +60,7 @@ public class CompanyController extends Controller {
 			@Valid @PutCompanyValidator @RequestBody Company company) {
 
 		Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(id);
-		if (optionalCompanyEntity.isPresent() && id == company.getId()) {
+		if (optionalCompanyEntity.isPresent() && company.getId().equals(id)) {
 			CompanyEntity companyEntity = optionalCompanyEntity.get();
 			companyEntity.setName(company.getName());
 			companyEntity.setSrid(company.getSrid());

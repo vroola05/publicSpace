@@ -18,7 +18,6 @@ import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.validators.PostGroupValidator;
 import org.commonground.ps.backendapi.validators.PutGroupValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +32,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/group", produces = {
 		"application/json; charset=utf-8" })
 public class GroupController extends Controller {
+	private final DomainRepository domainRepository;
+	private final GroupRepository groupRepository;
 
-	@Autowired
-	private DomainRepository domainRepository;
+	public GroupController(
+		DomainRepository domainRepository,
+		GroupRepository groupRepository) {
+		this.domainRepository = domainRepository;
+		this.groupRepository = groupRepository;
 
-	@Autowired
-	private GroupRepository groupRepository;
+	}
 
 	@Secured(identifier = "getGroups")
 	@GetMapping()
@@ -50,9 +53,7 @@ public class GroupController extends Controller {
 
 		List<Group> groups = new ArrayList<>();
 		List<GroupEntity> domainEntities = groupRepository.getGroups(domainId);
-		domainEntities.forEach(domainEntity -> {
-			groups.add(Convert.groupEntity(domainEntity));
-		});
+		domainEntities.forEach(domainEntity -> groups.add(Convert.groupEntity(domainEntity)));
 		return groups;
 	}
 
@@ -91,14 +92,14 @@ public class GroupController extends Controller {
 		isValid(companyId, domainId);
 
 		Optional<GroupEntity> optionalGroupEntityName = groupRepository.getGroupByName(group.getName(), domainId);
-		if (optionalGroupEntityName.isPresent() && group.getId() != optionalGroupEntityName.get().getId()) {
+		if (optionalGroupEntityName.isPresent() && !group.getId().equals(optionalGroupEntityName.get().getId())) {
 			BadRequestException badRequestException = new BadRequestException();
 			badRequestException.addError(new FieldValue("name", "Waarde is niet uniek"));
 			throw badRequestException;
 		}
 
 		Optional<GroupEntity> optionalGroupEntity = groupRepository.getGroupById(group.getId(), domainId);
-		if (optionalGroupEntity.isPresent() && id == group.getId()) {
+		if (optionalGroupEntity.isPresent() && group.getId().equals(id)) {
 			GroupEntity groupEntity = optionalGroupEntity.get();
 			groupEntity.setName(group.getName());
 

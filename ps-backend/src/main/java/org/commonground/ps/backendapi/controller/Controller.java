@@ -19,14 +19,14 @@ public class Controller {
 
 	public void isValid(Long companyId) throws NotFoundException {
 		User user = getUser();
-		if (!user.isAdmin() && user.getCompany().getId() != companyId) {
+		if (!user.isAdmin() && !user.getCompany().getId().equals(companyId)) {
 			throw new NotFoundException();
 		}
 	}
 
 	public void isValid(Long companyId, Long domainId) throws NotFoundException {
 		User user = getUser();
-		if (!user.isAdmin() && (user.getCompany().getId() != companyId || user.getDomain().getId() != domainId)) {
+		if (!user.isAdmin() && (!user.getCompany().getId().equals(companyId) || !user.getDomain().getId().equals(domainId))) {
 			throw new NotFoundException();
 		}
 	}

@@ -19,7 +19,6 @@ import org.commonground.ps.backendapi.model.Login;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.util.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -52,14 +51,19 @@ public class AuthController extends Controller {
 	@Value("${sec.session.time}")
 	private int secSessionTime;
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	private final SessionRepository sessionRepository;
+	private final ConfigService configService;
 
-	@Autowired
-	private SessionRepository sessionRepository;
+	public AuthController(
+		UserRepository userRepository,
+		SessionRepository sessionRepository,
+		ConfigService configService) {
+			this.userRepository = userRepository;
+			this.sessionRepository = sessionRepository;
+			this.configService = configService;
 
-	@Autowired
-	ConfigService configService;
+	}
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<User> login(@RequestHeader("${sec.header.config}") String referer,

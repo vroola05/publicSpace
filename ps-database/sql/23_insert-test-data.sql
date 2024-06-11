@@ -54,6 +54,11 @@ INSERT INTO public.category (id, main_category_id, name, start_date, end_date, a
 -- -------------------------
 INSERT INTO public.contract (id, domain_id_governent, domain_id_contractor, accepted) VALUES (nextval('public.seq_contract_id'), get_domain('Municipal Public Space'), get_domain('Contractor Public Space'), true);
 
+INSERT INTO contract_specification (id, contract_id, description, date_created, date_start, date_end, accepted, active) VALUES (nextval('public.seq_contract_specification'), currval('public.seq_contract_id'), 'Sample bestek', '2024-06-03 00:00:00.34+00', '2024-06-01', NULL, true, true);
+
+INSERT INTO public.contract_specification_items (id, contract_specification_id, specification_number, name, unit, price, active) VALUES (nextval('public.seq_contract_specification_items'), currval('public.seq_contract_specification'), '100000', 'Bestekpost item 1', 'st', '12,00', true);
+INSERT INTO public.contract_specification_items (id, contract_specification_id, specification_number, name, unit, price, active) VALUES (nextval('public.seq_contract_specification_items'), currval('public.seq_contract_specification'), '100001', 'Bestekpost item 2', 'm2', '100,00', true);
+
 -- -------------------------
 -- -------------------------
 -- Create Categorieen Contractor
@@ -76,3 +81,5 @@ INSERT INTO public.category (id, main_category_id, name, start_date, end_date, a
 INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Vuurwerk', '2021-01-01', NULL, true, get_group('Groen'));
 
 INSERT INTO public.contract_main_category (contract_id, main_category_id) VALUES (currval('public.seq_contract_id'), currval('public.seq_maincategory_id'))
+
+

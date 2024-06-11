@@ -12,25 +12,29 @@ import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.PageButtonTypeRepository;
 import org.commonground.ps.backendapi.model.PageButton;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageButtonServiceImpl implements PageButtonService {
-	@Autowired
-	private PageButtonRoleService pageButtonRoleService;
+	private final PageButtonRoleService pageButtonRoleService;
+	private final PageButtonConditionService pageButtonConditionService;
+	private final PageButtonTypeRepository pageButtonTypeRepository;
+	private final ActionTypeRepository actionTypeRepository;
+	private final ActionService actionService;
 
-	@Autowired
-	private PageButtonConditionService pageButtonConditionService;
+	public PageButtonServiceImpl(
+			ActionService actionService,
+			ActionTypeRepository actionTypeRepository,
+			PageButtonConditionService pageButtonConditionService,
+			PageButtonRoleService pageButtonRoleService,
+			PageButtonTypeRepository pageButtonTypeRepository) {
+		this.pageButtonRoleService = pageButtonRoleService;
+		this.pageButtonConditionService = pageButtonConditionService;
+		this.pageButtonTypeRepository = pageButtonTypeRepository;
+		this.actionTypeRepository = actionTypeRepository;
+		this.actionService = actionService;
 
-	@Autowired
-	private PageButtonTypeRepository pageButtonTypeRepository;
-
-	@Autowired
-	private ActionTypeRepository actionTypeRepository;
-
-	@Autowired
-	private ActionService actionService;
+	}
 
 	public void updatePageButtons(String location, PageEntity pageEntity, List<PageButton> pageButtons) {
 		List<PageButtonTypeEntity> pageButtonTypeEntities = pageButtonTypeRepository.findAllByOrderByNameAsc();

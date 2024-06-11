@@ -7,7 +7,6 @@ import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
 import org.commonground.ps.backendapi.jpa.repositories.RolesRepository;
 import org.commonground.ps.backendapi.model.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/roles", produces = { "application/json; charset=utf-8" })
 public class RolesController extends Controller {
+	private final RolesRepository rolesRepository;
 
-	@Autowired
-	private RolesRepository rolesRepository;
-
+	public RolesController(RolesRepository rolesRepository) {
+		this.rolesRepository = rolesRepository;
+	}
 	@Secured(identifier = "getRoles")
 	@GetMapping()
 	public List<Role> getRoles() {

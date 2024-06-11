@@ -9,7 +9,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.repositories.CallListRepository;
@@ -28,7 +27,6 @@ import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 import org.commonground.ps.backendapi.model.template.Template;
 import org.commonground.ps.backendapi.validators.QueryParametersValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,18 +39,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/list", produces = { "application/json; charset=utf-8" })
 public class ListController extends Controller {
-	@Autowired
-	private CallListRepository callListRepository;
-
-	@Autowired
-	ActionService actionService;
-
-	@Autowired
-	private OrderListRepository orderListRepository;
+	private final CallListRepository callListRepository;
+	private final OrderListRepository orderListRepository;
 
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	public ListController(
+		CallListRepository callListRepository,
+		OrderListRepository orderListRepository) {
+		this.callListRepository = callListRepository;
+		this.orderListRepository = orderListRepository;
+
+	}
+
 	@Secured(identifier = "getListCall")
 	@PostMapping(value = "/call/{id}", consumes = "application/json", produces = "application/json")
 	public List<CallList> getListCall(@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
@@ -85,7 +85,7 @@ public class ListController extends Controller {
 		User user = getUser();
 		Template domainT = getTemplate();
 		PageOverviewImpl pageOverwiew = (PageOverviewImpl)domainT.getPages().get(PageTypesEnum.OVERVIEW.name);
-		Optional<PageOverviewTemplate> pageOverviewTemplateOptional = pageOverwiew.getPageOverviewTemplate().stream().filter(t -> t.getId() == id).findFirst();
+		Optional<PageOverviewTemplate> pageOverviewTemplateOptional = pageOverwiew.getPageOverviewTemplate().stream().filter(t -> t.getId().equals(id)).findFirst();
 		if (!pageOverviewTemplateOptional.isPresent()) {
 			throw new BadRequestException();
 		}
@@ -108,17 +108,13 @@ public class ListController extends Controller {
 		listBuilder.sortBy("dateCreated", Sort.Direction.DESC);
 
 		// Attach stattusses
-		List<QueryParametersFilterValue> statusList = new ArrayList<QueryParametersFilterValue>();
-		pageOverviewTemplate.getStatusses().forEach(status -> {
-			statusList.add(new QueryParametersFilterValue(status.getId()));
-		});
+		List<QueryParametersFilterValue> statusList = new ArrayList<>();
+		pageOverviewTemplate.getStatusses().forEach(status -> statusList.add(new QueryParametersFilterValue(status.getId())));
 		listBuilder.with(new QueryParametersFieldFilter("statusId", QueryParametersFieldFilterType.NUMBER, statusList));
 
 		// Attach stattusses
-		List<QueryParametersFilterValue> groupList = new ArrayList<QueryParametersFilterValue>();
-		user.getGroups().forEach(group -> {
-			groupList.add(new QueryParametersFilterValue(group.getId()));
-		});
+		List<QueryParametersFilterValue> groupList = new ArrayList<>();
+		user.getGroups().forEach(group -> groupList.add(new QueryParametersFilterValue(group.getId())));
 	
 		listBuilder.with(new QueryParametersFieldFilter("groupId", QueryParametersFieldFilterType.NUMBER, groupList));
 

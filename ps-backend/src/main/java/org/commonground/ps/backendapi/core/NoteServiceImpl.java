@@ -12,23 +12,26 @@ import org.commonground.ps.backendapi.jpa.repositories.NoteRepository;
 import org.commonground.ps.backendapi.jpa.repositories.NoteTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NoteServiceImpl implements NoteService {
+	private final UserRepository userRepository;
+	private final NoteTypeRepository noteTypeRepository;
+	private final NoteRepository noteRepository;
+	private final CallRepository callRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+	public NoteServiceImpl(
+			CallRepository callRepository,
+			NoteRepository noteRepository,
+			NoteTypeRepository noteTypeRepository,
+			UserRepository userRepository) {
+		this.userRepository = userRepository;
+		this.noteTypeRepository = noteTypeRepository;
+		this.noteRepository = noteRepository;
+		this.callRepository = callRepository;
 
-	@Autowired
-	private NoteTypeRepository noteTypeRepository;
-	
-	@Autowired
-	private NoteRepository noteRepository;
-
-	@Autowired
-	private CallRepository callRepository;
+	}
 
 	@Override
 	public Optional<NoteEntity> createNoteEntity(Long callId, String content, Long noteTypeId, User user, boolean visible) {

@@ -123,96 +123,66 @@ public class ListBuilder<T> {
   }
 
   private Specification<T> getEqualString(String field, String value) {
-    return (root, query, builder) -> {
-      return builder.like(builder.lower(root.get(field)), value == null ? "" : "%" + value.toLowerCase() + "%");
-    };
+    return (root, query, builder) -> builder.like(builder.lower(root.get(field)), value == null ? "" : "%" + value.toLowerCase() + "%");
   }
 
   private Specification<T> getEqualNumber(String field, Long value) {
-    return (root, query, builder) -> {
-      return builder.equal(root.get(field), value == null ? null : value);
-    };
+    return (root, query, builder) -> builder.equal(root.get(field), value == null ? null : value);
   }
 
   private Specification<T> getEqualDate(String field, Date value) {
-    return (root, query, builder) -> {
-      return builder.equal(root.get(field), value);
-    };
+    return (root, query, builder) -> builder.equal(root.get(field), value);
   }
 
   private Specification<T> getInText(String field, List<String> value) {
-    return (root, query, builder) -> {
-      return root.get(field).in(value);
-    };
+    return (root, query, builder) -> root.get(field).in(value);
   }
 
   private Specification<T> getInNumber(String field, List<Long> value) {
-    return (root, query, builder) -> {
-      return root.get(field).in(value);
-    };
+    return (root, query, builder) -> root.get(field).in(value);
   }
 
   private Specification<T> getInDate(String field, List<Date> value) {
-    return (root, query, builder) -> {
-      return root.get(field).in(value);
-    };
+    return (root, query, builder) -> root.get(field).in(value);
   }
 
   private Specification<T> getBetween(String field, Long from , Long to) {
-    return (root, query, builder) -> {
-      return builder.between(root.get(field), from, to);
-    };
+    return (root, query, builder) -> builder.between(root.get(field), from, to);
   }
 
   private Specification<T> getBetween(String field, Date from , Date to) {
-    return (root, query, builder) -> {
-      return builder.between(root.get(field), from, to);
-    };
+    return (root, query, builder) -> builder.between(root.get(field), from, to);
   }
 
   private Specification<T> getBetween(String field, String from , String to) {
-    return (root, query, builder) -> {
-      return builder.between(root.get(field), from, to);
-    };
+    return (root, query, builder) -> builder.between(root.get(field), from, to);
   }
 
   private Specification<T> getLessThanOrEqualTo(String field, Date value) {
-    return (root, query, builder) -> {
-      return builder.lessThanOrEqualTo(root.get(field).as(Date.class), value);
-    };
+    return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(field).as(Date.class), value);
   }
 
   private Specification<T> getLessThanOrEqualTo(String field, Long value) {
-    return (root, query, builder) -> {
-      return builder.lessThanOrEqualTo(root.get(field).as(Long.class), value);
-    };
+    return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(field).as(Long.class), value);
   }
 
   private Specification<T> getLessThanOrEqualTo(String field, String value) {
-    return (root, query, builder) -> {
-      return builder.lessThanOrEqualTo(root.get(field).as(String.class), value);
-    };
+    return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(field).as(String.class), value);
   }
 
   private Specification<T> getGreaterThanOrEqualTo(String field, Date value) {
-    return (root, query, builder) -> {
-      return builder.greaterThanOrEqualTo(root.get(field).as(Date.class), value);
-    };
+    return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get(field).as(Date.class), value);
   }
 
   private Specification<T> getGreaterThanOrEqualTo(String field, Long value) {
-    return (root, query, builder) -> {
-      return builder.greaterThanOrEqualTo(root.get(field).as(Long.class), value);
-    };
+    return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get(field).as(Long.class), value);
   }
 
   private Specification<T> getGreaterThanOrEqualTo(String field, String value) {
-    return (root, query, builder) -> {
-      return builder.greaterThanOrEqualTo(root.get(field).as(String.class), value);
-    };
+    return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get(field).as(String.class), value);
   }
 
-  private <T> T getValue(QueryParametersFilterValue value, QueryParametersFieldFilterType type, Class<T> clazz) {
+  public <K> K getValue(QueryParametersFilterValue value, QueryParametersFieldFilterType type, Class<K> clazz) {
     switch(type) {
     case DATE:
       return clazz.cast(value.getDate());

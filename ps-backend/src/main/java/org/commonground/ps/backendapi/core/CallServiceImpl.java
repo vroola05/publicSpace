@@ -21,32 +21,31 @@ import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
-import org.commonground.ps.backendapi.model.enums.NoteTypeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CallServiceImpl implements CallService {
-    @Autowired
-	private CallRepository callRepository;
     
-    @Autowired
-	private ActionService actionService;
+	private final CallRepository callRepository;
+    private final ActionService actionService;
+	private final CategoryRepository categoryRepository;
+	private final DomainRepository domainRepository;
+	private final UserRepository userRepository;
+	private final GroupRepository groupRepository;
 
-	@Autowired
-	private NoteService noteService;
-
-    @Autowired
-	private CategoryRepository categoryRepository;
-
-	@Autowired
-	private DomainRepository domainRepository;
-
-	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private GroupRepository groupRepository;
+	public CallServiceImpl(
+			ActionService actionService,
+			CallRepository callRepository,
+			CategoryRepository categoryRepository,
+			DomainRepository domainRepository,
+			GroupRepository groupRepository,
+			UserRepository userRepository) {
+		this.callRepository = callRepository;
+		this.actionService = actionService;
+		this.categoryRepository = categoryRepository;
+		this.domainRepository = domainRepository;
+		this.userRepository = userRepository;
+		this.groupRepository = groupRepository;}
 
     @Override
     public Optional<Call> getCallById(User user, Long id) {
@@ -57,7 +56,7 @@ public class CallServiceImpl implements CallService {
 			return Optional.empty();
 		}
         
-        return Optional.of(Convert.callEntity(callEntityOptional.get(), user.getDomain().getDomainType()));
+        return Optional.of(Convert.callEntity(callEntityOptional.get(), user));
     }
 
 	@Override
@@ -72,8 +71,8 @@ public class CallServiceImpl implements CallService {
     }
 	
     public boolean hasAccess(User user, CallEntity callEntity) {
-        return user.getGroups().stream().anyMatch(group -> group.getId() == callEntity.getGroup().getId())
-            || (callEntity.getUser() != null && user.getId() == callEntity.getUser().getId());
+        return user.getGroups().stream().anyMatch(group -> group.getId().equals(callEntity.getGroup().getId()))
+            || (callEntity.getUser() != null && user.getId().equals(callEntity.getUser().getId()));
     }
 
 
@@ -91,7 +90,9 @@ public class CallServiceImpl implements CallService {
 
 		CallEntity callEntityNew = callRepository.save(callEntity);
 
-		return Optional.of(Convert.callEntity(callEntityNew, user.getDomain().getDomainType()));
+		actionService.call(user.getDomain().getId(), callEntityNew.getId(), ActionEnum.CALL_CREATE);
+
+		return Optional.of(Convert.callEntity(callEntityNew, user));
     }
 
     public Optional<CallEntity> convertCall(User user, Call call) {
@@ -142,7 +143,7 @@ public class CallServiceImpl implements CallService {
 
 		UserEntity userEntity = userEntityOptional.get();
 
-		if(userEntity.getGroups().stream().noneMatch(group -> group.getId() == callEntity.getGroup().getId())) {
+		if(userEntity.getGroups().stream().noneMatch(group -> group.getId().equals(callEntity.getGroup().getId()))) {
 			return Optional.empty();
 		}
 
@@ -152,7 +153,7 @@ public class CallServiceImpl implements CallService {
 
 		actionService.call(user.getDomain().getId(), callEntity.getId(), ActionEnum.ASSIGN_PERSON);
 
-		return Optional.of(Convert.callEntity(callEntity, user.getDomain().getDomainType()));
+		return Optional.of(Convert.callEntity(callEntity, user));
 	}
 
 	@Override
@@ -179,7 +180,7 @@ public class CallServiceImpl implements CallService {
 
 		actionService.call(user.getDomain().getId(), callEntity.getId(), ActionEnum.ASSIGN_GROUP);
 
-		return Optional.of(Convert.callEntity(callEntity, user.getDomain().getDomainType()));
+		return Optional.of(Convert.callEntity(callEntity, user));
 	}
 
 	@Override

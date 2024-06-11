@@ -20,7 +20,7 @@ services:
   pgadmin:
     container_name: ps-pgadmin4_container
     image: dpage/pgadmin4
-    restart: always
+    # restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
       PGADMIN_DEFAULT_PASSWORD: postgresPassword
@@ -38,7 +38,7 @@ services:
   ps-frontend:
     container_name: ps-frontend-container
     build: ./ps-frontend
-    restart: always
+    # restart: always
     ports:
       - "4200:4200"
     volumes:
@@ -52,7 +52,7 @@ services:
   ps-backend:
     container_name: ps-backend-container
     build: ./ps-backend
-    restart: always
+    # restart: always
     ports:
       - "8080:8080"
     volumes:

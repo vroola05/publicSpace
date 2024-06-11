@@ -69,6 +69,8 @@ import org.commonground.ps.backendapi.model.enums.PageTypesEnum;
 
 public class Convert {
   
+  private Convert() {}
+
   public static User userEntity(UserEntity userEntity) {
     User user = new User();
     user.setId(userEntity.getId());
@@ -192,7 +194,7 @@ public class Convert {
     return callEntity;
   }
 
-  public static Call callEntity(CallEntity callEntity, DomainType domainType) {
+  public static Call callEntity(CallEntity callEntity, User user) {
     Call call = new Call();
     call.setId(callEntity.getId());
     call.setCasenumber(callEntity.getCasenumber());
@@ -200,15 +202,12 @@ public class Convert {
     call.setDateCreated(callEntity.getDateCreated());
     call.setDateEnded(callEntity.getDateEnded());
 
-
     if (callEntity.getLocation() != null) {
 			call.setLocation(locationEntity(callEntity.getLocation()));
 		}
 
-    if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
-      if (callEntity.getPerson() != null) {
+    if (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id && callEntity.getPerson() != null) {
         call.setPerson(personEntity(callEntity.getPerson()));
-      }
     }		
 		
 		if (callEntity.getUser() != null) {
@@ -228,10 +227,10 @@ public class Convert {
 			call.setStatus(statusEntity(callEntity.getStatus()));
 		}
 
-    if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
+    if (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
       if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
         for (OrderEntity orderEntity: callEntity.getOrders()) {
-          call.getOrders().add(orderEntity(orderEntity, domainType));
+          call.getOrders().add(orderEntity(orderEntity, user.getDomain().getDomainType()));
         }
       }
 
@@ -369,9 +368,9 @@ public class Convert {
         pageOverviewTemplate.setPriority(pageOverviewEntity.getPriority());
         pageOverviewTemplate.setPersonal(pageOverviewEntity.getPersonal());
         pageOverviewTemplate.setSize(pageOverviewEntity.getSize());
-        List<PageOverviewColumn> columns = new ArrayList<PageOverviewColumn>();
+        List<PageOverviewColumn> columns = new ArrayList<>();
         
-        List<Status> statusses = new ArrayList<Status>();
+        List<Status> statusses = new ArrayList<>();
         List<PageOverviewStatusEntity> statusEntities = pageOverviewEntity.getStatusses();
         for (PageOverviewStatusEntity pageOverviewStatusEntity: statusEntities) {
           statusses.add(Convert.statusEntity(pageOverviewStatusEntity.getStatus()));
@@ -393,7 +392,6 @@ public class Convert {
         pageOverviewTemplate.setColumns(columns);
 
         List<PageButtonEntity> pageButtonEntities = pageOverviewEntity.getPageButtons();
-        //pageOverviewTemplate.setButtonsLeft(pageButtons);
 
         pageOverviewTemplate.setButtonsLeft(getButtonsLocation(pageButtonEntities, "left"));
         pageOverviewTemplate.setButtonsRight(getButtonsLocation(pageButtonEntities, "right"));
@@ -489,14 +487,6 @@ public class Convert {
     pageButton.setRoute(pageButtonEntity.getRoute());
     return pageButton;
   }
-
-  /*public static Role pageButtonEntity(RolesEntity rolesEntity) {
-    Role role = new Role();
-    role.setId(rolesEntity.getId());
-    role.setAllow(rolesEntity.ge.getName());
-    role.setRoute(pageButtonEntity.getRoute());
-    return role;
-  }*/
   
   public static Location toLocation(GeoAddressEntity geoAddressEntity) {
 		Location location = new Location();

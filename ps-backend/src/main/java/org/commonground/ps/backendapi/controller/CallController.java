@@ -34,7 +34,6 @@ import org.commonground.ps.backendapi.validators.PostCallValidator;
 import org.commonground.ps.backendapi.validators.PostOrderValidator;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
 import org.commonground.ps.backendapi.validators.PutCallUserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,20 +47,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/call", produces = { "application/json; charset=utf-8" })
 public class CallController extends Controller {
-	@Autowired
-	private ContractService contractService;
-	
-	@Autowired
-	private ActionService actionService;
+	private final ContractService contractService;
+	private final ActionService actionService;
+	private final CallService callService;
+	private final OrderService orderService;
+	private final NoteService noteService;
 
-	@Autowired
-	private CallService callService;
-	
-	@Autowired
-	private OrderService orderService;
+	public CallController(
+		ActionService actionService,
+		CallService callService,
+		ContractService contractService,
+		NoteService noteService,
+		OrderService orderService
+	) {
+		this.contractService = contractService;
+		this.actionService = actionService;
+		this.callService = callService;
+		this.orderService = orderService;
+		this.noteService = noteService;
 
-	@Autowired
-	private NoteService noteService;
+	}
 
 	@Secured(identifier = "getCallById", domainType = DomainTypeEnum.GOVERNMENT)
 	@GetMapping("/{id}")
@@ -95,9 +100,6 @@ public class CallController extends Controller {
 
 		// Second add some additional note
 		noteService.save(callNew.get().getId(), "Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
-
-		// Third call action
-		actionService.call(user.getDomain().getId(), callNew.get().getId(), ActionEnum.CALL_CREATE);
 
 		return callNew.get();
 	}
@@ -155,8 +157,6 @@ public class CallController extends Controller {
 			throw new BadRequestException();
 		}
 
-		actionService.call(getUser().getDomain().getId(), id, ActionEnum.ORDER_CREATE);
-
 		return ordersOptional.get();
 	}
 
@@ -173,7 +173,7 @@ public class CallController extends Controller {
 
 		Optional<NoteEntity> noteEntityOptional;
 		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id, DomainTypeEnum.CONTRACTOR);
+			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
 			if (orderEntityOptional.isEmpty()) {
 				throw new BadRequestException();
 			}

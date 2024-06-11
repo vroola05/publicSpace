@@ -16,23 +16,24 @@ import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.OrderNote;
 import org.commonground.ps.backendapi.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderNoteServiceImpl implements OrderNoteService {
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private OrderRepository orderRepository;
+	private final UserRepository userRepository;
+	private final OrderRepository orderRepository;
+	private final OrderNoteRepository orderNoteRepository;
 
-	// @Autowired
-	// private OrderService orderService;
-	
-	@Autowired
-	private OrderNoteRepository orderNoteRepository;
+	public OrderNoteServiceImpl(
+			OrderNoteRepository orderNoteRepository,
+			OrderRepository orderRepository,
+			UserRepository userRepository) {
+		this.userRepository = userRepository;
+		this.orderRepository = orderRepository;
+		this.orderNoteRepository = orderNoteRepository;
+
+	}
 
 	@Override
 	public OrderNoteEntity createOrderNoteEntity(String content, UserEntity userEntity) {

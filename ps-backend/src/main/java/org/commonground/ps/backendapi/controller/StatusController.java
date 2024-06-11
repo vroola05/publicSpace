@@ -17,7 +17,6 @@ import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.validators.PostStatusValidator;
 import org.commonground.ps.backendapi.validators.PutStatusValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,12 +31,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/status", produces = {
 		"application/json; charset=utf-8" })
 public class StatusController extends Controller {
+	private final DomainRepository domainRepository;
+	private final StatusRepository statusRepository;
 
-	@Autowired
-	private DomainRepository domainRepository;
+	public StatusController(DomainRepository domainRepository, StatusRepository statusRepository) {
+		this.domainRepository = domainRepository;
+		this.statusRepository = statusRepository;
 
-	@Autowired
-	private StatusRepository statusRepository;
+	}
 
 	@Secured(identifier = "getStatus")
 	@GetMapping()
@@ -47,11 +48,9 @@ public class StatusController extends Controller {
 
 		isValid(companyId, domainId);
 
-		List<Status> statusses = new ArrayList<Status>();
+		List<Status> statusses = new ArrayList<>();
 		List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
-		statusEntities.forEach(statusEntity -> {
-			statusses.add(Convert.statusEntity(statusEntity));
-		});
+		statusEntities.forEach(statusEntity -> statusses.add(Convert.statusEntity(statusEntity)));
 		return statusses;
 	}
 
@@ -81,7 +80,7 @@ public class StatusController extends Controller {
 
 		isValid(companyId, domainId);
 
-		if (statusId == status.getId()) {
+		if (status.getId().equals(statusId)) {
 			Optional<StatusEntity> optionalStatusEntity = statusRepository.findById(statusId);
 			if (optionalStatusEntity.isPresent()) {
 				StatusEntity statusEntity = optionalStatusEntity.get();

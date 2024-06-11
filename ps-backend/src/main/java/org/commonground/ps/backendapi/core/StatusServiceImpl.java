@@ -10,13 +10,16 @@ import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
 import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
 import org.commonground.ps.backendapi.model.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StatusServiceImpl implements StatusService {
-	@Autowired
-	private StatusRepository statusRepository;
+	private final StatusRepository statusRepository;
+
+	public StatusServiceImpl(StatusRepository statusRepository) {
+		this.statusRepository = statusRepository;
+
+	}
 
 	public List<StatusEntity> getStatus(Long domainId) {
 		return statusRepository.getStatusByDomainId(domainId);

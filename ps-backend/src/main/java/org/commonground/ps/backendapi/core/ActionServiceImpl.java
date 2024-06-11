@@ -23,30 +23,33 @@ import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ActionServiceImpl implements ActionService {
+	private final DomainRepository domainRepository;
+	private final StatusRepository statusRepository;
+	private final ActionTypeRepository actionTypeRepository;
+	private final ActionRepository actionRepository;
+	private final CallRepository callRepository;
+	private final OrderRepository orderRepository;
 
-	@Autowired
-	private DomainRepository domainRepository;
+	public ActionServiceImpl(
+			ActionRepository actionRepository,
+			ActionTypeRepository actionTypeRepository,
+			CallRepository callRepository,
+			DomainRepository domainRepository,
+			OrderRepository orderRepository,
+			StatusRepository statusRepository) {
+		this.domainRepository = domainRepository;
+		this.statusRepository = statusRepository;
+		this.actionTypeRepository = actionTypeRepository;
+		this.actionRepository = actionRepository;
+		this.callRepository = callRepository;
+		this.orderRepository = orderRepository;
 
-	@Autowired
-	private StatusRepository statusRepository;
-
-	@Autowired
-	private ActionTypeRepository actionTypeRepository;
-
-	@Autowired
-	private ActionRepository actionRepository;
-
-	@Autowired
-	private CallRepository callRepository;
-
-	@Autowired
-	private OrderRepository orderRepository;
+	}
 
 	public Optional<Action> get(Long domainId, ActionEnum actionEnum) {
 		Optional<ActionEntity> actionEntity = getEntity(domainId, actionEnum);
@@ -85,10 +88,6 @@ public class ActionServiceImpl implements ActionService {
 		if (optionalDomainEntity.isPresent()) {
 			List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
 			List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
-
-			// List<ActionTypeEntity> actionTypeEntities = actionTypeEntitiesAll.stream().filter( actionTypeEntity -> 
-			// 	actionTypeEntity.getDomainType() == null || actionTypeEntity.getDomainType().getId() == domainEntity.getDomainType().getId()).collect(Collectors.toList());
-
 
 			List<ActionTypeEntity> actionTypeEntitiesNew = actionTypeEntities.stream().filter( actionTypeEntity -> 
 				actionEntities.stream().noneMatch(b -> b.getActionType().getId().equals(actionTypeEntity.getId()))).collect(Collectors.toList());
@@ -140,7 +139,8 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	public ActionTypeEntity getActionTypeEntity(long id) {
-		return actionTypeRepository.getById(id);
+		Optional<ActionTypeEntity> actionTypeEntityOptional = actionTypeRepository.findById(id);
+		return actionTypeEntityOptional.isEmpty() ? null : actionTypeEntityOptional.get();
 	}
 
 	public boolean call(long domainId, long callId, ActionEnum actionEnum) {
@@ -195,6 +195,9 @@ public class ActionServiceImpl implements ActionService {
 			orderEntity.setStatus(statusEntity);
 		}
 
+		///////////////////////////////////////////////////
+		// 
+		///////////////////////////////////////////////////
 		return true;
 	}
 

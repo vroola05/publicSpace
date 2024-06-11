@@ -9,14 +9,17 @@ import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.jpa.entities.GeoAddressEntity;
 import org.commonground.ps.backendapi.jpa.repositories.GeoAddressRepository;
 import org.commonground.ps.backendapi.model.Location;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LocationServiceDatabase implements LocationService {
 
-	@Autowired
-	private GeoAddressRepository geoAddressRepository;
+	private final GeoAddressRepository geoAddressRepository;
+
+	public LocationServiceDatabase(GeoAddressRepository geoAddressRepository) {
+		this.geoAddressRepository = geoAddressRepository;
+
+	}
 
 	@Override
 	public Location byXY(Double x, Double y) throws NotFoundException {

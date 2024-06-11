@@ -17,7 +17,6 @@ import org.commonground.ps.backendapi.validators.PostContractSpecificationValida
 import org.commonground.ps.backendapi.validators.PostContractValidator;
 import org.commonground.ps.backendapi.validators.PutContractSpecificationValidator;
 import org.commonground.ps.backendapi.validators.PutContractValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +32,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/contract", produces = { "application/json; charset=utf-8" })
 public class ContractController extends Controller {
 	
-	@Autowired
-	private ContractService contractService;
-
-	@Autowired
-	private ContractSpecificationService contractSpecificationService;
+	private final ContractService contractService;
+	private final ContractSpecificationService contractSpecificationService;
 	
+	public ContractController(
+		ContractService contractService,
+		ContractSpecificationService contractSpecificationService) {
+		this.contractService = contractService;
+		this.contractSpecificationService = contractSpecificationService;
+
+	}
 
 	@Secured(identifier = "getContracts")
 	@GetMapping()

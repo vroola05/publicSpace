@@ -25,23 +25,29 @@ import org.commonground.ps.backendapi.model.Contract;
 import org.commonground.ps.backendapi.model.Domain;
 import org.commonground.ps.backendapi.model.MainCategory;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ContractServiceImpl implements ContractService {
-    @Autowired
-	private DomainRepository domainRepository;
-
-	@Autowired
-	private ContractRepository contractRepository;
     
-    @Autowired
-    private MainCategoryRepository mainCategoryRepository;
+	private final DomainRepository domainRepository;
+	private final ContractRepository contractRepository;
+    private final MainCategoryRepository mainCategoryRepository;
+    private final ContractMainCategoryRepository contractMainCategoryRepository;
 
-    @Autowired
-    private ContractMainCategoryRepository contractMainCategoryRepository;
+    public ContractServiceImpl(
+        DomainRepository domainRepository,
+        ContractRepository contractRepository,
+        MainCategoryRepository mainCategoryRepository,
+        ContractMainCategoryRepository contractMainCategoryRepository) {
+        this.domainRepository = domainRepository;
+        this.contractRepository = contractRepository;
+        this.mainCategoryRepository = mainCategoryRepository;
+        this.contractMainCategoryRepository = contractMainCategoryRepository;
+        
+        
+    }
 
     @Override
     public List<Contract> getContracts(Long domainId) {

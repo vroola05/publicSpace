@@ -10,17 +10,20 @@ import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageOverviewColumn;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.PageOverviewTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageOverviewServiceImpl implements PageOverviewService {
+	private final StatusService statusService;
+	private final PageButtonService pageButtonService;
 
-	@Autowired
-	private StatusService statusService;
+	public PageOverviewServiceImpl(
+			PageButtonService pageButtonService,
+			StatusService statusService) {
+		this.statusService = statusService;
+		this.pageButtonService = pageButtonService;
 
-	@Autowired
-	private PageButtonService pageButtonService;
+	}
 
 	@Override
 	public void updatePageOverviewPages(Long domainId, Page page, PageEntity pageEntity) {

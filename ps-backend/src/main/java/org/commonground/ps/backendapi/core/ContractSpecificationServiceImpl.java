@@ -13,19 +13,24 @@ import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ContractSpecificationsRepository;
 import org.commonground.ps.backendapi.model.ContractSpecification;
 import org.commonground.ps.backendapi.model.ContractSpecificationItem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ContractSpecificationServiceImpl implements ContractSpecificationService {
-    @Autowired
-	private ContractRepository contractRepository;
 
-    @Autowired
-	private ContractSpecificationsRepository contractSpecificationsRepository;
-    
-    @Autowired
-	private ContractSpecificationItemService contractSpecificationItemService;
+	private final ContractRepository contractRepository;
+	private final ContractSpecificationsRepository contractSpecificationsRepository;
+	private final ContractSpecificationItemService contractSpecificationItemService;
+
+    public ContractSpecificationServiceImpl(
+            ContractRepository contractRepository,
+            ContractSpecificationItemService contractSpecificationItemService,
+            ContractSpecificationsRepository contractSpecificationsRepository) {
+        this.contractRepository = contractRepository;
+        this.contractSpecificationsRepository = contractSpecificationsRepository;
+        this.contractSpecificationItemService = contractSpecificationItemService;
+
+    }
 
     @Override
     public List<ContractSpecification> getContractSpecifications(Long domainId, Long contractId) {

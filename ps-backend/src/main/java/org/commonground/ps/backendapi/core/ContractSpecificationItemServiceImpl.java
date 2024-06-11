@@ -12,14 +12,16 @@ import org.commonground.ps.backendapi.jpa.entities.ContractSpecificationItemEnti
 import org.commonground.ps.backendapi.jpa.repositories.ContractSpecificationItemsRepository;
 import org.commonground.ps.backendapi.model.ContractSpecification;
 import org.commonground.ps.backendapi.model.ContractSpecificationItem;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ContractSpecificationItemServiceImpl implements ContractSpecificationItemService {
 
-    @Autowired
-	private ContractSpecificationItemsRepository contractSpecificationItemsRepository;
+	private final ContractSpecificationItemsRepository contractSpecificationItemsRepository;
+
+    public ContractSpecificationItemServiceImpl(ContractSpecificationItemsRepository contractSpecificationItemsRepository) {
+        this.contractSpecificationItemsRepository = contractSpecificationItemsRepository;
+    }
 
     @Override
     public void convertContractSpecificationItems(ContractSpecification contractSpecification, ContractSpecificationEntity contractSpecificationEntity) throws BadRequestException {
@@ -28,7 +30,7 @@ public class ContractSpecificationItemServiceImpl implements ContractSpecificati
         List<ContractSpecificationItemEntity> contractSpecificationItemEntities = contractSpecificationEntity.getContractSpecificationItems();
 
         for (ContractSpecificationItem contractSpecificationItem : contractSpecificationItems) {
-            Optional<ContractSpecificationItemEntity> contractSpecificationItemEntityOptional = contractSpecificationItemEntities.stream().filter(c -> c.getId() == contractSpecificationItem.getId()).findFirst();
+            Optional<ContractSpecificationItemEntity> contractSpecificationItemEntityOptional = contractSpecificationItemEntities.stream().filter(c -> c.getId().equals(contractSpecificationItem.getId())).findFirst();
             if (contractSpecificationItem.getId() != null && contractSpecificationItemEntityOptional.isPresent()) {
                 ContractSpecificationItemEntity contractSpecificationItemEntity = contractSpecificationItemEntityOptional.get();
                 contractSpecificationItemEntity.setSpecificationNumber(contractSpecificationItem.getSpecificationNumber());
@@ -52,13 +54,13 @@ public class ContractSpecificationItemServiceImpl implements ContractSpecificati
         contractSpecificationItemEntities
         .removeIf(contractSpecificationItemEntity -> 
             contractSpecificationItems.stream()
-                .noneMatch(c -> c.getId() == contractSpecificationItemEntity.getId()));
+                .noneMatch(c -> c.getId().equals(contractSpecificationItemEntity.getId())));
     }
 
     @Override
     public List<ContractSpecificationItem> getContractSpecificationItems(Long domainIdGovernment,
             Long domainIdContractor) {
-        List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<ContractSpecificationItem>();
+        List<ContractSpecificationItem> contractSpecificationItems = new ArrayList<>();
 
         List<ContractSpecificationItemEntity> contractSpecificationItemEntities = getContractSpecificationItemEntities(domainIdGovernment, domainIdContractor);
         for (ContractSpecificationItemEntity contractSpecificationItemEntity : contractSpecificationItemEntities) {

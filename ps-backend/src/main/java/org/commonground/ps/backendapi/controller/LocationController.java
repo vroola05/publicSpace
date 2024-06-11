@@ -8,7 +8,6 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.model.Location;
 import org.commonground.ps.backendapi.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/location", produces = { "application/json; charset=utf-8" })
 public class LocationController {
-  
-  public LocationController() {
+	private final LocationService locationService;
+
+  public LocationController(LocationService locationService) {
+    this.locationService = locationService;
     
   }
-  @Autowired
-	private LocationService locationService;
 
   @Secured(identifier = "getLocationByStreet")
 	@GetMapping("/street/{street}")

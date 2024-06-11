@@ -3,6 +3,8 @@ package org.commonground.ps.backendapi.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,42 +23,48 @@ import org.commonground.ps.backendapi.jpa.repositories.StatusRepository;
 import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.Status;
 import org.commonground.ps.backendapi.model.template.Template;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConfigServiceImpl implements ConfigService {
-  private static HashMap<String, Template> configs = new HashMap<>();;
+  private static HashMap<String, Template> configs = new HashMap<>();
 
-  @Autowired
-	private DomainRepository domainRepository;
+  private final DomainRepository domainRepository;
+  private final StatusRepository statusRepository;
+  private final PageService pageService;
+  private final ActionService actionService;
 
-  @Autowired
-	private StatusRepository statusRepository;
+  public ConfigServiceImpl(
+      ActionService actionService,
+      DomainRepository domainRepository,
+      PageService pageService,
+      StatusRepository statusRepository) {
+    this.domainRepository = domainRepository;
+    this.statusRepository = statusRepository;
+    this.pageService = pageService;
+    this.actionService = actionService;
 
-  @Autowired
-	private PageService pageService;
-
-  @Autowired
-	private ActionService actionService;
+  }
 
   @Override
   public Template find(String referer) throws SecurityException {
     try {
-			URL url = new URL(referer);
-			List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
-			for (DomainEntity domainEntity: domains) {
-				if (checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {
-					return get(domainEntity.getDomain());
-				}
-			}
-		} catch (MalformedURLException e) {}
-      throw new SecurityException("Not a valid domain.");
+      URI url = new URI(referer);
+      List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
+      for (DomainEntity domainEntity : domains) {
+        if (checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {
+          return get(domainEntity.getDomain());
+        }
+      }
+    } catch (URISyntaxException e) {
+      throw new SecurityException("Not a valid referer.");
+    }
+    throw new SecurityException("Not a valid domain.");
   }
 
   @Override
   public Template get(String domain) throws SecurityException {
-    if(!ConfigService.isValidDomain(domain)) {
+    if (!ConfigService.isValidDomain(domain)) {
       throw new SecurityException("Not a valid domain.");
     }
 
@@ -66,7 +74,6 @@ public class ConfigServiceImpl implements ConfigService {
     }
     return getFromStore(domain);
   }
-
 
   @Override
   public void update(String domain) throws SecurityException {
@@ -87,7 +94,7 @@ public class ConfigServiceImpl implements ConfigService {
         Optional<DomainEntity> domainEntity = domainRepository.getDomainByDomain(domain);
         if (domainEntity.isPresent()) {
           Long companyId = domainEntity.get().getCompany().getId();
-          
+
           Long domainId = domainEntity.get().getId();
           config.getInfo().setCompany(companyId);
           config.getInfo().setDomain(domainId);
@@ -95,17 +102,14 @@ public class ConfigServiceImpl implements ConfigService {
           config.setDomain(Convert.domainEntity(domainEntity.get()));
           List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
           List<Status> statusses = new ArrayList<>();
-          statusEntities.forEach(statusEntity -> {
-            statusses.add(Convert.statusEntity(statusEntity));
-          });
+          statusEntities.forEach(statusEntity -> statusses.add(Convert.statusEntity(statusEntity)));
           config.getInfo().setStatus(statusses);
 
           config.setActions(actionService.getActionByDomainId(domainId));
 
           config.setPages(getPages(companyId, domainId));
         }
-        
-        //
+
         configs.put(domain, config);
         return config;
       }
@@ -116,11 +120,11 @@ public class ConfigServiceImpl implements ConfigService {
   }
 
   public boolean checkUserDomain(String domain, String referer) {
-    if(referer.length() < domain.length()) {
+    if (referer.length() < domain.length()) {
       return false;
     }
     int domainSize = domain.length();
-    if (referer.length() > domainSize ) {
+    if (referer.length() > domainSize) {
       int index = referer.indexOf("/", domainSize - 1);
       ////////////////
       // if domain is "bla.nl/ap" and referer "bla.nl/ap_LONGSTRING/path"
@@ -135,12 +139,10 @@ public class ConfigServiceImpl implements ConfigService {
   }
 
   public Map<String, Page> getPages(Long companyId, Long domainId) {
-    Map<String, Page> pages = new HashMap<String, Page>();
+    Map<String, Page> pages = new HashMap<>();
     List<Page> pagesList = pageService.get(companyId, domainId);
 
-    pagesList.forEach(page -> {
-      pages.put(page.getPageType().getName(), page); 
-    });
+    pagesList.forEach(page -> pages.put(page.getPageType().getName(), page));
     return pages;
   }
 }

@@ -24,7 +24,6 @@ import org.commonground.ps.backendapi.model.Page;
 import org.commonground.ps.backendapi.model.PageImpl;
 import org.commonground.ps.backendapi.model.PageOverviewImpl;
 import org.commonground.ps.backendapi.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,24 +37,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/page", produces = { "application/json; charset=utf-8" })
 public class PageController extends Controller {
-	@Autowired
-	private PageService pageService;
+	private final PageService pageService;
+	private final DomainRepository domainRepository;
+	private final PageRepository pageRepository;
+	private final PageTypeRepository pageTypeRepository;
+	private final PageButtonTypeRepository pageButtonTypeRepository;
+	private final ConfigService configService;
 
-	@Autowired
-	private DomainRepository domainRepository;
+	public PageController(
+		ConfigService configService,
+		DomainRepository domainRepository,
+		PageButtonTypeRepository pageButtonTypeRepository,
+		PageRepository pageRepository,
+		PageService pageService,
+		PageTypeRepository pageTypeRepository) {
+		this.pageService = pageService;
+		this.domainRepository = domainRepository;
+		this.pageRepository = pageRepository;
+		this.pageTypeRepository = pageTypeRepository;
+		this.pageButtonTypeRepository = pageButtonTypeRepository;
+		this.configService = configService;
 
-	@Autowired
-	private PageRepository pageRepository;
-
-	@Autowired
-	private PageTypeRepository pageTypeRepository;
-
-	@Autowired
-	private PageButtonTypeRepository pageButtonTypeRepository;
-
-	@Autowired
-	ConfigService configService;
-
+	}
+	
 	@Secured(identifier = "getPages")
 	@GetMapping()
 	public List<Page> getPages(

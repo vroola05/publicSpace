@@ -10,19 +10,20 @@ import org.commonground.ps.backendapi.jpa.entities.RolesEntity;
 import org.commonground.ps.backendapi.jpa.repositories.RolesRepository;
 import org.commonground.ps.backendapi.model.PageButton;
 import org.commonground.ps.backendapi.model.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PageButtonRoleServiceImpl implements PageButtonRoleService {
+	private final RolesRepository rolesRepository;
 
-	@Autowired
-	private RolesRepository rolesRepository;
+	public PageButtonRoleServiceImpl(RolesRepository rolesRepository) {
+		this.rolesRepository = rolesRepository;
+
+	}
 
 	@Override
 	public List<RolesEntity> getRoles() {
-		List<RolesEntity> rolesEntities = rolesRepository.findAll();
-		return rolesEntities;
+		return rolesRepository.findAll();
 	}
 
 	public void convertPageButtonRoles(PageButton pageButton, PageButtonEntity pageButtonEntity) throws BadRequestException {

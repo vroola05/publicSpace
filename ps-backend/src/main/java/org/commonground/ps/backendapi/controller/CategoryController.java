@@ -27,7 +27,6 @@ import org.commonground.ps.backendapi.validators.PostCategoryValidator;
 import org.commonground.ps.backendapi.validators.PostMainCategoryValidator;
 import org.commonground.ps.backendapi.validators.PutCategoryValidator;
 import org.commonground.ps.backendapi.validators.PutMainCategoryValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,17 +41,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/company/{companyId}/domain/{domainId}/maincategory", produces = { "application/json; charset=utf-8" })
 public class CategoryController extends Controller {
 
-  @Autowired
-  private MainCategoryRepository mainCategoryRepository;
+  private final MainCategoryRepository mainCategoryRepository;
+  private final CategoryRepository categoryRepository;
+  private final GroupRepository groupRepository;
+	private final DomainRepository domainRepository;
 
-  @Autowired
-  private CategoryRepository categoryRepository;
+  public CategoryController(
+    CategoryRepository categoryRepository,
+    DomainRepository domainRepository,
+    GroupRepository groupRepository,
+    MainCategoryRepository mainCategoryRepository) {
 
-  @Autowired
-  private GroupRepository groupRepository;
+    this.mainCategoryRepository = mainCategoryRepository;
+    this.categoryRepository = categoryRepository;
+    this.groupRepository = groupRepository;
+    this.domainRepository = domainRepository;
 
-  @Autowired
-	private DomainRepository domainRepository;
+  }
 
   @Secured(identifier = "getMainCategories")
   @GetMapping()

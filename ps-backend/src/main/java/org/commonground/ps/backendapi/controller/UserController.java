@@ -26,7 +26,6 @@ import org.commonground.ps.backendapi.model.UserExtended;
 import org.commonground.ps.backendapi.validators.PostUserValidator;
 import org.commonground.ps.backendapi.validators.PutUserValidator;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,18 +53,22 @@ public class UserController extends Controller {
 	@Value("${sec.gen.key.length}")
 	public int defaultKeyLength;
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+	private final RolesRepository rolesRepository;
+	private final DomainRepository domainRepository;
+	private final GroupRepository groupRepository;
 
-	@Autowired
-	private RolesRepository rolesRepository;
+	public UserController(
+			DomainRepository domainRepository,
+			GroupRepository groupRepository,
+			RolesRepository rolesRepository,
+			UserRepository userRepository) {
+		this.userRepository = userRepository;
+		this.rolesRepository = rolesRepository;
+		this.domainRepository = domainRepository;
+		this.groupRepository = groupRepository;
 
-	@Autowired
-	private DomainRepository domainRepository;
-
-	@Autowired
-	private GroupRepository groupRepository;
-
+	}
 	@Secured(identifier = "getUsers")
 	@GetMapping()
 	public List<User> getUsers(
@@ -75,9 +78,7 @@ public class UserController extends Controller {
 
 		List<User> users = new ArrayList<>();
 		List<UserEntity> userEntities = userRepository.getUsers(domainId);
-		userEntities.forEach(userEntity -> {
-			users.add(Convert.userEntity(userEntity));
-		});
+		userEntities.forEach(userEntity -> users.add(Convert.userEntity(userEntity)));
 		return users;
 	}
 
@@ -91,9 +92,7 @@ public class UserController extends Controller {
 
 		List<User> users = new ArrayList<>();
 		List<UserEntity> userEntities = userRepository.getUserByGroupId(domainId, groupId);
-		userEntities.forEach(userEntity -> {
-			users.add(Convert.userEntity(userEntity));
-		});
+		userEntities.forEach(userEntity -> users.add(Convert.userEntity(userEntity)));
 		return users;
 	}
 
@@ -152,7 +151,7 @@ public class UserController extends Controller {
 		validateUser(domainId, user);
 
 		Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
-		if (optionalUserEntity.isPresent() && id == user.getId()) {
+		if (optionalUserEntity.isPresent() && user.getId().equals(id)) {
 			UserEntity userEntity = optionalUserEntity.get();
 
 			userEntity.setName(user.getName());
@@ -160,7 +159,6 @@ public class UserController extends Controller {
 			userEntity.setEmail(user.getEmail());
 
 			if (getUser().isAdmin()) {
-				System.out.println("Is admin: " + user.isAdmin());
 				userEntity.setAdmin(user.isAdmin());
 			}
 
@@ -175,14 +173,14 @@ public class UserController extends Controller {
 
 	private void validateUser(Long domainId, User user) throws BadRequestException {
 		Optional<UserEntity> nameUniqueValidator = userRepository.getUserByName(domainId, user.getName());
-		if (nameUniqueValidator.isPresent() && nameUniqueValidator.get().getId() != user.getId()) {
+		if (nameUniqueValidator.isPresent() && !user.getId().equals(nameUniqueValidator.get().getId())) {
 			BadRequestException badRequestException = new BadRequestException();
 			badRequestException.addError(new FieldValue("name", "Er is al een gebruiker met deze naam."));
 			throw badRequestException;
 		}
 
 		Optional<UserEntity> usernameUniqueValidator = userRepository.getUserByUsername(domainId, user.getUsername());
-		if (usernameUniqueValidator.isPresent() && usernameUniqueValidator.get().getId() != user.getId()) {
+		if (usernameUniqueValidator.isPresent() && !user.getId().equals(usernameUniqueValidator.get().getId())) {
 			BadRequestException badRequestException = new BadRequestException();
 			badRequestException.addError(new FieldValue("username", "Er is al een gebruiker met deze gebruikersnaam."));
 			throw badRequestException;
@@ -209,7 +207,7 @@ public class UserController extends Controller {
 		List<GroupEntity> groupEntities = groupRepository.getGroups(domainId);
 		groups.forEach(group -> {
 			for (GroupEntity groupEntity : groupEntities) {
-				if (groupEntity.getId() == group.getId()) {
+				if (groupEntity.getId().equals(group.getId())) {
 					userEntity.getGroups().add(groupEntity);
 					break;
 				}
