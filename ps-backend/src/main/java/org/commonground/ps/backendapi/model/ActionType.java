@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 public class ActionType {
   private Long id;
   private String name;
+  private Boolean visible;
 
-  public ActionType(Long id, String name) {
+  public ActionType(Long id, String name, Boolean visible) {
     this.id = id;
     this.name = name;
+    this.visible = visible;
   }
 }

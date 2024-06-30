@@ -36,7 +36,6 @@ public class UserPrincipal implements Authentication {
 
   @Override
   public Object getCredentials() {
-    // TODO Auto-generated method stub
     return null;
   }
 

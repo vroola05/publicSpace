@@ -7,7 +7,7 @@ public interface ConfigService {
   public Template get(String domain) throws SecurityException;
   public void update(String domain) throws SecurityException;
   public static boolean isValidDomain(String domain) {
-    return domain.matches("^([a-z0-9\\-]+)(\\.[a-z0-9\\-]+)*(/[a-z0-9\\-]+)*$");
+    return domain.matches("^([a-z0-9\\-]+)(\\.[a-z0-9\\-]+){0,6}(/[a-z0-9\\-]+){0,20}$");
   }
   public boolean checkUserDomain(String domain, String referer);
 }

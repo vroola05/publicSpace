@@ -7,6 +7,7 @@ import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
+import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
 import org.commonground.ps.backendapi.model.User;
@@ -21,6 +22,6 @@ public interface ActionService {
   public void synchronizeActions(Long companyId, Long domainId, User user);
   public Action updateAction(Long domainId, Action action) throws BadRequestException;
   public boolean call(long domainId, long callId, ActionEnum action);
-  public boolean order(long domainId, long orderId, ActionEnum action);
-  public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum);
+  public boolean order(long domainId, UserEntity userEntity, long orderId, ActionEnum action);
+  public boolean order(long domainId, UserEntity userEntity, OrderEntity orderEntity, ActionEnum actionEnum);
 }

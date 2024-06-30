@@ -117,7 +117,7 @@ export class AppComponent {
       if (domainType.id === DomainTypeEnum.GOVERNMENT) {
         pageConfig.components = [];
         for(const i in pageConfigContainer.government.components) {
-          const component = this.componentService.get(pageConfigContainer.government.components[i].component)
+          const component = this.componentService.get(pageConfigContainer.government.components[i].component);
           if (component) {
             pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
           }

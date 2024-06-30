@@ -14,8 +14,6 @@ import { ConfigService } from '../../services/config/config.service';
 import { DomainType } from '../../model/domain-type';
 import dayjs from 'dayjs';
 import { Subscription } from 'rxjs';
-import { Order } from '../../model/order';
-import { Note } from '../../model/note';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {

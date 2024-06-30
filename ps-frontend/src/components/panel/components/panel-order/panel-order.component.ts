@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActionTypeEnum, DynamicPanel, StatusTypes } from '../../../../model/intefaces';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ActionTypeEnum, DynamicPanel } from '../../../../model/intefaces';
 import { Order } from '../../../../model/order';
 import { Call } from '../../../../model/call';
 import { PageConfig } from '../../../../model/domain-type-config';
@@ -9,7 +9,7 @@ import { PageConfig } from '../../../../model/domain-type-config';
   templateUrl: './panel-order.component.html',
   styleUrls: ['./panel-order.component.scss']
 })
-export class PanelOrderComponent implements DynamicPanel, OnInit {
+export class PanelOrderComponent implements DynamicPanel {
   private _call: Call;
   @Input() public set call( call: Call) {
     this._call = call;
@@ -28,9 +28,6 @@ export class PanelOrderComponent implements DynamicPanel, OnInit {
   
 
   constructor() { }
-
-  public ngOnInit(): void {
-  }
 
   public onChanged($event): void {
     this.changed.emit($event);

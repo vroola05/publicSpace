@@ -86,7 +86,7 @@ public class ListController extends Controller {
 		Template domainT = getTemplate();
 		PageOverviewImpl pageOverwiew = (PageOverviewImpl)domainT.getPages().get(PageTypesEnum.OVERVIEW.name);
 		Optional<PageOverviewTemplate> pageOverviewTemplateOptional = pageOverwiew.getPageOverviewTemplate().stream().filter(t -> t.getId().equals(id)).findFirst();
-		if (!pageOverviewTemplateOptional.isPresent()) {
+		if (pageOverviewTemplateOptional.isEmpty()) {
 			throw new BadRequestException();
 		}
 		PageOverviewTemplate pageOverviewTemplate = pageOverviewTemplateOptional.get();

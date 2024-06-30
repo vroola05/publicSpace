@@ -126,7 +126,7 @@ public class ApiSecurityConfig {
 
   private UserEntity getUserByApikey(String apikey) throws SecurityException {
     Optional<SessionEntity> session = sessionRepository.findOne(Example.of(new SessionEntity(apikey)));
-    if (!session.isPresent()) {
+    if (session.isEmpty()) {
       throw new SecurityException("No session found.");
     }
 

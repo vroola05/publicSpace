@@ -1,6 +1,7 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,5 +51,10 @@ public class NoteEntity {
     }
     NoteEntity o = (NoteEntity) object;
     return id == o.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, content, dateCreated, visible);
   }
 }

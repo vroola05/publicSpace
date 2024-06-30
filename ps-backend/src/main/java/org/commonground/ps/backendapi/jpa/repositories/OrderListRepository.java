@@ -2,7 +2,6 @@ package org.commonground.ps.backendapi.jpa.repositories;
 
 import java.util.List;
 
-import org.commonground.ps.backendapi.model.CallList;
 import org.commonground.ps.backendapi.model.OrderList;
 import org.commonground.ps.backendapi.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

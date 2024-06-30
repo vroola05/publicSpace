@@ -63,7 +63,7 @@ public class CallServiceImpl implements CallService {
     public Optional<CallEntity> getCallEntityById(User user, Long id) {
 		Optional<CallEntity> callEntityOptional = callRepository.getCallById(id, user.getDomain().getId());
 
-        if (!callEntityOptional.isEmpty() && !hasAccess(user, callEntityOptional.get())) {
+        if (callEntityOptional.isPresent() && !hasAccess(user, callEntityOptional.get())) {
             return Optional.empty();
         }
         

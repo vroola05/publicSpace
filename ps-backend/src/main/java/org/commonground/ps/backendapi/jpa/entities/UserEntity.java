@@ -1,10 +1,10 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.*;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -56,5 +56,10 @@ public class UserEntity {
     }
     UserEntity o = (UserEntity) object;
     return id == o.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, username, password, name, email, admin, passwordSalt, passwordIterationCount, passwordKeyLength, passwordHashFunction );
   }
 }

@@ -15,6 +15,7 @@ public interface OrderService {
     public Optional<OrderEntity> getOrderEntityById(User user, Long id);
 
     public Optional<List<Order>> save(User user, Long id, List<Order> orders);
+    public void delete(User user, Long id);
     public Order update(User user, Long id, Order order, boolean definite);
     public Optional<Call> setUser(User user, Long id, User userNew);
     public Optional<Call> setGroup(User user, Long id, Group groupNew);

@@ -16,6 +16,7 @@
   },
   "endpoints": {
     "deleteContract":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract/${contract.id}", "roles": ["ROLE_ADMIN"]},
+    "deleteOrder": { "endpoint": "/order/${order.id}", "roles": ["ROLE_ADMIN"] },
     "getActions": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action", "roles": ["ROLE_ADMIN"]},
     "getActionTypes": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action/type", "roles": ["ROLE_ADMIN"]},
     "getButtonTypes":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/page/button/types", "roles": ["ROLE_ADMIN"]},

@@ -3,6 +3,7 @@ package org.commonground.ps.backendapi.jpa.entities;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -78,5 +79,10 @@ public class CallEntity {
     }
     CallEntity o = (CallEntity) object;
     return id == o.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, description, dateCreated, dateEnded, casenumber);
   }
 }

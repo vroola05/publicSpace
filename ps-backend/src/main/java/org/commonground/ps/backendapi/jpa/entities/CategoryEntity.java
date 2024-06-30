@@ -1,6 +1,7 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -47,5 +48,10 @@ public class CategoryEntity {
     }
     CategoryEntity o = (CategoryEntity) object;
     return id == o.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, startDate, endDate, active);
   }
 }

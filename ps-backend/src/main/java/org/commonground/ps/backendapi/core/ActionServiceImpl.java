@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
+import org.commonground.ps.backendapi.jpa.entities.ActionQueueEntity;
 import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.StatusEntity;
+import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ActionRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CallRepository;
@@ -34,6 +36,7 @@ public class ActionServiceImpl implements ActionService {
 	private final ActionRepository actionRepository;
 	private final CallRepository callRepository;
 	private final OrderRepository orderRepository;
+	private final ActionQueueService actionQueueService;
 
 	public ActionServiceImpl(
 			ActionRepository actionRepository,
@@ -41,13 +44,16 @@ public class ActionServiceImpl implements ActionService {
 			CallRepository callRepository,
 			DomainRepository domainRepository,
 			OrderRepository orderRepository,
-			StatusRepository statusRepository) {
+			StatusRepository statusRepository,
+			ActionQueueService actionQueueService) {
 		this.domainRepository = domainRepository;
 		this.statusRepository = statusRepository;
 		this.actionTypeRepository = actionTypeRepository;
 		this.actionRepository = actionRepository;
 		this.callRepository = callRepository;
 		this.orderRepository = orderRepository;
+		this.actionQueueService = actionQueueService;
+
 
 	}
 
@@ -86,9 +92,10 @@ public class ActionServiceImpl implements ActionService {
 	public void synchronizeActions(Long companyId, Long domainId, User user) {
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, user);
 		if (optionalDomainEntity.isPresent()) {
+			DomainEntity domainEntity = optionalDomainEntity.get();
 			List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
-			List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.findAll();
-
+			List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.getActionTypeEntities(domainEntity.getDomainType().getId());
+			
 			List<ActionTypeEntity> actionTypeEntitiesNew = actionTypeEntities.stream().filter( actionTypeEntity -> 
 				actionEntities.stream().noneMatch(b -> b.getActionType().getId().equals(actionTypeEntity.getId()))).collect(Collectors.toList());
 
@@ -97,7 +104,7 @@ public class ActionServiceImpl implements ActionService {
 				actionTypeEntitiesNew.forEach(actionTypeEntity -> {
 					ActionEntity actionEntity = new ActionEntity();
 					actionEntity.setActionType(actionTypeEntity);
-					actionEntity.setDomain(optionalDomainEntity.get());
+					actionEntity.setDomain(domainEntity);
 					newActionEntities.add(actionEntity);
 				});
 
@@ -161,12 +168,12 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public boolean order(long domainId, long orderId, ActionEnum actionEnum) {
+	public boolean order(long domainId, UserEntity userEntity, long orderId, ActionEnum actionEnum) {
 		Optional<OrderEntity> orderEntityOptional = orderRepository.getOrderById(orderId, domainId);
 		if (orderEntityOptional.isPresent()) {
 			OrderEntity orderEntity = orderEntityOptional.get();
-			if (order(domainId, orderEntity, actionEnum)) {
-				orderRepository.save(orderEntity);
+			if (order(domainId, userEntity, orderEntity, actionEnum)) {
+				orderRepository.saveAndFlush(orderEntity);
 				return true;
 			}
 		}
@@ -174,7 +181,7 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public boolean order(long domainId, OrderEntity orderEntity, ActionEnum actionEnum) {
+	public boolean order(long domainId, UserEntity userEntity, OrderEntity orderEntity, ActionEnum actionEnum) {
 
 		Optional<ActionEntity> actionEntityOptional = actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
 		if (actionEntityOptional.isEmpty()) {
@@ -182,22 +189,34 @@ public class ActionServiceImpl implements ActionService {
 		}
 		
 		ActionEntity actionEntity = actionEntityOptional.get();
-		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
-		
-		if (orderEntity.getActionTypeEntity() != null && orderEntity.getActionTypeEntity().getId().equals(actionTypeEntity.getId())) {
-			return false;
-		}
-
-		orderEntity.setActionTypeEntity(actionTypeEntity);
 
 		StatusEntity statusEntity = actionEntity.getStatus();
 		if (statusEntity != null && statusEntity.getId() != null) {
 			orderEntity.setStatus(statusEntity);
 		}
+		
+		if (orderEntity.getStatus() == null) {
+			return false;
+		}
 
+		ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
+		
+		if (orderEntity.getActionTypeEntity() != null && orderEntity.getActionTypeEntity().getId().equals(actionTypeEntity.getId())) {
+			return false;
+		}
+		orderEntity.setActionTypeEntity(actionTypeEntity);
+
+
+		ActionQueueEntity actionQueueEntity = new ActionQueueEntity();
+
+		actionQueueEntity.setUser(userEntity);
+		actionQueueEntity.setOrder(orderEntity);
+		actionQueueEntity.setAction(actionEntity);
+		// {timestamp, callId, orderId, actionId, user, state}
 		///////////////////////////////////////////////////
 		// 
 		///////////////////////////////////////////////////
+		actionQueueService.execute(actionQueueEntity);
 		return true;
 	}
 

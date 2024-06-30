@@ -16,6 +16,7 @@ import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.ContractSpecificationItem;
 import org.commonground.ps.backendapi.model.Group;
+import org.commonground.ps.backendapi.model.Message;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
@@ -23,6 +24,7 @@ import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
 import org.commonground.ps.backendapi.validators.PutCallUserValidator;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,6 +60,17 @@ public class OrderController extends Controller {
 		}
 
 		return callOptional.get();
+	}
+
+	@Secured(identifier = "postOrders", domainType = DomainTypeEnum.GOVERNMENT)
+	@DeleteMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+	public Message deleteOrders(
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long orderId) {
+
+		 orderService.delete(getUser(), id);
+		
+		return new Message(200, "Order has been deleted");
 	}
 
 	@Secured(identifier = "putOrderUser", domainType = DomainTypeEnum.CONTRACTOR)
@@ -107,7 +120,6 @@ public class OrderController extends Controller {
 
 		User user = getUser();
 		OrderEntity orderEntity = getOrderEntity(user, id);
-
 		return contractSpecificationItemService.getContractSpecificationItems(orderEntity.getCall().getDomain().getId(), user.getDomain().getId());
 	}
 	

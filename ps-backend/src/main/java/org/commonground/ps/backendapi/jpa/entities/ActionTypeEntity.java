@@ -17,6 +17,8 @@ public class ActionTypeEntity {
   @OrderColumn
   private String name;
 
+  private Boolean visible;
+
   @ManyToOne(fetch=FetchType.LAZY)
   @JoinColumn(name="domain_type", referencedColumnName = "id")
   private DomainTypeEntity domainType;

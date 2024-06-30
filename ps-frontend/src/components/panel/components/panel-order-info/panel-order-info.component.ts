@@ -40,6 +40,11 @@ export class PanelOrderInfoComponent implements OnInit {
     this.changed.emit({action: 'edit', data: this.order});
   }
 
+  
+  public onOrderDeleteCreated(): void {
+    this.changed.emit({action: 'delete-created', data: this.order});
+  }
+
   public onOrderDelete(): void {
     this.changed.emit({action: 'delete', data: this.order});
   }

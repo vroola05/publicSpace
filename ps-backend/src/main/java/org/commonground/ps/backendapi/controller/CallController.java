@@ -2,7 +2,6 @@ package org.commonground.ps.backendapi.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.lang.*;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +34,7 @@ import org.commonground.ps.backendapi.validators.PostOrderValidator;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
 import org.commonground.ps.backendapi.validators.PutCallUserValidator;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,7 +85,7 @@ public class CallController extends Controller {
 		User user = getUser();
 
 		Optional<ActionEntity> actionEntityOptional = actionService.getEntity(getUser().getDomain().getId(), ActionEnum.CALL_CREATE);
-		if (!actionEntityOptional.isPresent() || actionEntityOptional.get().getStatus() == null) {
+		if (actionEntityOptional.isEmpty() || actionEntityOptional.get().getStatus() == null) {
 			BadRequestException badRequest = new BadRequestException();
 			badRequest.addError(new FieldValue("status", "No status is defined for action"));
 			throw badRequest;

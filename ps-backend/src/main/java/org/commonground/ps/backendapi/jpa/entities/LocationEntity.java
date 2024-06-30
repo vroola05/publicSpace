@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -40,5 +42,10 @@ public class LocationEntity {
     }
     LocationEntity o = (LocationEntity) object;
     return id == o.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, street, number, postal, city);
   }
 }

@@ -79,14 +79,16 @@ public class SecureHash {
 
   public static void amain(String[] args) {
 
-    String error = "Required parameters:\n"
-      + "\t--function = either: \"salt\" or \"password\"\n"
-      + "\t--password = Het wachtwoord\n"
-      + "\t--hash-function = De hash functie\n"
-      + "\t--salt = Alleen bij --function=\"password\". Geef de salt mee\n"
-      + "\t--salt-length = de lengthe van de salt\n"
-      + "\t--iteration-count = Aantal iteraties\n"
-      + "\t--key-length = Grootte sleutel\n";
+    String error = """
+      Required parameters:
+      	--function = either: "salt" or "password"
+      	--password = Het wachtwoord
+      	--hash-function = De hash functie
+      	--salt = Alleen bij --function="password". Geef de salt mee
+      	--salt-length = de lengthe van de salt
+      	--iteration-count = Aantal iteraties
+      	--key-length = Grootte sleutel
+      """;
     if (args == null || (args.length != 12 && args.length != 14)) {
       System.out.println(error);
       return;

@@ -1,5 +1,7 @@
 package org.commonground.ps.backendapi.jpa.entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -37,5 +39,10 @@ public class ActionEntity {
     }
     ActionEntity o = (ActionEntity) object;
     return id == o.id;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 }

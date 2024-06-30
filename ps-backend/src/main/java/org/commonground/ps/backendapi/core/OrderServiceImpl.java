@@ -32,8 +32,11 @@ import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
@@ -73,15 +76,15 @@ public class OrderServiceImpl implements OrderService {
 		}
 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user);
 
-		addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+		addOrderToCall(user, call, orderEntityOptional.get());
 
 		return Optional.of(call);
 	}
 
-	public void addOrderToCall(DomainType domainType, Call call, OrderEntity orderEntity) {
-		if (domainType.getId() == DomainTypeEnum.CONTRACTOR.id) {
+	public void addOrderToCall(User user, Call call, OrderEntity orderEntity) {
+		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
 			List<Order> orders = new ArrayList<>();
-			orders.add(Convert.orderEntity(orderEntity, domainType));
+			orders.add(Convert.orderEntity(orderEntity, user));
 			call.setOrders(orders);
 		}
 	}
@@ -94,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 						? orderRepository.getOrderByIdAndGovernmentId(id, user.getDomain().getId())
 						: orderRepository.getOrderById(id, user.getDomain().getId());
 
-		if (!orderEntityOptional.isEmpty() && !hasAccess(user, orderEntityOptional.get())) {
+		if (orderEntityOptional.isPresent() && !hasAccess(user, orderEntityOptional.get())) {
 			return Optional.empty();
 		}
 
@@ -133,6 +136,12 @@ public class OrderServiceImpl implements OrderService {
 		List<ContractEntity> contractEntities = contractRepository
 				.getContractByGovernmentDomainIdAccepted(user.getDomain().getId(), true);
 
+				
+		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
+		if (userEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
 		for (Order order : orders) {
 			OrderEntity orderEntity = new OrderEntity();
 
@@ -170,11 +179,16 @@ public class OrderServiceImpl implements OrderService {
 					return Optional.empty();
 				}
 			}
-			// Action type entity is requiered
-			actionService.order(orderEntity.getDomain().getId(), orderEntity, ActionEnum.ORDER_CREATE);
-
+			
+			if(!actionService.order(orderEntity.getDomain().getId(), userEntityOptional.get(), orderEntity, ActionEnum.ORDER_CREATE)) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return Optional.empty();
+			}
+			OrderEntity orderEntityNew = orderRepository.save(orderEntity);
+			order.setId(orderEntityNew.getId());
 		}
 
+		orderRepository.flush();
 		actionService.call(user.getDomain().getId(), id, ActionEnum.ORDER_CREATE);
 		return Optional.of(orders);
 	}
@@ -204,23 +218,28 @@ public class OrderServiceImpl implements OrderService {
 
 		OrderEntity orderEntity = orderEntityOptional.get();
 
-		Optional<UserEntity> userEntityOptional = userRepository.getUserById(user.getDomain().getId(), userNew.getId());
+		Optional<UserEntity> userEntityNewOptional = userRepository.getUserById(user.getDomain().getId(), userNew.getId());
 
+		if (userEntityNewOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
+		UserEntity userEntityNew = userEntityNewOptional.get();
+
+		if (userEntityNew.getGroups().stream().noneMatch(group -> group.getId().equals(orderEntity.getGroup().getId()))) {
+			return Optional.empty();
+		}
+
+		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
 		if (userEntityOptional.isEmpty()) {
 			return Optional.empty();
 		}
 
-		UserEntity userEntity = userEntityOptional.get();
-
-		if (userEntity.getGroups().stream().noneMatch(group -> group.getId().equals(orderEntity.getGroup().getId()))) {
-			return Optional.empty();
-		}
-
-		orderEntity.setUser(userEntity);
+		orderEntity.setUser(userEntityNew);
 
 		orderRepository.saveAndFlush(orderEntity);
 
-		actionService.order(user.getDomain().getId(), id, ActionEnum.ASSIGN_PERSON);
+		actionService.order(user.getDomain().getId(), userEntityOptional.get(), id, ActionEnum.ASSIGN_PERSON);
 
 		return getCallByOrderId(user, id);
 	}
@@ -242,13 +261,18 @@ public class OrderServiceImpl implements OrderService {
 			return Optional.empty();
 		}
 
+		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
+		if (userEntityOptional.isEmpty()) {
+			return Optional.empty();
+		}
+
 		GroupEntity groupEntity = groupEntityOptional.get();
 
 		orderEntity.setGroup(groupEntity);
 
 		orderRepository.saveAndFlush(orderEntity);
 
-		actionService.order(user.getDomain().getId(), orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
+		actionService.order(user.getDomain().getId(), userEntityOptional.get(), orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
 
 		return getCallByOrderId(user, id);
 	}
@@ -315,7 +339,7 @@ public class OrderServiceImpl implements OrderService {
 
 		// orderNoteService.addNew(orderEntity, order, user, definite);
 
-		return Convert.orderEntity(orderRepository.saveAndFlush(orderEntity), user.getDomain().getDomainType());
+		return Convert.orderEntity(orderRepository.saveAndFlush(orderEntity), user);
 	}
 
 	@Override
@@ -323,21 +347,28 @@ public class OrderServiceImpl implements OrderService {
 			throws BadRequestException {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId());
 
+		// First check if order is found
 		if (orderEntityOptional.isEmpty()) {
 			throw new BadRequestException();
 		}
 
-		OrderEntity orderEntity = orderEntityOptional.get();
-		if (isOrderClosed(orderEntity.getActionTypeEntity())) {
-			throw new BadRequestException("Order is already closed");
-		}
-
-		// Check if the acction is allowed
+		// Second Check if the acction is allowed by a domaintype government or contractor
 		if (!isAllowedAction(actionEnum, user.getDomain().getDomainType())) {
 			throw new BadRequestException("Action is not allowed");
 		}
 
-		if (!actionService.order(orderEntity.getDomain().getId(), orderEntity, actionEnum)) {
+		// Third check if an action is legal within the proces.
+		OrderEntity orderEntity = orderEntityOptional.get();
+		if (isOrderAvailible(orderEntity, actionEnum)) {
+			throw new BadRequestException("Order is already closed");
+		}
+
+		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
+		if (userEntityOptional.isEmpty()) {
+			throw new BadRequestException("User not found");
+		}
+
+		if (!actionService.order(orderEntity.getDomain().getId(), userEntityOptional.get(), order.getId(), actionEnum)) {
 			throw new BadRequestException("Action failed");
 		}
 
@@ -354,7 +385,7 @@ public class OrderServiceImpl implements OrderService {
 		// 	orderEntityOptional = getOrderEntityById(user, order.getId());
 		// 	if (orderEntityOptional.isPresent()) {
 		// 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user);
-		// 		addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+		// 		addOrderToCall(user, call, orderEntityOptional.get());
 		// 		return call;
 		// 	}
 		// } else if (isCallAction(orderEntityUpdated.getActionTypeEntity())) {
@@ -364,20 +395,52 @@ public class OrderServiceImpl implements OrderService {
 		// 	orderEntityOptional = getOrderEntityById(user, order.getId());
 		// 	if (orderEntityOptional.isPresent()) {
 		// 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user);
-		// 		addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+		// 		addOrderToCall(user, call, orderEntityOptional.get());
 		// 		return call;
 		// 	}
 		// }
 		
 		// Call call = Convert.callEntity(orderEntityUpdated.getCall(), user);
-		// addOrderToCall(user.getDomain().getDomainType(), call, orderEntityOptional.get());
+		// addOrderToCall(user, call, orderEntityOptional.get());
 		// return call;
+	}
+
+	/**
+	 * This method checks whether the proces of an order is followed correctly.
+	 * If the order is currently in step A then only B is availible. etc.
+	 * @param actionTypeEntity
+	 * @return
+	 */
+	private boolean isOrderAvailible(OrderEntity orderEntity, ActionEnum actionEnumNew) {
+		ActionEnum actionEnumCurrent = ActionEnum.valueOfId(orderEntity.getActionTypeEntity().getId());
+
+		switch (actionEnumCurrent) {
+			case ActionEnum.ORDER_CREATE:
+				return actionEnumNew.equals(ActionEnum.ORDER_ACCEPT)
+					|| actionEnumNew.equals(ActionEnum.ORDER_REJECT)
+					|| actionEnumNew.equals(ActionEnum.ORDER_DONE)
+					|| actionEnumNew.equals(ActionEnum.ORDER_CANCEL);
+			case ActionEnum.ORDER_ACCEPT:
+				return actionEnumNew.equals(ActionEnum.ORDER_DONE)
+					|| actionEnumNew.equals(ActionEnum.ORDER_CANCEL);
+			case ActionEnum.ORDER_REJECT:
+				return actionEnumNew.equals(ActionEnum.ORDER_DONE_REJECT);
+			case ActionEnum.ORDER_DONE:
+				return actionEnumNew.equals(ActionEnum.ORDER_CLOSE);
+			case ActionEnum.ORDER_DONE_REJECT:
+				return false;
+			case ActionEnum.ORDER_CANCEL:
+				return false;
+			case ActionEnum.ORDER_CLOSE:
+				return false;
+			default:
+				return false;
+		}
 	}
 
 	public boolean isAllowedAction(ActionEnum actionEnum, DomainType domainType) {
 		if (domainType.getId() == DomainTypeEnum.GOVERNMENT.id) {
 			return actionEnum.equals(ActionEnum.ORDER_CREATE)
-					|| actionEnum.equals(ActionEnum.ORDER_DONE)
 					|| actionEnum.equals(ActionEnum.ORDER_DONE_REJECT)
 					|| actionEnum.equals(ActionEnum.ORDER_CLOSE)
 					|| actionEnum.equals(ActionEnum.ORDER_CANCEL);
@@ -400,14 +463,14 @@ public class OrderServiceImpl implements OrderService {
 				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_CLOSE.id);
 	}
 
-	public boolean isOrderClosed(ActionTypeEntity actionTypeEntity) {
-		return actionTypeEntity.getId().equals(ActionEnum.ORDER_CANCEL.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_CLOSE.id);
-	}
+	@Override
+	public void delete(User user, Long orderId) {
+		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, orderId);
+		if (orderEntityOptional.isEmpty()) {
+			return;
+		}
 
-	public boolean areAllOrdersClosed(CallEntity callEntity) {
-		return callEntity.getOrders().stream()
-				.allMatch(orderEntity -> isOrderClosed(orderEntity.getActionTypeEntity()));
+		orderRepository.delete(orderEntityOptional.get());
 	}
 
 }
