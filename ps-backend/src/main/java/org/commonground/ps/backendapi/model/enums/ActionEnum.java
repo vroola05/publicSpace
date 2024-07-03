@@ -21,7 +21,8 @@ public enum ActionEnum {
   NEXT(14L, "Volgende"),
   ASSIGN_GROUP_AND_USER(15L, "Toewijzen persoon en groep"),
   ORDER_SAVE_TEMP(16L, "Opdracht tijdelijk opslaan"),
-  CALL_ALL_ORDERS_CLOSED(17L, "Alle opdrachten afgesloten");
+  CALL_ALL_ORDERS_CLOSED(17L, "Alle opdrachten afgesloten"),
+  CALL_NEW_ORDERS_CREATED(18L, "Nieuwe opdracht(en) aangemaakt");
     
   private static final Map<Long, ActionEnum> BY_ID = new HashMap<>();
   private static final Map<String, ActionEnum> BY_NAME = new HashMap<>();

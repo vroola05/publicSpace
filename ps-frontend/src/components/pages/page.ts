@@ -73,7 +73,7 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.action.register(ActionTypeEnum.CALL_CLOSE, () => { return this.callClose(); });
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return this.callKill(); });
 
-    this.action.register(ActionTypeEnum.ORDER_CREATE, () => { return this.orderCreate(); });
+    this.action.register(ActionTypeEnum.CALL_NEW_ORDERS_CREATED, () => { return this.orderCreate(); });
     this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return this.orderAccept(); });
     this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return this.orderReject(); });
     this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return this.orderCancel(); });

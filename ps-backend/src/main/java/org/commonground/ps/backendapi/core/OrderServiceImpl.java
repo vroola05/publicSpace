@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
@@ -17,6 +18,7 @@ import org.commonground.ps.backendapi.jpa.entities.OrderCategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderSpecificationItemEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
+import org.commonground.ps.backendapi.jpa.repositories.ActionQueueRepository;
 import org.commonground.ps.backendapi.jpa.repositories.CategoryRepository;
 import org.commonground.ps.backendapi.jpa.repositories.ContractRepository;
 import org.commonground.ps.backendapi.jpa.repositories.GroupRepository;
@@ -33,14 +35,13 @@ import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 @Service
-@Transactional
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
 	private final ActionService actionService;
+	private final ActionQueueRepository actionQueueRepository;
 	private final ContractSpecificationItemService contractSpecificationItemService;
 	private final CategoryRepository categoryRepository;
 	private final UserRepository userRepository;
@@ -50,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
 	public OrderServiceImpl(
 			ActionService actionService,
+			ActionQueueRepository actionQueueRepository,
 			CallService callService,
 			CategoryRepository categoryRepository,
 			ContractRepository contractRepository,
@@ -59,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
 			UserRepository userRepository) {
 		this.orderRepository = orderRepository;
 		this.actionService = actionService;
+		this.actionQueueRepository = actionQueueRepository;
 		this.contractSpecificationItemService = contractSpecificationItemService;
 		this.categoryRepository = categoryRepository;
 		this.userRepository = userRepository;
@@ -121,90 +124,63 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Optional<List<Order>> save(User user, Long id, List<Order> orders) {
+	public Order save(User user, Long id, Order order) throws ActionFailedException {
+		Long contractorDomainId = order.getContractorDomain().getId();
 		Optional<CallEntity> callEntityOptional = callService.getCallEntityById(user, id);
-
 		if (callEntityOptional.isEmpty()) {
-			return Optional.empty();
+			throw new ActionFailedException("Call not found!");
 		}
 
 		CallEntity callEntity = callEntityOptional.get();
-		if (callEntity.getOrders() == null) {
-			callEntity.setOrders(new ArrayList<>());
+
+		Optional<ContractEntity> contractEntityOptional = contractRepository
+				.getContractByAccepted(callEntity.getDomain().getId(), contractorDomainId);
+		if (contractEntityOptional.isEmpty()) {
+			throw new ActionFailedException("Contract not found!");
 		}
 
-		List<ContractEntity> contractEntities = contractRepository
-				.getContractByGovernmentDomainIdAccepted(user.getDomain().getId(), true);
-
-				
 		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
 		if (userEntityOptional.isEmpty()) {
-			return Optional.empty();
+			throw new ActionFailedException("User not found!");
 		}
 
-		for (Order order : orders) {
-			OrderEntity orderEntity = new OrderEntity();
+		OrderEntity orderEntity = new OrderEntity();
+		orderEntity.setDateCreated(new Date());
+		orderEntity.setDescription(order.getDescription());
+		orderEntity.setDomain(contractEntityOptional.get().getDomainContractor());
+		orderEntity.setCall(callEntity);
+		callEntity.getOrders().add(orderEntity);
 
-			Long domainId = order.getContractorDomain().getId();
-
-			Optional<ContractEntity> contractEntityOptional = contractEntities.stream()
-					.filter(contractEntity -> contractEntity.getDomainContractor().getId().equals(domainId))
-					.findFirst();
-			if (contractEntityOptional.isEmpty()) {
-				return Optional.empty();
-			}
-
-			ContractEntity contractEntity = contractEntityOptional.get();
-			orderEntity.setDateCreated(new Date());
-			orderEntity.setDescription(order.getDescription());
-			orderEntity.setDomain(contractEntity.getDomainContractor());
-			orderEntity.setCall(callEntity);
-			callEntity.getOrders().add(orderEntity);
-
-			if (!order.getCategories().isEmpty()) {
-				List<CategoryEntity> categoryEntities = categoryRepository.getCategoriesByDomainId(domainId,
-						new Date());
-
-				if (categoryEntities.isEmpty()) {
-					return Optional.empty();
-				}
-
-				orderEntity.setGroup(categoryEntities.get(0).getGroup());
-				addOrderCategories(order, orderEntity, categoryEntities);
+		if (order.getCategories().isEmpty()) {
+			Optional<GroupEntity> groupOptional = groupRepository.getGroups(contractorDomainId).stream().findFirst();
+			if (groupOptional.isPresent()) {
+				orderEntity.setGroup(groupOptional.get());
 			} else {
-				Optional<GroupEntity> groupOptional = groupRepository.getGroups(domainId).stream().findFirst();
-				if (groupOptional.isPresent()) {
-					orderEntity.setGroup(groupOptional.get());
-				} else {
-					return Optional.empty();
-				}
+				throw new ActionFailedException("Contractor has no groups defined!");
 			}
-			
-			if(!actionService.order(orderEntity.getDomain().getId(), userEntityOptional.get(), orderEntity, ActionEnum.ORDER_CREATE)) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return Optional.empty();
+		} else {
+			List<Long> categoryIds = order.getCategories().stream().map(Category::getId).collect(Collectors.toList());
+			List<CategoryEntity> categoryEntities = categoryRepository.getCategoriesByDomainId(contractorDomainId, categoryIds, new Date());
+
+			if (categoryEntities.isEmpty()) {
+				throw new ActionFailedException("The categories are not found!");
 			}
-			OrderEntity orderEntityNew = orderRepository.save(orderEntity);
-			order.setId(orderEntityNew.getId());
+
+			orderEntity.setGroup(categoryEntities.get(0).getGroup());
+			addOrderCategories(orderEntity, categoryEntities);
 		}
 
-		orderRepository.flush();
-		actionService.call(user.getDomain().getId(), id, ActionEnum.ORDER_CREATE);
-		return Optional.of(orders);
+		actionService.order(orderEntity.getDomain().getId(), user, orderEntity, ActionEnum.ORDER_CREATE);
+		
+		return Convert.orderEntity(orderEntity, user);
 	}
 
-	public void addOrderCategories(Order order, OrderEntity orderEntity, List<CategoryEntity> categoryEntities) {
-		for (Category category : order.getCategories()) {
-			Optional<CategoryEntity> categoryEntity = categoryEntities.stream()
-					.filter(ce -> category.getId().equals(ce.getId())).findFirst();
-			if (categoryEntity.isPresent()) {
-				OrderCategoryEntity orderCategoryEntity = new OrderCategoryEntity();
-				orderCategoryEntity.setOrder(orderEntity);
-				orderCategoryEntity.setCategory(categoryEntity.get());
-
-				orderEntity.getOrderCategory().add(orderCategoryEntity);
-			}
-
+	public void addOrderCategories(OrderEntity orderEntity, List<CategoryEntity> categoryEntities) {
+		for (CategoryEntity categoryEntity: categoryEntities) {
+			OrderCategoryEntity orderCategoryEntity = new OrderCategoryEntity();
+			orderCategoryEntity.setOrder(orderEntity);
+			orderCategoryEntity.setCategory(categoryEntity);
+			orderEntity.getOrderCategory().add(orderCategoryEntity);
 		}
 	}
 
@@ -238,9 +214,12 @@ public class OrderServiceImpl implements OrderService {
 		orderEntity.setUser(userEntityNew);
 
 		orderRepository.saveAndFlush(orderEntity);
-
-		actionService.order(user.getDomain().getId(), userEntityOptional.get(), id, ActionEnum.ASSIGN_PERSON);
-
+		try {
+			actionService.order(user.getDomain().getId(), user, id, ActionEnum.ASSIGN_PERSON);
+		} catch (ActionFailedException e) {
+			// TODO - logger
+			throw new BadRequestException("Action failed");
+		}
 		return getCallByOrderId(user, id);
 	}
 
@@ -261,18 +240,17 @@ public class OrderServiceImpl implements OrderService {
 			return Optional.empty();
 		}
 
-		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
-		if (userEntityOptional.isEmpty()) {
-			return Optional.empty();
-		}
-
 		GroupEntity groupEntity = groupEntityOptional.get();
 
 		orderEntity.setGroup(groupEntity);
 
 		orderRepository.saveAndFlush(orderEntity);
-
-		actionService.order(user.getDomain().getId(), userEntityOptional.get(), orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
+		try {
+			actionService.order(user.getDomain().getId(), user, orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
+		} catch (ActionFailedException e) {
+			// TODO - logger
+			throw new BadRequestException("Action failed");
+		}
 
 		return getCallByOrderId(user, id);
 	}
@@ -343,7 +321,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Call setAction(User user, Order order, ActionEnum actionEnum)
+	public Order setAction(User user, Order order, ActionEnum actionEnum)
 			throws BadRequestException {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId());
 
@@ -359,21 +337,19 @@ public class OrderServiceImpl implements OrderService {
 
 		// Third check if an action is legal within the proces.
 		OrderEntity orderEntity = orderEntityOptional.get();
-		if (isOrderAvailible(orderEntity, actionEnum)) {
-			throw new BadRequestException("Order is already closed");
+		if (!isOrderAvailible(orderEntity, actionEnum)) {
+			throw new BadRequestException("Action is not posible in this state: " + orderEntity.getActionTypeEntity().getId() + " " + actionEnum.id);
 		}
 
-		Optional<UserEntity> userEntityOptional = userRepository.findById(user.getId());
-		if (userEntityOptional.isEmpty()) {
-			throw new BadRequestException("User not found");
-		}
-
-		if (!actionService.order(orderEntity.getDomain().getId(), userEntityOptional.get(), order.getId(), actionEnum)) {
+		OrderEntity orderEntityUpdate =  orderRepository.saveAndFlush(orderEntity);
+		try {
+			actionService.order(orderEntity.getDomain().getId(), user, order.getId(), actionEnum);
+		} catch (ActionFailedException e) {
+			// TODO - logger
 			throw new BadRequestException("Action failed");
 		}
 
-		OrderEntity orderEntityUpdated = orderRepository.save(orderEntity);
-		return Convert.callEntity(orderEntityUpdated.getCall(), user);
+		return Convert.orderEntity(orderEntityUpdate, user);
 
 		////////////////////////////////////////////
 		// Start Refactor
@@ -453,23 +429,26 @@ public class OrderServiceImpl implements OrderService {
 		return false;
 	}
 
-	public boolean isCallAction(ActionTypeEntity actionTypeEntity) {
-		return actionTypeEntity.getId().equals(ActionEnum.ORDER_CREATE.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_CANCEL.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_ACCEPT.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_REJECT.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_DONE.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_DONE_REJECT.id)
-				|| actionTypeEntity.getId().equals(ActionEnum.ORDER_CLOSE.id);
-	}
+	// public boolean isCallAction(ActionTypeEntity actionTypeEntity) {
+	// 	return actionTypeEntity.getId().equals(ActionEnum.ORDER_CREATE.id)
+	// 			|| actionTypeEntity.getId().equals(ActionEnum.ORDER_CANCEL.id)
+	// 			|| actionTypeEntity.getId().equals(ActionEnum.ORDER_ACCEPT.id)
+	// 			|| actionTypeEntity.getId().equals(ActionEnum.ORDER_REJECT.id)
+	// 			|| actionTypeEntity.getId().equals(ActionEnum.ORDER_DONE.id)
+	// 			|| actionTypeEntity.getId().equals(ActionEnum.ORDER_DONE_REJECT.id)
+	// 			|| actionTypeEntity.getId().equals(ActionEnum.ORDER_CLOSE.id);
+	// }
 
 	@Override
+	@Transactional
 	public void delete(User user, Long orderId) {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, orderId);
 		if (orderEntityOptional.isEmpty()) {
 			return;
 		}
-
+		
+		actionQueueRepository.deleteActionQueueByOrderEntity(orderId);
+		
 		orderRepository.delete(orderEntityOptional.get());
 	}
 

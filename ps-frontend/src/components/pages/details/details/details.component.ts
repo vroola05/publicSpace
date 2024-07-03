@@ -35,6 +35,8 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
 
   public override page: Page;
   public getUrlImage: string;
+  
+  protected loaderId: number;
 
   constructor(
     protected override router: Router,
@@ -69,6 +71,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     this.action.register(ActionTypeEnum.CALL_KILL, () => { return super.callKill() });
 
     this.action.register(ActionTypeEnum.ORDER_CANCEL, () => { return super.orderCancel(); });
+    this.action.register(ActionTypeEnum.ORDER_ACCEPT, () => { return super.orderAccept(); });
     this.action.register(ActionTypeEnum.ORDER_REJECT, () => { return super.orderReject(); });
   }
 
@@ -89,12 +92,19 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
       }
   }
 
+  
   public getOrder(): Order {
     const order = this.transform.getVariable('order');
     if (order) {
       return order;
     }
     throw 'Order not found';
+  }
+
+  public setOrder(order: Order): void {
+    if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
+      this.transform.setVariable('order', order);
+    }
   }
 
   public override changed($event: { action: string, data: any, note?: Note }): void {
@@ -113,48 +123,89 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
       case 'close-rejected':
         this.orderClose();
         break;
+      case 'delete-created':
+        console.log($event.data);
+        this.orderDeleteCreated();
     }
   }
 
-  // public orderAccept(): Promise<boolean> {
-  //   return new Promise((resolve, reject) => {
-  //     console.log('orderAccept');
-  //     reject(false);
-  //   });
-  // }
+  // TODO - delete this function
+  orderDeleteCreated() {
+    const order = this.getOrder();
+        
+        this.endpoints.delete('deleteOrder').then(() => {
+          console.log('done');
+        })
+        .catch(err => {
+            
+          });
+    
+    throw new Error('Method not implemented.');
+  }
 
   public override orderReject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
+        this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_REJECT });
-        this.endpoints.put('putActionOrderReject', order).then((call: Call) => {
-          this.setCall(call);
+        this.endpoints.put('putActionOrderReject', order).then((order: Order) => {
+          this.setOrder(order);
+          this.onActionFinishedContractor('Opgeslagen!', resolve)
           resolve(true);
         })
-          .catch(err => {
+        .catch(err => {
+          this.loader.remove(this.loaderId);
             reject(false);
           });
       } catch (e) {
+        this.loader.remove(this.loaderId);
         console.error(e);
         reject(false);
       }
     });
   }
 
-  public override orderCancel(): Promise<boolean> {
+  public override orderAccept(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
+        this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CANCEL });
-        this.endpoints.put('putActionOrderCancel', order).then((call: Call) => {
-          this.setCall(call);
-          resolve(true);
+        this.endpoints.put('putActionOrderAccept', order).then((order: Order) => {
+          this.setOrder(order);
+          this.onActionFinishedContractor('Opgeslagen!', resolve)
         })
           .catch(err => {
+            this.loader.remove(this.loaderId);
             reject(false);
           });
       } catch (e) {
+        this.loader.remove(this.loaderId);
+        console.error(e);
+        reject(false);
+      }
+
+    });
+  }
+
+  public override orderCancel(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.loaderId = this.loader.add('Bezig met opslaan!');
+        const order = this.getOrder();
+        this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CANCEL });
+        this.endpoints.put('putActionOrderCancel', order).then((order: Order) => {
+          this.loader.remove(this.loaderId);
+          this.setOrder(order);
+          resolve(true);
+        })
+          .catch(err => {
+            this.loader.remove(this.loaderId);
+            reject(false);
+          });
+      } catch (e) {
+        this.loader.remove(this.loaderId);
         console.error(e);
         reject(false);
       }
@@ -165,16 +216,20 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   public override orderClose(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
+        this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CLOSE });
-        this.endpoints.put('putActionOrderClose', order).then((call: Call) => {
-          this.setCall(call);
+        this.endpoints.put('putActionOrderClose', order).then((order: Order) => {
+          this.loader.remove(this.loaderId);
+          this.setOrder(order);
           resolve(true);
         })
           .catch(err => {
+            this.loader.remove(this.loaderId);
             reject(false);
           });
       } catch (e) {
+        this.loader.remove(this.loaderId);
         console.error(e);
         reject(false);
       }
@@ -183,7 +238,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
 
   public override orderDone(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      console.log('orderDone');
+      // this.onActionFinishedContractor('Opgeslagen!', resolve)
       reject(false);
     });
   }
@@ -191,27 +246,41 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   public override orderDoneReject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
+        this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_DONE_REJECT });
-        this.endpoints.put('putActionOrderRejectDone', order).then((call: Call) => {
-          this.setCall(call);
+        this.endpoints.put('putActionOrderRejectDone', order).then((order: Order) => {
+          this.loader.remove(this.loaderId);
+          this.setOrder(order);
           resolve(true);
         })
           .catch(err => {
+            this.loader.remove(this.loaderId);
             reject(false);
           });
       } catch (e) {
+        this.loader.remove(this.loaderId);
         console.error(e);
         reject(false);
       }
     });
   }
 
+  public onActionFinishedContractor(message: string = '', resolve: (value: boolean) => void): void {
+    this.storage.clearProcessData();
+    this.navigationService.navigateHome();
+    this.loader.remove(this.loaderId);
+    if (message !== '') {
+      this.toast.success(message, 15);
+    }
+    resolve(true);
+  }
+
   public findOrder(order: Order): Order {
     return this.call.orders.find(o => o.contractorDomain.id === order.contractorDomain.id);
   }
 
-  // public callKill(): Promise<boolean> {
+  // public callKill(): Promise<boolean> { 
   //   return new Promise((resolve, reject) => {
   //     this.popup.add('Melding afbreken', PopupConfirmComponent, {
   //       description: '*** De opdrachten zullen ook afgebroken worden. Dit kan effect hebben op de verdere afhandelingen bij de partijen.'

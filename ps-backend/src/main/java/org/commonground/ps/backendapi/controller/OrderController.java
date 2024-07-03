@@ -65,8 +65,7 @@ public class OrderController extends Controller {
 	@Secured(identifier = "postOrders", domainType = DomainTypeEnum.GOVERNMENT)
 	@DeleteMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	public Message deleteOrders(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long orderId) {
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
 
 		 orderService.delete(getUser(), id);
 		
@@ -125,7 +124,7 @@ public class OrderController extends Controller {
 	
 	@Secured(identifier = "putActionOrderCancel", domainType = DomainTypeEnum.GOVERNMENT)
 	@PutMapping(value = "/{id}/action/cancel", consumes = "application/json", produces = "application/json")
-	public Call putActionOrderCancel(
+	public Order putActionOrderCancel(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 
@@ -138,7 +137,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderRejectDone", domainType = DomainTypeEnum.GOVERNMENT)
 	@PutMapping(value = "/{id}/action/reject-done", consumes = "application/json", produces = "application/json")
-	public Call putActionOrderRejectDone(
+	public Order putActionOrderRejectDone(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
@@ -150,7 +149,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderClose", domainType = DomainTypeEnum.GOVERNMENT)
 	@PutMapping(value = "/{id}/action/close", consumes = "application/json", produces = "application/json")
-	public Call putOrderActionType(
+	public Order putOrderActionType(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
@@ -162,7 +161,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderAccept", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/accept", consumes = "application/json", produces = "application/json")
-	public Call putActionOrderAccept(
+	public Order putActionOrderAccept(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 
@@ -174,7 +173,7 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderReject", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/reject", consumes = "application/json", produces = "application/json")
-	public Call putActionOrderReject(
+	public Order putActionOrderReject(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
@@ -186,21 +185,17 @@ public class OrderController extends Controller {
 
 	@Secured(identifier = "putActionOrderSaveTemporary", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/save/temp", consumes = "application/json", produces = "application/json")
-	public Call putActionOrderSaveTemporary(
+	public Order putActionOrderSaveTemporary(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		User user = getUser();
-		orderService.update(user, id, order, false);
-		Optional<Call> callOptional = orderService.getCallByOrderId(user, id);
-		if (callOptional.isEmpty()) {
-			throw new BadRequestException();
-		}
-		return callOptional.get();
+		
+		return orderService.update(user, id, order, false);
 	}
 
 	@Secured(identifier = "putActionOrderDone", domainType = DomainTypeEnum.CONTRACTOR)
 	@PutMapping(value = "/{id}/action/done", consumes = "application/json", produces = "application/json")
-	public Call putActionOrderDone(
+	public Order putActionOrderDone(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 

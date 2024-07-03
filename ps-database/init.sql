@@ -145,7 +145,8 @@ ALTER TABLE ONLY public.domain_type
 CREATE TABLE public.action_type (
     id integer NOT NULL,
     name text NOT NULL,
-    domain_type integer
+    domain_type integer,
+    visible boolean
 );
 
 ALTER TABLE public.action_type OWNER TO postgres;

@@ -104,7 +104,7 @@ public class ConfigServiceImpl implements ConfigService {
           statusEntities.forEach(statusEntity -> statusses.add(Convert.statusEntity(statusEntity)));
           config.getInfo().setStatus(statusses);
 
-          config.setActions(actionService.getActionByDomainId(domainId));
+          config.setActions(actionService.getActionsByDomainId(domainId));
 
           config.setPages(getPages(companyId, domainId));
         }

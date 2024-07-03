@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { PageButtonCondition } from '../../../../../../../../../model/page-button-condition';
 import { DropdownFieldComponent } from '../../../../../../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../../../../../../fields/textarea-field/textarea-field.component';
+import { Call } from '../../../../../../../../../model/call';
 
 @Component({
   selector: 'app-create-condition',
@@ -28,6 +29,8 @@ export class CreateConditionComponent implements OnInit {
 
   public _fields: { name: string, value?: string, data?: any }[] = [
     { name: 'call.id', value: '', data: 'call.id' },
+    { name: 'call.actionType.id', value: '', data: 'call.actionType.id' },
+    { name: 'call.actionType.name', value: '', data: 'call.actionType.name' },
     { name: 'call.description', value: '', data: 'call.description' },
     { name: 'call.dateCreated', value: '', data: 'call.dateCreated' },
     { name: 'call.casenumber', value: '', data: 'call.casenumber' },
@@ -41,8 +44,12 @@ export class CreateConditionComponent implements OnInit {
     { name: 'call.person.city', value: '', data: 'call.person.city' },
     { name: 'call.mainCategory.name', value: '', data: 'call.mainCategory.name' },
     { name: 'call.mainCategory.category.name', value: '', data: 'call.mainCategory.category.name' },
+    { name: 'order.actionType.id', value: '', data: 'order.actionType.id' },
+    { name: 'order.actionType.name', value: '', data: 'order.actionType.name' },
     { name: 'order.status.id', value: '', data: 'order.status.id' },
     { name: 'order.status.name', value: '', data: 'order.status.name' },
+    
+    
     { name: 'tab', value: '', data: 'tab' },
   ];
 
@@ -57,8 +64,7 @@ export class CreateConditionComponent implements OnInit {
   
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public getId(id: string): string {
     return !id || !this.prefix ? id : this.prefix + (id.charAt(0) !== '[' ? '.'+ id : id);

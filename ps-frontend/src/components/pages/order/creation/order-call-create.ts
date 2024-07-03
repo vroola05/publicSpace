@@ -48,12 +48,11 @@ export abstract class ActionOrderCreate extends PageAbstract implements OnInit, 
     public override ngOnDestroy(): void {
         super.ngOnDestroy();
 
-        this.action.register(ActionTypeEnum.ORDER_CREATE, () => { return super.orderCreate() });
+        this.action.register(ActionTypeEnum.CALL_NEW_ORDERS_CREATED, () => { return super.orderCreate() });
     }
 
     public override orderCreate(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            console.log('lalalal');
             if (!this.lock) {
                 this.lock = true;
                 const callData = this.storage.getSession('call');

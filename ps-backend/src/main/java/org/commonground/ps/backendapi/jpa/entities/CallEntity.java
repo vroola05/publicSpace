@@ -69,6 +69,16 @@ public class CallEntity {
   @OneToMany(targetEntity = NoteEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<NoteEntity> notes = new ArrayList<>();
 
+
+  public List<OrderEntity> getOrders() {
+    if (orders == null) {
+      setOrders(new ArrayList<>());
+    }
+
+    return orders;
+  }
+
+
   @Override
   public boolean equals(Object object) {
     if (this == object) {

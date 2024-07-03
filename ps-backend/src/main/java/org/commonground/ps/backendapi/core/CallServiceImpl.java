@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.commonground.ps.backendapi.convertor.Convert;
+import org.commonground.ps.backendapi.exception.BadRequestException;
+import org.commonground.ps.backendapi.exception.GenericException;
+import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.DomainEntity;
@@ -77,22 +80,27 @@ public class CallServiceImpl implements CallService {
 
 
     @Override
-    public Optional<Call> save(User user, Call call) {
+    public Call save(User user, Call call) throws BadRequestException {
 
         Optional<CallEntity> callEntityOptional = convertCall(user, call);
         if (callEntityOptional.isEmpty()) {
-            return Optional.empty();
+            throw new BadRequestException("Something went wrong!");
         }
 
         CallEntity callEntity = callEntityOptional.get();
 		callEntity.setDateCreated(new Date());
 		callEntity.setCasenumber(getCasenumber());
 
-		CallEntity callEntityNew = callRepository.save(callEntity);
+		CallEntity callEntityNew = callRepository.saveAndFlush(callEntity);
 
-		actionService.call(user.getDomain().getId(), callEntityNew.getId(), ActionEnum.CALL_CREATE);
+		try {
+			actionService.call(user.getDomain().getId(), user, callEntityNew.getId(), ActionEnum.CALL_CREATE);
+		} catch (ActionFailedException e) {
+			throw new BadRequestException(e.getMessage(), e.getErrors());
+		}
+		
 
-		return Optional.of(Convert.callEntity(callEntityNew, user));
+		return Convert.callEntity(callEntityNew, user);
     }
 
     public Optional<CallEntity> convertCall(User user, Call call) {
@@ -151,7 +159,7 @@ public class CallServiceImpl implements CallService {
 
 		callRepository.saveAndFlush(callEntity);
 
-		actionService.call(user.getDomain().getId(), callEntity.getId(), ActionEnum.ASSIGN_PERSON);
+		actionService.call(user.getDomain().getId(), user, callEntity.getId(), ActionEnum.ASSIGN_PERSON);
 
 		return Optional.of(Convert.callEntity(callEntity, user));
 	}
@@ -178,7 +186,7 @@ public class CallServiceImpl implements CallService {
 
 		callRepository.saveAndFlush(callEntity);
 
-		actionService.call(user.getDomain().getId(), callEntity.getId(), ActionEnum.ASSIGN_GROUP);
+		actionService.call(user.getDomain().getId(), user, callEntity.getId(), ActionEnum.ASSIGN_GROUP);
 
 		return Optional.of(Convert.callEntity(callEntity, user));
 	}

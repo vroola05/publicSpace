@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.jpa.repositories;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +25,11 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
   @Query("select c from CategoryEntity c where c.active = true and c.startDate <= :#{#now} and (c.endDate is null or c.endDate >= :#{#now}) and c.mainCategory.id = :#{#id} and c.mainCategory.domain.id = :#{#user.domain.id} order by c.name asc")
   List<CategoryEntity> getCategories(@Param("id") Long id, @Param("now") Date now, @Param("user") User user);
 
-  @Query("select c from CategoryEntity c where c.active = true and c.startDate <= :#{#now} and (c.endDate is null or c.endDate >= :#{#now}) and c.mainCategory.domain.id = :#{#domainId} order by c.name asc")
-  List<CategoryEntity> getCategoriesByDomainId(@Param("domainId") Long domainId, @Param("now") Date now);
+  // @Query("select c from CategoryEntity c where c.active = true and c.startDate <= :#{#now} and (c.endDate is null or c.endDate >= :#{#now}) and c.mainCategory.domain.id = :#{#domainId} order by c.name asc")
+  // List<CategoryEntity> getCategoriesByDomainId(@Param("domainId") Long domainId, @Param("now") Date now);
+
+  @Query("select c from CategoryEntity c where c.active = true and c.startDate <= :#{#now} and (c.endDate is null or c.endDate >= :#{#now}) and c.id in :categoryIds and c.mainCategory.domain.id = :#{#domainId} order by c.name asc")
+  List<CategoryEntity> getCategoriesByDomainId(@Param("domainId") Long domainId, @Param("categoryIds") List<Long> categoryIds, @Param("now") Date now);
 
   @Query("select c from CategoryEntity c where c.mainCategory.id = :#{#id} and c.mainCategory.domain.id = :#{#user.domain.id} order by c.startDate asc, c.name asc")
   List<CategoryEntity> getCategoriesAll(@Param("id") Long id, @Param("user") User user);

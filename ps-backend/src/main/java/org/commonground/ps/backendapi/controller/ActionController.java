@@ -50,7 +50,7 @@ public class ActionController extends Controller {
 
 		actionService.synchronizeActions(companyId, domainId, getUser());
 
-		return actionService.getActionByDomainId(domainId).stream().filter(action -> action.getActionType().getVisible().equals(true)).toList();
+		return actionService.getActionsByDomainId(domainId).stream().filter(action -> action.getActionType().getVisible().equals(true)).toList();
 	}
 
 	@Secured(identifier = "putAction")

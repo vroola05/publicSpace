@@ -9,19 +9,24 @@ import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.springframework.http.HttpStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Bad request")
-public class ActionQueueFailedException extends RuntimeException {
+public class GenericException extends RuntimeException {
 
   public List<FieldValue> errors;
 
-  public ActionQueueFailedException() {}
+  public GenericException() {}
 
-  public ActionQueueFailedException(String message) {
+  public GenericException(String message) {
     super(message);
+  }
+
+  public GenericException(String message, List<FieldValue> errors) {
+    super(message);
+    this.errors = errors;
   }
 
   public void addError(FieldValue error) {
     if (this.errors == null) {
-      this.errors = new ArrayList<FieldValue>();
+      this.errors = new ArrayList<>();
     }
     this.errors.add(error);
   }

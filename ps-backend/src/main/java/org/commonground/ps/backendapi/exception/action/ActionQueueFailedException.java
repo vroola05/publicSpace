@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.exception;
+package org.commonground.ps.backendapi.exception.action;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -9,19 +9,14 @@ import org.commonground.ps.backendapi.exception.handler.FieldValue;
 import org.springframework.http.HttpStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Bad request")
-public class BadRequestException extends RuntimeException {
+public class ActionQueueFailedException extends RuntimeException {
 
   public List<FieldValue> errors;
 
-  public BadRequestException() {}
+  public ActionQueueFailedException() {}
 
-  public BadRequestException(String message) {
+  public ActionQueueFailedException(String message) {
     super(message);
-  }
-
-  public BadRequestException(String message, List<FieldValue> errors) {
-    super(message);
-    this.errors = errors;
   }
 
   public void addError(FieldValue error) {

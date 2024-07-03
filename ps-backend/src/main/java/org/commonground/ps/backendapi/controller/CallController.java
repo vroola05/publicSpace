@@ -1,5 +1,6 @@
 package org.commonground.ps.backendapi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.commonground.ps.backendapi.core.ContractService;
 import org.commonground.ps.backendapi.core.NoteService;
 import org.commonground.ps.backendapi.core.OrderService;
 import org.commonground.ps.backendapi.core.security.Secured;
+import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.exception.handler.FieldValue;
@@ -34,7 +36,6 @@ import org.commonground.ps.backendapi.validators.PostOrderValidator;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
 import org.commonground.ps.backendapi.validators.PutCallUserValidator;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,25 +84,14 @@ public class CallController extends Controller {
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public Call postCall(@Valid @PostCallValidator @RequestBody Call call) throws BadRequestException {
 		User user = getUser();
-
-		Optional<ActionEntity> actionEntityOptional = actionService.getEntity(getUser().getDomain().getId(), ActionEnum.CALL_CREATE);
-		if (actionEntityOptional.isEmpty() || actionEntityOptional.get().getStatus() == null) {
-			BadRequestException badRequest = new BadRequestException();
-			badRequest.addError(new FieldValue("status", "No status is defined for action"));
-			throw badRequest;
-		}
-
+		
 		// First save the new call
-		Optional<Call> callNew = callService.save(user, call);
-
-		if (callNew.isEmpty()) {
-			throw new BadRequestException();
-		}
-
+		Call callNew = callService.save(user, call);
+		
 		// Second add some additional note
-		noteService.save(callNew.get().getId(), "Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
+		noteService.save(callNew.getId(), "Nieuwe melding aangemaakt.", NoteTypeEnum.SYSTEM.getValue(), user, false);
 
-		return callNew.get();
+		return callNew;
 	}
 
 	@Secured(identifier = "putCallUser", domainType = DomainTypeEnum.GOVERNMENT)
@@ -152,12 +142,18 @@ public class CallController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @PostOrderValidator @RequestBody List<Order> orders) {
 
-		Optional<List<Order>> ordersOptional =  orderService.save(getUser(), id, orders);
-		if (ordersOptional.isEmpty()) {
-			throw new BadRequestException();
+		List<Order> result = new ArrayList<>();
+		User user = getUser();
+		for (Order order : orders) {
+			try {
+				Order ordersOptional =  orderService.save(user, id, order);
+				result.add(ordersOptional);
+			} catch (ActionFailedException e) {
+				// TODO - logger.
+			}
 		}
-
-		return ordersOptional.get();
+		actionService.call(user.getDomain().getId(), user, id, ActionEnum.CALL_NEW_ORDERS_CREATED);
+		return result;
 	}
 
 	@Secured(identifier = "getOrderContracts", domainType = DomainTypeEnum.CONTRACTOR)
