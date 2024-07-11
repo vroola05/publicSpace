@@ -1,9 +1,9 @@
-package org.commonground.ps.backendapi.core;
+package org.commonground.ps.backendapi.services.actioncenter;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.UUID;
 
 import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.exception.action.ActionQueueFailedException;
@@ -22,17 +22,37 @@ import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ActionQueueServiceImpl implements ActionQueueService, Runnable {
-    private final ActionQueueRepository actionQueueRepository;
+public class ActioncenterQueueExecutorImpl implements ActioncenterQueueExecutor {
     private final ActionRepository actionRepository;
+    private final ActionQueueRepository actionQueueRepository;
 
-    private AtomicBoolean running = new AtomicBoolean(false);
-
-    public ActionQueueServiceImpl(
-            ActionQueueRepository actionQueueRepository,
-            ActionRepository actionRepository) {
-        this.actionQueueRepository = actionQueueRepository;
+    public ActioncenterQueueExecutorImpl(
+        ActionRepository actionRepository,
+        ActionQueueRepository actionQueueRepository
+    ) {
         this.actionRepository = actionRepository;
+        this.actionQueueRepository = actionQueueRepository;
+    }
+
+    
+
+    @Override
+    public void executeProcess (UUID id) {
+        ActionQueueEntity actionQueueEntity = actionQueueRepository.getReferenceById(id);
+
+        System.out.println("Order: " + (actionQueueEntity.getOrder() == null));
+
+        try {
+            executeAllOrdersClosed(actionQueueEntity);
+            executeEmailCaller(actionQueueEntity);
+            executeEmailSupervisor(actionQueueEntity);
+            executeEmailContractor(actionQueueEntity);
+            actionQueueEntity.setState(ActionQueueState.END);
+        } catch (ActionQueueFailedException e) {
+            // TODO - Implement logger
+        } finally {
+            actionQueueRepository.saveAndFlush(actionQueueEntity);
+        }
     }
 
     @Override
@@ -48,14 +68,12 @@ public class ActionQueueServiceImpl implements ActionQueueService, Runnable {
                     "No status for a call of: " + callEntity.getDomain().getName());
             actionFailedException.addError(new FieldValue("status", "There is no status defined for the action."));
             throw actionFailedException;
-
         }
 
         ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
-        if (actionTypeEntity.getDomainType() != null
-                && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
-            // TODO - create call-actiontypeentity
-            // callEntity.setActionTypeEntity(actionTypeEntity);
+        if (actionTypeEntity.getDomainType() != null && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
+            System.out.println("Call actioncenter schedular - pas actiontype aan");
+            callEntity.setActionTypeEntity(actionTypeEntity);
         }
     }
 
@@ -78,40 +96,8 @@ public class ActionQueueServiceImpl implements ActionQueueService, Runnable {
         ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
         if (actionTypeEntity.getDomainType() != null
                 && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
+            System.out.println("Order actioncenter schedular - pas actiontype aan");
             orderEntity.setActionTypeEntity(actionTypeEntity);
-        }
-    }
-
-    @Override
-    public void post(ActionQueueEntity actionQueueEntity) {
-        if (actionQueueEntity.getState() == null) {
-            actionQueueEntity.setState(ActionQueueState.START);
-            actionQueueRepository.saveAndFlush(actionQueueEntity);
-        }
-
-        this.run();
-    }
-
-    @Override
-    public void consume() {
-        List<ActionQueueEntity> actionQueueEntities = actionQueueRepository.findAllByActionQueueStateNot(ActionQueueState.END);
-        for (ActionQueueEntity actionQueueEntity : actionQueueEntities) {
-            consume(actionQueueEntity);
-        }
-    }
-
-    @Override
-    public void consume(ActionQueueEntity actionQueueEntity) {
-        try {
-            executeAllOrdersClosed(actionQueueEntity);
-            executeEmailCaller(actionQueueEntity);
-            executeEmailSupervisor(actionQueueEntity);
-            executeEmailContractor(actionQueueEntity);
-            actionQueueEntity.setState(ActionQueueState.END);
-        } catch (ActionQueueFailedException e) {
-            // TODO - Implement logger
-        } finally {
-            actionQueueRepository.saveAndFlush(actionQueueEntity);
         }
     }
 
@@ -120,36 +106,37 @@ public class ActionQueueServiceImpl implements ActionQueueService, Runnable {
             return;
         }
 
-        if (actionQueueEntity.getOrder() == null || actionQueueEntity.getOrder().getCall() == null) {
+        // Only execute this method if the action has an order.
+        if (actionQueueEntity.getOrder() == null) {
             return;
         }
 
-        CallEntity callEntity = actionQueueEntity.getOrder().getCall();
-        boolean areOpenOrders = false;
-        for (OrderEntity orderEntity : callEntity.getOrders()) {
-            if (!isOrderClosed(orderEntity.getActionTypeEntity())) {
-                areOpenOrders = true;
-                break;
-            }
+        CallEntity callEntity = actionQueueEntity.getCall();
+        List<OrderEntity> orderEntities = callEntity.getOrders();
+        if (orderEntities == null || orderEntities.isEmpty()) {
+            return;
         }
 
-        if (!areOpenOrders) {
-            Optional<ActionEntity> actionEntitCallyOptional = actionRepository.getActionByDomainIdAndActionTypeId(
-                    callEntity.getDomain().getId(), ActionEnum.CALL_ALL_ORDERS_CLOSED.id);
-            ;
-            if (actionEntitCallyOptional.isPresent()) {
-                setCallStatus(callEntity.getDomain().getId(), callEntity, actionEntitCallyOptional.get());
-                ActionQueueEntity actionQueueEntityCall = new ActionQueueEntity();
+        if (orderEntities.stream().allMatch(o -> isOrderClosed(o.getActionTypeEntity()))) {
 
+            Optional<ActionEntity> actionEntitCallyOptional = actionRepository.getActionByDomainIdAndActionTypeId(
+                callEntity.getDomain().getId(), ActionEnum.CALL_ALL_ORDERS_CLOSED.id);
+
+            if (actionEntitCallyOptional.isPresent()) {
+                ActionEntity actionEntity = actionEntitCallyOptional.get();
+                setCallStatus(callEntity.getDomain().getId(), callEntity, actionEntity);
+                ActionQueueEntity actionQueueEntityCall = new ActionQueueEntity();
+                actionQueueEntityCall.setId(UUID.randomUUID());
                 actionQueueEntityCall.setDateCreated(new Date());
                 actionQueueEntityCall.setUser(actionQueueEntity.getUser());
                 actionQueueEntityCall.setCall(actionQueueEntity.getCall());
                 actionQueueEntityCall.setAction(actionEntitCallyOptional.get());
-
-                post(actionQueueEntity);
+                actionQueueEntityCall.setState(ActionQueueState.START);
+                actionQueueRepository.saveAndFlush(actionQueueEntityCall);
+                System.out.println("Call actioncenter schedular - post alle opdrachten gesloten");
+                executeProcess(actionQueueEntityCall.getId());
             }
         }
-
         actionQueueEntity.setState(ActionQueueState.ALL_ORDERS_CLOSED);
     }
 
@@ -179,24 +166,5 @@ public class ActionQueueServiceImpl implements ActionQueueService, Runnable {
         return actionEnum.equals(ActionEnum.ORDER_CANCEL)
                 || actionEnum.equals(ActionEnum.ORDER_DONE_REJECT)
                 || actionEnum.equals(ActionEnum.ORDER_CLOSE);
-    }
-
-    public boolean areAllOrdersClosed(CallEntity callEntity) {
-        return callEntity.getOrders().stream()
-                .allMatch(orderEntity -> isOrderClosed(orderEntity.getActionTypeEntity()));
-    }
-
-    /**
-     * This causes problems when running a multitennant environment
-     */
-    @Override
-    public void run() {
-        if (running.getAndSet(true)) {
-            try {
-                this.consume();
-            } finally {
-                running.set(false);
-            }
-        }
     }
 }

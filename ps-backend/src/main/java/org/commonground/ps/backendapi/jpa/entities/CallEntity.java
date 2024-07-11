@@ -65,6 +65,10 @@ public class CallEntity {
   @OneToMany(targetEntity = OrderEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<OrderEntity> orders;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "action_type_id", nullable = false)
+  private ActionTypeEntity actionTypeEntity;
+
   @OrderBy("dateCreated DESC")
   @OneToMany(targetEntity = NoteEntity.class, mappedBy = "call", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<NoteEntity> notes = new ArrayList<>();

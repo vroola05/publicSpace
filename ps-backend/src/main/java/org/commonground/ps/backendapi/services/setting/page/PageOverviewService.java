@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.core;
+package org.commonground.ps.backendapi.services.setting.page;
 
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.model.Page;

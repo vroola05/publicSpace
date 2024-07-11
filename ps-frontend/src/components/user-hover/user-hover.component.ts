@@ -24,7 +24,10 @@ export class UserHoverComponent implements OnInit {
 
   public getUserGroups(): string {
     let groups = '';
-    this._user.groups.forEach(group => {groups += (groups !== '' ? ', ' + group.name : group.name)});
+    if (this._user) {
+      this._user.groups.forEach(group => {groups += (groups !== '' ? ', ' + group.name : group.name)});
+    }
+    
     return groups;
   }
 

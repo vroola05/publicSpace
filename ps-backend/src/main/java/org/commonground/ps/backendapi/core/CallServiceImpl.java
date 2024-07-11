@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.BadRequestException;
-import org.commonground.ps.backendapi.exception.GenericException;
 import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
@@ -24,27 +23,28 @@ import org.commonground.ps.backendapi.model.Call;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
+import org.commonground.ps.backendapi.services.actioncenter.Actioncenter;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CallServiceImpl implements CallService {
     
 	private final CallRepository callRepository;
-    private final ActionService actionService;
+    private final Actioncenter actioncenter;
 	private final CategoryRepository categoryRepository;
 	private final DomainRepository domainRepository;
 	private final UserRepository userRepository;
 	private final GroupRepository groupRepository;
 
 	public CallServiceImpl(
-			ActionService actionService,
+			Actioncenter actioncenter,
 			CallRepository callRepository,
 			CategoryRepository categoryRepository,
 			DomainRepository domainRepository,
 			GroupRepository groupRepository,
 			UserRepository userRepository) {
 		this.callRepository = callRepository;
-		this.actionService = actionService;
+		this.actioncenter = actioncenter;
 		this.categoryRepository = categoryRepository;
 		this.domainRepository = domainRepository;
 		this.userRepository = userRepository;
@@ -91,16 +91,11 @@ public class CallServiceImpl implements CallService {
 		callEntity.setDateCreated(new Date());
 		callEntity.setCasenumber(getCasenumber());
 
-		CallEntity callEntityNew = callRepository.saveAndFlush(callEntity);
-
 		try {
-			actionService.call(user.getDomain().getId(), user, callEntityNew.getId(), ActionEnum.CALL_CREATE);
+			return Convert.callEntity(actioncenter.call(user.getDomain().getId(), user, callEntity, ActionEnum.CALL_CREATE), user);
 		} catch (ActionFailedException e) {
 			throw new BadRequestException(e.getMessage(), e.getErrors());
 		}
-		
-
-		return Convert.callEntity(callEntityNew, user);
     }
 
     public Optional<CallEntity> convertCall(User user, Call call) {
@@ -159,7 +154,7 @@ public class CallServiceImpl implements CallService {
 
 		callRepository.saveAndFlush(callEntity);
 
-		actionService.call(user.getDomain().getId(), user, callEntity.getId(), ActionEnum.ASSIGN_PERSON);
+		actioncenter.call(user.getDomain().getId(), user, callEntity.getId(), ActionEnum.ASSIGN_PERSON);
 
 		return Optional.of(Convert.callEntity(callEntity, user));
 	}
@@ -186,7 +181,7 @@ public class CallServiceImpl implements CallService {
 
 		callRepository.saveAndFlush(callEntity);
 
-		actionService.call(user.getDomain().getId(), user, callEntity.getId(), ActionEnum.ASSIGN_GROUP);
+		actioncenter.call(user.getDomain().getId(), user, callEntity.getId(), ActionEnum.ASSIGN_GROUP);
 
 		return Optional.of(Convert.callEntity(callEntity, user));
 	}

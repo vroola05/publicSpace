@@ -13,6 +13,7 @@ import { ToastService } from "../../../services/toast/toast.service";
 import { TransformService } from "../../../services/transform/transform.service";
 import { PageAbstract } from "../page";
 import { Order } from "../../../model/order";
+import { Call } from "../../../model/call";
 
 @Directive()
 export abstract class ActionOrderSpecification extends PageAbstract implements OnInit, OnDestroy {
@@ -62,7 +63,7 @@ export abstract class ActionOrderSpecification extends PageAbstract implements O
             
               this.loader.remove(this.loaderId);
               this.lock = false;
-              resolve(true);
+              this.onActionFinished('De wijzigingen zijn opgeslagen!', resolve);
           })
             .catch(() => {
               this.loader.remove(this.loaderId);
@@ -85,10 +86,11 @@ export abstract class ActionOrderSpecification extends PageAbstract implements O
           this.loaderId = this.loader.add('Bezig met opslaan!');
           const order = JSON.parse(orderData) as Order;
 
-          this.endpoints.put('putActionOrderDone', order).then((newOrder: Order) => {
+          this.endpoints.put('putActionOrderDone', order).then((call: Call) => {
             this.loader.remove(this.loaderId);
             this.lock = false;
-            resolve(true);
+            this.onActionFinished('De opdracht is gereed gemeld!', resolve);
+            
           })
             .catch(() => {
               this.loader.remove(this.loaderId);
@@ -99,5 +101,15 @@ export abstract class ActionOrderSpecification extends PageAbstract implements O
         }
       }
     });
+  }
+
+  public onActionFinished(message: string = '', resolve: (value: boolean) => void): void {
+    this.storage.clearProcessData();
+    this.navigationService.navigateHome();
+    this.loader.remove(this.loaderId);
+    if (message !== '') {
+      this.toast.success(message, 15);
+    }
+    resolve(true);
   }
 }

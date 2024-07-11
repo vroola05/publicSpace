@@ -17,7 +17,7 @@ public class ActionEntity {
   @SequenceGenerator(name = "seq_action_id", sequenceName = "seq_action_id", allocationSize = 1)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "action_type_id", referencedColumnName = "id")
   private ActionTypeEntity actionType;
 

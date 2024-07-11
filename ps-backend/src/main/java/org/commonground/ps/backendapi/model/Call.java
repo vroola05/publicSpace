@@ -24,6 +24,8 @@ public class Call {
   private Date dateEnded;
   private String casenumber;
 
+  private ActionType actionType;
+  
   @Valid
   @NotNull(message = "Waarde is verplicht")
   private MainCategory mainCategory;

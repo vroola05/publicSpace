@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import org.commonground.ps.backendapi.convertor.Convert;
-import org.commonground.ps.backendapi.core.ActionService;
 import org.commonground.ps.backendapi.core.CallService;
 import org.commonground.ps.backendapi.core.ContractService;
 import org.commonground.ps.backendapi.core.NoteService;
@@ -17,8 +16,6 @@ import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.exception.NotFoundException;
-import org.commonground.ps.backendapi.exception.handler.FieldValue;
-import org.commonground.ps.backendapi.jpa.entities.ActionEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.NoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.OrderEntity;
@@ -31,6 +28,7 @@ import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.model.enums.NoteTypeEnum;
+import org.commonground.ps.backendapi.services.actioncenter.Actioncenter;
 import org.commonground.ps.backendapi.validators.PostCallValidator;
 import org.commonground.ps.backendapi.validators.PostOrderValidator;
 import org.commonground.ps.backendapi.validators.PutCallGroupValidator;
@@ -49,20 +47,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/call", produces = { "application/json; charset=utf-8" })
 public class CallController extends Controller {
 	private final ContractService contractService;
-	private final ActionService actionService;
+	private final Actioncenter actioncenter;
 	private final CallService callService;
 	private final OrderService orderService;
 	private final NoteService noteService;
 
 	public CallController(
-		ActionService actionService,
+		Actioncenter actioncenter,
 		CallService callService,
 		ContractService contractService,
 		NoteService noteService,
 		OrderService orderService
 	) {
 		this.contractService = contractService;
-		this.actionService = actionService;
+		this.actioncenter = actioncenter;
 		this.callService = callService;
 		this.orderService = orderService;
 		this.noteService = noteService;
@@ -152,7 +150,7 @@ public class CallController extends Controller {
 				// TODO - logger.
 			}
 		}
-		actionService.call(user.getDomain().getId(), user, id, ActionEnum.CALL_NEW_ORDERS_CREATED);
+		actioncenter.call(user.getDomain().getId(), user, id, ActionEnum.CALL_NEW_ORDERS_CREATED);
 		return result;
 	}
 

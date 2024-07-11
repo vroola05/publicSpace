@@ -88,6 +88,8 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     this.transform.setVariable('call', call);
       this.call = call;
       if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
+        console.log(call);
+        console.log(call.orders[0]);
         this.transform.setVariable('order', call.orders[0]);
       }
   }
@@ -149,10 +151,9 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_REJECT });
-        this.endpoints.put('putActionOrderReject', order).then((order: Order) => {
-          this.setOrder(order);
-          this.onActionFinishedContractor('Opgeslagen!', resolve)
-          resolve(true);
+        this.endpoints.put('putActionOrderReject', order).then((call: Call) => {
+          this.setCall(call);
+          this.onActionFinishedContractor('Opgeslagen!', resolve);
         })
         .catch(err => {
           this.loader.remove(this.loaderId);
@@ -172,8 +173,8 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CANCEL });
-        this.endpoints.put('putActionOrderAccept', order).then((order: Order) => {
-          this.setOrder(order);
+        this.endpoints.put('putActionOrderAccept', order).then((call: Call) => {
+          this.setCall(call);
           this.onActionFinishedContractor('Opgeslagen!', resolve)
         })
           .catch(err => {
@@ -185,7 +186,6 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
         console.error(e);
         reject(false);
       }
-
     });
   }
 
@@ -195,9 +195,9 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CANCEL });
-        this.endpoints.put('putActionOrderCancel', order).then((order: Order) => {
+        this.endpoints.put('putActionOrderCancel', order).then((call: Call) => {
           this.loader.remove(this.loaderId);
-          this.setOrder(order);
+          this.setCall(call);
           resolve(true);
         })
           .catch(err => {
@@ -219,9 +219,9 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_CLOSE });
-        this.endpoints.put('putActionOrderClose', order).then((order: Order) => {
+        this.endpoints.put('putActionOrderClose', order).then((call: Call) => {
           this.loader.remove(this.loaderId);
-          this.setOrder(order);
+          this.setCall(call);
           resolve(true);
         })
           .catch(err => {
@@ -236,22 +236,15 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     });
   }
 
-  public override orderDone(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      // this.onActionFinishedContractor('Opgeslagen!', resolve)
-      reject(false);
-    });
-  }
-
   public override orderDoneReject(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
         this.loaderId = this.loader.add('Bezig met opslaan!');
         const order = this.getOrder();
         this.transform.setVariable('actionType', { id: ActionTypeEnum.ORDER_DONE_REJECT });
-        this.endpoints.put('putActionOrderRejectDone', order).then((order: Order) => {
+        this.endpoints.put('putActionOrderRejectDone', order).then((call: Call) => {
           this.loader.remove(this.loaderId);
-          this.setOrder(order);
+          this.setCall(call);
           resolve(true);
         })
           .catch(err => {

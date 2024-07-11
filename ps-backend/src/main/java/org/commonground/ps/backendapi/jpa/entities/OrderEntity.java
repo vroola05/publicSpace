@@ -50,7 +50,7 @@ public class OrderEntity {
     @JoinColumn(name = "status_id", nullable = false)
     private StatusEntity status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "action_type_id", nullable = false)
     private ActionTypeEntity actionTypeEntity;
 

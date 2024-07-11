@@ -202,6 +202,10 @@ public class Convert {
     call.setDateCreated(callEntity.getDateCreated());
     call.setDateEnded(callEntity.getDateEnded());
 
+    if (callEntity.getActionTypeEntity() != null) {
+      call.setActionType(Convert.actionTypeEntity(callEntity.getActionTypeEntity()));
+    }
+
     if (callEntity.getLocation() != null) {
 			call.setLocation(locationEntity(callEntity.getLocation()));
 		}

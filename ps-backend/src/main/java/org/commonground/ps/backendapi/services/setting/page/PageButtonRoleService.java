@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.core;
+package org.commonground.ps.backendapi.services.setting.page;
 
 import java.util.List;
 

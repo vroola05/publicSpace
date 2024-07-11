@@ -16,15 +16,15 @@ import lombok.NoArgsConstructor;
 @Table(name = "action_queue")
 public class ActionQueueEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
+  // @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   private Date dateCreated;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "call_id", referencedColumnName = "id")
   private CallEntity call;
   
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "order_id", referencedColumnName = "id")
   private OrderEntity order;
 

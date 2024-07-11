@@ -1,8 +1,9 @@
-package org.commonground.ps.backendapi.core;
+package org.commonground.ps.backendapi.services.setting.page;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.commonground.ps.backendapi.core.StatusService;
 import org.commonground.ps.backendapi.jpa.entities.PageEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewColumnEntity;
 import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;

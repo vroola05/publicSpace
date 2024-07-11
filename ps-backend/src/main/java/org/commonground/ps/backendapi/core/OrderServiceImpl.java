@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.exception.action.ActionFailedException;
 import org.commonground.ps.backendapi.exception.BadRequestException;
-import org.commonground.ps.backendapi.jpa.entities.ActionTypeEntity;
 import org.commonground.ps.backendapi.jpa.entities.CallEntity;
 import org.commonground.ps.backendapi.jpa.entities.CategoryEntity;
 import org.commonground.ps.backendapi.jpa.entities.ContractEntity;
@@ -33,6 +32,7 @@ import org.commonground.ps.backendapi.model.OrderSpecificationItem;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
+import org.commonground.ps.backendapi.services.actioncenter.Actioncenter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
-	private final ActionService actionService;
+	private final Actioncenter actioncenter;
 	private final ActionQueueRepository actionQueueRepository;
 	private final ContractSpecificationItemService contractSpecificationItemService;
 	private final CategoryRepository categoryRepository;
@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
 	private final CallService callService;
 
 	public OrderServiceImpl(
-			ActionService actionService,
+			Actioncenter actioncenter,
 			ActionQueueRepository actionQueueRepository,
 			CallService callService,
 			CategoryRepository categoryRepository,
@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 			OrderRepository orderRepository,
 			UserRepository userRepository) {
 		this.orderRepository = orderRepository;
-		this.actionService = actionService;
+		this.actioncenter = actioncenter;
 		this.actionQueueRepository = actionQueueRepository;
 		this.contractSpecificationItemService = contractSpecificationItemService;
 		this.categoryRepository = categoryRepository;
@@ -170,9 +170,7 @@ public class OrderServiceImpl implements OrderService {
 			addOrderCategories(orderEntity, categoryEntities);
 		}
 
-		actionService.order(orderEntity.getDomain().getId(), user, orderEntity, ActionEnum.ORDER_CREATE);
-		
-		return Convert.orderEntity(orderEntity, user);
+		return Convert.orderEntity(actioncenter.order(orderEntity.getDomain().getId(), user, orderEntity, ActionEnum.ORDER_CREATE), user);
 	}
 
 	public void addOrderCategories(OrderEntity orderEntity, List<CategoryEntity> categoryEntities) {
@@ -215,7 +213,7 @@ public class OrderServiceImpl implements OrderService {
 
 		orderRepository.saveAndFlush(orderEntity);
 		try {
-			actionService.order(user.getDomain().getId(), user, id, ActionEnum.ASSIGN_PERSON);
+			actioncenter.order(user.getDomain().getId(), user, id, ActionEnum.ASSIGN_PERSON);
 		} catch (ActionFailedException e) {
 			// TODO - logger
 			throw new BadRequestException("Action failed");
@@ -246,7 +244,7 @@ public class OrderServiceImpl implements OrderService {
 
 		orderRepository.saveAndFlush(orderEntity);
 		try {
-			actionService.order(user.getDomain().getId(), user, orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
+			actioncenter.order(user.getDomain().getId(), user, orderEntity.getId(), ActionEnum.ASSIGN_GROUP);
 		} catch (ActionFailedException e) {
 			// TODO - logger
 			throw new BadRequestException("Action failed");
@@ -321,7 +319,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order setAction(User user, Order order, ActionEnum actionEnum)
+	public Call setAction(User user, Order order, ActionEnum actionEnum)
 			throws BadRequestException {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId());
 
@@ -343,13 +341,19 @@ public class OrderServiceImpl implements OrderService {
 
 		OrderEntity orderEntityUpdate =  orderRepository.saveAndFlush(orderEntity);
 		try {
-			actionService.order(orderEntity.getDomain().getId(), user, order.getId(), actionEnum);
+			actioncenter.order(orderEntity.getDomain().getId(), user, order.getId(), actionEnum);
 		} catch (ActionFailedException e) {
 			// TODO - logger
 			throw new BadRequestException("Action failed");
 		}
 
-		return Convert.orderEntity(orderEntityUpdate, user);
+		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
+			Optional<Call> callOptional =  callService.getCallById(user, orderEntity.getCall().getId());
+			return callOptional.isEmpty() ? null : callOptional.get();
+		} else {
+			Optional<Call> callOptional =  getCallByOrderId(user, order.getId());
+			return callOptional.isEmpty() ? null : callOptional.get();
+		}
 
 		////////////////////////////////////////////
 		// Start Refactor

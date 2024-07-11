@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ActionQueueRepository extends JpaRepository<ActionQueueEntity, UUID> {
-    List<ActionQueueEntity> findAllByActionQueueStateNot(ActionQueueState actionQueueState);
+    List<ActionQueueEntity> findAllByStateNot(ActionQueueState actionQueueState);
 
     @Modifying
     @Query("delete from ActionQueueEntity a where a.order.id = :#{#id}")

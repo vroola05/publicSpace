@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.core;
+package org.commonground.ps.backendapi.services.setting.page;
 
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.jpa.entities.PageButtonEntity;

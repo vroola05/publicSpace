@@ -1,4 +1,4 @@
-package org.commonground.ps.backendapi.core;
+package org.commonground.ps.backendapi.services.setting.page;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +12,7 @@ import org.commonground.ps.backendapi.jpa.entities.PageOverviewEntity;
 import org.commonground.ps.backendapi.jpa.repositories.ActionTypeRepository;
 import org.commonground.ps.backendapi.jpa.repositories.PageButtonTypeRepository;
 import org.commonground.ps.backendapi.model.PageButton;
+import org.commonground.ps.backendapi.services.actioncenter.ActionService;
 import org.springframework.stereotype.Service;
 
 @Service

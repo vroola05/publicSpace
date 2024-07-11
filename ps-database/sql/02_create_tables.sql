@@ -243,7 +243,8 @@ CREATE TABLE public.call (
     notification text,
     status_id integer,
     user_id integer,
-    group_id integer
+    group_id integer,
+    action_type_id integer NOT NULL
 );
 
 
@@ -266,6 +267,9 @@ ALTER TABLE ONLY public.call
 
 ALTER TABLE ONLY public.call
     ADD CONSTRAINT call_group_fk FOREIGN KEY (group_id) REFERENCES public.groups(id) NOT VALID;
+
+ALTER TABLE ONLY public.call
+    ADD CONSTRAINT call_action_type_fk FOREIGN KEY (action_type_id) REFERENCES public.action_type(id) NOT VALID;
 
 --
 -- TOC entry 206 (class 1259 OID 16624)

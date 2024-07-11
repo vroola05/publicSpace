@@ -28,6 +28,7 @@ export class PanelComponent implements OnInit, OnDestroy {
 
   @Input() public set buttonsRight(buttonsRight: PageButton[]) {
     this._buttonsRight = buttonsRight;
+    
     this.buttonsRightFiltered = this.filterRolesAndConditions(buttonsRight);
   };
 
