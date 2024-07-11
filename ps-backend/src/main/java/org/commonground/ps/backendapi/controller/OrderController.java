@@ -129,8 +129,7 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 
 		User user = getUser();
-		OrderEntity orderEntity = getOrderEntity(user, order.getId());
-		orderNoteService.saveNew(orderEntity, order, user, true);
+		orderNoteService.saveNew(order, user, true);
 
 		return orderService.setAction(user, order, ActionEnum.ORDER_CANCEL);
 	}
@@ -142,8 +141,7 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
 		User user = getUser();
-		OrderEntity orderEntity = getOrderEntity(user, order.getId());
-		orderNoteService.saveNew(orderEntity, order, user, true);
+		orderNoteService.saveNew(order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_DONE_REJECT);
 	}
 
@@ -154,8 +152,7 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
 		User user = getUser();
-		OrderEntity orderEntity = getOrderEntity(user, order.getId());
-		orderNoteService.saveNew(orderEntity, order, user, true);
+		orderNoteService.saveNew(order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_CLOSE);
 	}
 
@@ -166,8 +163,7 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 
 		User user = getUser();
-		OrderEntity orderEntity = getOrderEntity(user, order.getId());
-		orderNoteService.saveNew(orderEntity, order, user, true);
+		orderNoteService.saveNew(order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_ACCEPT);
 	}
 
@@ -177,9 +173,8 @@ public class OrderController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
-		User user = getUser();
-		OrderEntity orderEntity = getOrderEntity(user, order.getId());
-		orderNoteService.saveNew(orderEntity, order, user, true);
+		User user = getUser();;
+		orderNoteService.saveNew(order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_REJECT);
 	}
 
@@ -188,9 +183,11 @@ public class OrderController extends Controller {
 	public Order putActionOrderSaveTemporary(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
-		User user = getUser();
 		
-		return orderService.update(user, id, order, false);
+			User user = getUser();
+		
+		orderNoteService.saveNew(order, user, false);
+		return orderService.update(user, id, order);
 	}
 
 	@Secured(identifier = "putActionOrderDone", domainType = DomainTypeEnum.CONTRACTOR)
@@ -200,7 +197,8 @@ public class OrderController extends Controller {
 		@Valid @RequestBody Order order) throws BadRequestException {
 
 		User user = getUser();
-		orderService.update(user, id, order, true);
+		orderNoteService.saveNew(order, user, true);
+		orderService.update(user, id, order);
 		return orderService.setAction(user, order, ActionEnum.ORDER_DONE);
 	}
 

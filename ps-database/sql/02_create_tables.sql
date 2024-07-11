@@ -1265,7 +1265,7 @@ ALTER SEQUENCE public.seq_orders_category_id
 --
 
 CREATE TABLE public.orders_note (
-    id integer NOT NULL,
+    id uuid NOT NULL,
     order_id integer NOT NULL,
     content text NOT NULL,
     date_created timestamp with time zone NOT NULL,
@@ -1385,3 +1385,33 @@ CREATE SEQUENCE public.seq_orders_specification_item
 
 ALTER SEQUENCE public.seq_orders_specification_item
     OWNER TO postgres;
+
+
+
+CREATE TABLE public.action_queue (
+    id uuid NOT NULL,
+    date_created timestamp without time zone NOT NULL,
+    call_id integer,
+    order_id integer,
+    action_id integer NOT NULL,
+    user_id integer NOT NULL,
+    state integer NOT NULL
+);
+
+
+ALTER TABLE public.action_queue OWNER TO postgres;
+
+ALTER TABLE ONLY public.action_queue
+    ADD CONSTRAINT action_queue_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.action_queue
+    ADD CONSTRAINT "action_queue_actionId_fk" FOREIGN KEY (action_id) REFERENCES public.action(id) NOT VALID;
+
+ALTER TABLE ONLY public.action_queue
+    ADD CONSTRAINT "action_queue_callId_fk" FOREIGN KEY (call_id) REFERENCES public.call(id) NOT VALID;
+
+ALTER TABLE ONLY public.action_queue
+    ADD CONSTRAINT "action_queue_orderId_fk" FOREIGN KEY (order_id) REFERENCES public.orders(id) NOT VALID;
+
+ALTER TABLE ONLY public.action_queue
+    ADD CONSTRAINT "action_queue_userId_fk" FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;

@@ -27,7 +27,7 @@
   <div class="col-sm-12 details-main-info-buttons">
     <div class="row">
       <div class="col-sm-12 col-md-6">
-        <app-notes-button (close)="isChanged('notes')" [notes]="call.notes" [title]="'Notities voor ' + call.casenumber"></app-notes-button>
+        <app-notes-button (close)="isChanged('notes')" [notes]="getNotes()" [title]="'Notities voor ' + call.casenumber"></app-notes-button>
       </div>
       <div class="col-sm-12 col-md-6">
 

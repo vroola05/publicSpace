@@ -44,17 +44,17 @@ export class TransformService {
     } else {
       return buttons
         .filter(button => !button.roles || this.authorisation.validateRoles(button.roles))
-        .filter(button => !button.conditions || this.checkConditions(button.conditions));
+        .filter(button => !button.conditions || button.conditions.length === 0 || this.checkConditions(button.conditions));
     }
   }
 
   private checkConditions(conditions: ConditionT[]): boolean {
     for (const condition of conditions) {
-      if (!this.checkCondition(condition)) {
-        return false;
+      if (this.checkCondition(condition)) {
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
   private checkCondition(condition: ConditionT): boolean {

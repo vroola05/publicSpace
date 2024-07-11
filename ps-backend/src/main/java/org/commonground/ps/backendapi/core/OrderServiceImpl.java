@@ -265,7 +265,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order update(User user, Long id, Order order, boolean definite) throws BadRequestException {
+	public Order update(User user, Long id, Order order) throws BadRequestException {
 		Optional<OrderEntity> orderEntityOptional = getOrderEntityById(user, order.getId());
 		if (orderEntityOptional.isEmpty()) {
 			throw new BadRequestException();
@@ -283,7 +283,7 @@ public class OrderServiceImpl implements OrderService {
 				Optional<OrderSpecificationItemEntity> orderSpecificationItemEntityOptional = orderEntity
 						.getOrderSpecificationItems().stream()
 						.filter(orderSpecificationItemEntity -> orderSpecificationItem.getContractSpecificationItem()
-								.getId() == orderSpecificationItemEntity.getContractSpecificationItem().getId())
+								.getId().equals(orderSpecificationItemEntity.getContractSpecificationItem().getId()))
 						.findFirst();
 				if (orderSpecificationItemEntityOptional.isPresent()) {
 					OrderSpecificationItemEntity orderSpecificationItemEntity = orderSpecificationItemEntityOptional
@@ -312,8 +312,6 @@ public class OrderServiceImpl implements OrderService {
 				.removeIf(orderSpecificationItemEntity -> orderSpecificationItems.stream()
 						.noneMatch(orderSpecificationItem -> orderSpecificationItem.getContractSpecificationItem()
 								.getId().equals(orderSpecificationItemEntity.getContractSpecificationItem().getId())));
-
-		// orderNoteService.addNew(orderEntity, order, user, definite);
 
 		return Convert.orderEntity(orderRepository.saveAndFlush(orderEntity), user);
 	}
@@ -354,35 +352,6 @@ public class OrderServiceImpl implements OrderService {
 			Optional<Call> callOptional =  getCallByOrderId(user, order.getId());
 			return callOptional.isEmpty() ? null : callOptional.get();
 		}
-
-		////////////////////////////////////////////
-		// Start Refactor
-		////////////////////////////////////////////
-		// CallEntity callEntity = orderEntityUpdated.getCall();
-		// if (areAllOrdersClosed(callEntity)) {
-		// 	actionService.call(callEntity.getDomain().getId(), callEntity.getId(), ActionEnum.CALL_ALL_ORDERS_CLOSED);
-
-		// 	orderEntityOptional = getOrderEntityById(user, order.getId());
-		// 	if (orderEntityOptional.isPresent()) {
-		// 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user);
-		// 		addOrderToCall(user, call, orderEntityOptional.get());
-		// 		return call;
-		// 	}
-		// } else if (isCallAction(orderEntityUpdated.getActionTypeEntity())) {
-		// 	actionService.call(callEntity.getDomain().getId(), callEntity.getId(),
-		// 			ActionEnum.valueOfId(orderEntityUpdated.getActionTypeEntity().getId()));
-
-		// 	orderEntityOptional = getOrderEntityById(user, order.getId());
-		// 	if (orderEntityOptional.isPresent()) {
-		// 		Call call = Convert.callEntity(orderEntityOptional.get().getCall(), user);
-		// 		addOrderToCall(user, call, orderEntityOptional.get());
-		// 		return call;
-		// 	}
-		// }
-		
-		// Call call = Convert.callEntity(orderEntityUpdated.getCall(), user);
-		// addOrderToCall(user, call, orderEntityOptional.get());
-		// return call;
 	}
 
 	/**
@@ -404,11 +373,13 @@ public class OrderServiceImpl implements OrderService {
 				return actionEnumNew.equals(ActionEnum.ORDER_DONE)
 					|| actionEnumNew.equals(ActionEnum.ORDER_CANCEL);
 			case ActionEnum.ORDER_REJECT:
-				return actionEnumNew.equals(ActionEnum.ORDER_DONE_REJECT);
-			case ActionEnum.ORDER_DONE:
 				return actionEnumNew.equals(ActionEnum.ORDER_CLOSE);
+			case ActionEnum.ORDER_DONE:
+				return actionEnumNew.equals(ActionEnum.ORDER_CLOSE)
+					|| actionEnumNew.equals(ActionEnum.ORDER_DONE_REJECT);
 			case ActionEnum.ORDER_DONE_REJECT:
-				return false;
+				return actionEnumNew.equals(ActionEnum.ORDER_DONE)
+					|| actionEnumNew.equals(ActionEnum.ORDER_CANCEL);
 			case ActionEnum.ORDER_CANCEL:
 				return false;
 			case ActionEnum.ORDER_CLOSE:

@@ -7,6 +7,7 @@ import { Popup } from '../../../../services/popup/popup.service';
 import { MapsComponent } from '../../../maps/maps.component';
 import { DynamicPanel } from '../../../../model/intefaces';
 import { PageConfig } from '../../../../model/domain-type-config';
+import { Note } from '../../../../model/note';
 
 @Component({
   selector: 'app-panel-info',
@@ -28,6 +29,10 @@ export class PanelInfoComponent implements DynamicPanel, OnInit {
   ) { }
 
   public ngOnInit(): void {
+  }
+
+  public getNotes(): Note[] {
+    return this.call.notes;
   }
 
   public getImage(user: User): Image {

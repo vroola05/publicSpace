@@ -16,7 +16,7 @@ public interface OrderService {
 
     public Order save(User user, Long id, Order order) throws ActionFailedException;
     public void delete(User user, Long id);
-    public Order update(User user, Long id, Order order, boolean definite);
+    public Order update(User user, Long id, Order order);
     public Optional<Call> setUser(User user, Long id, User userNew);
     public Optional<Call> setGroup(User user, Long id, Group groupNew);
     public Optional<Call> setGroupAndUser(User user, Long id, Long groupId, User userNew);
