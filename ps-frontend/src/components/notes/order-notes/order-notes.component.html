@@ -1,6 +1,9 @@
 <div class="notes-container" *ngIf="hasComments()">
     <h4>Notities</h4>
-    <div class="show-all material-icons md-36" title="Notities uitklappen" (click)="toggle()" *ngIf="hasMoreComments()">comment</div>
+    <div class="show-all md-36" title="Notities uitklappen" (click)="toggle()" *ngIf="hasMoreComments()">
+        <span class="counter">{{getOrderNoteCount()}}</span>
+        <span class="icon material-icons md-36">comment</span>
+    </div>
     <div class="notes-inner-container">
         <div class="notes">
             <div class="note" *ngFor="let note of orderNotes; let colIndex = index">

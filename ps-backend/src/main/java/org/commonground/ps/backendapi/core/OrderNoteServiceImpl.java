@@ -92,7 +92,7 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 		// Select all new and indefinite notes
 		List<OrderNote> orderNotes = order.getNotes().stream().filter(
 					note -> note.getId() == null 
-					|| !note.getDefinite()).collect(Collectors.toList());
+					|| !Boolean.TRUE.equals(note.getDefinite())).collect(Collectors.toList());
 
 		if (orderNotes.isEmpty()) {
 			return;

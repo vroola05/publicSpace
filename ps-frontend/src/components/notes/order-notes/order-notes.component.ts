@@ -41,6 +41,10 @@ export class OrderNotesComponent {
   ) { }
 
 
+  public getOrderNoteCount(): string {
+    return this.hasComments() ? '' + this._order.notes.length : '';
+  }
+
   public hasComments(): boolean {
     return this._order.notes && this._order.notes.length > 0;
   }
@@ -68,6 +72,7 @@ export class OrderNotesComponent {
   public submit(): void {
     if (this.validation.validate('order-notes')) {
       if (this.orderNote.content && this.orderNote.content.length > 0) {
+        this.orderNote.definite = true;
         this.changed.emit({action: 'order-note', data: this._order, note: this.orderNote});
         this.validation.clearForm('order-notes');
       }

@@ -1284,16 +1284,6 @@ ALTER TABLE ONLY public.orders_note
 ALTER TABLE ONLY public.orders_note
     ADD CONSTRAINT orders_note_user_fk FOREIGN KEY (user_id) REFERENCES public.users(id) NOT VALID;
 
-CREATE SEQUENCE public.seq_orders_note_id
-    INCREMENT 1
-    START 1
-    MINVALUE 0
-    MAXVALUE 9223372036854775807
-    CACHE 1;
-
-ALTER SEQUENCE public.seq_orders_note_id
-    OWNER TO postgres;
-
 
 --
 -- TOC entry 267 (class 1259 OID 86799)
