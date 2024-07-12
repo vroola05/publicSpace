@@ -26,8 +26,8 @@ INSERT INTO public.domain_type VALUES (2, 'Aannemer');
 -- Data for Name: action_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (0, 'Toewijzen persoon', NULL,);
-INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (1, 'Toewijzen groep', NULL,);
+INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (0, 'Toewijzen persoon', NULL, true);
+INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (1, 'Toewijzen groep', NULL, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (2, 'Melding aanmaken', 1, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (3, 'Melding afsluiten', 1, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (4, 'Melding afbreken', 1, true);
@@ -38,13 +38,13 @@ INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (8, 'Opdr
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (9, 'Opdracht afsluiten', 2, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (10, 'Opdracht afkeuren', 2, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (11, 'Opdracht annuleren', 2, true);
-INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (12, 'Terug', NULL,);
-INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (13, 'Annuleren', NULL,);
-INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (14, 'Volgende', NULL,);
+INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (12, 'Terug', NULL, false);
+INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (13, 'Annuleren', NULL, false);
+INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (14, 'Volgende', NULL, false);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (15, 'Toewijzen persoon en groep', NULL, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (16, 'Opdracht tijdelijk opslaan', 2, true);
 INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (17, 'Alle opdrachten gesloten', 1, true);
-INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (17, 'Nieuw opdracht(en) aangemaakt', 1, true);
+INSERT INTO public.action_type (id, name, domain_type, visible) VALUES (18, 'Nieuw opdracht(en) aangemaakt', 1, true);
 
 
 --
@@ -87,3 +87,4 @@ INSERT INTO public.page_button_type VALUES (5, 'blank');
 INSERT INTO public.note_type (id, name) VALUES (1, 'System');
 INSERT INTO public.note_type (id, name) VALUES (2, 'Algemeen');
 INSERT INTO public.note_type (id, name) VALUES (3, 'Email');
+INSERT INTO public.note_type (id, name) VALUES (4, 'Aannemer');
