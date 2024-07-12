@@ -59,6 +59,13 @@ export class FileFieldComponent extends FieldAbstract implements OnInit, OnDestr
     this.changed.emit(this.files);
   }
 
+  
+  public override clear(): void {
+    this.value = '';
+    this.files = [];
+    this.changed.emit(this.files);
+  }
+
   public addFile() {
     this.uploader.nativeElement.click();
   }

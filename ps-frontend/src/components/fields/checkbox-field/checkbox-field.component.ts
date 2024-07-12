@@ -36,4 +36,8 @@ export class CheckboxFieldComponent extends FieldAbstract implements OnInit, OnD
     if (this.readonly || this.disabled) return;
   }
   
+  public override clear(): void {
+    this.value = '';
+    this.data = undefined;
+  }
 }

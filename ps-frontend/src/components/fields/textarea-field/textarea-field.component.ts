@@ -28,4 +28,11 @@ export class TextareaFieldComponent extends FieldAbstract implements OnInit, OnD
       this.fieldRef.nativeElement.focus();
     }
   }
+
+  public override clear(): void {
+    this.value = '';
+    if (this.fieldRef) {
+      this.fieldRef.nativeElement.value = '';
+    }
+  }
 }

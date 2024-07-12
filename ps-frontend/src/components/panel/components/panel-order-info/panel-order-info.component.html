@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="order-info-specifications" >
-    <app-order-notes [orderNotes]="order?.notes"></app-order-notes>
+    <app-order-notes (changed)="onNoteCreated($event)" [order]="order"></app-order-notes>
   </div>
   <div *ngIf="showOrderSpecificationItems()">
     <app-panel-order-specifications [order]="order"></app-panel-order-specifications>

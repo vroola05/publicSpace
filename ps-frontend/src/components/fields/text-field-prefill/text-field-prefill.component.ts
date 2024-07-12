@@ -36,7 +36,7 @@ export class TextFieldPrefillComponent extends FieldAbstract implements OnInit, 
     return this.options && this.options.length > 0;
   }
 
-  public clear(): void {
+  public override clear(): void {
     this.options = [];
     this.select(null);
 

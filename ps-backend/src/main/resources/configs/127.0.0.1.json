@@ -56,6 +56,7 @@
     "postLogin": { "endpoint": "/login", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "postMainCategory":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/maincategory", "roles": ["ROLE_ADMIN"]},
     "postNote": { "endpoint": "/call/${path.id}/note", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
+    "postOrderNote": { "endpoint": "/order/${order.id}/note", "roles": ["ROLE_ADMIN", "ROLE_USER"] },
     "postStatus":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/status", "roles": ["ROLE_ADMIN"]},
     "postUser": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/user", "roles": ["ROLE_ADMIN"]},
     "putAction": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/action/${action.id}", "roles": ["ROLE_ADMIN"]},

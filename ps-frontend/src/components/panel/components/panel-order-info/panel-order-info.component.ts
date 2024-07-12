@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActionTypeEnum, PopupETypes } from '../../../../model/intefaces';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ActionTypeEnum } from '../../../../model/intefaces';
 import { Order } from '../../../../model/order';
 import { Popup } from '../../../../services/popup/popup.service';
 import { PopupConfirmComponent } from '../../../popup/components/popup-confirm/popup-confirm.component';
@@ -12,7 +12,7 @@ import { OrderNote } from '../../../../model/order-note';
   templateUrl: './panel-order-info.component.html',
   styleUrls: ['./panel-order-info.component.scss']
 })
-export class PanelOrderInfoComponent implements OnInit {
+export class PanelOrderInfoComponent {
   @Input() public order: Order;
   @Input() public action: 'view' | 'new' | 'full' = 'view';
   @Output() changed: EventEmitter<any> = new EventEmitter<any>();
@@ -21,8 +21,6 @@ export class PanelOrderInfoComponent implements OnInit {
     private popup: Popup
   ) { }
 
-  public ngOnInit(): void {
-  }
 
   public hasCategories(): boolean {
     return this.order && this.order.categories && this.order.categories.length > 0;
@@ -49,6 +47,9 @@ export class PanelOrderInfoComponent implements OnInit {
     this.changed.emit({action: 'delete', data: this.order});
   }
 
+  public onNoteCreated($event): void {
+    this.changed.emit($event);
+  }
 
   public isCreating(): boolean {
     return (!this.order || !this.order.id) ? true : false;

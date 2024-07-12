@@ -86,7 +86,7 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
     return this.options && this.options.length > 0;
   }
 
-  public clear(): void {
+  public override clear(): void {
     this.options = [];
     this.select(null);
     this.closeList();

@@ -19,5 +19,5 @@ public class Note {
     private NoteType type;
     private User user;
     private Date dateCreated;
-    private boolean visible;
+    private boolean isPublic;
 }

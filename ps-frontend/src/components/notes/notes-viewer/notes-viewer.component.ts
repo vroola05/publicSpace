@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, ViewChild } from '@angular/core';
 import { IPopup, NoteTypeEnum, PopupETypes } from '../../../model/intefaces';
 import { Note, NoteType } from '../../../model/note';
 import { TextareaFieldComponent } from '../../fields/textarea-field/textarea-field.component';
@@ -12,7 +12,7 @@ import { ValidationService } from '../../../services/validation/validation.servi
   templateUrl: './notes-viewer.component.html',
   styleUrls: ['./notes-viewer.component.scss']
 })
-export class NotesViewerComponent implements IPopup, OnDestroy, OnInit {
+export class NotesViewerComponent implements IPopup, OnDestroy {
   @ViewChild('notesRef') notesRef: TextareaFieldComponent;
   public events: EventEmitter<{event: PopupETypes, data?: any}> = new EventEmitter<{event: PopupETypes, data?: any}>();
 
@@ -38,15 +38,16 @@ export class NotesViewerComponent implements IPopup, OnDestroy, OnInit {
 
   ) { }
 
-  public ngOnInit(): void {
-  }
-
   public ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   public changed(value: string): void {
     this.note.content = value;
+  }
+
+  public onPublicChanged(value: boolean): void {
+    this.note.public = value;
   }
 
   public close(): void {

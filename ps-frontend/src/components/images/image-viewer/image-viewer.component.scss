@@ -30,7 +30,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .image-viewer {
     .image-viewer-image {
       max-height: calc(100vh - ($default-spacing * 6) + ($image-size / 2) + 1);

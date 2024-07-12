@@ -39,7 +39,7 @@ public class NoteEntity {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private UserEntity user;
 
-  private Boolean visible;
+  private Boolean isPublic;
 
   @Override
   public boolean equals(Object object) {
@@ -55,6 +55,6 @@ public class NoteEntity {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, content, dateCreated, visible);
+    return Objects.hash(id, content, dateCreated, isPublic);
   }
 }

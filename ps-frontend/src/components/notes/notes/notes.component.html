@@ -9,12 +9,12 @@
       <div class="row">
         <span class="note-col col-4">{{getDate(note.dateCreated)}}</span>
         <span class="note-col col-4">{{note?.type?.name}}</span>
-        <span class="note-col col-4">{{note?.user?.name}}</span>
+        <span class="note-col-no-hidden col-4"><app-user-hover [user]="note?.user"></app-user-hover></span>
       </div>
     </span>
     <span *ngIf="isOpen(colIndex)" class="note-toggle col col-12">
       <h5>Toelichting</h5>
-      <p [innerHtml]="note.content">
+      <p [innerHtml]="linebreak(note.content)">
         
       </p>
     </span>

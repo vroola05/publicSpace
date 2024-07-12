@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Note } from '../../../model/note';
 import dayjs from 'dayjs';
 
@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss']
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent {
   public indexOpened: number;
   public _notes: Note[] = [];
   public openend: boolean[] = [];
@@ -24,9 +24,6 @@ export class NotesComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
   public isOpen(index: number): boolean {
     return this.openend && this.openend[index];
   }
@@ -41,5 +38,9 @@ export class NotesComponent implements OnInit {
 
   public getDate(date: Date): string {
     return dayjs(date).format('DD-MM-YYYY HH:mm');
+  }
+
+  public linebreak(input: string): string {
+    return input.replaceAll('\n', '<br />')
   }
 }

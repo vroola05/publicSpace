@@ -22,7 +22,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .details-block {
     margin-top: $default-spacing;
     margin-bottom: $default-spacing;

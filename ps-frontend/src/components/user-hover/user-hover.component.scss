@@ -11,12 +11,11 @@
     .information {
         display: none;
         position: absolute;
-        left: -75px;
+        // left: -75px;
         bottom: 0px;
         width: 300px;
         margin-bottom: calc($default-spacing * 3);
         padding: calc($default-spacing / 2);
-
 
         background: $white;
         border: $color-tertiary solid 1px;

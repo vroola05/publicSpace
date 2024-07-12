@@ -6,10 +6,11 @@ export class NoteType {
 }
 
 export class Note {
-  public id?: number;
+  public id?: string;
   public content?: string;
   public type?: NoteType;
   public user?: User;
+  public public?: boolean = false;
   public dateCreated?: Date;
 
   public constructor(content: string = '') {

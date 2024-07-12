@@ -36,6 +36,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .note-col-no-hidden {
+        white-space: nowrap;
+      }
     }
     .note-toggle {
       margin: 0px;

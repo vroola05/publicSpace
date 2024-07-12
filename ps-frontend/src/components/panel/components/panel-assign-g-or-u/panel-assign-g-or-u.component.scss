@@ -1,6 +1,6 @@
 @import "../../../../assets/scss/styles.scss";
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     app-panel-tab-selector {
         display: block;
         padding-top: 0;

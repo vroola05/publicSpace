@@ -48,7 +48,7 @@ export class SelectFieldComponent extends FieldAbstract implements OnInit, OnDes
     return this._options && this._options.length > 0;
   }
 
-  public clear(): void {
+  public override clear(): void {
     this.options = [];
   }
 

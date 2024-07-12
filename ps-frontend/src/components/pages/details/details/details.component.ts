@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angu
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicDirective } from '../../../../directives/dynamic.directive';
 import { Call } from '../../../../model/call';
-import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, PopupETypes, StatusTypes } from '../../../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, NoteTypeEnum, PopupETypes, StatusTypes } from '../../../../model/intefaces';
 import { Message } from '../../../../model/message';
-import { Note } from '../../../../model/note';
+import { Note, NoteType } from '../../../../model/note';
 import { Order } from '../../../../model/order';
 import { Page } from '../../../../model/page';
 import { ActionService } from '../../../../services/action/action.service';
@@ -20,6 +20,7 @@ import { TransformService } from '../../../../services/transform/transform.servi
 import { PageAbstract } from '../../page';
 import { DynamicLeftDirective } from '../../../../directives/dynamic-left.directive';
 import { DynamicRightDirective } from '../../../../directives/dynamic-right.directive';
+import { OrderNote } from '../../../../model/order-note';
 
 
 
@@ -76,7 +77,11 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
   }
 
   public getCall(): void {
+
     this.endpoints.get(this.pageConfig.getEndpoint('getCall')).then((call: Call) => {
+      this.parseCall(call)
+      
+      
       this.setCall(call);
 
       this.loadComponent(this.dynamicHostLeft.viewContainerRef, this.pageConfig.getComponent('left'));
@@ -109,7 +114,7 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     }
   }
 
-  public override changed($event: { action: string, data: any, note?: Note }): void {
+  public override changed($event: { action: string, data: any, note?: any }): void {
     this.transform.setVariable('order', $event.data);
 
     switch ($event.action) {
@@ -125,10 +130,33 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
       case 'close-rejected':
         this.orderClose();
         break;
+      case 'order-note':
+          this.orderNote($event.note);
+          break;
       case 'delete-created':
-        console.log($event.data);
         this.orderDeleteCreated();
     }
+  }
+
+  public orderNote(orderNote: OrderNote) {
+    return new Promise((resolve, reject) => {
+      try {
+        this.loaderId = this.loader.add('Bezig met opslaan!');
+        this.endpoints.post('postOrderNote', orderNote).then((orderNoteNew: OrderNote) => {
+          const order = this.getOrder();
+          order.notes.push(orderNoteNew);
+          this.loader.remove(this.loaderId);
+        })
+        .catch(err => {
+          this.loader.remove(this.loaderId);
+            reject(false);
+          });
+      } catch (e) {
+        this.loader.remove(this.loaderId);
+        console.error(e);
+        reject(false);
+      }
+    });
   }
 
   // TODO - delete this function

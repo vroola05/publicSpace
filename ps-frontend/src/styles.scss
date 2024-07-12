@@ -18,7 +18,8 @@ body {
   font-size: $default-font-size;
   font-family: $font-primary;
 
-  background-color: $gray6; 
+  background-color: $gray6;
+
   .container {
     margin: auto;
     padding-left: $default-spacing;
@@ -27,8 +28,23 @@ body {
   }
 }
 
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera, and Firefox */
+}
 
-@include media-breakpoint-down(sm) {
+
+@include media-breakpoint-down(md) {
   body {
     margin: 0;
     padding: 0;

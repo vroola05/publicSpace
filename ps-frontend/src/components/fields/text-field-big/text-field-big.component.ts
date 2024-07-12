@@ -33,4 +33,8 @@ export class TextFieldBigComponent extends FieldAbstract implements OnInit, OnDe
       this.fieldRef.nativeElement.focus();
     }
   }
+  
+  public override clear(): void {
+    this.value = '';
+  }
 }

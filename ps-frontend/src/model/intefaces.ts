@@ -15,7 +15,8 @@ export enum RolesEnum {
 export enum NoteTypeEnum {
   SYSTEM = 1,
   GENERIC = 2,
-  EMAIL = 3
+  EMAIL = 3,
+  CONTRACTOR = 4
 }
 
 export enum DomainTypeEnum {

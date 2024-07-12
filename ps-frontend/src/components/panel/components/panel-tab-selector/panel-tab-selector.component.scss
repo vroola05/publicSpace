@@ -48,7 +48,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .tabs-selector {
     .tabs {
       position: relative;

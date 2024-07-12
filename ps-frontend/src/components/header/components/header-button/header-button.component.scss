@@ -75,7 +75,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .ps-header-btn {
     width: 100%;
     max-width: unset;

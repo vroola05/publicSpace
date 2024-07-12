@@ -12,7 +12,6 @@ import org.commonground.ps.backendapi.jpa.entities.OrderNoteEntity;
 import org.commonground.ps.backendapi.jpa.entities.UserEntity;
 
 import org.commonground.ps.backendapi.jpa.repositories.OrderNoteRepository;
-import org.commonground.ps.backendapi.jpa.repositories.OrderRepository;
 import org.commonground.ps.backendapi.jpa.repositories.UserRepository;
 import org.commonground.ps.backendapi.model.Order;
 import org.commonground.ps.backendapi.model.OrderNote;
@@ -36,31 +35,34 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 
 	}
 
-	@Override
-	public OrderNoteEntity createOrderNoteEntity(String content, UserEntity userEntity) {
-		OrderNoteEntity orderNoteEntity = new OrderNoteEntity();
-		orderNoteEntity.setId(UUID.randomUUID());
-		orderNoteEntity.setContent(content);
-		orderNoteEntity.setUser(userEntity);
-		orderNoteEntity.setDateCreated(new Date());
-		return orderNoteEntity;
-	}
 
 	@Override
-	public Optional<OrderNoteEntity> save(OrderEntity orderEntity, String content, User user, boolean definite) {
-		if (user == null) {
-			return Optional.empty();
+	public OrderNoteEntity save(Long id, OrderNote orderNote, User user) throws BadRequestException {
+		Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
+
+		if (orderEntityOptional.isEmpty()) {
+			throw new BadRequestException();
 		}
+		OrderEntity orderEntity = orderEntityOptional.get();
+		
+		if (user == null) {
+			throw new BadRequestException();
+		}
+
 		Optional<UserEntity> userEntityOptional = userRepository.getUserById(user.getDomain().getId(), user.getId());
 		if (userEntityOptional.isEmpty()) {
-			return Optional.empty();
+			throw new BadRequestException();
 		}
+		UserEntity userEntity = userEntityOptional.get();
 
-		OrderNoteEntity orderNoteEntity = createOrderNoteEntity(content, userEntityOptional.get());
-		
+		OrderNoteEntity orderNoteEntity = new OrderNoteEntity();
+		orderNoteEntity.setId(UUID.randomUUID());
+		orderNoteEntity.setContent(orderNote.getContent());
+		orderNoteEntity.setUser(userEntity);
+		orderNoteEntity.setDateCreated(new Date());
+		orderNoteEntity.setDefinite(orderNote.getDefinite());
 		orderNoteEntity.setOrder(orderEntity);
-
-		return Optional.of(orderNoteRepository.save(orderNoteEntity));
+		return orderNoteRepository.saveAndFlush(orderNoteEntity);
 	}
 
 	@Override
@@ -86,7 +88,7 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 		if (order.getNotes() == null || order.getNotes().isEmpty()) {
 			return;
 		}
-		System.out.println("Ik ben hier");
+
 		// Select all new and indefinite notes
 		List<OrderNote> orderNotes = order.getNotes().stream().filter(
 					note -> note.getId() == null 
@@ -95,13 +97,12 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 		if (orderNotes.isEmpty()) {
 			return;
 		}
-		System.out.println("Ik ben hier: " + orderNotes.size());
+
 		for (OrderNote orderNote : orderNotes) {
 			if (orderNote.getId() != null) {
 				Optional<OrderNoteEntity> orderNoteEntityOptional = orderEntity.getOrderNote().stream().filter(noteEntity -> noteEntity.getId().equals(orderNote.getId())).findFirst();
 				if (orderNoteEntityOptional.isPresent()) {
 					OrderNoteEntity orderNoteEntity = orderNoteEntityOptional.get();
-					System.out.println("A Ik ben hier: " + orderNoteEntity.getId());
 					orderNoteEntity.setContent(orderNote.getContent());
 					orderNoteEntity.setUser(userEntity);
 					orderNoteEntity.setDefinite(definite);
@@ -109,7 +110,6 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 					orderNoteRepository.save(orderNoteEntity);
 				}
 			} else {
-				// OrderNoteEntity orderNoteEntity = createOrderNoteEntity(orderNote.getContent(), userEntityOptional.get());
 				OrderNoteEntity orderNoteEntity = new OrderNoteEntity();
 				orderNoteEntity.setId(UUID.randomUUID());
 				orderNoteEntity.setContent(orderNote.getContent());
@@ -118,13 +118,9 @@ public class OrderNoteServiceImpl implements OrderNoteService {
 				
 				orderNoteEntity.setDefinite(definite);
 				orderNoteEntity.setOrder(orderEntity);
-				// orderEntity.getOrderNote().add(orderNoteEntity);
-				System.out.println("B Ik ben hier: " + orderNoteEntity.getId());
 				orderNoteRepository.save(orderNoteEntity);
-				System.out.println("C Ik ben hier: " + orderNoteEntity.getId());
 			}
 		}
-		System.out.println("D Ik ben hier: ");
 		orderNoteRepository.flush();
 	}
 }

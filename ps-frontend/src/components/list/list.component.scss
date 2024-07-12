@@ -40,7 +40,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .ps-table {
     padding: 0px;
     margin: 0px;

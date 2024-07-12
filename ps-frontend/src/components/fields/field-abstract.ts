@@ -72,10 +72,15 @@ export abstract class FieldAbstract implements OnInit, OnDestroy {
   public focus($event): void {
     console.error('Not yet implemented', $event);
   }
+
+  public clear(): void {
+    console.error('Not yet implemented');
+  }
   
   public addValidator(pattern: string, text: string) {
     this.validator.push({pattern: new RegExp(pattern), text});
   }
+
   public clearValidators(): void {
     this.errors = [];
   }

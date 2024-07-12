@@ -8,7 +8,7 @@
     {{getCategories()}}
   </div>
   <div class="order-info-notes">
-    <app-order-notes [orderNotes]="order?.notes"></app-order-notes>
+    <app-order-notes [order]="order"></app-order-notes>
   </div>
   <div class="order-info-specification-items">
     <app-panel-order-specifications [order]="order"></app-panel-order-specifications>

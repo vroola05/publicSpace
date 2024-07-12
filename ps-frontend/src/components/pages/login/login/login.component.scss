@@ -1,7 +1,7 @@
 @import "../../../../assets/scss/styles.scss";
 
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .login-wrapper {
     position: fixed;
     display: flex;

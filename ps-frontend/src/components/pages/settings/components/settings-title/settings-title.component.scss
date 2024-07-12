@@ -16,7 +16,7 @@
 
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .layout-title {
     padding-top: unset;
     h3 {

@@ -44,4 +44,8 @@ export class PasswordFieldComponent extends FieldAbstract implements OnInit, OnD
       this.fieldRef.nativeElement.focus();
     }
   }
+  
+  public override clear(): void {
+    this.value = '';
+  }
 }

@@ -15,7 +15,7 @@
 }
 
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .ps-maps {
     &.bigger {
       height: 300px;

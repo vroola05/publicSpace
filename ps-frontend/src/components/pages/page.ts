@@ -1,7 +1,7 @@
 import { OnDestroy, OnInit, Directive, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../model/page';
-import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, PageLayoutType } from '../../model/intefaces';
+import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, NoteTypeEnum, PageLayoutType } from '../../model/intefaces';
 import { ActionService } from '../../services/action/action.service';
 import { AuthorisationService } from '../../services/authorisation/authorisation.service';
 import { NavigationService } from '../../services/navigation/navigation.service';
@@ -14,6 +14,7 @@ import { ConfigService } from '../../services/config/config.service';
 import { DomainType } from '../../model/domain-type';
 import dayjs from 'dayjs';
 import { Subscription } from 'rxjs';
+import { Note, NoteType } from '../../model/note';
 
 @Directive()
 export abstract class PageAbstract implements OnInit, OnDestroy {
@@ -173,6 +174,8 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
 
 
   public changed($event: {action: string, data: any}): void {
+    console.error('Not implemented');
+    this.notImplemented();
   }
 
   public notImplemented(): Promise<boolean> {
@@ -276,4 +279,27 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     return this.notImplemented();
   }
   
+
+  public parseCall(call: Call) {
+    call.dateCreated = new Date(call.dateCreated);
+    call.dateEnded = new Date(call.dateEnded);
+    call.notes.forEach (n => n.dateCreated = new Date(n.dateCreated));
+    call.orders.forEach (o => {
+      o.dateCreated = new Date(o.dateCreated);
+      o.dateEnded = new Date(o.dateEnded);
+      o.notes.forEach (n => { 
+        n.dateCreated = new Date(n.dateCreated )
+        const note: Note = new Note();
+        note.id = n.id;
+        note.content = n.content;
+        note.user = n.user;
+        note.dateCreated = new Date(n.dateCreated);
+        note.type = new NoteType(); 
+        note.type.id = NoteTypeEnum.CONTRACTOR;
+        note.type.name = n.user.domain.name;
+        call.notes.push(note);
+      });
+    });
+    call.notes = call.notes.sort((n1, n2) => n1.dateCreated.getTime() - n2.dateCreated.getTime());
+  }
 }

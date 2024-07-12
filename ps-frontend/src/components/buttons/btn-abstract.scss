@@ -19,4 +19,13 @@
     background-color: $white-transparent;
     border: $color-secondary solid 2px;
   }
+
+}
+
+@include media-breakpoint-up(md) {
+  .ps-btn {
+    &.no-padding {
+      padding: 0px;
+    }
+  }
 }

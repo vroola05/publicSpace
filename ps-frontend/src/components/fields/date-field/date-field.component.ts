@@ -30,6 +30,10 @@ export class DateFieldComponent extends FieldAbstract implements OnInit, OnDestr
     return this.icon.length > 0;
   }
 
+  public override clear(): void {
+    this.value = '';
+  }
+  
   public onDateChanged(value: MatDatepickerInputEvent<any>): void {
     this.value = value.value === null ? '' : dayjs(value.value).format('YYYY-MM-DD');
     if (this.data) {

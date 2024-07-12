@@ -6,6 +6,7 @@ import java.util.Optional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
+import org.commonground.ps.backendapi.convertor.Convert;
 import org.commonground.ps.backendapi.core.ContractSpecificationItemService;
 import org.commonground.ps.backendapi.core.OrderNoteService;
 import org.commonground.ps.backendapi.core.OrderService;
@@ -18,6 +19,7 @@ import org.commonground.ps.backendapi.model.ContractSpecificationItem;
 import org.commonground.ps.backendapi.model.Group;
 import org.commonground.ps.backendapi.model.Message;
 import org.commonground.ps.backendapi.model.Order;
+import org.commonground.ps.backendapi.model.OrderNote;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.ActionEnum;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
@@ -27,6 +29,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -112,6 +115,14 @@ public class OrderController extends Controller {
 		return orderOptional.get();
 	}
 
+	@Secured(identifier = "postOrderNote", domainType = DomainTypeEnum.NONE)
+	@PostMapping(value = "/{id}/note")
+	public OrderNote postOrderNote(@PathVariable @NotNull(message = "Waarde is verplicht") Long id, @NotNull(message = "Waarde is verplicht") @RequestBody OrderNote orderNote) {
+		User user = getUser();
+
+		return Convert.orderNoteEntity(orderNoteService.save(id, orderNote, user));
+	}
+
 	@Secured(identifier = "getContractSpecificationItemsByOrderId")
 	@GetMapping(value = "/{id}/specification-items")
 	public List<ContractSpecificationItem> getContractSpecificationItemsByOrderId(
@@ -173,7 +184,7 @@ public class OrderController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @RequestBody Order order) throws BadRequestException {
 		
-		User user = getUser();;
+		User user = getUser();
 		orderNoteService.saveNew(order, user, true);
 		return orderService.setAction(user, order, ActionEnum.ORDER_REJECT);
 	}

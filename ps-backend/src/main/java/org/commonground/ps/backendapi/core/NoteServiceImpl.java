@@ -34,7 +34,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public Optional<NoteEntity> createNoteEntity(Long callId, String content, Long noteTypeId, User user, boolean visible) {
+	public Optional<NoteEntity> createNoteEntity(Long callId, String content, Long noteTypeId, User user, boolean isPublic) {
 		NoteEntity noteEntity = new NoteEntity();
 		noteEntity.setContent(content);
 		if (user != null) {
@@ -57,7 +57,7 @@ public class NoteServiceImpl implements NoteService {
 		noteEntity.setNoteType(noteTypeOptional.get());
 
 		noteEntity.setDateCreated(new Date());
-		noteEntity.setVisible(visible);
+		noteEntity.setIsPublic(isPublic);
 
 		return Optional.of(noteEntity);
 	}
@@ -65,8 +65,8 @@ public class NoteServiceImpl implements NoteService {
 
 
 	@Override
-	public Optional<NoteEntity> save(Long callId, String content, Long noteTypeId, User user, boolean visible) {
-		Optional<NoteEntity> noteEntityOptional = createNoteEntity(callId, content, noteTypeId, user, visible);
+	public Optional<NoteEntity> save(Long callId, String content, Long noteTypeId, User user, boolean isPublic) {
+		Optional<NoteEntity> noteEntityOptional = createNoteEntity(callId, content, noteTypeId, user, isPublic);
 		if (noteEntityOptional.isEmpty()) {
 			return Optional.empty();
 		}

@@ -2,6 +2,8 @@
   <app-notes [notes]="_notes"></app-notes>
 </div>
 <div class="notes-viewer-footer">
+  <app-checkbox-field [form]="'notes'" [id]="'public'" [name]="'public'"
+              (changed)="onPublicChanged($event)">Zichtbaar voor alle betrokken partijen?</app-checkbox-field>
   <div class="notes-viewer-note-container">
     <app-textarea-field
     [form]="'notes'"
@@ -11,7 +13,7 @@
     [placeholder]="'Nieuwe notitie'"
     [value]="note.content"
     [required]="true"
-    [maxLength]="200"
+    [maxLength]="1000"
     (changed)="changed($event)" #notesRef></app-textarea-field>
   </div>
   <div class="row m-0 p-0 notes-viewer-buttons">

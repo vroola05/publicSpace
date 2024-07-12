@@ -29,7 +29,7 @@ body {
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   body {
     margin: 0;
     padding: 0;
@@ -46,5 +46,3 @@ body {
   }
 }
 
-@include media-breakpoint-up(md) {
-}

@@ -60,6 +60,10 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
     }
   }
 
+  public override clear(): void {
+    this.value = '';
+  }
+
   public override validate(): boolean {
     if(!super.validate()) {
       return false;

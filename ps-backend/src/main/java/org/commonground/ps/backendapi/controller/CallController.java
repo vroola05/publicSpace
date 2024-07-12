@@ -165,21 +165,23 @@ public class CallController extends Controller {
 	public Note postNote(@PathVariable @NotNull(message = "Waarde is verplicht") Long id, @NotNull(message = "Waarde is verplicht") @RequestBody Note note) {
 		User user = getUser();
 
-		Optional<NoteEntity> noteEntityOptional;
-		if (user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
-			if (orderEntityOptional.isEmpty()) {
-				throw new BadRequestException();
-			}
-			noteEntityOptional = noteService.save(orderEntityOptional.get().getCall().getId(), note.getContent(), note.getType().getId(), user, false);
-			
-		} else {
+		boolean isGovernment = user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id;
+		CallEntity callEntity = null;
+		if (isGovernment) {
 			Optional<CallEntity> callEntityOptional = callService.getCallEntityById(user, id);
 			if (callEntityOptional.isEmpty()) {
 				throw new BadRequestException();
 			}
-			noteEntityOptional = noteService.save(callEntityOptional.get().getId(), note.getContent(), note.getType().getId(), user, false);
+			callEntity = callEntityOptional.get();
+		} else {
+			Optional<OrderEntity> orderEntityOptional = orderService.getOrderEntityById(user, id);
+			if (orderEntityOptional.isEmpty()) {
+				throw new BadRequestException();
+			}
+			callEntity = orderEntityOptional.get().getCall();
 		}
+
+		Optional<NoteEntity> noteEntityOptional = noteService.save(callEntity.getId(), note.getContent(), note.getType().getId(), user, note.isPublic());
 
 		if (noteEntityOptional.isEmpty()) {
 			throw new BadRequestException();

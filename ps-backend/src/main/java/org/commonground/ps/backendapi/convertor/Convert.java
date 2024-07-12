@@ -231,14 +231,20 @@ public class Convert {
 			call.setStatus(statusEntity(callEntity.getStatus()));
 		}
 
-    if (user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
+    boolean isGovernment = user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id;
+    if (isGovernment) {
       if (callEntity.getOrders() != null && !callEntity.getOrders().isEmpty()) {
         for (OrderEntity orderEntity: callEntity.getOrders()) {
           call.getOrders().add(orderEntity(orderEntity, user));
         }
       }
+    }
 
-      for (NoteEntity noteEntity : callEntity.getNotes()) {
+    for (NoteEntity noteEntity : callEntity.getNotes()) {
+      if (isGovernment
+          || Boolean.TRUE.equals(noteEntity.getIsPublic())
+          || user.getDomain().getId().equals(noteEntity.getUser().getDomain().getId())
+          ) {
         call.getNotes().add(noteEntity(noteEntity));
       }
     }
@@ -582,12 +588,9 @@ public class Convert {
     }
 
     if (orderEntity.getOrderNote() != null) {
-      order.setNotes(new ArrayList<>());
+      boolean isGovernment = user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id;
       for (OrderNoteEntity orderNoteEntity: orderEntity.getOrderNote()) {
-        if (
-          user.getDomain().getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id && orderNoteEntity.getDefinite().equals(true)
-          || user.getDomain().getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-          
+        if ( !isGovernment || Boolean.TRUE.equals(orderNoteEntity.getDefinite())) {
           order.getNotes().add(orderNoteEntity(orderNoteEntity));
         }
       }
@@ -609,7 +612,7 @@ public class Convert {
     note.setId(noteEntity.getId());
     note.setContent(noteEntity.getContent());
     note.setDateCreated(noteEntity.getDateCreated());
-
+    note.setPublic(noteEntity.getIsPublic());
     note.setType(noteTypeEntity(noteEntity.getNoteType()));
     note.setUser(userEntity(noteEntity.getUser()));
 

@@ -33,7 +33,7 @@ export class UserHoverComponent implements OnInit {
 
   public showInformation(e) {
     if (this.nameElement) {
-      const widtha = 300;//this.informationElement.nativeElement.getBoundingClientRect().width;
+      const widtha = 300;
       const width = this.nameElement.nativeElement.getBoundingClientRect().width;
       this.informationElement.nativeElement.style.left = (0-(widtha/2) + (width/2)) + 'px';
     }

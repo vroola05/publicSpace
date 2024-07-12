@@ -8,7 +8,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .layout-container {
     position: fixed;
     display: grid;

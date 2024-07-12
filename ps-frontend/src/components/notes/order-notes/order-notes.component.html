@@ -1,10 +1,25 @@
-<div class="notes-container"  *ngIf="hasComments()">
+<div class="notes-container" *ngIf="hasComments()">
     <h4>Notities</h4>
-    <div class="show-all material-icons md-36" (click)="toggle()" *ngIf="hasMoreComments()">comment</div>
-    <div class="note" *ngFor="let note of orderNotes; let colIndex = index">
-        <span>{{getDate(note.dateCreated)}}, </span>
-        <span><app-user-hover [user]="note?.user"></app-user-hover> - </span>
-        <span [innerHtml]="note.content">
-        </span>
+    <div class="show-all material-icons md-36" title="Notities uitklappen" (click)="toggle()" *ngIf="hasMoreComments()">comment</div>
+    <div class="notes-inner-container">
+        <div class="notes">
+            <div class="note" *ngFor="let note of orderNotes; let colIndex = index">
+                <span>{{getDate(note.dateCreated)}}, </span>
+                <span><app-user-hover [user]="note?.user"></app-user-hover> - </span>
+                <span [innerHtml]="linebreak(note.content)">
+                </span>
+            </div>
+        </div>
+        <div *ngIf="open" class="note-textarea-container">
+            <app-textarea-field [form]="'order-notes'" [name]="'order-note'" [placeholder]="'Nieuwe notitie'"
+                [value]="" [required]="true" [maxLength]="1000" (changed)="contentChanged($event)"></app-textarea-field>
+
+            <div class="row m-0 p-0 notes-viewer-buttons">
+                <div class="col-md-2 p-0 ms-auto">
+                    <app-btn-contained [type]="'blank'" [classes]="'no-padding'"
+                        (clicked)="submit()">Verzenden</app-btn-contained>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

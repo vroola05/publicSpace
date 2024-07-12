@@ -1,6 +1,6 @@
 @import "../../../../assets/scss/styles.scss";
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .panel-title {
     display: none;
   }

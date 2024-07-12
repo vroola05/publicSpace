@@ -1,6 +1,6 @@
 @import "../../assets/scss/styles.scss";
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .ps-header-btn {
     color: $white;
     font-size: $header-font-size;
