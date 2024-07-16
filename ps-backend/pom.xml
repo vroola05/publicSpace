@@ -19,6 +19,23 @@
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
+	<profiles>
+		<profile>
+		<activation>
+			<activeByDefault>true</activeByDefault>
+		</activation>
+			<id>local</id>
+			<properties>
+				<profile.directory></profile.directory>
+			</properties>
+		</profile>
+		<profile>
+			<id>docker</id>
+			<properties>
+				<profile.directory>docker</profile.directory>
+			</properties>
+		</profile>
+	</profiles>
 	<dependencies>
 
 		<dependency>
@@ -131,6 +148,48 @@
 						<phase>prepare-package</phase>
 						<configuration>
 							<failOnMissingWebXml>false</failOnMissingWebXml>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>envResources/${profile.directory}</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-frontent-dist</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target</outputDirectory>
+							<resources>
+								<resource>
+									<directory>envResources/${profile.directory}</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
 						</configuration>
 					</execution>
 				</executions>
