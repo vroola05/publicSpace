@@ -20,7 +20,6 @@ export class StorageService {
   }
 
   public getLocal(key: string): string {
-    console.log(this.prefix, key);
     return localStorage.getItem(this.prefix + key);
   }
 

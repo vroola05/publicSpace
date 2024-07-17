@@ -18,9 +18,6 @@ import jakarta.persistence.OrderColumn;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.NaturalIdCache;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,17 +26,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "main_category")
-@NaturalIdCache
-@Cache(
-    usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE
-)
 public class MainCategoryEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_maincategory_id")
   @SequenceGenerator(name = "seq_maincategory_id", sequenceName = "seq_maincategory_id", allocationSize = 1)
   private Long id;
   
-  @NaturalId
   @OrderColumn
   private String name;
   

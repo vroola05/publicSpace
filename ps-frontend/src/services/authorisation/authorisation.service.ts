@@ -15,10 +15,8 @@ import { DomainTypeEnum } from '../../model/intefaces';
 })
 export class AuthorisationService {
   private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  private hasFocus = true;
   private checkTokenUrl: string;
-  private authIntevalId;
-
+  
   constructor(
     private apiService: ApiService,
     private storage: StorageService,
@@ -28,41 +26,28 @@ export class AuthorisationService {
 
   public readUser() {
     const user = JSON.parse(this.storage.getLocal('user')) as User;
-    console.log('lezen', user);
     if (user) {
-      console.log('lezen1', user);
       this._user.next(user);
     }
   }
 
-  private onAuthInterval(): void {
-    if (this.authIntevalId) {
-      clearInterval(this.authIntevalId);
-    }
-
-    this.authIntevalId = setInterval(() => {
-      this.checkToken();
-    }, 60000);
+  public get userObservable(): Observable<User> {
+    return this._user.asObservable();
   }
 
-  public setAuthControls(url: string): void {
-    if (!url) {
-      return;
+  public set user(user: User) {
+    this._user.next(user);
+    this.storage.setLocal('user', JSON.stringify(user));
+  }
+
+  public get user(): User {
+    let user = this._user.getValue();
+    if (user != null && user) {
+      return user;
+    } else {
+      this.readUser();
+      return this._user.getValue();
     }
-
-    this.checkTokenUrl = url;
-
-    this.onAuthInterval();
-
-    window.onblur = (e) => {
-      this.hasFocus = false;
-    };
-    window.onfocus = (e) => {
-        if (!this.hasFocus) {
-          this.hasFocus = true;
-          this.checkToken();
-        }
-    };
   }
 
   public checkToken(): void {
@@ -79,29 +64,7 @@ export class AuthorisationService {
       });
     }
   }
-
-  public get userObservable(): Observable<User> {
-    return this._user.asObservable();
-  }
-
-  public set user(user: User) {
-    this._user.next(user);
-    this.storage.setLocal('user', JSON.stringify(user));
-  }
-
-  public get user(): User {
-    let user = this._user.getValue();
-    console.log('e', user);
-    if (user != null && user) {
-      console.log('e1', user);
-      return user;
-    } else {
-      this.readUser();
-      console.log('e2', user);
-      return this._user.getValue();
-    }
-  }
-
+  
   public isAdmin(): boolean {
     return this.user && this.user.admin === true;
   }

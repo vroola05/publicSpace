@@ -153,10 +153,10 @@ import { WebInterceptor } from '../interceptors/web.interceptor';
 import { environment } from '../environments/environment';
 import { Template } from '../model/template';
 
-function readConfig(configService: ConfigService) {
+function readConfig(configService: ConfigService, authorisationService: AuthorisationService) {
   configService.api = environment.api;
-  return () => configService.readConfig(configService.api + '/config').then((template: Template) => {    
-      console.log('Config loaded');
+  return () => configService.readConfig(configService.api + '/config').then((template: Template) => {
+    authorisationService.readUser();
     }).catch((err) => {
       console.error('Cant read config', err);
     });
@@ -444,7 +444,7 @@ function readConfig(configService: ConfigService) {
     {
       provide: APP_INITIALIZER,
       useFactory: readConfig,
-      deps: [ConfigService],
+      deps: [ConfigService, AuthorisationService],
       multi: true
     },
   ],

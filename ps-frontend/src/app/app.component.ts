@@ -12,7 +12,6 @@ import { ComponentService } from '../services/component/component.service';
 import { ConfigService } from '../services/config/config.service';
 import { NavigationService } from '../services/navigation/navigation.service';
 import { StorageService } from '../services/storage/storage.service';
-import { environment } from '../environments/environment';
 
 import pageConfig from '../page-config.json' //Eventualy this will be added to the main-config file.
 
@@ -35,33 +34,33 @@ export class AppComponent {
     private config: ConfigService,
     private componentService: ComponentService
   ) {
-    
+    console.log('Mooi1', activatedRoute.snapshot.url);
     this.config.templateObservable().subscribe((template) => {
-      console.log('yess', template);
+      if (!template || template == null) {
+        return;
+      }
       // I initiate this outside the config to avoid circulair dependencies
-      // this.config.template.pages.forEach((page: Page, key: string) => {
-      //   page.pageConfig = this.getPageConfig(template.domain.domainType, pageConfig[key]);
-      // });
+      template.pages.forEach((page: Page, key: string) => {
+        page.pageConfig = this.getPageConfig(template.domain.domainType, pageConfig[key]);
+      });
 
-      this.authorisation.readUser();
       this.navigationService.readNavigation();
 
       this.authorisation.userObservable.subscribe((user: User) => {
         this.navigationService.clearHeaderItems();
-        if (user === null) {
-          //this.navigationService.navigate([this.domain.config.login.login.route]);
-          this.navigationService.navigate(['login']);
-          this.loaded = true;
-        } else {
-          //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
 
-          if (this.storage.getSession('haslogin') !== '1' && this.config.headers.length > 0) {
-            this.storage.setSession('haslogin', '1');
-            this.navigationService.navigate(['/overview/' + this.config.headers[0].id]);
-          }
-          this.loaded = true;
-          this.setNavigationGroups();
+        console.log('Mooi', activatedRoute);
+        if (user === null) {
+          this.navigationService.navigate(['login']);
+        } else if (
+          this.storage.getSession('haslogin') !== 'true' && 
+        this.config.headers.length > 0) {
+          this.storage.setSession('haslogin', 'true');
+          this.navigationService.navigate(['/overview/' + this.config.headers[0].id]);
+
+
         }
+        this.loaded = true;
       });
     });
   }
@@ -77,53 +76,32 @@ export class AppComponent {
     return false;
   }
 
-  public setNavigationGroups(): void {
-    if (this.groupsLoaded || !this.authorisation.user.groups) {
-      return;
-    }
-    this.groupsLoaded = true;
 
-    const headerItems: HeaderMenuItemT[] = [];
-    /*const groupT: HeaderMenuItemT = this.config.template.components.header.group;
-
-    this.authorisation.user.groups.forEach(group => {
-      const headerItem: HeaderMenuItemT = {
-        icon: '',
-        name: group.name,
-        route: `${groupT.route}/${group.id}`,
-        api: `${groupT.api}/${group.id}`,
-        selected: false,
-        menuType: 'group'
-      };
-      headerItems.push(headerItem);
-    });
-    this.navigationService.addHeaderItems(headerItems);*/
-  }
 
 
   private getPageConfig(domainType: DomainType, pageConfigContainer: PageConfigContainer): PageConfig {
     if (!pageConfigContainer) return undefined;
 
     const pageConfig = new PageConfig();
-      if (domainType.id === DomainTypeEnum.GOVERNMENT) {
-        pageConfig.components = [];
-        for(const i in pageConfigContainer.government.components) {
-          const component = this.componentService.get(pageConfigContainer.government.components[i].component);
-          if (component) {
-            pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
-          }
+    if (domainType.id === DomainTypeEnum.GOVERNMENT) {
+      pageConfig.components = [];
+      for (const i in pageConfigContainer.government.components) {
+        const component = this.componentService.get(pageConfigContainer.government.components[i].component);
+        if (component) {
+          pageConfig.components.push({ id: pageConfigContainer.government.components[i].id, component });
         }
-        pageConfig.endpoints = pageConfigContainer.government.endpoints;
-      } else {
-        pageConfig.components = [];
-        for(const i in pageConfigContainer.contractor.components) {
-          const component = this.componentService.get(pageConfigContainer.contractor.components[i].component)
-          if (component) {
-            pageConfig.components.push({id:pageConfigContainer.contractor.components[i].id , component});
-          }
-        }
-        pageConfig.endpoints = pageConfigContainer.contractor.endpoints;
       }
-      return pageConfig;
+      pageConfig.endpoints = pageConfigContainer.government.endpoints;
+    } else {
+      pageConfig.components = [];
+      for (const i in pageConfigContainer.contractor.components) {
+        const component = this.componentService.get(pageConfigContainer.contractor.components[i].component)
+        if (component) {
+          pageConfig.components.push({ id: pageConfigContainer.contractor.components[i].id, component });
+        }
+      }
+      pageConfig.endpoints = pageConfigContainer.contractor.endpoints;
+    }
+    return pageConfig;
   }
 }

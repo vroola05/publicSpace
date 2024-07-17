@@ -25,7 +25,8 @@ ALTER TABLE ONLY public.domain_type
 CREATE TABLE public.action_type (
     id integer NOT NULL,
     name text NOT NULL,
-    domain_type integer
+    domain_type integer,
+    visible boolean
 );
 
 ALTER TABLE public.action_type OWNER TO postgres;
@@ -1312,7 +1313,7 @@ CREATE TABLE public.note (
     date_created timestamp with time zone NOT NULL,
     note_type_id integer NOT NULL,
     user_id integer,
-    visible boolean
+    is_public boolean
 );
 
 

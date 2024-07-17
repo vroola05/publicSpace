@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain/{domainId}/page", produces = { "application/json; charset=utf-8" })
+@RequestMapping(value = "/page", produces = { "application/json; charset=utf-8" })
 public class PageController extends Controller {
 	private final PageService pageService;
 	private final DomainRepository domainRepository;
@@ -62,23 +62,19 @@ public class PageController extends Controller {
 	
 	@Secured(identifier = "getPages")
 	@GetMapping()
-	public List<Page> getPages(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
+	public List<Page> getPages() {
 
-		isValid(companyId, domainId);
-		synchronizePages(companyId, domainId);
+		isValid();
+		synchronizePages(getUser().getCompany().getId(), getUser().getDomain().getId());
 
-		return pageService.get(companyId, domainId);
+		return pageService.get(getUser().getCompany().getId(), getUser().getDomain().getId());
 	}
 
 	@Secured(identifier = "getButtonTypes")
 	@GetMapping(value = "/button/types")
-	public List<String> getButtonTypes(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
+	public List<String> getButtonTypes() {
 
-		isValid(companyId, domainId);
+		isValid();
 		List<PageButtonTypeEntity> pageButtonTypeEntities = pageButtonTypeRepository.findAllByOrderByNameAsc();
 
 		List<String> pageButtonTypes = new ArrayList<>();
@@ -116,112 +112,90 @@ public class PageController extends Controller {
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/overview", consumes = "application/json")
 	public Page putPageOverviewImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageOverviewImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/assign", consumes = "application/json")
 	public Page putPageAssignImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/details", consumes = "application/json")
 	public Page putPageDetailsImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/newLocation", consumes = "application/json")
 	public Page putPageNewLocationImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/newInformation", consumes = "application/json")
 	public Page putPageNewInformationImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/newConfirm", consumes = "application/json")
 	public Page putPageNewConfirmImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/orderCreation", consumes = "application/json")
 	public Page putPageOrderCreationImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/orderConfirm", consumes = "application/json")
 	public Page putPageOrderConfirmImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/orderSpecificationSelect", consumes = "application/json")
 	public Page putPageOrderSpecificationSelectImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/orderSpecificationHandle", consumes = "application/json")
 	public Page putPageOrderSpecificationHandleImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	@Secured(identifier = "putPage")
 	@PutMapping(value = "/{pageId}/orderSpecificationConfirmation", consumes = "application/json")
 	public Page putPageOrderSpecificationConfirmationImpl(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long pageId,
 		@Valid @RequestBody PageImpl page) throws BadRequestException {
-		return putPage(companyId, domainId, pageId, page);
+		return putPage(getUser().getCompany().getId(), getUser().getDomain().getId(), pageId, page);
 	}
 
 	public Page putPage(
@@ -230,7 +204,7 @@ public class PageController extends Controller {
 		Long pageId,
 		Page page
 	) throws BadRequestException {
-		isValid(companyId, domainId);
+		isValid();
 		User user = getUser();
 		
 		Page result = pageService.updatePage(domainId, pageId, page);

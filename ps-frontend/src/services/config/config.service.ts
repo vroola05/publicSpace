@@ -196,12 +196,16 @@ export class ConfigService {
 
     return new Promise((resolve, reject) => {
       fetch(domainUrl, opts).then((response) => {
-        response.json().then((template: Template) => {
-          this.template = template;
-          resolve(this.template);
-        }).catch(() => {
+        try {
+          response.json().then((template: any) => {
+            this.template = template;
+            resolve(this.template);
+          }).catch(() => {
+            reject();
+          });
+        } catch (error) {
           reject();
-        });
+        }
       }).catch((error) => {
         reject();
       });

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain/{domainId}/user", produces = { "application/json; charset=utf-8" })
+@RequestMapping(value = "/user", produces = { "application/json; charset=utf-8" })
 public class UserController extends Controller {
 
 	@Value("${sec.gen.hash.function}")
@@ -71,13 +71,11 @@ public class UserController extends Controller {
 	}
 	@Secured(identifier = "getUsers")
 	@GetMapping()
-	public List<User> getUsers(
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
-		isValid(companyId, domainId);
+	public List<User> getUsers() {
+		isValid();
 
 		List<User> users = new ArrayList<>();
-		List<UserEntity> userEntities = userRepository.getUsers(domainId);
+		List<UserEntity> userEntities = userRepository.getUsers(getUser().getDomain().getId());
 		userEntities.forEach(userEntity -> users.add(Convert.userEntity(userEntity)));
 		return users;
 	}
@@ -85,13 +83,11 @@ public class UserController extends Controller {
 	@Secured(identifier = "getUsersOfGroup")
 	@GetMapping(value = "/of/group/{groupId}")
 	public List<User> getUsersOfGroup(
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long groupId) {
-		isValid(companyId, domainId);
+		isValid();
 
 		List<User> users = new ArrayList<>();
-		List<UserEntity> userEntities = userRepository.getUserByGroupId(domainId, groupId);
+		List<UserEntity> userEntities = userRepository.getUserByGroupId(getUser().getDomain().getId(), groupId);
 		userEntities.forEach(userEntity -> users.add(Convert.userEntity(userEntity)));
 		return users;
 	}
@@ -99,17 +95,18 @@ public class UserController extends Controller {
 	@Secured(identifier = "postUser")
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public User postUser(
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-			@Valid @PostUserValidator @RequestBody UserExtended user) {
+			@Valid @PostUserValidator @RequestBody UserExtended userNew) {
 
-		isValid(companyId, domainId);
-		validateUser(domainId, user);
+		isValid();
 
-		UserEntity userEntity = Convert.user(user);
+		userNew.setDomain(getUser().getDomain());
+
+		validateUser(userNew);
+
+		UserEntity userEntity = Convert.user(userNew);
 
 		if (getUser().isAdmin()) {
-			userEntity.setAdmin(user.isAdmin());
+			userEntity.setAdmin(userNew.isAdmin());
 		}
 
 		SecureHash secureHash = new SecureHash(defaultHashFunction, defaultSaltLength, defaultIterationCount,
@@ -121,19 +118,19 @@ public class UserController extends Controller {
 		userEntity.setPasswordKeyLength(Long.valueOf(secureHash.defaultKeyLength));
 
 		userEntity.setPassword(secureHash.generateHashBase64(
-				user.getPassword(),
+				userNew.getPassword(),
 				salt,
 				secureHash.defaultIterationCount,
 				secureHash.defaultKeyLength,
 				secureHash.defaultHashFunction));
 
-		Optional<DomainEntity> domainEntity = domainRepository.findById(domainId);
+		Optional<DomainEntity> domainEntity = domainRepository.findById(userNew.getDomain().getId());
 		if (domainEntity.isPresent()) {
 			userEntity.setDomain(domainEntity.get());
 		}
 
-		attachRoles(user.getRoles(), userEntity);
-		attachGroups(user.getGroups(), userEntity, domainId);
+		attachRoles(userNew.getRoles(), userEntity);
+		attachGroups(userNew, userEntity);
 
 		return Convert.userEntity(userRepository.saveAndFlush(userEntity));
 	}
@@ -141,18 +138,18 @@ public class UserController extends Controller {
 	@Secured(identifier = "putUser")
 	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
 	public User putUser(
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 			@Valid @PutUserValidator @RequestBody User user) throws BadRequestException {
 
-		isValid(companyId, domainId);
-
-		validateUser(domainId, user);
+		isValid();
+		user.setDomain(getUser().getDomain());
+		validateUser(user);
 
 		Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
 		if (optionalUserEntity.isPresent() && user.getId().equals(id)) {
 			UserEntity userEntity = optionalUserEntity.get();
+
+			
 
 			userEntity.setName(user.getName());
 			userEntity.setUsername(user.getUsername());
@@ -164,22 +161,22 @@ public class UserController extends Controller {
 
 			attachRoles(user.getRoles(), userEntity);
 
-			attachGroups(user.getGroups(), userEntity, domainId);
+			attachGroups(user, userEntity);
 
 			return Convert.userEntity(userRepository.save(userEntity));
 		}
 		throw new BadRequestException();
 	}
 
-	private void validateUser(Long domainId, User user) throws BadRequestException {
-		Optional<UserEntity> nameUniqueValidator = userRepository.getUserByName(domainId, user.getName());
+	private void validateUser(User user) throws BadRequestException {
+		Optional<UserEntity> nameUniqueValidator = userRepository.getUserByName(user.getDomain().getId(), user.getName());
 		if (nameUniqueValidator.isPresent() && !user.getId().equals(nameUniqueValidator.get().getId())) {
 			BadRequestException badRequestException = new BadRequestException();
 			badRequestException.addError(new FieldValue("name", "Er is al een gebruiker met deze naam."));
 			throw badRequestException;
 		}
 
-		Optional<UserEntity> usernameUniqueValidator = userRepository.getUserByUsername(domainId, user.getUsername());
+		Optional<UserEntity> usernameUniqueValidator = userRepository.getUserByUsername(user.getDomain().getId(), user.getUsername());
 		if (usernameUniqueValidator.isPresent() && !user.getId().equals(usernameUniqueValidator.get().getId())) {
 			BadRequestException badRequestException = new BadRequestException();
 			badRequestException.addError(new FieldValue("username", "Er is al een gebruiker met deze gebruikersnaam."));
@@ -201,11 +198,11 @@ public class UserController extends Controller {
 		});
 	}
 
-	private void attachGroups(List<Group> groups, UserEntity userEntity, Long domainId) {
+	private void attachGroups(User user, UserEntity userEntity) {
 		userEntity.getGroups().clear();
 
-		List<GroupEntity> groupEntities = groupRepository.getGroups(domainId);
-		groups.forEach(group -> {
+		List<GroupEntity> groupEntities = groupRepository.getGroups(user.getDomain().getId());
+		user.getGroups().forEach(group -> {
 			for (GroupEntity groupEntity : groupEntities) {
 				if (groupEntity.getId().equals(group.getId())) {
 					userEntity.getGroups().add(groupEntity);

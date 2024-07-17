@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain/{domainId}/maincategory", produces = { "application/json; charset=utf-8" })
+@RequestMapping(value = "/maincategory", produces = { "application/json; charset=utf-8" })
 public class CategoryController extends Controller {
 
   private final MainCategoryRepository mainCategoryRepository;
@@ -61,16 +61,13 @@ public class CategoryController extends Controller {
 
   @Secured(identifier = "getMainCategories")
   @GetMapping()
-  public List<MainCategory> getMainCategories(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId
-  ) {
+  public List<MainCategory> getMainCategories() {
 
-    isValid(companyId, domainId);
+    isValid();
 
     List<MainCategory> mainCategories = new ArrayList<>();
 
-    List<MainCategoryEntity> mainCategoryEntities = mainCategoryRepository.getMainCategories(domainId);
+    List<MainCategoryEntity> mainCategoryEntities = mainCategoryRepository.getMainCategories(getUser().getDomain().getId());
 
     mainCategoryEntities.forEach(mainCategoryEntity -> 
       mainCategories.add(Convert.mainCategoryEntity(mainCategoryEntity))
@@ -82,14 +79,12 @@ public class CategoryController extends Controller {
   @Secured(identifier = "postMainCategory")
   @PostMapping(consumes = "application/json")
   public MainCategory postMainCategory(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @Valid @PostMainCategoryValidator @RequestBody MainCategory mainCategory) throws BadRequestException {
+    
+    isValid();
+    validateMainCategoryByName(mainCategory.getName(), getUser().getDomain().getId());
 
-    isValid(companyId, domainId);
-    validateMainCategoryByName(mainCategory.getName(), domainId);
-
-    Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId, getUser());
+    Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(getUser().getDomain().getId(), getUser());
     if (domainEntityOptional.isPresent()) {
       MainCategoryEntity mainCategoryEntity = Convert.mainCategory(mainCategory);
       mainCategoryEntity.setDomain(domainEntityOptional.get());
@@ -101,15 +96,13 @@ public class CategoryController extends Controller {
   @Secured(identifier = "putMainCategory")
   @PutMapping(value = "/{mainCategoryId}", consumes = "application/json")
   public MainCategory putMainCategory(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PutMainCategoryValidator @RequestBody MainCategory mainCategory) throws BadRequestException {
-    isValid(companyId, domainId);
-    validateMainCategoryByName(mainCategory.getName(), domainId);
+    isValid();
+    validateMainCategoryByName(mainCategory.getName(), getUser().getDomain().getId());
 
     if (mainCategoryId.equals(mainCategory.getId())) {
-      Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, domainId);
+      Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, getUser().getDomain().getId());
       if (mainCategoryEntity.isPresent()) {
         mainCategoryEntity.get().setName(mainCategory.getName());
         return Convert.mainCategoryEntity(mainCategoryRepository.save(mainCategoryEntity.get()));
@@ -122,11 +115,9 @@ public class CategoryController extends Controller {
   @Secured(identifier = "getCategories")
   @GetMapping(value = "/{mainCategoryId}/category", produces = "application/json")
   public List<Category> getCategories(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
     
-    isValid(companyId, domainId);
+    isValid();
 
     List<Category> categories = new ArrayList<>();
 
@@ -141,11 +132,9 @@ public class CategoryController extends Controller {
   @Secured(identifier = "getCategoriesFull")
   @GetMapping(value = "/{mainCategoryId}/category/full", produces = "application/json")
   public List<Category> getCategoriesFull(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
 
-    isValid(companyId, domainId);
+    isValid();
     List<Category> categories = new ArrayList<>();
 
     User user = getUser();
@@ -168,16 +157,14 @@ public class CategoryController extends Controller {
   @Secured(identifier = "postCategory")
   @PostMapping(value = "/{mainCategoryId}/category", consumes = "application/json")
   public Category postCategory(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PostCategoryValidator @RequestBody Category category) throws BadRequestException {
 
-    isValid(companyId, domainId);
-    validateCategoryByName(category.getName(), companyId, mainCategoryId, null);
-    Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, domainId);
+    isValid();
+    validateCategoryByName(category.getName(), getUser().getCompany().getId(), mainCategoryId, null);
+    Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, getUser().getDomain().getId());
     if (mainCategoryEntity.isPresent()) {
-      Optional<GroupEntity> groupEntity = groupRepository.getGroupById(category.getGroup().getId(), domainId);
+      Optional<GroupEntity> groupEntity = groupRepository.getGroupById(category.getGroup().getId(), getUser().getDomain().getId());
       if (groupEntity.isPresent()) {
         CategoryEntity categoryEntity = Convert.category(category);
         categoryEntity.setMainCategory(mainCategoryEntity.get());
@@ -191,17 +178,15 @@ public class CategoryController extends Controller {
   @Secured(identifier = "putCategory")
   @PutMapping(value = "/{mainCategoryId}/category/{categoryId}", consumes = "application/json")
   public Category putCategory(
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-    @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long categoryId,
     @Valid @PutCategoryValidator @RequestBody Category category) throws BadRequestException {
 
-    isValid(companyId, domainId);
-    validateCategoryByName(category.getName(), domainId, mainCategoryId, categoryId);
+    isValid();
+    validateCategoryByName(category.getName(), getUser().getDomain().getId(), mainCategoryId, categoryId);
 
     if (categoryId.equals(category.getId())) {
-      Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.getCategoryById(mainCategoryId, categoryId, domainId);
+      Optional<CategoryEntity> optionalCategoryEntity = categoryRepository.getCategoryById(mainCategoryId, categoryId, getUser().getDomain().getId());
       if (optionalCategoryEntity.isPresent()) {
         CategoryEntity categoryEntity = optionalCategoryEntity.get();
         categoryEntity.setStartDate(category.getStartDate());

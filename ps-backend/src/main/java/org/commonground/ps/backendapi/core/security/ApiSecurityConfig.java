@@ -60,12 +60,10 @@ public class ApiSecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    System.out.println("AA");
     ApiSecurityFilter apiSecurityFilter = new ApiSecurityFilter(principalRequestHeader);
       apiSecurityFilter.setAuthenticationManager(new AuthenticationManager() {
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-          System.out.println("BB");
           try {
             String referer = (String) authentication.getPrincipal();
             String apikey = (String) authentication.getCredentials();
@@ -100,7 +98,6 @@ public class ApiSecurityConfig {
       return httpSecurity
               .csrf(csrf -> csrf.disable())
               .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                      .authorizeHttpRequests(requests -> requests.requestMatchers("/config").permitAll())
                       .authorizeHttpRequests(requests -> requests.requestMatchers(
                               "/config",
                               "/media/**",
@@ -121,6 +118,7 @@ public class ApiSecurityConfig {
         if (allowedOrigins != null && allowedOrigins.length > 0) {
           configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
         }
+        
 
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
@@ -128,7 +126,6 @@ public class ApiSecurityConfig {
         
         final var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
   }
 

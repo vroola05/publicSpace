@@ -53,6 +53,7 @@ public class ConfigServiceImpl implements ConfigService {
       URI url = new URI(referer);
       List<DomainEntity> domains = domainRepository.getDomainsByStartsWithDomain(url.getHost());
       for (DomainEntity domainEntity : domains) {
+
         if (checkUserDomain(domainEntity.getDomain(), url.getHost() + url.getPath())) {
           return get(domainEntity.getDomain());
         }
