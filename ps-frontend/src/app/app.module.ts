@@ -152,51 +152,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } fro
 import { WebInterceptor } from '../interceptors/web.interceptor';
 import { environment } from '../environments/environment';
 import { Template } from '../model/template';
-import { Page } from '../model/page';
-import { User } from '../model/user';
 
-import pageConfig from '../page-config.json' //Eventualy this will be added to the main-config file.
-import { DomainType } from '../model/domain-type';
-import { PageConfig, PageConfigContainer } from '../model/domain-type-config';
-import { DomainTypeEnum } from '../model/intefaces';
-
-
-function readConfig1(configService: ConfigService) {
+function readConfig(configService: ConfigService) {
   configService.api = environment.api;
-  
-  return () => configService.readConfig(configService.api + '/config').then((template: Template) => {
-    
-      // I initiate this outside the config to avoid circulair dependencies
-      
-    
-      if (template.info.prefix) {
-        this.storage.setPrefix(template.info.prefix);
-      }
-      console.log('c');
-      this.action.setActions(template.actions);
-      
-      this.authorisation.readUser();
-      this.navigationService.readNavigation();
-
-      this.authorisation.userObservable.subscribe((user: User) => {
-        this.navigationService.clearHeaderItems();
-        if (user === null) {
-          //this.navigationService.navigate([this.domain.config.login.login.route]);
-          this.navigationService.navigate(['login']);
-          this.loaded = true;
-        } else {
-          //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
-
-          if (this.storage.getSession('haslogin') !== '1' && configService.headers.length > 0) {
-            this.storage.setSession('haslogin', '1');
-            this.navigationService.navigate(['/overview/' + configService.headers[0].id]);
-          }
-          this.loaded = true;
-          this.setNavigationGroups();
-        }
-      });
-
-      //this.authorisation.setAuthControls(this.domain.getEndpoint('getCheckToken').endpoint);
+  return () => configService.readConfig(configService.api + '/config').then((template: Template) => {    
+      console.log('Config loaded');
     }).catch((err) => {
       console.error('Cant read config', err);
     });
@@ -483,7 +443,7 @@ function readConfig1(configService: ConfigService) {
     ValidationService,
     {
       provide: APP_INITIALIZER,
-      useFactory: readConfig1,
+      useFactory: readConfig,
       deps: [ConfigService],
       multi: true
     },

@@ -60,11 +60,12 @@ public class ApiSecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    
+    System.out.println("AA");
     ApiSecurityFilter apiSecurityFilter = new ApiSecurityFilter(principalRequestHeader);
       apiSecurityFilter.setAuthenticationManager(new AuthenticationManager() {
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+          System.out.println("BB");
           try {
             String referer = (String) authentication.getPrincipal();
             String apikey = (String) authentication.getCredentials();
@@ -99,10 +100,11 @@ public class ApiSecurityConfig {
       return httpSecurity
               .csrf(csrf -> csrf.disable())
               .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                      .authorizeHttpRequests(requests -> requests.requestMatchers("/config").permitAll())
                       .authorizeHttpRequests(requests -> requests.requestMatchers(
+                              "/config",
                               "/media/**",
                               "/login/**",
-                              "/config",
                               "/assets/**",
                               "/index.html",
                               "*.css",

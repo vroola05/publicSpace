@@ -14,6 +14,7 @@ import { NavigationService } from '../services/navigation/navigation.service';
 import { StorageService } from '../services/storage/storage.service';
 import { environment } from '../environments/environment';
 
+import pageConfig from '../page-config.json' //Eventualy this will be added to the main-config file.
 
 @Component({
   selector: 'app-root',
@@ -34,44 +35,35 @@ export class AppComponent {
     private config: ConfigService,
     private componentService: ComponentService
   ) {
-    this.config.api = environment.api;
+    
+    this.config.templateObservable().subscribe((template) => {
+      console.log('yess', template);
+      // I initiate this outside the config to avoid circulair dependencies
+      // this.config.template.pages.forEach((page: Page, key: string) => {
+      //   page.pageConfig = this.getPageConfig(template.domain.domainType, pageConfig[key]);
+      // });
 
-    // this.config.readConfig(this.config.api + '/config').then((template: Template) => {
-    //   // I initiate this outside the config to avoid circulair dependencies
-    //   this.config.template.pages.forEach((page: Page, key: string) => {
-    //     page.pageConfig = this.getPageConfig(template.domain.domainType, pageConfig[key]);
-    //   });
+      this.authorisation.readUser();
+      this.navigationService.readNavigation();
 
-    //   if (template.info.prefix) {
-    //     this.storage.setPrefix(template.info.prefix);
-    //   }
-    //   this.action.setActions(template.actions);
-      
-    //   this.authorisation.readUser();
-    //   this.navigationService.readNavigation();
+      this.authorisation.userObservable.subscribe((user: User) => {
+        this.navigationService.clearHeaderItems();
+        if (user === null) {
+          //this.navigationService.navigate([this.domain.config.login.login.route]);
+          this.navigationService.navigate(['login']);
+          this.loaded = true;
+        } else {
+          //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
 
-    //   this.authorisation.userObservable.subscribe((user: User) => {
-    //     this.navigationService.clearHeaderItems();
-    //     if (user === null) {
-    //       //this.navigationService.navigate([this.domain.config.login.login.route]);
-    //       this.navigationService.navigate(['login']);
-    //       this.loaded = true;
-    //     } else {
-    //       //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
-
-    //       if (this.storage.getSession('haslogin') !== '1' && this.config.headers.length > 0) {
-    //         this.storage.setSession('haslogin', '1');
-    //         this.navigationService.navigate(['/overview/' + this.config.headers[0].id]);
-    //       }
-    //       this.loaded = true;
-    //       this.setNavigationGroups();
-    //     }
-    //   });
-
-    //   //this.authorisation.setAuthControls(this.domain.getEndpoint('getCheckToken').endpoint);
-    // }).catch((err) => {
-    //   console.error('Cant read config', err);
-    // });
+          if (this.storage.getSession('haslogin') !== '1' && this.config.headers.length > 0) {
+            this.storage.setSession('haslogin', '1');
+            this.navigationService.navigate(['/overview/' + this.config.headers[0].id]);
+          }
+          this.loaded = true;
+          this.setNavigationGroups();
+        }
+      });
+    });
   }
 
   public noLogin(): boolean {
