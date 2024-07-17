@@ -28,7 +28,9 @@ export class AuthorisationService {
 
   public readUser() {
     const user = JSON.parse(this.storage.getLocal('user')) as User;
+    console.log('lezen', user);
     if (user) {
+      console.log('lezen1', user);
       this._user.next(user);
     }
   }
@@ -89,16 +91,15 @@ export class AuthorisationService {
 
   public get user(): User {
     let user = this._user.getValue();
-    if (user) {
+    console.log('e', user);
+    if (user != null && user) {
+      console.log('e1', user);
       return user;
     } else {
-      user = JSON.parse(this.storage.getLocal('user')) as User;
-      if (user) {
-        this._user.next(user);
-        return user;
-      }
+      this.readUser();
+      console.log('e2', user);
+      return this._user.getValue();
     }
-    return null;
   }
 
   public isAdmin(): boolean {
@@ -106,7 +107,7 @@ export class AuthorisationService {
   }
 
   public isDomainType(domainTypeEnum: DomainTypeEnum): boolean {
-    return this.user && this.user.domain && this.user.domain.domainType && this.user.domain.domainType.id === domainTypeEnum;
+    return this.user?.domain?.domainType && this.user.domain.domainType.id === domainTypeEnum;
   }
 
   public hasRole(role: string): boolean {
@@ -129,8 +130,6 @@ export class AuthorisationService {
     }
     const user = this.user;
     if (roles.find(role => role.allow && this.isInUserRoles(role.role, user))) {
-      return true;
-    } else if (roles.find(role => !role.allow && !this.isInUserRoles(role.role, user))) {
       return true;
     }
     return false;

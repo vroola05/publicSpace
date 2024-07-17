@@ -17,22 +17,22 @@ services:
         aliases:
           - ps-database.docker
 
-  # pgadmin:
-  #   container_name: ps-pgadmin4_container
-  #   image: dpage/pgadmin4
-  #   # restart: always
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
-  #     PGADMIN_DEFAULT_PASSWORD: postgresPassword
-  #     PGADMIN_LISTEN_PORT: 5050
-  #   ports:
-  #     - "5050:5050"
-  #   volumes:
-  #     - pgadmin-data:/var/lib/pgadmin
-  #   networks:
-  #     publicspace:
-  #       aliases:
-  #         - pgadmin4.docker
+  pgadmin:
+    container_name: ps-pgadmin4_container
+    image: dpage/pgadmin4
+    # restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: postgresPassword
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      publicspace:
+        aliases:
+          - pgadmin4.docker
 
 
   # ps-frontend:
@@ -49,23 +49,24 @@ services:
   #         - frontend.docker
 
 
-  ps-backend:
-    container_name: ps-backend-container
-    build: ./ps-backend
-    # restart: always
-    ports:
-      - "8080:8080"
-    volumes:
-      - backend-data:/usr/src/app
-    networks:
-      publicspace:
-        aliases:
-          - backend.docker
+  # ps-backend:
+  #   container_name: ps-backend-container
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - backend-data:/usr/src/app
+  #   networks:
+  #     publicspace:
+  #       aliases:
+  #         - backend.docker
 
 volumes:
   db-data:
   pgadmin-data:
-  frontend-data:
+  # frontend-data:
   backend-data:
 
 networks:

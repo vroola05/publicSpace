@@ -68,12 +68,12 @@ public class ApiSecurityConfig {
           try {
             String referer = (String) authentication.getPrincipal();
             String apikey = (String) authentication.getCredentials();
+
             if (apikey == null || apikey.isEmpty() || referer == null || referer.isEmpty()) {
               throw new SecurityException("No host or apikey: " + (String) authentication.getPrincipal());
             }
 
             UserEntity userEntity = getUserByApikey(apikey);
-
             User user = Convert.userEntity(userEntity);
 
             String domain = user.getDomain().getDomain();
@@ -99,8 +99,14 @@ public class ApiSecurityConfig {
       return httpSecurity
               .csrf(csrf -> csrf.disable())
               .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                      .authorizeHttpRequests(requests -> requests.requestMatchers("/config").permitAll())
-                      .authorizeHttpRequests(requests -> requests.requestMatchers("/login/**").permitAll())
+                      .authorizeHttpRequests(requests -> requests.requestMatchers(
+                              "/media/**",
+                              "/login/**",
+                              "/config",
+                              "/assets/**",
+                              "/index.html",
+                              "*.css",
+                              "*.js").permitAll())
                       .authorizeHttpRequests(requests -> requests.requestMatchers("/**").authenticated())
                       .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                       .addFilter(apiSecurityFilter)

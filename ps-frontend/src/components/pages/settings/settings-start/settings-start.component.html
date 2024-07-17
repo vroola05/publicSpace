@@ -14,28 +14,14 @@
         <app-btn-icon *ngIf="isMenuOpen" class="btn-settings-menu" [icon]="'menu_open'" (clicked)="toggleMenu($event)"></app-btn-icon>
       </div>
       <div class="settings-menu" [ngClass]="{'opened': isMenuOpen}">
-        <div class="menu-domain" *ngIf="showCompanySelector()">
-          <h4>Geselecteerd domein</h4>
-          <div class="field-wrapper">
-            <app-dropdown-field [id]="'companyField'" [required]="true" [name]="'companyField'" [options]="companyItems"
-              [placeholder]="'Bedrijf'" (changed)="onCompanyChanged($event)" #companyComponent>
-            </app-dropdown-field>
-            <app-dropdown-field [id]="'domainField'" [required]="true" [name]="'domainField'" [options]="domainItems"
-              [placeholder]="'Domein'" (changed)="onDomainChanged($event)" #domainComponent>
-            </app-dropdown-field>
-          </div>
-        </div>
-        <div *ngIf="showCompany()">
+        <div *ngIf="hasRoles(['ROLE_ADMIN'])">
           <app-settings-button [name]="'Bedrijf'" (clicked)="buttonClicked()" [icon]="'account_balance'" [route]="'/settings/company'" [selected]="isSelected('/settings/company')"></app-settings-button>
-        </div>
-        <div *ngIf="showDomain()">
           <app-settings-button [name]="'Domeinen'" (clicked)="buttonClicked()" [icon]="'domain'" [route]="'/settings/domains'" [selected]="isSelected('/settings/domains')"></app-settings-button>
           <app-settings-button [name]="'Contracten'" (clicked)="buttonClicked()" [icon]="'payments'" [route]="'/settings/contracts'" [selected]="isSelected('/settings/contracts')"></app-settings-button>
           <app-settings-button [name]="'Bestekposten'" (clicked)="buttonClicked()" [icon]="'receipt_long'" [route]="'/settings/order-specifications'" [selected]="isSelected('/settings/order-specifications')"></app-settings-button>
           <app-settings-button [name]="'Hoofdcategorie'" (clicked)="buttonClicked()" [icon]="'label'" [route]="'/settings/main-category'" [selected]="isSelected('/settings/main-category')"></app-settings-button>
           <app-settings-button [name]="'Categorie'" (clicked)="buttonClicked()" [icon]="'label'" [route]="'/settings/category'" [selected]="isSelected('/settings/category')"></app-settings-button>
-        </div>
-        <div *ngIf="showItems()">
+        
           <app-settings-button [name]="'Gebruikers'" (clicked)="buttonClicked()" [icon]="'person'" [route]="'/settings/users'" [selected]="isSelected('/settings/users')"></app-settings-button>
           <app-settings-button [name]="'Groepen'" (clicked)="buttonClicked()" [icon]="'groups'" [route]="'/settings/groups'" [selected]="isSelected('/settings/groups')"></app-settings-button>
           <app-settings-button [name]="'Statussen'" (clicked)="buttonClicked()" [icon]="'ballot'" [route]="'/settings/status'" [selected]="isSelected('/settings/status')"></app-settings-button>

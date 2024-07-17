@@ -29,13 +29,15 @@ import { PanelSettingsPagesComponent } from '../components/pages/settings/compon
 import { PanelSettingsStatusComponent } from '../components/pages/settings/components/panel-settings-status/panel-settings-status.component';
 import { PanelSettingsUsersComponent } from '../components/pages/settings/components/panel-settings-users/panel-settings-users.component';
 import { SettingsStartComponent } from '../components/pages/settings/settings-start/settings-start.component';
+import { authGuard } from '../services/guards/auth/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Publicspace' } },
   { path: 'overview/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   { path: 'overview/group/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   {
-    path: 'settings', component: SettingsStartComponent, data: { title: 'Instellingen' },
+    path: 'settings', component: SettingsStartComponent, data: { title: 'Instellingen', roles: ['ROLE_ADMIN'] },
+    canActivate: [authGuard],
     children: [
       
       {

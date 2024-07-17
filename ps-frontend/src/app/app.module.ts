@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -150,6 +150,59 @@ import { DynamicRightDirective } from '../directives/dynamic-right.directive';
 import { DynamicDirective } from '../directives/dynamic.directive';
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { WebInterceptor } from '../interceptors/web.interceptor';
+import { environment } from '../environments/environment';
+import { Template } from '../model/template';
+import { Page } from '../model/page';
+import { User } from '../model/user';
+
+import pageConfig from '../page-config.json' //Eventualy this will be added to the main-config file.
+import { DomainType } from '../model/domain-type';
+import { PageConfig, PageConfigContainer } from '../model/domain-type-config';
+import { DomainTypeEnum } from '../model/intefaces';
+
+
+function readConfig1(configService: ConfigService) {
+  configService.api = environment.api;
+  
+  return () => configService.readConfig(configService.api + '/config').then((template: Template) => {
+    
+      // I initiate this outside the config to avoid circulair dependencies
+      
+    
+      if (template.info.prefix) {
+        this.storage.setPrefix(template.info.prefix);
+      }
+      console.log('c');
+      this.action.setActions(template.actions);
+      
+      this.authorisation.readUser();
+      this.navigationService.readNavigation();
+
+      this.authorisation.userObservable.subscribe((user: User) => {
+        this.navigationService.clearHeaderItems();
+        if (user === null) {
+          //this.navigationService.navigate([this.domain.config.login.login.route]);
+          this.navigationService.navigate(['login']);
+          this.loaded = true;
+        } else {
+          //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
+
+          if (this.storage.getSession('haslogin') !== '1' && configService.headers.length > 0) {
+            this.storage.setSession('haslogin', '1');
+            this.navigationService.navigate(['/overview/' + configService.headers[0].id]);
+          }
+          this.loaded = true;
+          this.setNavigationGroups();
+        }
+      });
+
+      //this.authorisation.setAuthControls(this.domain.getEndpoint('getCheckToken').endpoint);
+    }).catch((err) => {
+      console.error('Cant read config', err);
+    });
+
+ }
+
 
 @NgModule({
   declarations: [
@@ -411,11 +464,13 @@ import { WebInterceptor } from '../interceptors/web.interceptor';
     {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},
     {provide: HTTP_INTERCEPTORS, useClass: WebInterceptor, multi: true},
     ApiService,
-    AuthorisationService,
     StorageService,
+    ConfigService,
+    
+    AuthorisationService,
     NavigationService,
     FilterService,
-    ConfigService,
+    
     ComponentService,
     Popup,
     ActionService,
@@ -425,7 +480,13 @@ import { WebInterceptor } from '../interceptors/web.interceptor';
     NotificationService,
     TransformService,
     EnvironmentService,
-    ValidationService
+    ValidationService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: readConfig1,
+      deps: [ConfigService],
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

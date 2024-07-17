@@ -31,7 +31,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
 
   private initCompany = false;
 
-  public environment: Environment;
+  // public environment: Environment;
 
   constructor(
     protected override router: Router,
@@ -50,11 +50,7 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   }
 
   public override ngOnInit(): void {
-    this.environment = this.environmentService.get();
-    this.transform.setVariable('environment', this.environment);
-    if (this.authorisation.isAdmin()) {
-      this.getCompanies();
-    }
+    
   }
 
   public override ngOnDestroy(): void {
@@ -65,53 +61,6 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     return path === this.router.url;
   }
 
-  public getCompanies(): void {
-    this.companyItems = [];
-
-    this.endpoints.get('getCompany').then((companies: Company[]) => {
-      if (companies.length === 0) {
-        this.initCompany = true;
-      } else {
-        companies.forEach(company => {
-          this.companyItems.push({ name: company.name, value: String(company.id), data: company });
-        });
-        this.companyComponent.select(this.companyComponent.options.find(option => option.value === String(this.environment.company.id)));
-      }
-    });
-  }
-
-  public getDomains(): void {
-    this.domainItems = [];
-    if (!this.environment || !this.environment.company || !this.environment.company.id) {
-      return;
-    }
-
-    this.endpoints.get('getDomain').then((domains: Domain[]) => {
-      domains.forEach(domain => {
-        this.domainItems.push({ name: domain.domain, value: String(domain.id), data: domain });
-      });
-      this.domainComponent.select(this.domainComponent.options.find(option => option.value === String(this.environment.domain.id)));
-    });
-  }
-
-  public onCompanyChanged($event): void {
-    this.environment.company = $event.data as Company;
-
-    if (this.initCompany) {
-      this.environment.domain = new Domain();
-    }
-    this.initCompany = true;
-
-    this.environmentService.store(this.environment);
-    this.transform.setVariable('environment', this.environment);
-    this.getDomains();
-  }
-
-  public onDomainChanged($event): void {
-    this.environment.domain = $event.data as Domain;
-    this.environmentService.store(this.environment);
-    this.transform.setVariable('environment', this.environment);
-  }
   public buttonClicked(): void {
     this.isMenuOpen = false;
   }
@@ -120,21 +69,12 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  public showCompany(): boolean {
+
+  public isAdmin(): boolean {
     return this.authorisation.isAdmin();
   }
 
-  public showDomain(): boolean {
-    return this.authorisation.hasRole(RolesEnum.ADMIN) || this.authorisation.isAdmin();
-  }
-
-  public showItems(): boolean {
-    return this.environment
-      && this.environment.company && this.environment.company.id != null
-      && this.environment.domain && this.environment.domain.id != null;
-  }
-
-  public showCompanySelector(): boolean {
-    return this.authorisation.isAdmin();
+  public hasRoles(roles: string[]): boolean {
+    return this.authorisation.hasRoles(roles);
   }
 }
