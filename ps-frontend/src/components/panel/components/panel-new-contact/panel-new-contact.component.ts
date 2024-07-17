@@ -117,7 +117,6 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onNameChanged($event) {
-    console.log(this.validation.validateField('new-call-information', 'name'));
     if (this.validation.validateField('new-call-information', 'name')) {
       this.getCall();
       this.call.person.name = $event;
@@ -126,7 +125,6 @@ export class PanelNewContactComponent implements OnInit, OnDestroy {
   }
 
   public onEmailChanged($event) {
-    console.log(this.validation.validateField('new-call-information', 'email'));
     if (this.validation.validateField('new-call-information', 'email')) {
       this.getCall();
       this.call.person.email = $event;

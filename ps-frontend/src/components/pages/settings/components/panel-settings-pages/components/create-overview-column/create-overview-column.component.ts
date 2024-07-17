@@ -65,7 +65,6 @@ export class CreateOverviewColumnComponent implements OnInit {
     if (this.config.getDomainType().id === DomainTypeEnum.GOVERNMENT) {
       nameItems = Object.keys(new CallList());
     } else {
-      console.log('a', OrderList);
       nameItems = Object.keys(new OrderList());
     }
     

@@ -90,8 +90,6 @@ export class DetailsComponent extends PageAbstract implements OnInit, OnDestroy 
     this.transform.setVariable('call', call);
       this.call = call;
       if (this.authorisation.isDomainType(DomainTypeEnum.CONTRACTOR)) {
-        console.log(call);
-        console.log(call.orders[0]);
         this.transform.setVariable('order', call.orders[0]);
       }
   }

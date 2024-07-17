@@ -14,7 +14,6 @@ export class PanelOrderComponent implements DynamicPanel {
   @Input() public set call( call: Call) {
     this._call = call;
     this.orders = call.orders;
-    console.log(call);
   }
   public get call() {
     return this._call;

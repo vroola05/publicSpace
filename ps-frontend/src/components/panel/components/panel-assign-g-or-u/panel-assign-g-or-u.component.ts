@@ -144,7 +144,6 @@ export class PanelAssignGOrUComponent implements DynamicPanel, OnInit {
   }
 
   public setSelected(data: any): void {
-    console.log(this.tab, data);
     this.transform.setVariable(this.tab, data);
     this.changed.emit({ action: this.tab, data});
   }

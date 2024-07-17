@@ -6,6 +6,7 @@ import { TransformService } from '../../../../../services/transform/transform.se
 import { ListTemplateT } from '../../../../../model/template';
 import { Page } from '../../../../../model/page';
 import { ActivatedRoute } from '@angular/router';
+import { NavigationService } from '../../../../../services/navigation/navigation.service';
 
 @Component({
   selector: 'app-panel-settings-pages',
@@ -24,12 +25,14 @@ export class PanelSettingsPagesComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private navigationService: NavigationService,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
   ) {
     this.listTemplate = {
-      toggle: true,
+      toggle: false,
+      route: '/1',
       columns: [
         {
           name: 'id',
@@ -90,6 +93,11 @@ export class PanelSettingsPagesComponent implements OnInit {
       this.selectedPage = this.pages[$event.data.index];
       this.isNew = false;
       this.open = true;
+    } else if ($event.action === 'route') {
+      this.selectedPage = this.pages[$event.data.index];
+      this.navigationService.navigate(['settings/pages/'+this.selectedPage.id], true);
+      // this.isNew = false;
+      // this.open = true;
     } else if ($event.action === 'save') {
       this.open = false;
       this.getPages();

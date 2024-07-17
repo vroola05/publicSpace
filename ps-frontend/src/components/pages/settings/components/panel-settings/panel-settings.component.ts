@@ -45,8 +45,13 @@ export class PanelSettingsComponent implements OnInit {
   }
 
   public clicked(data: any) {
+    let action = 'route';
+    if(this.listTemplate.toggle) {
+      action = 'toggle';
+    }
+
     this.onEvent.emit({
-      action: 'toggle',
+      action: action,
       isNew: false,
       data
     });

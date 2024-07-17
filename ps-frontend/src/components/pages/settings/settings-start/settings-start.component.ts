@@ -29,10 +29,6 @@ export class SettingsStartComponent extends PageAbstract implements OnInit, OnDe
   public companyItems: { name: string, value?: string, data?: any }[] = [];
   public domainItems: { name: string, value?: string, data?: any }[] = [];
 
-  private initCompany = false;
-
-  // public environment: Environment;
-
   constructor(
     protected override router: Router,
     protected override activatedRoute: ActivatedRoute,

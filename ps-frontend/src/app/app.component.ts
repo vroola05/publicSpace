@@ -34,7 +34,6 @@ export class AppComponent {
     private config: ConfigService,
     private componentService: ComponentService
   ) {
-    console.log('Mooi1', activatedRoute.snapshot.url);
     this.config.templateObservable().subscribe((template) => {
       if (!template || template == null) {
         return;
@@ -49,7 +48,6 @@ export class AppComponent {
       this.authorisation.userObservable.subscribe((user: User) => {
         this.navigationService.clearHeaderItems();
 
-        console.log('Mooi', activatedRoute);
         if (user === null) {
           this.navigationService.navigate(['login']);
         } else if (
