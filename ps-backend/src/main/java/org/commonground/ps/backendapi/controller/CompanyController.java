@@ -64,7 +64,7 @@ public class CompanyController extends Controller {
 			CompanyEntity companyEntity = optionalCompanyEntity.get();
 			companyEntity.setName(company.getName());
 			companyEntity.setSrid(company.getSrid());
-
+			companyEntity.setCode(company.getCode());
 			GeometryFactory geometryFactory = new GeometryFactory();
 			Coordinate coordinate = new Coordinate();
 

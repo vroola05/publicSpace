@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain/{domainId}/status", produces = {
+@RequestMapping(value = "/status", produces = {
 		"application/json; charset=utf-8" })
 public class StatusController extends Controller {
 	private final DomainRepository domainRepository;
@@ -48,21 +48,21 @@ public class StatusController extends Controller {
 
 		isValid();
 
+		isValid();
+		
 		List<Status> statusses = new ArrayList<>();
-		List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
+		List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(getUser().getDomain().getId());
 		statusEntities.forEach(statusEntity -> statusses.add(Convert.statusEntity(statusEntity)));
 		return statusses;
 	}
 
 	@Secured(identifier = "postStatus")
 	@PostMapping(consumes = "application/json")
-	public Status postStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-			@Valid @PostStatusValidator @RequestBody Status status) {
+	public Status postStatus(@Valid @PostStatusValidator @RequestBody Status status) {
 
 		isValid();
 
-		Optional<DomainEntity> optionalDomainEntity = domainRepository.findById(domainId);
+		Optional<DomainEntity> optionalDomainEntity = domainRepository.findById(getUser().getDomain().getId());
 		if (optionalDomainEntity.isPresent()) {
 			StatusEntity statusEntity = Convert.status(status);
 			statusEntity.setDomain(optionalDomainEntity.get());
@@ -73,9 +73,7 @@ public class StatusController extends Controller {
 
 	@Secured(identifier = "putStatus")
 	@PutMapping(value = "/{statusId}", consumes = "application/json", produces = "application/json")
-	public Status putStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
-			@PathVariable @NotNull(message = "Waarde is verplicht") Long statusId,
+	public Status putStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long statusId,
 			@Valid @PutStatusValidator @RequestBody Status status) {
 
 		isValid();

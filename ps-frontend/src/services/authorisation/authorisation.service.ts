@@ -15,10 +15,8 @@ import { DomainTypeEnum } from '../../model/intefaces';
 })
 export class AuthorisationService {
   private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
-  private hasFocus = true;
   private checkTokenUrl: string;
-  private authIntevalId;
-
+  
   constructor(
     private apiService: ApiService,
     private storage: StorageService,
@@ -30,51 +28,6 @@ export class AuthorisationService {
     const user = JSON.parse(this.storage.getLocal('user')) as User;
     if (user) {
       this._user.next(user);
-    }
-  }
-
-  private onAuthInterval(): void {
-    if (this.authIntevalId) {
-      clearInterval(this.authIntevalId);
-    }
-
-    this.authIntevalId = setInterval(() => {
-      this.checkToken();
-    }, 60000);
-  }
-
-  public setAuthControls(url: string): void {
-    if (!url) {
-      return;
-    }
-
-    this.checkTokenUrl = url;
-
-    this.onAuthInterval();
-
-    window.onblur = (e) => {
-      this.hasFocus = false;
-    };
-    window.onfocus = (e) => {
-        if (!this.hasFocus) {
-          this.hasFocus = true;
-          this.checkToken();
-        }
-    };
-  }
-
-  public checkToken(): void {
-    if (this.checkTokenUrl && this.user) {
-
-      this.apiService.get(this.checkTokenUrl).pipe(first()).subscribe((message: Message) => {
-        if (message.status === 403 ) {
-          this.logout();
-          this.toast.warning('De sessie is verlopen. Log opnieuw in!', 10);
-        }
-      }, (err) => {
-        this.logout();
-        this.toast.warning('De sessie is verlopen. Log opnieuw in!', 10);
-      });
     }
   }
 
@@ -94,6 +47,21 @@ export class AuthorisationService {
     } else {
       this.readUser();
       return this._user.getValue();
+    }
+  }
+
+  public checkToken(): void {
+    if (this.checkTokenUrl && this.user) {
+
+      this.apiService.get(this.checkTokenUrl).pipe(first()).subscribe((message: Message) => {
+        if (message.status === 403 ) {
+          this.logout();
+          this.toast.warning('De sessie is verlopen. Log opnieuw in!', 10);
+        }
+      }, (err) => {
+        this.logout();
+        this.toast.warning('De sessie is verlopen. Log opnieuw in!', 10);
+      });
     }
   }
 

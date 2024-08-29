@@ -31,6 +31,7 @@ import { PanelSettingsUsersComponent } from '../components/pages/settings/compon
 import { SettingsStartComponent } from '../components/pages/settings/settings-start/settings-start.component';
 import { authGuard } from '../services/guards/auth/auth.guard';
 import { PanelContractGovernmentComponent } from '../components/pages/settings/components/panel-settings-contracts/components/panel-contract-government/panel-contract-government.component';
+import { ListPanelPagesComponent } from '../components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Publicspace' } },
@@ -92,7 +93,13 @@ const routes: Routes = [
       },
       {
         path: 'pages',
-        component: PanelSettingsPagesComponent, data: { title: 'Pagina\'s' }
+        component: PanelSettingsPagesComponent, data: { title: 'Pagina\'s' },
+        children: [
+          {
+            path: ':id',
+            component: ListPanelPagesComponent, data: { title: 'Wijzig pagina' }
+          }
+        ]
       }
     ]
   },

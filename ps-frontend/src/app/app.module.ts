@@ -498,7 +498,11 @@ function readConfig(
     {
       provide: APP_INITIALIZER,
       useFactory: readConfig,
+<<<<<<< HEAD
       deps: [ConfigService, StorageService, NavigationService, AuthorisationService, ActionService, ComponentService],
+=======
+      deps: [ConfigService, AuthorisationService],
+>>>>>>> c0b69ca3bab975f73e252b964022d9b2f911c678
       multi: true
     },
   ],

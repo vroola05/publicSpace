@@ -10,7 +10,7 @@ import { StorageService } from '../storage/storage.service';
 import { Action } from '../../model/action';
 import { ActionTypeEnum, DomainTypeEnum } from '../../model/intefaces';
 import { DomainType } from '../../model/domain-type';
-import { environment } from '../../environments/environment';
+import { ActionService } from '../action/action.service';
 
 export enum PageTypes {
   overview = 'overview',
@@ -62,12 +62,15 @@ export class ConfigService {
 
   constructor(
     protected activatedRoute: ActivatedRoute,
-    private storage: StorageService
-  ) {
-    this.api = environment.api;
-  }
+    private storage: StorageService,
+    private action: ActionService
+  ) { }
 
   public setInitialize(template: Template): Template {
+    if (template.info.prefix) {
+      this.storage.setPrefix(template.info.prefix);
+    }
+
     if (template.info.favicon) {
       const favicon = document.getElementById('favicon') as HTMLLinkElement;
       if (favicon) {
@@ -85,6 +88,9 @@ export class ConfigService {
       if (favicon) {
         favicon.href = template.info.favicon512;
       }
+    }
+    if (template.actions) {
+      this.action.setActions(template.actions);
     }
 
     if (template.endpoints) {
@@ -174,7 +180,7 @@ export class ConfigService {
     return !this.template.info.logo ? 'assets/images/default-logo.svg' : this.template.info.logo;
   }
 
-  public configObservable(): Observable<any> {
+  public templateObservable(): Observable<any> {
     return this._template.asObservable();
   }
 
@@ -190,12 +196,16 @@ export class ConfigService {
 
     return new Promise((resolve, reject) => {
       fetch(domainUrl, opts).then((response) => {
-        response.json().then((template: Template) => {
-          this.template = template;
-          resolve(this.template);
-        }).catch(() => {
+        try {
+          response.json().then((template: any) => {
+            this.template = template;
+            resolve(this.template);
+          }).catch(() => {
+            reject();
+          });
+        } catch (error) {
           reject();
-        });
+        }
       }).catch((error) => {
         reject();
       });

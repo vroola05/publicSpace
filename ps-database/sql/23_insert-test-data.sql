@@ -73,13 +73,13 @@ INSERT INTO public.category (id, main_category_id, name, start_date, end_date, a
 INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Verkeersborden', '2021-01-01', NULL, true, get_group('Water'));
 INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Drempel', '2021-01-01', NULL, true, get_group('Water'));
 
-INSERT INTO public.contract_main_category (contract_id, main_category_id) VALUES (currval('public.seq_contract_id'), currval('public.seq_maincategory_id'))
+INSERT INTO public.contract_main_category (contract_id, main_category_id) VALUES (currval('public.seq_contract_id'), currval('public.seq_maincategory_id'));
 
 INSERT INTO public.main_category (id, name, domain_id) VALUES (nextval('public.seq_maincategory_id'), 'Overlast', get_domain('Contractor Public Space'));
 INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Geluid', '2021-01-01', NULL, true, get_group('Groen'));
 INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Graffiti', '2021-01-01', NULL, true, get_group('Groen'));
 INSERT INTO public.category (id, main_category_id, name, start_date, end_date, active, group_id) VALUES (nextval('public.seq_category_id'), currval('public.seq_maincategory_id'), 'Vuurwerk', '2021-01-01', NULL, true, get_group('Groen'));
 
-INSERT INTO public.contract_main_category (contract_id, main_category_id) VALUES (currval('public.seq_contract_id'), currval('public.seq_maincategory_id'))
+INSERT INTO public.contract_main_category (contract_id, main_category_id) VALUES (currval('public.seq_contract_id'), currval('public.seq_maincategory_id'));
 
 

@@ -85,11 +85,11 @@ public class ActionServiceImpl implements ActionService {
 		return actionRepository.getActionByDomainIdAndActionTypeId(domainId, actionEnum.id);
 	}
 
-	public void synchronizeActions(Long companyId, Long domainId, User user) {
-		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(domainId, user);
+	public void synchronizeActions(User user) {
+		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(user.getDomain().getId(), user);
 		if (optionalDomainEntity.isPresent()) {
 			DomainEntity domainEntity = optionalDomainEntity.get();
-			List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(domainId);
+			List<ActionEntity> actionEntities = actionRepository.getActionByDomainId(user.getDomain().getId());
 			List<ActionTypeEntity> actionTypeEntities = actionTypeRepository.getActionTypeEntities(domainEntity.getDomainType().getId());
 			
 			List<ActionTypeEntity> actionTypeEntitiesNew = actionTypeEntities.stream().filter( actionTypeEntity -> 

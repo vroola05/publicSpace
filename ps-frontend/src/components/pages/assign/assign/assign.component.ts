@@ -108,7 +108,6 @@ export class AssignComponent extends PageAbstract implements OnInit {
 
   public override assignUser(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      console.log('assignUser');
       if (!this.lock) {
         this.lock = true;
         const user = this.transform.getVariable('user') as User;
@@ -137,7 +136,6 @@ export class AssignComponent extends PageAbstract implements OnInit {
 
   public override assignUserAndGroup(): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      console.log('assignUserAndGroup');
       if (!this.lock) {
         this.lock = true;
         const user = this.transform.getVariable('user') as User;
@@ -153,7 +151,6 @@ export class AssignComponent extends PageAbstract implements OnInit {
           this.lock = false;
           resolve(false);
         }
-        console.log(user, group);
         const loaderId = this.loader.add('Bezig met opslaan!');
         this.endpoints.put(this.pageConfig.getEndpoint('putGroupAndUser'), user).then((message: Call) => {
           this.loader.remove(loaderId);

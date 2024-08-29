@@ -60,7 +60,6 @@ public class ApiSecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    
     ApiSecurityFilter apiSecurityFilter = new ApiSecurityFilter(principalRequestHeader);
       apiSecurityFilter.setAuthenticationManager(new AuthenticationManager() {
         @Override
@@ -100,9 +99,9 @@ public class ApiSecurityConfig {
               .csrf(csrf -> csrf.disable())
               .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                       .authorizeHttpRequests(requests -> requests.requestMatchers(
+                              "/config",
                               "/media/**",
                               "/login/**",
-                              "/config",
                               "/assets/**",
                               "/index.html",
                               "*.css",
@@ -119,6 +118,7 @@ public class ApiSecurityConfig {
         if (allowedOrigins != null && allowedOrigins.length > 0) {
           configuration.setAllowedOrigins(Arrays.asList(allowedOrigins));
         }
+        
 
         configuration.setAllowedMethods(Arrays.asList("OPTIONS", "HEAD", "GET", "PUT", "POST", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
@@ -126,7 +126,6 @@ public class ApiSecurityConfig {
         
         final var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
   }
 

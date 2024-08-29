@@ -58,7 +58,6 @@ private final CallRepository callRepository;
 		if (callEntityOptional.isEmpty()) {
 			return;
 		}
-		System.out.println("Call actioncenter");
 		call(domainId, user, callEntityOptional.get(), actionEnum);
 	}
 
@@ -77,9 +76,9 @@ private final CallRepository callRepository;
 
 		actioncenterQueueExecutor.setCallStatus(domainId, callEntity, actionEntityOptional.get());
 		CallEntity result = callRepository.saveAndFlush(callEntity);
-		System.out.println("Call actioncenter - status opgeslagen");
+
 		execute(userEntityOptional.get(), result, actionEntity);
-		System.out.println("Call actioncenter - execute gelukt");
+
 		return result;
 	}
 

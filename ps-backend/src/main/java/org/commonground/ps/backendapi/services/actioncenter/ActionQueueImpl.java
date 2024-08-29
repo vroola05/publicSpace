@@ -37,7 +37,6 @@ public class ActionQueueImpl implements ActionQueue {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void post(UUID id) {
         try {
-            System.out.println("POST actioncenter schedular - post");
             actioncenterQueueExecutor.executeProcess(id);
         } catch (Exception e) {
             e.printStackTrace();

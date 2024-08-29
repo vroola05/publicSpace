@@ -7,6 +7,7 @@ import { ConfigService } from '../services/config/config.service';
 import { NavigationService } from '../services/navigation/navigation.service';
 import { StorageService } from '../services/storage/storage.service';
 
+import pageConfig from '../page-config.json' //Eventualy this will be added to the main-config file.
 
 @Component({
   selector: 'app-root',

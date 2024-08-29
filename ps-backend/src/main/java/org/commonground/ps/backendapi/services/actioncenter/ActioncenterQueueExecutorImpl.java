@@ -40,7 +40,6 @@ public class ActioncenterQueueExecutorImpl implements ActioncenterQueueExecutor 
     public void executeProcess (UUID id) {
         ActionQueueEntity actionQueueEntity = actionQueueRepository.getReferenceById(id);
 
-        System.out.println("Order: " + (actionQueueEntity.getOrder() == null));
 
         try {
             executeAllOrdersClosed(actionQueueEntity);
@@ -72,7 +71,6 @@ public class ActioncenterQueueExecutorImpl implements ActioncenterQueueExecutor 
 
         ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
         if (actionTypeEntity.getDomainType() != null && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
-            System.out.println("Call actioncenter schedular - pas actiontype aan");
             callEntity.setActionTypeEntity(actionTypeEntity);
         }
     }
@@ -96,7 +94,6 @@ public class ActioncenterQueueExecutorImpl implements ActioncenterQueueExecutor 
         ActionTypeEntity actionTypeEntity = actionEntity.getActionType();
         if (actionTypeEntity.getDomainType() != null
                 && actionTypeEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-            System.out.println("Order actioncenter schedular - pas actiontype aan");
             orderEntity.setActionTypeEntity(actionTypeEntity);
         }
     }
@@ -133,7 +130,6 @@ public class ActioncenterQueueExecutorImpl implements ActioncenterQueueExecutor 
                 actionQueueEntityCall.setAction(actionEntitCallyOptional.get());
                 actionQueueEntityCall.setState(ActionQueueState.START);
                 actionQueueRepository.saveAndFlush(actionQueueEntityCall);
-                System.out.println("Call actioncenter schedular - post alle opdrachten gesloten");
                 executeProcess(actionQueueEntityCall.getId());
             }
         }

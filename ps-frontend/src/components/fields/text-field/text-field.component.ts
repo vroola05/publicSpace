@@ -36,12 +36,10 @@ export class TextFieldComponent extends FieldAbstract implements OnInit, OnDestr
         this.value = event.target.value;
       } else {
         
-        console.log('value', value);
         this.value = value.replace('.', ',');
         if (this.fieldRef) {
           this.fieldRef.nativeElement.value = this.value;
         }
-        console.log('this.value', this.value);
       }
     } else {
       this.value = event.target.value;

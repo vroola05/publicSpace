@@ -9,6 +9,7 @@ import org.commonground.ps.backendapi.core.security.Secured;
 import org.commonground.ps.backendapi.exception.BadRequestException;
 import org.commonground.ps.backendapi.model.Action;
 import org.commonground.ps.backendapi.model.ActionType;
+import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.services.actioncenter.ActionService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain/{domainId}/action", produces = {
+@RequestMapping(value = "/action", produces = {
 		"application/json; charset=utf-8" })
 public class ActionController extends Controller {
 	private final ActionService actionService;
@@ -48,21 +49,20 @@ public class ActionController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 		isValid();
 
-		actionService.synchronizeActions(companyId, domainId, getUser());
+		User user = getUser();
+		actionService.synchronizeActions(getUser());
 
-		return actionService.getActionsByDomainId(domainId).stream().filter(action -> action.getActionType().getVisible().equals(true)).toList();
+		return actionService.getActionsByDomainId(user.getDomain().getId()).stream().filter(action -> action.getActionType().getVisible().equals(true)).toList();
 	}
 
 	@Secured(identifier = "putAction")
 	@PutMapping(value = "/{actionTypeId}", consumes = "application/json")
 	public Action putAction(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long actionTypeId,
 		@Valid @RequestBody Action action) throws BadRequestException {
 
 		isValid();
 
-		return actionService.updateAction(domainId, action);
+		return actionService.updateAction(getUser().getDomain().getId(), action);
 	}
 }
