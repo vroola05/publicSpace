@@ -28,9 +28,7 @@ export class AuthorisationService {
 
   public readUser() {
     const user = JSON.parse(this.storage.getLocal('user')) as User;
-    console.log('lezen', user);
     if (user) {
-      console.log('lezen1', user);
       this._user.next(user);
     }
   }
@@ -91,13 +89,10 @@ export class AuthorisationService {
 
   public get user(): User {
     let user = this._user.getValue();
-    console.log('e', user);
     if (user != null && user) {
-      console.log('e1', user);
       return user;
     } else {
       this.readUser();
-      console.log('e2', user);
       return this._user.getValue();
     }
   }

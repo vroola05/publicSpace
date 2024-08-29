@@ -66,7 +66,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId
   ) {
 
-    isValid(companyId, domainId);
+    isValid();
 
     List<MainCategory> mainCategories = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @Valid @PostMainCategoryValidator @RequestBody MainCategory mainCategory) throws BadRequestException {
 
-    isValid(companyId, domainId);
+    isValid();
     validateMainCategoryByName(mainCategory.getName(), domainId);
 
     Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId, getUser());
@@ -105,7 +105,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PutMainCategoryValidator @RequestBody MainCategory mainCategory) throws BadRequestException {
-    isValid(companyId, domainId);
+    isValid();
     validateMainCategoryByName(mainCategory.getName(), domainId);
 
     if (mainCategoryId.equals(mainCategory.getId())) {
@@ -126,7 +126,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
     
-    isValid(companyId, domainId);
+    isValid();
 
     List<Category> categories = new ArrayList<>();
 
@@ -145,7 +145,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
 
-    isValid(companyId, domainId);
+    isValid();
     List<Category> categories = new ArrayList<>();
 
     User user = getUser();
@@ -173,7 +173,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PostCategoryValidator @RequestBody Category category) throws BadRequestException {
 
-    isValid(companyId, domainId);
+    isValid();
     validateCategoryByName(category.getName(), companyId, mainCategoryId, null);
     Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, domainId);
     if (mainCategoryEntity.isPresent()) {
@@ -197,7 +197,7 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long categoryId,
     @Valid @PutCategoryValidator @RequestBody Category category) throws BadRequestException {
 
-    isValid(companyId, domainId);
+    isValid();
     validateCategoryByName(category.getName(), domainId, mainCategoryId, categoryId);
 
     if (categoryId.equals(category.getId())) {

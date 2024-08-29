@@ -1,10 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DynamicDirective } from '../../../../directives/dynamic.directive';
 import { Call } from '../../../../model/call';
-import { ActionTypeEnum, DomainTypeEnum, DynamicPanel, NoteTypeEnum, PopupETypes, StatusTypes } from '../../../../model/intefaces';
-import { Message } from '../../../../model/message';
-import { Note, NoteType } from '../../../../model/note';
+import { ActionTypeEnum, DomainTypeEnum } from '../../../../model/intefaces';
 import { Order } from '../../../../model/order';
 import { Page } from '../../../../model/page';
 import { ActionService } from '../../../../services/action/action.service';

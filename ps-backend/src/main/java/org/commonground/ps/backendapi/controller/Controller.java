@@ -17,17 +17,11 @@ public class Controller {
 		return (Template)userPrincipal.getDetails();
 	}
 
-	public void isValid(Long companyId) throws NotFoundException {
+	public void isValid() throws NotFoundException {
 		User user = getUser();
-		if (!user.isAdmin() && !user.getCompany().getId().equals(companyId)) {
+		if (!user.isAdmin()) {
 			throw new NotFoundException();
 		}
 	}
 
-	public void isValid(Long companyId, Long domainId) throws NotFoundException {
-		User user = getUser();
-		if (!user.isAdmin() && (!user.getCompany().getId().equals(companyId) || !user.getDomain().getId().equals(domainId))) {
-			throw new NotFoundException();
-		}
-	}
 }

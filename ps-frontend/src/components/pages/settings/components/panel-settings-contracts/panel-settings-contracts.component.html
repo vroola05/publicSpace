@@ -1,11 +1,24 @@
 <app-settings-title></app-settings-title>
-<app-panel-settings
+<!-- <app-panel-settings
   [titleNew]="'Nieuw contract'"
   [data]="data"
   [hasNew]="isGovernment"
   [isNew]="isNew"
   [open]="open"
   [listTemplate]="listTemplate"
-  (onEvent)="events($event)">
-  <ng-template libDynamic></ng-template>
-</app-panel-settings>
+  (onEvent)="events($event)"> -->
+  <!-- <ng-template libDynamic></ng-template> -->
+<!-- </app-panel-settings> -->
+
+<div class="row layout-settings-list-container">
+  <div class="col-12">
+    <app-list
+          [listTemplate]="listTemplate"
+          [data]="data"
+          (clicked)="clicked($event)" #listComponent>
+
+    </app-list>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

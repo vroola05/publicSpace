@@ -49,7 +49,7 @@ public class GroupController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		List<Group> groups = new ArrayList<>();
 		List<GroupEntity> domainEntities = groupRepository.getGroups(domainId);
@@ -64,7 +64,7 @@ public class GroupController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@Valid @PostGroupValidator @RequestBody Group group) {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		if (groupRepository.getGroupByName(group.getName(), domainId).isPresent()) {
 			BadRequestException badRequestException = new BadRequestException();
@@ -89,7 +89,7 @@ public class GroupController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 			@Valid @PutGroupValidator @RequestBody Group group) throws BadRequestException {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		Optional<GroupEntity> optionalGroupEntityName = groupRepository.getGroupByName(group.getName(), domainId);
 		if (optionalGroupEntityName.isPresent() && !group.getId().equals(optionalGroupEntityName.get().getId())) {

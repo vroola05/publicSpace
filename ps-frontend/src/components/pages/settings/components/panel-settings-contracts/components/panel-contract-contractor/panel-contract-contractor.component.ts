@@ -12,11 +12,11 @@ import { MainCategory } from '../../../../../../../model/main-category';
 import { ListPanelContractComponent } from '../list-panel-contract';
 
 @Component({
-  selector: 'app-list-panel-contract-contractor',
-  templateUrl: './list-panel-contract-contractor.component.html',
-  styleUrls: ['./list-panel-contract-contractor.component.scss']
+  selector: 'app-panel-contract-contractor',
+  templateUrl: './panel-contract-contractor.component.html',
+  styleUrls: ['./panel-contract-contractor.component.scss']
 })
-export class ListPanelContractContractorComponent implements ListPanelContractComponent, OnInit {
+export class PanelContractContractorComponent implements ListPanelContractComponent, OnInit {
   @ViewChild('domainComponent') domainComponent: TextFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();

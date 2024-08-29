@@ -64,7 +64,6 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
 
     this.page = this.config.getPage(PageTypes.overview);
     this.pageConfig = this.page.pageConfig;
-
     this.search = this.filterService.getSearch();
   }
 
@@ -148,7 +147,7 @@ export class OverviewComponent extends PageAbstract implements OnInit, OnDestroy
   }
 
   public getList(append: boolean, queryParameters: QueryParameters): void {
-    
+    console.log(this.pageConfig);
     this.endpoints.post(this.pageConfig.getEndpoint('list'), queryParameters).then((list) => {
       if (list) {
         this.endOfList = list.length < this.filterService.getListsize();

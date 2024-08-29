@@ -10,13 +10,14 @@ import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/
 import { Domain } from '../../../../../../../model/domain';
 import { ListPanelContractComponent } from '../list-panel-contract';
 import { MainCategory } from '../../../../../../../model/main-category';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-list-panel-contract-government',
-  templateUrl: './list-panel-contract-government.component.html',
-  styleUrls: ['./list-panel-contract-government.component.scss']
+  selector: 'app-panel-contract-government',
+  templateUrl: './panel-contract-government.component.html',
+  styleUrls: ['./panel-contract-government.component.scss']
 })
-export class ListPanelContractGovernmentComponent implements ListPanelContractComponent, OnInit {
+export class PanelContractGovernmentComponent implements ListPanelContractComponent, OnInit {
   @ViewChild('domainComponent') domainComponent: DropdownFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
@@ -39,11 +40,24 @@ export class ListPanelContractGovernmentComponent implements ListPanelContractCo
   public domainItems: { name: string, value?: string, data?: any }[] = [];
   
   constructor(
+    protected activatedRoute: ActivatedRoute,
     private endpoints: EndpointService,
     private validation: ValidationService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
-  ) {}
+  ) {
+    this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
+
+    const contract = new Contract();
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      contract.id = parseInt(id);
+    }
+    this.contract = contract;
+    console.log('a', );
+
+  }
 
   public ngOnInit(): void {
     this.getDomainContractors();

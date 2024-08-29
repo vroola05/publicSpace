@@ -30,6 +30,7 @@ import { PanelSettingsStatusComponent } from '../components/pages/settings/compo
 import { PanelSettingsUsersComponent } from '../components/pages/settings/components/panel-settings-users/panel-settings-users.component';
 import { SettingsStartComponent } from '../components/pages/settings/settings-start/settings-start.component';
 import { authGuard } from '../services/guards/auth/auth.guard';
+import { PanelContractGovernmentComponent } from '../components/pages/settings/components/panel-settings-contracts/components/panel-contract-government/panel-contract-government.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Publicspace' } },
@@ -51,6 +52,14 @@ const routes: Routes = [
       {
         path: 'contracts',
         component: PanelSettingsContractsComponent, data: { title: 'Contracten' }
+      },
+      {
+        path: 'contracts/government/new',
+        component: PanelContractGovernmentComponent, data: { title: 'Nieuw contract' }
+      },
+      {
+        path: 'contracts/government/:id',
+        component: PanelContractGovernmentComponent, data: { title: 'Wijzig contract' }
       },
       {
         path: 'users',

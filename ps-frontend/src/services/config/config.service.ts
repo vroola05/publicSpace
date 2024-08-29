@@ -10,6 +10,7 @@ import { StorageService } from '../storage/storage.service';
 import { Action } from '../../model/action';
 import { ActionTypeEnum, DomainTypeEnum } from '../../model/intefaces';
 import { DomainType } from '../../model/domain-type';
+import { environment } from '../../environments/environment';
 
 export enum PageTypes {
   overview = 'overview',
@@ -62,7 +63,9 @@ export class ConfigService {
   constructor(
     protected activatedRoute: ActivatedRoute,
     private storage: StorageService
-  ) { }
+  ) {
+    this.api = environment.api;
+  }
 
   public setInitialize(template: Template): Template {
     if (template.info.favicon) {

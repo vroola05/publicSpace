@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class EndpointT {
+  private String id;
   private String endpoint;
   private List<String> roles;
 }

@@ -46,7 +46,7 @@ public class StatusController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		List<Status> statusses = new ArrayList<>();
 		List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(domainId);
@@ -60,7 +60,7 @@ public class StatusController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@Valid @PostStatusValidator @RequestBody Status status) {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.findById(domainId);
 		if (optionalDomainEntity.isPresent()) {
@@ -78,7 +78,7 @@ public class StatusController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long statusId,
 			@Valid @PutStatusValidator @RequestBody Status status) {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		if (status.getId().equals(statusId)) {
 			Optional<StatusEntity> optionalStatusEntity = statusRepository.findById(statusId);

@@ -74,7 +74,7 @@ public class UserController extends Controller {
 	public List<User> getUsers(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
-		isValid(companyId, domainId);
+		isValid();
 
 		List<User> users = new ArrayList<>();
 		List<UserEntity> userEntities = userRepository.getUsers(domainId);
@@ -88,7 +88,7 @@ public class UserController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long groupId) {
-		isValid(companyId, domainId);
+		isValid();
 
 		List<User> users = new ArrayList<>();
 		List<UserEntity> userEntities = userRepository.getUserByGroupId(domainId, groupId);
@@ -103,7 +103,7 @@ public class UserController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId,
 			@Valid @PostUserValidator @RequestBody UserExtended user) {
 
-		isValid(companyId, domainId);
+		isValid();
 		validateUser(domainId, user);
 
 		UserEntity userEntity = Convert.user(user);
@@ -146,7 +146,7 @@ public class UserController extends Controller {
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 			@Valid @PutUserValidator @RequestBody User user) throws BadRequestException {
 
-		isValid(companyId, domainId);
+		isValid();
 
 		validateUser(domainId, user);
 

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { TransformService } from '../../../../../services/transform/transform.service';
 import { ListTemplateT } from '../../../../../model/template';
 import { ListComponent } from '../../../../list/list.component';
+import { NavigationService } from '../../../../../services/navigation/navigation.service';
 
 
 
@@ -11,7 +12,7 @@ import { ListComponent } from '../../../../list/list.component';
   templateUrl: './panel-settings.component.html',
   styleUrls: ['./panel-settings.component.scss']
 })
-export class PanelSettingsComponent implements OnInit {
+export class PanelSettingsComponent {
   @ViewChild('listComponent') listComponent: ListComponent;
 
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
@@ -38,18 +39,31 @@ export class PanelSettingsComponent implements OnInit {
 
   constructor(
     protected authorisation: AuthorisationService,
-    protected transform: TransformService
+    protected transform: TransformService,
+    private navigationService: NavigationService,
+
   ) { }
 
-  public ngOnInit(): void {
-  }
-
   public clicked(data: any) {
-    this.onEvent.emit({
-      action: 'toggle',
-      isNew: false,
-      data
-    });
+
+    if (this.listTemplate.toggle) {
+      this.onEvent.emit({
+        action: 'toggle',
+        isNew: false,
+        data
+      });
+    } else {
+      this.navigationService.navigate(['settings/contracts/new'], true).then(a=> {
+        this.onEvent.emit({
+          action: 'route',
+          isNew: false,
+          data
+        });
+      });
+    }
+
+    
+    
   }
 
   public close() {

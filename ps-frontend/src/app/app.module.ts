@@ -86,8 +86,8 @@ import { PanelSettingsCompaniesComponent } from '../components/pages/settings/co
 import { ListPanelContractSpecificationComponent } from '../components/pages/settings/components/panel-settings-contract-specifications/components/list-panel-contract-specification/list-panel-contract-specification.component';
 import { PanelContractSpecificationItemComponent } from '../components/pages/settings/components/panel-settings-contract-specifications/components/panel-contract-specification-item/panel-contract-specification-item.component';
 import { PanelSettingsContractSpecificationsComponent } from '../components/pages/settings/components/panel-settings-contract-specifications/panel-settings-contract-specifications.component';
-import { ListPanelContractContractorComponent } from '../components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-contractor/list-panel-contract-contractor.component';
-import { ListPanelContractGovernmentComponent } from '../components/pages/settings/components/panel-settings-contracts/components/list-panel-contract-government/list-panel-contract-government.component';
+import { PanelContractContractorComponent } from '../components/pages/settings/components/panel-settings-contracts/components/panel-contract-contractor/panel-contract-contractor.component';
+import { PanelContractGovernmentComponent } from '../components/pages/settings/components/panel-settings-contracts/components/panel-contract-government/panel-contract-government.component';
 import { PanelSettingsContractsComponent } from '../components/pages/settings/components/panel-settings-contracts/panel-settings-contracts.component';
 import { PanelSettingsDomainsComponent } from '../components/pages/settings/components/panel-settings-domains/panel-settings-domains.component';
 import { PanelSettingsGroupsComponent } from '../components/pages/settings/components/panel-settings-groups/panel-settings-groups.component';
@@ -150,10 +150,8 @@ import { DynamicRightDirective } from '../directives/dynamic-right.directive';
 import { DynamicDirective } from '../directives/dynamic.directive';
 import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { WebInterceptor } from '../interceptors/web.interceptor';
-import { environment } from '../environments/environment';
 import { Template } from '../model/template';
 import { Page } from '../model/page';
-import { User } from '../model/user';
 
 import pageConfig from '../page-config.json' //Eventualy this will be added to the main-config file.
 import { DomainType } from '../model/domain-type';
@@ -161,47 +159,63 @@ import { PageConfig, PageConfigContainer } from '../model/domain-type-config';
 import { DomainTypeEnum } from '../model/intefaces';
 
 
-function readConfig1(configService: ConfigService) {
-  configService.api = environment.api;
+function readConfig(
+    configService: ConfigService,
+    storageService: StorageService,
+    navigationService: NavigationService,
+    authorisationService: AuthorisationService,
+    actionService: ActionService,
+    componentService: ComponentService) {
   
-  return () => configService.readConfig(configService.api + '/config').then((template: Template) => {
-    
+    return () => configService.readConfig(configService.api + '/config').then((template: Template) => {
+
       // I initiate this outside the config to avoid circulair dependencies
-      
-    
-      if (template.info.prefix) {
-        this.storage.setPrefix(template.info.prefix);
-      }
-      console.log('c');
-      this.action.setActions(template.actions);
-      
-      this.authorisation.readUser();
-      this.navigationService.readNavigation();
-
-      this.authorisation.userObservable.subscribe((user: User) => {
-        this.navigationService.clearHeaderItems();
-        if (user === null) {
-          //this.navigationService.navigate([this.domain.config.login.login.route]);
-          this.navigationService.navigate(['login']);
-          this.loaded = true;
-        } else {
-          //this.navigationService.addHeaderItems(this.config.template.components.header.headerMenu);
-
-          if (this.storage.getSession('haslogin') !== '1' && configService.headers.length > 0) {
-            this.storage.setSession('haslogin', '1');
-            this.navigationService.navigate(['/overview/' + configService.headers[0].id]);
-          }
-          this.loaded = true;
-          this.setNavigationGroups();
-        }
+      template.pages.forEach((page: Page, key: string) => {
+        page.pageConfig = getPageConfig(componentService, template.domain.domainType, pageConfig[key]);
       });
 
-      //this.authorisation.setAuthControls(this.domain.getEndpoint('getCheckToken').endpoint);
+      if (template.info.prefix) {
+        storageService.setPrefix(template.info.prefix);
+      }
+
+      actionService.setActions(template.actions);
+      
+      authorisationService.readUser();
+      navigationService.readNavigation();
+      console.log('Config read');
     }).catch((err) => {
       console.error('Cant read config', err);
     });
 
+    
  }
+
+
+ function getPageConfig(componentService : ComponentService, domainType: DomainType, pageConfigContainer: PageConfigContainer): PageConfig {
+  if (!pageConfigContainer) return undefined;
+
+  const pageConfig = new PageConfig();
+    if (domainType.id === DomainTypeEnum.GOVERNMENT) {
+      pageConfig.components = [];
+      for(const i in pageConfigContainer.government.components) {
+        const component = componentService.get(pageConfigContainer.government.components[i].component);
+        if (component) {
+          pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
+        }
+      }
+      pageConfig.endpoints = pageConfigContainer.government.endpoints;
+    } else {
+      pageConfig.components = [];
+      for(const i in pageConfigContainer.contractor.components) {
+        const component = componentService.get(pageConfigContainer.contractor.components[i].component)
+        if (component) {
+          pageConfig.components.push({id:pageConfigContainer.contractor.components[i].id , component});
+        }
+      }
+      pageConfig.endpoints = pageConfigContainer.contractor.endpoints;
+    }
+    return pageConfig;
+}
 
 
 @NgModule({
@@ -236,7 +250,7 @@ function readConfig1(configService: ConfigService) {
     ListPanelActionComponent,
     ListPanelPagesComponent,
     ListPanelPagesOverviewComponent,
-    ListPanelContractGovernmentComponent,
+    PanelContractGovernmentComponent,
     FilterComponent,
     FilterEqualsComponent,
     FilterBetweenComponent,
@@ -314,7 +328,7 @@ function readConfig1(configService: ConfigService) {
     CreateOverviewColumnsComponent,
     CreateOverviewColumnComponent,
     PanelSettingsContractsComponent,
-    ListPanelContractContractorComponent,
+    PanelContractContractorComponent,
     DynamicDirective,
     DynamicLeftDirective,
     DynamicRightDirective,
@@ -370,8 +384,8 @@ function readConfig1(configService: ConfigService) {
     ListPanelActionComponent,
     ListPanelPagesComponent,
     ListPanelPagesOverviewComponent,
-    ListPanelContractGovernmentComponent,
-    ListPanelContractContractorComponent,
+    PanelContractGovernmentComponent,
+    PanelContractContractorComponent,
     MapsComponent,
     PopupConfirmComponent,
     ImageComponent,
@@ -483,8 +497,8 @@ function readConfig1(configService: ConfigService) {
     ValidationService,
     {
       provide: APP_INITIALIZER,
-      useFactory: readConfig1,
-      deps: [ConfigService],
+      useFactory: readConfig,
+      deps: [ConfigService, StorageService, NavigationService, AuthorisationService, ActionService, ComponentService],
       multi: true
     },
   ],

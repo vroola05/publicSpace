@@ -2,6 +2,8 @@ package org.commonground.ps.backendapi.model;
 
 import java.util.List;
 
+import org.commonground.ps.backendapi.model.template.EndpointT;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -26,6 +28,8 @@ public class PageImpl implements Page {
   @Valid
   protected List<PageButton> buttonsRight;
   
+  protected List<PageComponents> pageComponents;
+  protected List<EndpointT> endpoints;
 
   @Override
   public void setButtonsLeft(List<PageButton> pageButtons) {
@@ -35,5 +39,21 @@ public class PageImpl implements Page {
   @Override
   public void setButtonsRight(List<PageButton> pageButtons) {
     buttonsRight = pageButtons;
+  }
+  @Override
+  public void setPageComponents(List<PageComponents> pageComponents) {
+    this.pageComponents = pageComponents;
+  }
+  @Override
+  public List<PageComponents> getPageComponents() {
+    return pageComponents;
+  }
+  @Override
+  public void setPageEndpoints(List<EndpointT> endpoints) {
+    this.endpoints = endpoints;
+  }
+  @Override
+  public List<EndpointT> getPageEndpoints() {
+    return endpoints;
   }
 }

@@ -66,7 +66,7 @@ public class PageController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
-		isValid(companyId, domainId);
+		isValid();
 		synchronizePages(companyId, domainId);
 
 		return pageService.get(companyId, domainId);
@@ -78,7 +78,7 @@ public class PageController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
-		isValid(companyId, domainId);
+		isValid();
 		List<PageButtonTypeEntity> pageButtonTypeEntities = pageButtonTypeRepository.findAllByOrderByNameAsc();
 
 		List<String> pageButtonTypes = new ArrayList<>();
@@ -230,7 +230,7 @@ public class PageController extends Controller {
 		Long pageId,
 		Page page
 	) throws BadRequestException {
-		isValid(companyId, domainId);
+		isValid();
 		User user = getUser();
 		
 		Page result = pageService.updatePage(domainId, pageId, page);

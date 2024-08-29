@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = "/company/{companyId}/domain", produces = { "application/json; charset=utf-8" })
+@RequestMapping(value = "/domain", produces = { "application/json; charset=utf-8" })
 public class DomainController extends Controller {
 	private final DomainRepository domainRepository;
 	private final DomainTypeRepository domainTypeRepository;
@@ -51,16 +51,15 @@ public class DomainController extends Controller {
 
 	@Secured(identifier = "getDomain")
 	@GetMapping()
-	public List<Domain> getDomain(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId) {
+	public List<Domain> getDomain() {
 
-		isValid(companyId);
+		isValid();
 
 		User user = getUser();
 		List<Domain> domains = new ArrayList<>();
 		List<DomainEntity> domainEntities;
 		if (user.isAdmin()) {
-			domainEntities = domainRepository.getDomains(companyId);
+			domainEntities = domainRepository.getDomains(user.getCompany().getId());
 			domainEntities.forEach(domainEntity -> domains.add(Convert.domainEntity(domainEntity)));
 		} else {
 			Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(user.getDomain().getId(), user);
@@ -72,12 +71,9 @@ public class DomainController extends Controller {
 	}
 
 	@Secured(identifier = "getDomainContractors", domainType = DomainTypeEnum.GOVERNMENT)
-	@GetMapping(value = "/{domainId}/contractor/domain")
-	public List<Domain> getDomainContractors(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
-
-		isValid(companyId, domainId);
+	@GetMapping(value = "/contractor")
+	public List<Domain> getDomainContractors() {
+		isValid();
 
 		List<Domain> domains = new ArrayList<>();
 		List<DomainEntity> domainEntities = domainRepository.getDomainsByDomainType(DomainTypeEnum.CONTRACTOR);
@@ -91,10 +87,8 @@ public class DomainController extends Controller {
 
 	@Secured(identifier = "getDomainType")
 	@GetMapping(value = "/type")
-	public List<DomainType> getDomainTypes(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId) {
-
-		isValid(companyId);
+	public List<DomainType> getDomainTypes() {
+		isValid();
 
 		List<DomainType> domainTypes = new ArrayList<>();
 		List<DomainTypeEntity> domainTypeEntities = domainTypeRepository.findAll();
@@ -105,12 +99,12 @@ public class DomainController extends Controller {
 	@Secured(admin = true)
 	@PostMapping(consumes = "application/json")
 	public Domain postDomain(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@Valid @PostDomainValidator @RequestBody Domain domain) {
 
-		isValid(companyId);
+		isValid();
 
-		Optional<CompanyEntity> companyEntity = companyRepository.findById(companyId);
+		User user = getUser();
+		Optional<CompanyEntity> companyEntity = companyRepository.findById(user.getCompany().getId());
 		if (companyEntity.isPresent()) {
 			DomainEntity domainEntity = Convert.domain(domain);
 			domainEntity.setDomainType(getDomainType(domain.getDomainType().getId()));
@@ -123,11 +117,10 @@ public class DomainController extends Controller {
 	@Secured(identifier = "putDomain")
 	@PutMapping(value = "/{id}", consumes = "application/json")
 	public Domain putDomain(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @PutDomainValidator @RequestBody Domain domain) throws BadRequestException {
 
-		isValid(companyId, id);
+		isValid();
 
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(id, getUser());
 		if (optionalDomainEntity.isPresent() && domain.getId().equals(id)) {

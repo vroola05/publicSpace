@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Injector, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 
 import { AuthorisationService } from '../../../../../services/authorisation/authorisation.service';
 import { EndpointService } from '../../../../../services/endpoint/endpoint.service';
@@ -6,11 +6,11 @@ import { TransformService } from '../../../../../services/transform/transform.se
 import { ListTemplateT } from '../../../../../model/template';
 import { Contract } from '../../../../../model/contract';
 import { DomainTypeEnum } from '../../../../../model/intefaces';
-import { ListPanelContractContractorComponent } from './components/list-panel-contract-contractor/list-panel-contract-contractor.component';
+import { PanelContractContractorComponent } from './components/panel-contract-contractor/panel-contract-contractor.component';
 import { DynamicDirective } from '../../../../../directives/dynamic.directive';
 import { ListPanelContractComponent } from './components/list-panel-contract';
-import { ListPanelContractGovernmentComponent } from './components/list-panel-contract-government/list-panel-contract-government.component';
 import { Subscription } from 'rxjs';
+import { NavigationService } from '../../../../../services/navigation/navigation.service';
 
 @Component({
   selector: 'app-panel-settings-contracts',
@@ -34,23 +34,20 @@ export class PanelSettingsContractsComponent implements OnInit {
     private injector: Injector,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
-    protected transform: TransformService
+    protected transform: TransformService,
+    private navigationService: NavigationService
   ) {
     this.isGovernment = this.authorisation.isDomainType(DomainTypeEnum.GOVERNMENT);
     this.listTemplate = {
-      toggle: true,
+      toggle: false,
+      route: 'settings/contracts/new',
       columns: [
-        {
-          name: 'id',
-          title: 'Id',
-          type: 'number',
-          css: 'col-sm-12 col-md-1 col-lg-1 bold'
-        },
+        
         {
           name: 'name',
           title: 'Naam',
           type: 'string',
-          css: 'col-sm-12 col-md-3 col-lg-3 one'
+          css: 'col-sm-12 col-md-4 col-lg-4 one'
         },
         {
           name: 'domain',
@@ -82,17 +79,7 @@ export class PanelSettingsContractsComponent implements OnInit {
     this.dynamicHost.viewContainerRef.clear();
   }
 
-  private loadComponent() {
-    const viewContainerRef = this.dynamicHost.viewContainerRef;  
-    viewContainerRef.clear();
-
-    const componentRef = viewContainerRef.createComponent<ListPanelContractComponent>(this.isGovernment ? ListPanelContractGovernmentComponent : ListPanelContractContractorComponent);  
-    componentRef.instance.isNew = this.isNew;
-    componentRef.instance.contract = this.selectedContract;
-    const onEventSubscription: Subscription = componentRef.instance.onEvent.subscribe(events => this.events(events));
-    componentRef.onDestroy(()=> { onEventSubscription.unsubscribe();});
-  }
-
+  
   public isDomainType(domainTypeEnum: DomainTypeEnum): boolean {
     return this.authorisation.isDomainType(domainTypeEnum);
   }
@@ -124,17 +111,7 @@ export class PanelSettingsContractsComponent implements OnInit {
   }
 
   public events($event): void {
-    if ($event.action === 'create') {
-      this.createNewContract();
-      this.isNew = true;
-      this.open = true;
-      this.loadComponent();
-    } else if ($event.action === 'toggle') {
-      this.selectedContract = this.contracts[$event.data.index];
-      this.isNew = false;
-      this.open = true;
-      this.loadComponent();
-    } else if ($event.action === 'save') {
+    if ($event.action === 'save') {
       this.open = false;
       this.getContracts();
       this.clearComponent();
@@ -142,5 +119,11 @@ export class PanelSettingsContractsComponent implements OnInit {
       this.open = false;
       this.clearComponent();
     }
+  }
+
+  public clicked(data: { data: Contract, index: number, opened: boolean}): void {
+    console.log(data.data.id);
+    this.navigationService.navigate(['settings/contracts/' + data.data.id], true).then(a=> {
+    });
   }
 }

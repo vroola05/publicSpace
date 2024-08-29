@@ -1,4 +1,4 @@
-
+<app-settings-title></app-settings-title>
 <div class="row list-panel" *ngIf="_contract">
     <div class="col-md-6 list-panel-block">
       <div class="row">
@@ -33,7 +33,7 @@
     </div>
     <div class="col-md-12">
       <div class="row buttons">
-        <div class="col-md-6 text-left">
+        <div class="col-md-8 text-left">
           <div *ngIf="!isNew" class="row">
             <div class="col-md-8">
               <app-checkbox-field [id]="'delete'" [name]="'delete'" [value]="delete"
@@ -45,12 +45,12 @@
             
           </div>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-4 text-right">
           <div class="row">
-            <div *ngIf="isNew" class="col-md-4">
+            <div *ngIf="isNew" class="col-md-6">
               <app-btn-contained [type]="'containedSecondary'" (clicked)="cancel()">Annuleren</app-btn-contained>
             </div>
-            <div *ngIf="isNew" class="col-md-4">
+            <div *ngIf="isNew" class="col-md-6">
               <app-btn-contained [type]="'containedPrimary'" (clicked)="onSave($event)">Opslaan</app-btn-contained>
             </div>
           </div>

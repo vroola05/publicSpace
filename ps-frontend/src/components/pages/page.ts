@@ -57,7 +57,6 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     this.domainType = this.config.getDomainType();
 
     this.transform.clearVariable();
-    // this.transform.setVariable('user', this.authorisation.user);
     this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
     this.navigationService.title = (this.activatedRoute.snapshot.data && this.activatedRoute.snapshot.data['title'])
       ? this.activatedRoute.snapshot.data['title']
@@ -165,7 +164,6 @@ export abstract class PageAbstract implements OnInit, OnDestroy {
     }
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent<DynamicPanel>(dynamicPanel);
-
     componentRef.instance.pageConfig = this.pageConfig;
     componentRef.instance.call = this.call;
     this.instances.push(componentRef.instance);
