@@ -40,29 +40,24 @@ public class ContractController extends Controller {
 		ContractSpecificationService contractSpecificationService) {
 		this.contractService = contractService;
 		this.contractSpecificationService = contractSpecificationService;
-
 	}
 
 	@Secured(identifier = "getContracts")
 	@GetMapping()
 	public List<Contract> getContracts() {
-		isValid();
 		return contractService.getContracts(getUser().getDomain().getId());
 	}
 
 	@Secured(identifier = "getContractById")
 	@GetMapping(value = "/{id}")
 	public Contract getContractById(@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
-		isValid();
 
 		return contractService.getContract(getUser().getDomain().getId(), id);
 	}
 
 	@Secured(identifier = "postContract", domainType = DomainTypeEnum.GOVERNMENT)
 	@PostMapping(consumes = "application/json")
-	public Contract postContract(@Valid @PostContractValidator @RequestBody Contract contract) throws BadRequestException {
-
-		isValid();
+	public Contract postContract(@Valid @PostContractValidator @RequestBody Contract contract) throws BadRequestException{
 
 		if (contractService.getContractBy(getUser().getDomain().getId(), contract.getDomain().getId()).isPresent()) {
 			BadRequestException badRequestException = new BadRequestException();
@@ -77,9 +72,7 @@ public class ContractController extends Controller {
 	@PutMapping(value = "/{id}", consumes = "application/json")
 	public Contract putContract(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@Valid @PutContractValidator @RequestBody Contract contract) throws BadRequestException {
-
-		isValid();
+		@Valid @PutContractValidator @RequestBody Contract contract) throws BadRequestException{
 
 		return contractService.update(getUser().getDomain().getId(), id, contract);
 	}
@@ -87,9 +80,7 @@ public class ContractController extends Controller {
 	@Secured(identifier = "deleteContract", domainType = DomainTypeEnum.GOVERNMENT)
 	@DeleteMapping(value = "/{id}", consumes = "application/json")
 	public boolean deleteContract(
-		@PathVariable @NotNull(message = "Waarde is verplicht") Long id) throws BadRequestException {
-
-		isValid();
+		@PathVariable @NotNull(message = "Waarde is verplicht") Long id) throws BadRequestException{
 
 		return contractService.delete(getUser().getDomain().getId(), id);
 	}
@@ -98,7 +89,6 @@ public class ContractController extends Controller {
 	@GetMapping(value = "/{id}/specification")
 	public List<ContractSpecification> getContractSpecificationByContractId(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id) {
-		isValid();
 
 		return contractSpecificationService.getContractSpecifications(getUser().getDomain().getId(), id);
 	}
@@ -107,9 +97,8 @@ public class ContractController extends Controller {
 	@PostMapping(value = "/{id}/specification", consumes = "application/json")
 	public ContractSpecification postContractSpecification(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
-		@Valid @PostContractSpecificationValidator @RequestBody ContractSpecification contractSpecification) throws BadRequestException {
+		@Valid @PostContractSpecificationValidator @RequestBody ContractSpecification contractSpecification) throws BadRequestException{
 
-		isValid();
 		Contract contract = contractService.getContract(getUser().getDomain().getId(), id);
 		if (contract == null) {
 			BadRequestException badRequestException = new BadRequestException();
@@ -125,9 +114,8 @@ public class ContractController extends Controller {
 	public ContractSpecification putContractSpecification(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long contractSpecificationId,
-		@Valid @PutContractSpecificationValidator @RequestBody ContractSpecification contractSpecification) throws BadRequestException {
+		@Valid @PutContractSpecificationValidator @RequestBody ContractSpecification contractSpecification) throws BadRequestException{
 
-		isValid();
 		Contract contract = contractService.getContract(getUser().getDomain().getId(), id);
 		if (contract == null) {
 			BadRequestException badRequestException = new BadRequestException();

@@ -32,35 +32,58 @@ import { SettingsStartComponent } from '../components/pages/settings/settings-st
 import { authGuard } from '../services/guards/auth/auth.guard';
 import { PanelContractGovernmentComponent } from '../components/pages/settings/components/panel-settings-contracts/components/panel-contract-government/panel-contract-government.component';
 import { ListPanelPagesComponent } from '../components/pages/settings/components/panel-settings-pages/components/list-panel-pages/list-panel-pages.component';
+import { PanelContractContractorComponent } from '../components/pages/settings/components/panel-settings-contracts/components/panel-contract-contractor/panel-contract-contractor.component';
+import { DomainTypeEnum } from '../model/intefaces';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Publicspace' } },
   { path: 'overview/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   { path: 'overview/group/:id', component: OverviewComponent, data: { title: 'Overzicht' } },
   {
-    path: 'settings', component: SettingsStartComponent, data: { title: 'Instellingen', roles: ['ROLE_ADMIN'] },
+    path: 'settings', component: SettingsStartComponent, data: { title: 'Instellingen', roles: ['ROLE_ADMIN', 'ROLE_SUPER_USER'] },
     canActivate: [authGuard],
     children: [
       
       {
         path: 'company',
-        component: PanelSettingsCompaniesComponent, data: { title: 'Bedrijf' }
+        canActivate: [authGuard],
+        component: PanelSettingsCompaniesComponent, data: { title: 'Bedrijf', roles: ['ROLE_ADMIN'] }
       },
       {
         path: 'domains',
-        component: PanelSettingsDomainsComponent, data: { title: 'Domeinen' }
+        canActivate: [authGuard],
+        component: PanelSettingsDomainsComponent, data: { title: 'Domeinen', roles: ['ROLE_ADMIN'] }
       },
       {
         path: 'contracts',
-        component: PanelSettingsContractsComponent, data: { title: 'Contracten' }
+        children: [
+          {
+            path: 'government/new',
+            canActivate: [authGuard],
+            component: PanelContractGovernmentComponent, data: { title: 'Nieuw contract', domainType: DomainTypeEnum.GOVERNMENT }
+          },
+          {
+            path: 'government/:id',
+            canActivate: [authGuard],
+            component: PanelContractGovernmentComponent, data: { title: 'Wijzig contract', domainType: DomainTypeEnum.GOVERNMENT }
+          },
+          {
+            path: '',
+            canActivate: [authGuard],
+            component: PanelSettingsContractsComponent, data: { title: 'Contracten' },
+          }
+        ]
+      },
+      
+      {
+        path: 'contracts/contractor/new',
+        canActivate: [authGuard],
+        component: PanelContractContractorComponent, data: { title: 'Nieuw contract', domainType: DomainTypeEnum.CONTRACTOR }
       },
       {
-        path: 'contracts/government/new',
-        component: PanelContractGovernmentComponent, data: { title: 'Nieuw contract' }
-      },
-      {
-        path: 'contracts/government/:id',
-        component: PanelContractGovernmentComponent, data: { title: 'Wijzig contract' }
+        path: 'contracts/contractor/:id',
+        canActivate: [authGuard],
+        component: PanelContractContractorComponent, data: { title: 'Wijzig contract', domainType: DomainTypeEnum.CONTRACTOR }
       },
       {
         path: 'users',
@@ -80,7 +103,8 @@ const routes: Routes = [
       },
       {
         path: 'order-specifications',
-        component: PanelSettingsContractSpecificationsComponent, data: { title: 'Bestekposten' }
+        canActivate: [authGuard],
+        component: PanelSettingsContractSpecificationsComponent, data: { title: 'Bestekposten', domainType: DomainTypeEnum.CONTRACTOR }
       },
       
       {
@@ -93,7 +117,8 @@ const routes: Routes = [
       },
       {
         path: 'pages',
-        component: PanelSettingsPagesComponent, data: { title: 'Pagina\'s' },
+        canActivate: [authGuard],
+        component: PanelSettingsPagesComponent, data: { title: 'Pagina\'s', roles: ['ROLE_ADMIN'] },
         children: [
           {
             path: ':id',
@@ -104,20 +129,20 @@ const routes: Routes = [
     ]
   },
   { path: 'details/:id', component: DetailsComponent, data: { title: 'Melding informatie' } },
-  { path: 'assign/:id', component: AssignComponent, data: { title: 'Melding toewijzen' } },
+  { path: 'assign/:id', canActivate: [authGuard], component: AssignComponent, data: { title: 'Melding toewijzen', roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
   { path: 'new/location', component: NewLocationComponent, data: { title: 'Waar is de melding' } },
   { path: 'new/information', component: NewInformationComponent, data: { title: 'Nieuwe melding maken' } },
   { path: 'new/confirmation', component: NewConfirmationComponent, data: { title: 'Melding controleren' } },
-  { path: 'change/:id', component: ChangeConfirmationComponent, data: { title: 'Melding wijzigen' } },
-  { path: 'change/:id/location', component: ChangeLocationComponent, data: { title: 'Wijzig de locatie' } },
-  { path: 'change/:id/information', component: ChangeInformationComponent, data: { title: 'Wijzig informatie' } },
-  { path: 'change/:id/confirmation', component: ChangeConfirmationComponent, data: { title: 'Wijzigingen controleren' } },
-  { path: 'details/:id/order/creation', component: OrderCreationComponent, data: { title: 'Opdracht aanmaken' } },
-  { path: 'details/:id/order/confirmation', component: OrderConfirmationComponent, data: { title: 'Opdracht controleren' } },
-  { path: 'details/:id/order-specifications/select', component: OrderSpecificationsSelectComponent, data: { title: 'Selecteer opdracht specificaties' } },
-  { path: 'details/:id/order-specifications/handle', component: OrderSpecificationsHandleComponent, data: { title: 'Opdracht afhandelen' } },
-  { path: 'details/:id/order-specifications/confirmation', component: OrderSpecificationsConfirmationComponent, data: { title: 'Opdracht afhandelen' } },
-  { path: 'mail/:id/:mailId', component: SendMailComponent, data: { title: 'Verstuur e-mail' } },
+  { path: 'change/:id', canActivate: [authGuard], component: ChangeConfirmationComponent, data: { title: 'Melding wijzigen', domainType: DomainTypeEnum.GOVERNMENT, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'change/:id/location', canActivate: [authGuard], component: ChangeLocationComponent, data: { title: 'Wijzig de locatie', domainType: DomainTypeEnum.GOVERNMENT, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'change/:id/information', canActivate: [authGuard], component: ChangeInformationComponent, data: { title: 'Wijzig informatie', domainType: DomainTypeEnum.GOVERNMENT, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'change/:id/confirmation', canActivate: [authGuard], component: ChangeConfirmationComponent, data: { title: 'Wijzigingen controleren', domainType: DomainTypeEnum.GOVERNMENT, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'details/:id/order/creation', canActivate: [authGuard], component: OrderCreationComponent, data: { title: 'Opdracht aanmaken', domainType: DomainTypeEnum.GOVERNMENT, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'details/:id/order/confirmation', canActivate: [authGuard], component: OrderConfirmationComponent, data: { title: 'Opdracht controleren', domainType: DomainTypeEnum.GOVERNMENT, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'details/:id/order-specifications/select', canActivate: [authGuard], component: OrderSpecificationsSelectComponent, data: { title: 'Selecteer opdracht specificaties', domainType: DomainTypeEnum.CONTRACTOR, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'details/:id/order-specifications/handle', canActivate: [authGuard], component: OrderSpecificationsHandleComponent, data: { title: 'Opdracht afhandelen', domainType: DomainTypeEnum.CONTRACTOR, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'details/:id/order-specifications/confirmation', canActivate: [authGuard], component: OrderSpecificationsConfirmationComponent, data: { title: 'Opdracht afhandelen', domainType: DomainTypeEnum.CONTRACTOR, roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
+  { path: 'mail/:id/:mailId', canActivate: [authGuard], component: SendMailComponent, data: { title: 'Verstuur e-mail', roles: ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_SUPER_USER'] } },
   { path: '', component: LoginComponent, data: { title: 'Inloggen' } }
 ];
 

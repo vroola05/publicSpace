@@ -9,14 +9,14 @@ import { Contract } from '../../../../../../../model/contract';
 import { TextFieldComponent } from '../../../../../../fields/text-field/text-field.component';
 import { Domain } from '../../../../../../../model/domain';
 import { MainCategory } from '../../../../../../../model/main-category';
-import { ListPanelContractComponent } from '../list-panel-contract';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-panel-contract-contractor',
   templateUrl: './panel-contract-contractor.component.html',
   styleUrls: ['./panel-contract-contractor.component.scss']
 })
-export class PanelContractContractorComponent implements ListPanelContractComponent, OnInit {
+export class PanelContractContractorComponent implements OnInit {
   @ViewChild('domainComponent') domainComponent: TextFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
@@ -36,11 +36,22 @@ export class PanelContractContractorComponent implements ListPanelContractCompon
   public _mainCategoryItems: { name: string, value?: string, selected?: boolean, data?: any }[] = [];
   
   constructor(
+    protected activatedRoute: ActivatedRoute,
     private endpoints: EndpointService,
     private validation: ValidationService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService
-  ) {}
+  ) {
+    this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
+
+    const contract = new Contract();
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      contract.id = parseInt(id);
+    }
+    this.contract = contract;
+  }
 
   public ngOnInit(): void {
     this.transform.setVariable('environment', { company: this.authorisation.user.company, domain: this.authorisation.user.domain });

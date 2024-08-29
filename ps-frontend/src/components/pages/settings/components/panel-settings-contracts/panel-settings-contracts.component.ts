@@ -6,10 +6,7 @@ import { TransformService } from '../../../../../services/transform/transform.se
 import { ListTemplateT } from '../../../../../model/template';
 import { Contract } from '../../../../../model/contract';
 import { DomainTypeEnum } from '../../../../../model/intefaces';
-import { PanelContractContractorComponent } from './components/panel-contract-contractor/panel-contract-contractor.component';
 import { DynamicDirective } from '../../../../../directives/dynamic.directive';
-import { ListPanelContractComponent } from './components/list-panel-contract';
-import { Subscription } from 'rxjs';
 import { NavigationService } from '../../../../../services/navigation/navigation.service';
 
 @Component({
@@ -31,7 +28,6 @@ export class PanelSettingsContractsComponent implements OnInit {
   public isGovernment: boolean;
 
   constructor(
-    private injector: Injector,
     private endpoints: EndpointService,
     protected authorisation: AuthorisationService,
     protected transform: TransformService,
@@ -122,8 +118,13 @@ export class PanelSettingsContractsComponent implements OnInit {
   }
 
   public clicked(data: { data: Contract, index: number, opened: boolean}): void {
-    console.log(data.data.id);
-    this.navigationService.navigate(['settings/contracts/' + data.data.id], true).then(a=> {
-    });
+    let route = 'settings/contracts/';
+    if (this.authorisation.isDomainType(DomainTypeEnum.GOVERNMENT)) {
+      route += 'government/';
+    } else {
+      route += 'contractor/';
+    }
+
+    this.navigationService.navigate([route + data.data.id], true).then();
   }
 }

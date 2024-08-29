@@ -110,6 +110,7 @@ export class DropdownFieldComponent extends FieldAbstract implements OnInit, OnD
     if (option && this._options.length > 0 && this._options.indexOf(option) >= 0) {
       this._selected = option;
       this.value = option.name;
+
       this.changed.emit(this._selected);
       this.closeList();
     } else {

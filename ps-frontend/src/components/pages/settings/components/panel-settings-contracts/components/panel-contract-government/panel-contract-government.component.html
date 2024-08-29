@@ -1,5 +1,5 @@
 <app-settings-title></app-settings-title>
-<div class="row list-panel" *ngIf="_contract">
+<div class="row list-panel" *ngIf="contract">
     <div class="col-md-6 list-panel-block">
       <div class="row">
         <div class="col-md-12">
@@ -14,14 +14,14 @@
         <div class="col-md-12">
           <h4>Geaccepteerd</h4>
           <div class="field-wrapper">
-            <app-checkbox-field [id]="'accepted'" [name]="'accepted'" [value]="_contract?.accepted" [readonly]="true">Geaccepteerd</app-checkbox-field>
+            <app-checkbox-field [id]="'accepted'" [name]="'accepted'" [value]="contract?.accepted" [readonly]="true">Geaccepteerd</app-checkbox-field>
           </div>
         </div>
       </div>
     </div>
     <div class="col-md-12">
       <app-panel-toggle [style]="'blanc'" [title]="['Categorieën']">
-        <div *ngFor="let mainCategory of _contract?.mainCategories; let colIndex = index">
+        <div *ngFor="let mainCategory of contract?.mainCategories; let colIndex = index">
           <div *ngIf="hasCategories(mainCategory)">
             <h4>{{mainCategory.name}}</h4>
             <ul>

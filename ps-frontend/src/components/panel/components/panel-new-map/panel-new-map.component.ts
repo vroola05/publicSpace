@@ -1,12 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ConfigService } from '../../../../services/config/config.service';
 import { EndpointService } from '../../../../services/endpoint/endpoint.service';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { Location } from '../../../../model/location';
 import { Call } from '../../../../model/call';
 import { FieldError } from '../../../../model/field-error';
-import { CallList } from '../../../../model/call-list';
-import { ListTemplateT } from '../../../../model/template';
 
 import { Subscription } from 'rxjs';
 import { TextFieldPrefillComponent } from '../../../fields/text-field-prefill/text-field-prefill.component';
@@ -20,7 +18,7 @@ import { TransformService } from '../../../../services/transform/transform.servi
   templateUrl: './panel-new-map.component.html',
   styleUrls: ['./panel-new-map.component.scss']
 })
-export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PanelNewMapComponent implements OnDestroy {
   @ViewChild('streetComponent') streetComponent: TextFieldPrefillComponent;
   @ViewChild('numberComponent') numberComponent: TextFieldComponent;
 
@@ -49,18 +47,11 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public ngOnInit(): void {
-  }
-
-  public ngAfterViewInit(): void {
-  }
-
   public ngOnDestroy(): void {
     if (this.searchLocationSubscription) {
       this.searchLocationSubscription.unsubscribe();
     }
   }
-
 
   public getShowAddress(): string {
     if (!this.call && !this.call.location) {
@@ -147,10 +138,7 @@ export class PanelNewMapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public validate(): boolean {
-    const result = this.call
-      && this.call.location
-      && this.call.location.street
-      && this.call.location.street.length > 0;
+    const result = this.call?.location?.street?.length > 0;
     if (!result) {
       this.errors = [{ message: 'Kies eerst een locatie!' }];
     }

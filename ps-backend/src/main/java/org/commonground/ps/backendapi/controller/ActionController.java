@@ -37,8 +37,6 @@ public class ActionController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
-		isValid();
-
 		return actionService.getActionTypes();
 	}
 
@@ -47,7 +45,6 @@ public class ActionController extends Controller {
 	public List<Action> getActions(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
-		isValid();
 
 		User user = getUser();
 		actionService.synchronizeActions(getUser());
@@ -60,8 +57,6 @@ public class ActionController extends Controller {
 	public Action putAction(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long actionTypeId,
 		@Valid @RequestBody Action action) throws BadRequestException {
-
-		isValid();
 
 		return actionService.updateAction(getUser().getDomain().getId(), action);
 	}

@@ -37,6 +37,7 @@ export class ApiService {
       opts = Object.assign(opts, options);
     }
 
+    console.log(url);
     return this.http.post(url, data, opts);
   }
 

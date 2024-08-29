@@ -8,16 +8,17 @@ import { TransformService } from '../../../../../../../services/transform/transf
 import { Contract } from '../../../../../../../model/contract';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { Domain } from '../../../../../../../model/domain';
-import { ListPanelContractComponent } from '../list-panel-contract';
 import { MainCategory } from '../../../../../../../model/main-category';
 import { ActivatedRoute } from '@angular/router';
+import { StorageService } from '../../../../../../../services/storage/storage.service';
+import { NavigationService } from '../../../../../../../services/navigation/navigation.service';
 
 @Component({
   selector: 'app-panel-contract-government',
   templateUrl: './panel-contract-government.component.html',
   styleUrls: ['./panel-contract-government.component.scss']
 })
-export class PanelContractGovernmentComponent implements ListPanelContractComponent, OnInit {
+export class PanelContractGovernmentComponent implements OnInit {
   @ViewChild('domainComponent') domainComponent: DropdownFieldComponent;
   
   @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
@@ -26,17 +27,8 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
 
   public delete = false;
 
-  public _contract: Contract;
-  @Input() set contract(contract: Contract){
-    this.delete = false;
-    this._contract = new Contract();
-    if (contract) {
-      this.transform.setVariable('contract', contract);
-      this.getContractById();
-      
-    }
-  }
-
+  public contract: Contract;
+  
   public domainItems: { name: string, value?: string, data?: any }[] = [];
   
   constructor(
@@ -44,32 +36,47 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
     private endpoints: EndpointService,
     private validation: ValidationService,
     protected authorisation: AuthorisationService,
-    protected transform: TransformService
+    protected transform: TransformService,
+    protected storage: StorageService,
+    private navigationService: NavigationService
   ) {
     this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
 
-    const contract = new Contract();
+    const contract = this.getContract();
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id) {
+    if (id && (!contract.id || contract.id != parseInt(id))) {
+      console.log('change id');
       contract.id = parseInt(id);
+      this.transform.setVariable('contract', contract);
+      this.getContractById();
+    } else {
+      this.contract = contract;
+      this.selectDomain();
     }
-    this.contract = contract;
-    console.log('a', );
-
   }
 
   public ngOnInit(): void {
     this.getDomainContractors();
   }
 
+  public getContract(): Contract {
+    const contract = this.storage.getSession('contract');
+    if (contract) {
+      this.contract = JSON.parse(contract) as Contract;
+    } else {
+      this.contract =  new Contract();
+    }
+    return this.contract;
+  }
+
   public getContractById(): void {
     this.endpoints.get('getContractById').then((contract: Contract) => {
-      this._contract.id = contract.id;
-      this._contract.accepted = contract.accepted;
-      this._contract.dateCreated = contract.dateCreated;
-      this._contract.domain = contract.domain;
-      this._contract.mainCategories = contract.mainCategories;
+      this.contract.id = contract.id;
+      this.contract.accepted = contract.accepted;
+      this.contract.dateCreated = contract.dateCreated;
+      this.contract.domain = contract.domain;
+      this.contract.mainCategories = contract.mainCategories;
       this.selectDomain();
     });
   }
@@ -91,20 +98,20 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
 
   public selectDomain() {
     if ( this.domainComponent) {
-      if (!this._contract || !this._contract.domain) {
+      if (!this.contract?.domain) {
         this.domainComponent.select(null);
         return;
       }
-      this.domainComponent.select(this.domainItems.find( type => !type.data || type.data.id === this._contract.domain.id));
+
+      this.domainComponent.select(this.domainItems.find( type => !type.data || type.data.id === this.contract.domain.id));
     }
   }
 
   public onDomainChanged($event) {
     if (this.domainComponent.validate()) {
-      this._contract.domain = $event.data;
+      this.contract.domain = $event.data;
     }
   }
-
 
   public hasCategories(mainCategory: MainCategory): boolean {
     return mainCategory.categories && mainCategory.categories.length > 0;
@@ -126,8 +133,7 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
     this.validation.clear();
     if (this.validation.validate('contract-government')) {
       if (this.isNew) {
-        this.postContract(this._contract);
-      } else {
+        this.postContract(this.contract);
       }
     }
   }
@@ -136,11 +142,7 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
     this.transform.setVariable('contract', contract);
     this.endpoints.post('postContract', contract).then((c: Contract) => {
       this.transform.deleteVariable('contract');
-      this.onEvent.emit({
-        action: 'save',
-        isNew: this.isNew,
-        data: null
-      });
+      this.navigationService.navigate(['settings/contracts']).then();
     })
     .catch((response) => {
       this.transform.deleteVariable('status');
@@ -149,7 +151,7 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
   }
 
   public setErrors(response: any): void {
-    if(response && response.error && response.error.errors) {
+    if(response?.error?.errors) {
       const errors = response.error.errors as {field: string, value: string}[];
       this.validation.errors = errors;
     }
@@ -157,7 +159,7 @@ export class PanelContractGovernmentComponent implements ListPanelContractCompon
 
   public onDelete($event): void {
     if (this.validation.validate('contract-government')) {
-      this.transform.setVariable('contract', this._contract);
+      this.transform.setVariable('contract', this.contract);
       this.endpoints.delete('deleteContract').then((c: Contract) => {
         this.transform.deleteVariable('contract');
         this.onEvent.emit({

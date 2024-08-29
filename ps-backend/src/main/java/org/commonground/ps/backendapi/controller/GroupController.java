@@ -47,8 +47,6 @@ public class GroupController extends Controller {
 	@GetMapping()
 	public List<Group> getGroups() {
 
-		isValid();
-
 		List<Group> groups = new ArrayList<>();
 		List<GroupEntity> domainEntities = groupRepository.getGroups(getUser().getDomain().getId());
 		domainEntities.forEach(domainEntity -> groups.add(Convert.groupEntity(domainEntity)));
@@ -59,8 +57,6 @@ public class GroupController extends Controller {
 	@PostMapping(consumes = "application/json")
 	public Group postGroup(
 			@Valid @PostGroupValidator @RequestBody Group group) {
-
-		isValid();
 
 		if (groupRepository.getGroupByName(group.getName(), getUser().getDomain().getId()).isPresent()) {
 			BadRequestException badRequestException = new BadRequestException();
@@ -82,8 +78,6 @@ public class GroupController extends Controller {
 	public Group putGroup(
 			@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 			@Valid @PutGroupValidator @RequestBody Group group) throws BadRequestException {
-
-		isValid();
 
 		Optional<GroupEntity> optionalGroupEntityName = groupRepository.getGroupByName(group.getName(), getUser().getDomain().getId());
 		if (optionalGroupEntityName.isPresent() && !group.getId().equals(optionalGroupEntityName.get().getId())) {

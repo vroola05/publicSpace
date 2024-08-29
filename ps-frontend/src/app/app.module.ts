@@ -157,64 +157,67 @@ import pageConfig from '../page-config.json' //Eventualy this will be added to t
 import { DomainType } from '../model/domain-type';
 import { PageConfig, PageConfigContainer } from '../model/domain-type-config';
 import { DomainTypeEnum } from '../model/intefaces';
+import { environment } from '../environments/environment';
 
 
 function readConfig(
-    configService: ConfigService,
-    storageService: StorageService,
-    navigationService: NavigationService,
-    authorisationService: AuthorisationService,
-    actionService: ActionService,
-    componentService: ComponentService) {
-  
-    return () => configService.readConfig(configService.api + '/config').then((template: Template) => {
+  configService: ConfigService,
+  storageService: StorageService,
+  navigationService: NavigationService,
+  authorisationService: AuthorisationService,
+  actionService: ActionService,
+  componentService: ComponentService) {
 
-      // I initiate this outside the config to avoid circulair dependencies
-      template.pages.forEach((page: Page, key: string) => {
-        page.pageConfig = getPageConfig(componentService, template.domain.domainType, pageConfig[key]);
-      });
+  configService.api = environment.api;
+  return () => configService.readConfig(environment.api + '/config').then((template: Template) => {
 
-      if (template.info.prefix) {
-        storageService.setPrefix(template.info.prefix);
-      }
-
-      actionService.setActions(template.actions);
-      
-      authorisationService.readUser();
-      navigationService.readNavigation();
-      console.log('Config read');
-    }).catch((err) => {
-      console.error('Cant read config', err);
+    // I initiate this outside the config to avoid circulair dependencies
+    template.pages.forEach((page: Page, key: string) => {
+      page.pageConfig = getPageConfig(componentService, template.domain.domainType, pageConfig[key]);
     });
 
+    if (template.info.prefix) {
+      storageService.setPrefix(template.info.prefix);
+    }
+
+    actionService.setActions(template.actions);
+
+    authorisationService.readUser();
+    navigationService.readNavigation();
+    console.log('Config read');
     
- }
+  }).catch((err) => {
+    console.error('Cant read config', err);
+  });
 
 
- function getPageConfig(componentService : ComponentService, domainType: DomainType, pageConfigContainer: PageConfigContainer): PageConfig {
+}
+
+
+function getPageConfig(componentService: ComponentService, domainType: DomainType, pageConfigContainer: PageConfigContainer): PageConfig {
   if (!pageConfigContainer) return undefined;
 
   const pageConfig = new PageConfig();
-    if (domainType.id === DomainTypeEnum.GOVERNMENT) {
-      pageConfig.components = [];
-      for(const i in pageConfigContainer.government.components) {
-        const component = componentService.get(pageConfigContainer.government.components[i].component);
-        if (component) {
-          pageConfig.components.push({id:pageConfigContainer.government.components[i].id , component});
-        }
+  if (domainType.id === DomainTypeEnum.GOVERNMENT) {
+    pageConfig.components = [];
+    for (const i in pageConfigContainer.government.components) {
+      const component = componentService.get(pageConfigContainer.government.components[i].component);
+      if (component) {
+        pageConfig.components.push({ id: pageConfigContainer.government.components[i].id, component });
       }
-      pageConfig.endpoints = pageConfigContainer.government.endpoints;
-    } else {
-      pageConfig.components = [];
-      for(const i in pageConfigContainer.contractor.components) {
-        const component = componentService.get(pageConfigContainer.contractor.components[i].component)
-        if (component) {
-          pageConfig.components.push({id:pageConfigContainer.contractor.components[i].id , component});
-        }
-      }
-      pageConfig.endpoints = pageConfigContainer.contractor.endpoints;
     }
-    return pageConfig;
+    pageConfig.endpoints = pageConfigContainer.government.endpoints;
+  } else {
+    pageConfig.components = [];
+    for (const i in pageConfigContainer.contractor.components) {
+      const component = componentService.get(pageConfigContainer.contractor.components[i].component)
+      if (component) {
+        pageConfig.components.push({ id: pageConfigContainer.contractor.components[i].id, component });
+      }
+    }
+    pageConfig.endpoints = pageConfigContainer.contractor.endpoints;
+  }
+  return pageConfig;
 }
 
 
@@ -475,16 +478,16 @@ function readConfig(
     provideClientHydration(),
     provideAnimationsAsync('noop'),
     provideHttpClient(withFetch()),
-    {provide: MAT_DATE_LOCALE, useValue: 'nl-NL'},
-    {provide: HTTP_INTERCEPTORS, useClass: WebInterceptor, multi: true},
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+    { provide: HTTP_INTERCEPTORS, useClass: WebInterceptor, multi: true },
     ApiService,
     StorageService,
     ConfigService,
-    
+
     AuthorisationService,
     NavigationService,
     FilterService,
-    
+
     ComponentService,
     Popup,
     ActionService,

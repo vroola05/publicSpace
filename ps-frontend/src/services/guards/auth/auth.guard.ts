@@ -1,21 +1,21 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn } from '@angular/router';
 
 import { inject } from '@angular/core';
 import { AuthorisationService } from '../../authorisation/authorisation.service';
 
 
 export const authGuard: CanActivateFn = (route, state) => {
-  return true;
-  // console.log(route);
-  // const authorisationService = inject(AuthorisationService);
-  // const router = inject(Router);
+  const authorisationService = inject(AuthorisationService);
+  const data = route.data;
+  console.log(data);
+  if (data?.['domainType'] && !authorisationService.isDomainType(data['domainType'])) {
+    return false;
+  }
+  
+  if (data?.['roles'] && !authorisationService.hasRoles(data['roles'])) {
+    return false;
+  }
 
-  // const user = authorisationService.user;
-  // if (user != null) {
-  //   return true;
-  // }
-  // console.log('route de boel', user);
-  // // Redirect to the login page
-  // return router.parseUrl('/login');
+  return true;
 
 };

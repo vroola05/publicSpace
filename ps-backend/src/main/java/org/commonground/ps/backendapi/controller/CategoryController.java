@@ -62,9 +62,6 @@ public class CategoryController extends Controller {
   @Secured(identifier = "getMainCategories")
   @GetMapping()
   public List<MainCategory> getMainCategories() {
-
-    isValid();
-
     List<MainCategory> mainCategories = new ArrayList<>();
 
     List<MainCategoryEntity> mainCategoryEntities = mainCategoryRepository.getMainCategories(getUser().getDomain().getId());
@@ -81,10 +78,7 @@ public class CategoryController extends Controller {
   public MainCategory postMainCategory(
     @Valid @PostMainCategoryValidator @RequestBody MainCategory mainCategory) throws BadRequestException {
     
-    isValid();
-    validateMainCategoryByName(mainCategory.getName(), getUser().getDomain().getId());
-
-    isValid();
+    Long domainId = getUser().getDomain().getId();
     validateMainCategoryByName(mainCategory.getName(), domainId);
 
     Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId, getUser());
@@ -93,6 +87,7 @@ public class CategoryController extends Controller {
       mainCategoryEntity.setDomain(domainEntityOptional.get());
       return Convert.mainCategoryEntity(mainCategoryRepository.saveAndFlush(mainCategoryEntity));
     }
+
     throw new BadRequestException();
   }
 
@@ -101,11 +96,13 @@ public class CategoryController extends Controller {
   public MainCategory putMainCategory(
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PutMainCategoryValidator @RequestBody MainCategory mainCategory) throws BadRequestException {
-    isValid();
+    
+    Long domainId = getUser().getDomain().getId();
+    
     validateMainCategoryByName(mainCategory.getName(), domainId);
 
     if (mainCategoryId.equals(mainCategory.getId())) {
-      Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, getUser().getDomain().getId());
+      Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, domainId);
       if (mainCategoryEntity.isPresent()) {
         mainCategoryEntity.get().setName(mainCategory.getName());
         return Convert.mainCategoryEntity(mainCategoryRepository.save(mainCategoryEntity.get()));
@@ -119,9 +116,6 @@ public class CategoryController extends Controller {
   @GetMapping(value = "/{mainCategoryId}/category", produces = "application/json")
   public List<Category> getCategories(
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
-    
-    isValid();
-
     List<Category> categories = new ArrayList<>();
 
     User user = getUser();
@@ -136,8 +130,6 @@ public class CategoryController extends Controller {
   @GetMapping(value = "/{mainCategoryId}/category/full", produces = "application/json")
   public List<Category> getCategoriesFull(
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId) {
-
-    isValid();
     List<Category> categories = new ArrayList<>();
 
     User user = getUser();
@@ -163,7 +155,9 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long mainCategoryId,
     @Valid @PostCategoryValidator @RequestBody Category category) throws BadRequestException {
 
-    isValid();
+    Long companyId = getUser().getCompany().getId();
+    Long domainId = getUser().getDomain().getId();
+
     validateCategoryByName(category.getName(), companyId, mainCategoryId, null);
     Optional<MainCategoryEntity> mainCategoryEntity = mainCategoryRepository.getMainCategoryById(mainCategoryId, domainId);
     if (mainCategoryEntity.isPresent()) {
@@ -185,7 +179,8 @@ public class CategoryController extends Controller {
     @PathVariable @NotNull(message = "Waarde is verplicht") Long categoryId,
     @Valid @PutCategoryValidator @RequestBody Category category) throws BadRequestException {
 
-    isValid();
+    Long domainId = getUser().getDomain().getId();
+
     validateCategoryByName(category.getName(), domainId, mainCategoryId, categoryId);
 
     if (categoryId.equals(category.getId())) {

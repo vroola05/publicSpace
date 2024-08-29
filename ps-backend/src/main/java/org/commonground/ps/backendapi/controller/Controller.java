@@ -1,6 +1,5 @@
 package org.commonground.ps.backendapi.controller;
 
-import org.commonground.ps.backendapi.exception.NotFoundException;
 import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.security.UserPrincipal;
 import org.commonground.ps.backendapi.model.template.Template;
@@ -16,12 +15,4 @@ public class Controller {
 		UserPrincipal userPrincipal = (UserPrincipal)SecurityContextHolder.getContext().getAuthentication();
 		return (Template)userPrincipal.getDetails();
 	}
-
-	public void isValid() throws NotFoundException {
-		User user = getUser();
-		if (!user.isAdmin()) {
-			throw new NotFoundException();
-		}
-	}
-
 }

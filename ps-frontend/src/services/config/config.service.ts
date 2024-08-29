@@ -67,28 +67,9 @@ export class ConfigService {
   ) { }
 
   public setInitialize(template: Template): Template {
-    if (template.info.prefix) {
-      this.storage.setPrefix(template.info.prefix);
-    }
+    template = this.initInfo(template);
+    template = this.initPages(template);
 
-    if (template.info.favicon) {
-      const favicon = document.getElementById('favicon') as HTMLLinkElement;
-      if (favicon) {
-        favicon.href = template.info.favicon;
-      }
-    }
-    if (template.info.favicon32) {
-      const favicon = document.getElementById('favicon32') as HTMLLinkElement;
-      if (favicon) {
-        favicon.href = template.info.favicon32;
-      }
-    }
-    if (template.info.favicon512) {
-      const favicon = document.getElementById('favicon512') as HTMLLinkElement;
-      if (favicon) {
-        favicon.href = template.info.favicon512;
-      }
-    }
     if (template.actions) {
       this.action.setActions(template.actions);
     }
@@ -112,6 +93,37 @@ export class ConfigService {
       template.components.filter = filters;
     }
 
+    return template;
+  }
+
+  private initInfo(template: Template): Template {
+    if (template.info.prefix) {
+      this.storage.setPrefix(template.info.prefix);
+    }
+
+    if (template.info.favicon) {
+      const favicon = document.getElementById('favicon') as HTMLLinkElement;
+      if (favicon) {
+        favicon.href = template.info.favicon;
+      }
+    }
+    if (template.info.favicon32) {
+      const favicon = document.getElementById('favicon32') as HTMLLinkElement;
+      if (favicon) {
+        favicon.href = template.info.favicon32;
+      }
+    }
+    if (template.info.favicon512) {
+      const favicon = document.getElementById('favicon512') as HTMLLinkElement;
+      if (favicon) {
+        favicon.href = template.info.favicon512;
+      }
+    }
+
+    return template;
+  }
+
+  private initPages(template: Template): Template {
     if (template.pages) {
       const pages = new Map<string, Page>();
       for (const pageId in template.pages) {
@@ -136,10 +148,9 @@ export class ConfigService {
       });
       this._headers = header;
     }
-    
+
     return template;
   }
-
 
   public getDomainType(): DomainType {
     return this.template.domain.domainType;

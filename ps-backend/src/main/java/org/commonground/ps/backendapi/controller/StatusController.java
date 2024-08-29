@@ -46,10 +46,6 @@ public class StatusController extends Controller {
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long companyId,
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long domainId) {
 
-		isValid();
-
-		isValid();
-		
 		List<Status> statusses = new ArrayList<>();
 		List<StatusEntity> statusEntities = statusRepository.getStatusByDomainId(getUser().getDomain().getId());
 		statusEntities.forEach(statusEntity -> statusses.add(Convert.statusEntity(statusEntity)));
@@ -59,8 +55,6 @@ public class StatusController extends Controller {
 	@Secured(identifier = "postStatus")
 	@PostMapping(consumes = "application/json")
 	public Status postStatus(@Valid @PostStatusValidator @RequestBody Status status) {
-
-		isValid();
 
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.findById(getUser().getDomain().getId());
 		if (optionalDomainEntity.isPresent()) {
@@ -75,8 +69,6 @@ public class StatusController extends Controller {
 	@PutMapping(value = "/{statusId}", consumes = "application/json", produces = "application/json")
 	public Status putStatus(@PathVariable @NotNull(message = "Waarde is verplicht") Long statusId,
 			@Valid @PutStatusValidator @RequestBody Status status) {
-
-		isValid();
 
 		if (status.getId().equals(statusId)) {
 			Optional<StatusEntity> optionalStatusEntity = statusRepository.findById(statusId);

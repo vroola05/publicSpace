@@ -52,9 +52,6 @@ public class DomainController extends Controller {
 	@Secured(identifier = "getDomain")
 	@GetMapping()
 	public List<Domain> getDomain() {
-
-		isValid();
-
 		User user = getUser();
 		List<Domain> domains = new ArrayList<>();
 		List<DomainEntity> domainEntities;
@@ -73,8 +70,6 @@ public class DomainController extends Controller {
 	@Secured(identifier = "getDomainContractors", domainType = DomainTypeEnum.GOVERNMENT)
 	@GetMapping(value = "/contractor")
 	public List<Domain> getDomainContractors() {
-		isValid();
-
 		List<Domain> domains = new ArrayList<>();
 		List<DomainEntity> domainEntities = domainRepository.getDomainsByDomainType(DomainTypeEnum.CONTRACTOR);
 		domainEntities.forEach(domainEntity -> {
@@ -88,8 +83,6 @@ public class DomainController extends Controller {
 	@Secured(identifier = "getDomainType")
 	@GetMapping(value = "/type")
 	public List<DomainType> getDomainTypes() {
-		isValid();
-
 		List<DomainType> domainTypes = new ArrayList<>();
 		List<DomainTypeEntity> domainTypeEntities = domainTypeRepository.findAll();
 		domainTypeEntities.forEach(domainTypeEntity -> domainTypes.add(Convert.domainTypeEntity(domainTypeEntity)));
@@ -100,8 +93,6 @@ public class DomainController extends Controller {
 	@PostMapping(consumes = "application/json")
 	public Domain postDomain(
 		@Valid @PostDomainValidator @RequestBody Domain domain) {
-
-		isValid();
 
 		User user = getUser();
 		Optional<CompanyEntity> companyEntity = companyRepository.findById(user.getCompany().getId());
@@ -119,8 +110,6 @@ public class DomainController extends Controller {
 	public Domain putDomain(
 		@PathVariable @NotNull(message = "Waarde is verplicht") Long id,
 		@Valid @PutDomainValidator @RequestBody Domain domain) throws BadRequestException {
-
-		isValid();
 
 		Optional<DomainEntity> optionalDomainEntity = domainRepository.getDomainById(id, getUser());
 		if (optionalDomainEntity.isPresent() && domain.getId().equals(id)) {

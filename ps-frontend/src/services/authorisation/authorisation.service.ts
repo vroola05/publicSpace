@@ -102,9 +102,10 @@ export class AuthorisationService {
     return user.roles.includes(role);
   }
 
-  public login(enpoint: string, username: string, password: string, rememberMe: boolean): Observable<User> {
+  public login(endpoint: string, username: string, password: string, rememberMe: boolean): Observable<User> {
     const login = new Login(username, password, rememberMe);
-    return this.apiService.post(enpoint, login);
+    console.log(endpoint);
+    return this.apiService.post(endpoint, login);
   }
 
   public logout(): void {

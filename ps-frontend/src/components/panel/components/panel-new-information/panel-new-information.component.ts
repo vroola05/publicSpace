@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DropdownFieldComponent } from '../../../fields/dropdown-field/dropdown-field.component';
 import { TextareaFieldComponent } from '../../../fields/textarea-field/textarea-field.component';
 import { StorageService } from '../../../../services/storage/storage.service';
@@ -15,7 +15,7 @@ import { EndpointService } from '../../../../services/endpoint/endpoint.service'
   templateUrl: './panel-new-information.component.html',
   styleUrls: ['./panel-new-information.component.scss']
 })
-export class PanelNewInformationComponent implements OnInit, OnDestroy {
+export class PanelNewInformationComponent implements OnInit {
   @ViewChild('mainCategorieComponent') mainCategorieComponent: DropdownFieldComponent;
   @ViewChild('categoryComponent') categoryComponent: DropdownFieldComponent;
   @ViewChild('descriptionComponent') descriptionComponent: TextareaFieldComponent;
@@ -32,9 +32,9 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
     private storage: StorageService
   ) {
     this.initialCall = this.getCall();
-    if (this.initialCall.mainCategory && this.initialCall.mainCategory.id) {
+    if (this.initialCall?.mainCategory?.id) {
       this.initMainCategory = true;
-      if (this.initialCall.mainCategory.category && this.initialCall.mainCategory.category.id) {
+      if (this.initialCall?.mainCategory?.category?.id) {
         this.initCategory = true;
       }
     }
@@ -57,9 +57,6 @@ export class PanelNewInformationComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-  public ngOnDestroy(): void {
   }
 
   public getCall(): Call {

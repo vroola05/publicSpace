@@ -64,7 +64,6 @@ public class PageController extends Controller {
 	@GetMapping()
 	public List<Page> getPages() {
 
-		isValid();
 		synchronizePages(getUser().getCompany().getId(), getUser().getDomain().getId());
 
 		return pageService.get(getUser().getCompany().getId(), getUser().getDomain().getId());
@@ -74,7 +73,6 @@ public class PageController extends Controller {
 	@GetMapping(value = "/button/types")
 	public List<String> getButtonTypes() {
 
-		isValid();
 		List<PageButtonTypeEntity> pageButtonTypeEntities = pageButtonTypeRepository.findAllByOrderByNameAsc();
 
 		List<String> pageButtonTypes = new ArrayList<>();
@@ -204,7 +202,7 @@ public class PageController extends Controller {
 		Long pageId,
 		Page page
 	) throws BadRequestException {
-		isValid();
+
 		User user = getUser();
 		
 		Page result = pageService.updatePage(domainId, pageId, page);
