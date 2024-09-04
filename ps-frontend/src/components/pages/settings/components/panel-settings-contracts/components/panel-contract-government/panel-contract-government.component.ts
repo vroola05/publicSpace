@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { ValidationService } from '../../../../../../../services/validation/validation.service';
@@ -9,7 +9,7 @@ import { Contract } from '../../../../../../../model/contract';
 import { DropdownFieldComponent } from '../../../../../../fields/dropdown-field/dropdown-field.component';
 import { Domain } from '../../../../../../../model/domain';
 import { MainCategory } from '../../../../../../../model/main-category';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from '../../../../../../../services/storage/storage.service';
 import { NavigationService } from '../../../../../../../services/navigation/navigation.service';
 
@@ -21,8 +21,6 @@ import { NavigationService } from '../../../../../../../services/navigation/navi
 export class PanelContractGovernmentComponent implements OnInit {
   @ViewChild('domainComponent') domainComponent: DropdownFieldComponent;
   
-  @Output() onEvent: EventEmitter<{ action: string, isNew: boolean, data: any }> = new EventEmitter();
-
   @Input() isNew = true;
 
   public delete = false;
@@ -32,6 +30,7 @@ export class PanelContractGovernmentComponent implements OnInit {
   public domainItems: { name: string, value?: string, data?: any }[] = [];
   
   constructor(
+    protected router: Router,
     protected activatedRoute: ActivatedRoute,
     private endpoints: EndpointService,
     private validation: ValidationService,
@@ -46,7 +45,6 @@ export class PanelContractGovernmentComponent implements OnInit {
 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id && (!contract.id || contract.id != parseInt(id))) {
-      console.log('change id');
       contract.id = parseInt(id);
       this.transform.setVariable('contract', contract);
       this.getContractById();
@@ -118,11 +116,8 @@ export class PanelContractGovernmentComponent implements OnInit {
   }
 
   public cancel(): void {
-    this.onEvent.emit({
-      action: 'cancel',
-      isNew: this.isNew,
-      data: null
-    });
+    this.transform.deleteVariable('contract');
+    this.navigationService.navigateToParent(this.activatedRoute);
   }
 
   public onDeleteChanged($event): void {
@@ -142,7 +137,7 @@ export class PanelContractGovernmentComponent implements OnInit {
     this.transform.setVariable('contract', contract);
     this.endpoints.post('postContract', contract).then((c: Contract) => {
       this.transform.deleteVariable('contract');
-      this.navigationService.navigate(['settings/contracts']).then();
+      this.navigationService.navigateToParent(this.activatedRoute);
     })
     .catch((response) => {
       this.transform.deleteVariable('status');
@@ -162,11 +157,6 @@ export class PanelContractGovernmentComponent implements OnInit {
       this.transform.setVariable('contract', this.contract);
       this.endpoints.delete('deleteContract').then((c: Contract) => {
         this.transform.deleteVariable('contract');
-        this.onEvent.emit({
-          action: 'save',
-          isNew: this.isNew,
-          data: null
-        });
       })
       .catch((response) => {
         this.transform.deleteVariable('status');

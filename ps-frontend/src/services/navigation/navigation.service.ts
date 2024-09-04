@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { NavigationRoute } from '../../model/intefaces';
@@ -115,6 +115,26 @@ export class NavigationService {
   public back(): Promise<boolean> {
     this.popRoute();
     return this.router.navigate(this.getCurrentRoute());
+  }
+
+  /**
+   * Navigates back to the parent component. 
+   * It differs from back in that back looks at the previous route.
+   * @param activatedRoute 
+   * @returns 
+   */
+  public navigateToParent(activatedRoute: ActivatedRoute): Promise<boolean> {
+    let routerLink = activatedRoute.parent.snapshot.pathFromRoot
+        .map((s) => s.url)
+        .reduce((a, e) => {
+            //Do NOT add last path!
+            if (a.length + e.length !== activatedRoute.parent.snapshot.pathFromRoot.length) {
+                return a.concat(e);
+            }
+            return a;
+        })
+        .map((s) => s.path);
+    return this.navigate(routerLink);
   }
 
   public getCurrentRoute(): string[] {
