@@ -58,7 +58,7 @@ const routes: Routes = [
         path: 'contracts',
         children: [
           {
-            path: 'government/new',
+            path: 'government',
             canActivate: [authGuard],
             component: PanelContractGovernmentComponent, data: { title: 'Nieuw contract', domainType: DomainTypeEnum.GOVERNMENT }
           },

@@ -3,10 +3,9 @@
     <ng-container *ngIf="label">
       <span class="field-label" [ngClass]="{'required': required}">{{label}}</span>
     </ng-container>
-    <span class="field {{classes}} {{style}}"
-      [ngClass]="{'readonly': readonly, 'disabled': disabled}">
+    <span class="field {{classes}} {{style}}" [ngClass]="{'readonly': readonly, 'disabled': disabled}">
       <input type="text" class="text-field-input" [id]="id" [name]="name" [readonly]="readonly" [disabled]="disabled"
-        [value]="value" (keydown)="onKeydown($event)" (blur)="onBlur($event)" [placeholder]="getPlaceholder()"
+        [value]="value" (keydown)="onKeydown($event)" (focus)="focus()" (blur)="onBlur($event)" [placeholder]="getPlaceholder()"
         #fieldRef />
       <span *ngIf="hasItems() && !opened" (click)="openList()" class="field-icon closed material-icons">
         arrow_drop_down
@@ -17,7 +16,7 @@
     </span>
   </label>
   <div *ngIf="hasItems() && opened" class="dropdown-field-list {{style}}">
-    <div *ngFor="let option of options" (click)="onClick(option)" [ngClass]="{'selected': isSelected(option)}"
+    <div *ngFor="let option of options; index as i" (click)="onClick(option)" [ngClass]="{'selected': isSelected(i)}"
       class="dropdown-field-list-item">
       {{option.name}}
     </div>

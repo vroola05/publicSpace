@@ -15,6 +15,7 @@ import { NavigationService } from '../../../../../services/navigation/navigation
   styleUrls: ['./panel-settings-contracts.component.scss']
 })
 export class PanelSettingsContractsComponent implements OnInit {
+
   @ViewChild(DynamicDirective, {static: true}) private dynamicHost!: DynamicDirective;
   
   public contracts: Contract[];
@@ -101,30 +102,19 @@ export class PanelSettingsContractsComponent implements OnInit {
     this.data = data;
   }
 
-  public createNewContract(): void {
-    this.selectedContract = new Contract();
-    this.selectedContract.accepted = false;
-  }
-
-  public events($event): void {
-    if ($event.action === 'save') {
-      this.open = false;
-      this.getContracts();
-      this.clearComponent();
-    } else if ($event.action === 'cancel') {
-      this.open = false;
-      this.clearComponent();
-    }
-  }
-
-  public clicked(data: { data: Contract, index: number, opened: boolean}): void {
-    let route = 'settings/contracts/';
+  public newContract($event: string) {
     if (this.authorisation.isDomainType(DomainTypeEnum.GOVERNMENT)) {
-      route += 'government/';
+      this.navigationService.navigate(['settings/contracts/government'], true);
     } else {
-      route += 'contractor/';
+      this.navigationService.navigate(['settings/contracts/contractor'], true);
     }
+  }
 
-    this.navigationService.navigate([route + data.data.id], true).then();
+  public changeContract(data: { data: Contract, index: number, opened: boolean}): void {
+    if (this.authorisation.isDomainType(DomainTypeEnum.GOVERNMENT)) {
+      this.navigationService.navigate(['settings/contracts/government/' + data.data.id], true);
+    } else {
+      this.navigationService.navigate(['settings/contracts/contractor/' + data.data.id], true);
+    }
   }
 }

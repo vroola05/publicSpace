@@ -22,6 +22,7 @@ import org.commonground.ps.backendapi.model.User;
 import org.commonground.ps.backendapi.model.enums.DomainTypeEnum;
 import org.commonground.ps.backendapi.validators.PostDomainValidator;
 import org.commonground.ps.backendapi.validators.PutDomainValidator;
+import org.springframework.data.domain.Limit;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,11 +68,11 @@ public class DomainController extends Controller {
 		return domains;
 	}
 
-	@Secured(identifier = "getDomainContractors", domainType = DomainTypeEnum.GOVERNMENT)
-	@GetMapping(value = "/contractor")
-	public List<Domain> getDomainContractors() {
+	@Secured(identifier = "findContractorsByName", domainType = DomainTypeEnum.GOVERNMENT)
+	@PostMapping(value = "/contractor")
+	public List<Domain> findContractorsByName(@Valid @RequestBody String contractorName) {
 		List<Domain> domains = new ArrayList<>();
-		List<DomainEntity> domainEntities = domainRepository.getDomainsByDomainType(DomainTypeEnum.CONTRACTOR);
+		List<DomainEntity> domainEntities = domainRepository.findTop5ByDomainTypeIdAndNameContainingIgnoreCaseOrderByNameAsc(DomainTypeEnum.CONTRACTOR.id, contractorName);
 		domainEntities.forEach(domainEntity -> {
 			Domain domain = Convert.domainEntity(domainEntity);
 			domain.setCompany(Convert.companyEntity(domainEntity.getCompany()));

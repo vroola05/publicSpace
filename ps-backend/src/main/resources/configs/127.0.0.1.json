@@ -31,7 +31,7 @@
     "getContractSpecificationByContractId":  {"endpoint": "/contract/${contract.id}/specification", "roles": ["ROLE_ADMIN"]},
     "getContractSpecificationItemsByOrderId":  {"endpoint": "/order/${path.id}/specification-items", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
     "getDomain": {"endpoint": "/domain", "roles": ["ROLE_ADMIN"]},
-    "getDomainContractors": {"endpoint": "/domain/contractor", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "findContractorsByName": {"endpoint": "/domain/contractor", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
     "getDomainType": {"endpoint": "/domain/type", "roles": ["ROLE_ADMIN"]},
     "getGroups": {"endpoint": "/group", "roles": ["ROLE_ADMIN"]},
     "getListCall": { "endpoint": "/list/call/${path.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },

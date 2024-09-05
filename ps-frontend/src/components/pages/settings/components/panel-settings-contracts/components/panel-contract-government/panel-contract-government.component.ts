@@ -19,7 +19,7 @@ import { NavigationService } from '../../../../../../../services/navigation/navi
   styleUrls: ['./panel-contract-government.component.scss']
 })
 export class PanelContractGovernmentComponent implements OnInit {
-  @ViewChild('domainComponent') domainComponent: DropdownFieldComponent;
+  @ViewChild('contractorsComponent') contractorsComponent: DropdownFieldComponent;
   
   @Input() isNew = true;
 
@@ -27,7 +27,7 @@ export class PanelContractGovernmentComponent implements OnInit {
 
   public contract: Contract;
   
-  public domainItems: { name: string, value?: string, data?: any }[] = [];
+  public contractorItems: { name: string, value?: string, data?: any }[] = [];
   
   constructor(
     protected router: Router,
@@ -47,15 +47,15 @@ export class PanelContractGovernmentComponent implements OnInit {
     if (id && (!contract.id || contract.id != parseInt(id))) {
       contract.id = parseInt(id);
       this.transform.setVariable('contract', contract);
-      this.getContractById();
+      //this.getContractById();
     } else {
       this.contract = contract;
-      this.selectDomain();
+      //this.selectDomain();
     }
   }
 
   public ngOnInit(): void {
-    this.getDomainContractors();
+    //this.findContractorsByName();
   }
 
   public getContract(): Contract {
@@ -68,48 +68,64 @@ export class PanelContractGovernmentComponent implements OnInit {
     return this.contract;
   }
 
-  public getContractById(): void {
-    this.endpoints.get('getContractById').then((contract: Contract) => {
-      this.contract.id = contract.id;
-      this.contract.accepted = contract.accepted;
-      this.contract.dateCreated = contract.dateCreated;
-      this.contract.domain = contract.domain;
-      this.contract.mainCategories = contract.mainCategories;
-      this.selectDomain();
-    });
+  public findContractors($event: any) {
+    if ($event.target.value.length === 0) {
+      this.contractorsComponent.clear();
+    } else if ($event.target.value.length >= 3) {
+      this.endpoints.post('findContractorsByName', $event.target.value).then((domains: Domain[]) => {
+        const options: { name: string, value: string, data: any }[] = [];
+
+        domains.forEach(domain => {
+          options.push({ name: `${domain.name}`, value: '', data: location });
+        });
+
+        this.contractorsComponent.setItems(options);
+      });
+    }
   }
 
-  public getDomainContractors(): void {
-    this.endpoints.get('getDomainContractors').then((domains: Domain[]) => {
-      const domainItems = [];
-      domains.forEach(domain => {
-        domainItems.push({ name: this.getDomainName(domain), value: '' + domain.id, data: domain });
-      })
-      this.domainItems = domainItems;
-      this.selectDomain();
-    });
-  }
+  // public getContractById(): void {
+  //   this.endpoints.get('getContractById').then((contract: Contract) => {
+  //     this.contract.id = contract.id;
+  //     this.contract.accepted = contract.accepted;
+  //     this.contract.dateCreated = contract.dateCreated;
+  //     this.contract.domain = contract.domain;
+  //     this.contract.mainCategories = contract.mainCategories;
+  //     this.selectDomain();
+  //   });
+  // }
+
+  // public findContractorsByName(): void {
+  //   this.endpoints.get('findContractorsByName').then((domains: Domain[]) => {
+  //     const domainItems = [];
+  //     domains.forEach(domain => {
+  //       domainItems.push({ name: this.getDomainName(domain), value: '' + domain.id, data: domain });
+  //     })
+  //     this.contractorItems = domainItems;
+  //     this.selectDomain();
+  //   });
+  // }
 
   public getDomainName(domain: Domain): string {
     return domain.company ? domain.company.name + ' - ' + domain.name : domain.name;
   }
 
-  public selectDomain() {
-    if ( this.domainComponent) {
-      if (!this.contract?.domain) {
-        this.domainComponent.select(null);
-        return;
-      }
+  // public selectDomain() {
+  //   if ( this.domainComponent) {
+  //     if (!this.contract?.domain) {
+  //       this.domainComponent.select(null);
+  //       return;
+  //     }
 
-      this.domainComponent.select(this.domainItems.find( type => !type.data || type.data.id === this.contract.domain.id));
-    }
-  }
+  //     this.domainComponent.select(this.contractorItems.find( type => !type.data || type.data.id === this.contract.domain.id));
+  //   }
+  // }
 
-  public onDomainChanged($event) {
-    if (this.domainComponent.validate()) {
-      this.contract.domain = $event.data;
-    }
-  }
+  // public onDomainChanged($event) {
+  //   if (this.domainComponent.validate()) {
+  //     this.contract.domain = $event.data;
+  //   }
+  // }
 
   public hasCategories(mainCategory: MainCategory): boolean {
     return mainCategory.categories && mainCategory.categories.length > 0;

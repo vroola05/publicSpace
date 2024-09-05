@@ -3,10 +3,19 @@
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
-        <app-dropdown-field [id]="'domains'" [form]="'contract-government'" [disabled]="!isNew" [required]="true"
-          [name]="'domains'" [options]="domainItems" [label]="'Domein'" [placeholder]="'Selecteer een domein'"
+          <app-text-field-prefill 
+                [id]="'contractor'"
+                [name]="'contractor'"
+                [form]="'contract-government'"
+                [label]="'Aannemer'"
+                [placeholder]="'Selecteer een Aannemer'"
+                (typing)="findContractors($event)"
+                #contractorsComponent></app-text-field-prefill>
+
+        <!-- <app-dropdown-field [id]="'contractor'" [form]="'contract-government'" [disabled]="!isNew" [required]="true"
+          [name]="'contractor'" [options]="contractorItems" [label]="'Aannemer'" [placeholder]="'Selecteer een Aannemer'"
           (changed)="onDomainChanged($event)" #domainComponent>
-        </app-dropdown-field>
+        </app-dropdown-field> -->
       </div>
     </div>
   </div>

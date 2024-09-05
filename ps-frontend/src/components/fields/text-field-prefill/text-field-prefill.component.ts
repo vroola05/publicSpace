@@ -13,11 +13,7 @@ export class TextFieldPrefillComponent extends FieldAbstract implements OnInit, 
   
   public opened = false;
   private hasClicked = false;
-  private _selected: {name: string, value?: string, data?: any} = null;
-
-  get selected() {
-    return this._selected;
-  }
+  private index = 0;
 
   constructor(protected override validation: ValidationService) {
     super(validation);
@@ -38,10 +34,45 @@ export class TextFieldPrefillComponent extends FieldAbstract implements OnInit, 
 
   public override clear(): void {
     this.options = [];
-    this.select(null);
+    this.select();
 
     this.closeList();
   }
+
+  public override onKeydown(event): void {
+    if (event.keyCode === 9) {
+      return;
+    }
+
+    if (this.hasItems() && this.opened) {
+      if (event.keyCode === 13) {
+        this.select(this.options[this.index]);
+  
+        return;
+      } else if (event.keyCode === 38) {
+        if (this.index > 0 )
+          this.index--;
+        else
+          this.index = this.options.length ==  0 ? 0 :  this.options.length - 1;
+        return;
+      } else if (event.keyCode === 40) {
+        if (this.index < this.options.length - 1)
+          this.index++;
+        else 
+          this.index = 0;
+        return;
+      }
+
+    }
+
+    if (this.typing) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = setTimeout(() => {
+        this.typing.emit(event);
+      }, 500);
+    }
+  }
+
 
   public setItems(items: {name: string, value?: string, data?: any}[]): void {
     this.options = items;
@@ -53,18 +84,21 @@ export class TextFieldPrefillComponent extends FieldAbstract implements OnInit, 
     this.opened = true;
   }
 
-  public isSelected(item: any): boolean {
-    return this._selected && this._selected === item;
+  public isSelected(index: number): boolean {
+    return this.index == index;
   }
 
-  public select(option): void {
-    this._selected = option;
-    if (option !== null) {
+  public select(option?: {name: string, value?: string, data?: any}): void {
+    if (option) {
+      console.log(option);
+      const index =  this.options.indexOf(option);
+      this.index = index < 0 ? 0 : index;
       this.value = option.name;
+      this.changed.emit(this.options[this.index]);
     } else {
       this.value = '';
     }
-    this.changed.emit(this._selected);
+    
     this.closeList();
   }
 
@@ -88,7 +122,7 @@ export class TextFieldPrefillComponent extends FieldAbstract implements OnInit, 
           this.clear();
         } else {
           if (this.options.length > 0) {
-            this.select(this.options[0]);
+            this.select(this.options[this.index]);
           }
         }
       }
@@ -97,8 +131,8 @@ export class TextFieldPrefillComponent extends FieldAbstract implements OnInit, 
   }
 
   public override focus(): void {
-    if (this.fieldRef) {
-      this.fieldRef.nativeElement.focus();
+    if (this.hasItems()) {
+      this.openList();
     }
   }
 }

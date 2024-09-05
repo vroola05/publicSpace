@@ -33,6 +33,11 @@ public interface DomainRepository extends JpaRepository<DomainEntity, Long> {
   @Query("select d from DomainEntity d where d.domainType.id = :#{#domainTypeEnum.id}")
   List<DomainEntity> getDomainsByDomainType(@Param("domainTypeEnum") DomainTypeEnum domainTypeEnum);
 
+  // @Query("select d from DomainEntity d where d.domainType.id = :#{#domainTypeEnum.id} and d.name like ")
+  // List<DomainEntity> findDomainsByDomainTypeAndName(@Param("domainTypeEnum") DomainTypeEnum domainTypeEnum);
+
   @Query("select d from DomainEntity d where lower(d.domain) like :#{#domain}%")
   List<DomainEntity> getDomainsByStartsWithDomain(@Param("domain") String domain);
+  
+  List<DomainEntity> findTop5ByDomainTypeIdAndNameContainingIgnoreCaseOrderByNameAsc(Long domainTypeEnum, String string);
 }

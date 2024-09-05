@@ -6,7 +6,7 @@ import { ValidationService } from '../../services/validation/validation.service'
 
 @Directive()
 export abstract class FieldAbstract implements OnInit, OnDestroy {
-  private timeoutId: any;
+  protected timeoutId: any;
   protected subscriptions: Subscription[] = [];
 
   public errors: FieldError[] = [];

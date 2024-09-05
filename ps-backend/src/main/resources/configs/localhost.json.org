@@ -29,7 +29,7 @@
     "getContractById":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract/${contract.id}", "roles": ["ROLE_ADMIN"]},
     "getContractSpecificationByContractId":  {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contract/${contract.id}/specification", "roles": ["ROLE_ADMIN"]},
     "getDomain": {"endpoint": "/company/${environment.company.id}/domain", "roles": ["ROLE_ADMIN"]},
-    "getDomainContractors": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contractor/domain", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
+    "findContractorsByName": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/contractor/domain", "roles": ["ROLE_ADMIN", "ROLE_USER"]},
     "getDomainType": {"endpoint": "/company/${environment.company.id}/domain/type", "roles": ["ROLE_ADMIN"]},
     "getGroups": {"endpoint": "/company/${environment.company.id}/domain/${environment.domain.id}/group", "roles": ["ROLE_ADMIN"]},
     "getListCall": { "endpoint": "/list/call/${path.id}", "roles": ["ROLE_ADMIN", "ROLE_USER"] },

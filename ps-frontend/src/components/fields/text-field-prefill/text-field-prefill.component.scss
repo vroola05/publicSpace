@@ -34,7 +34,7 @@
       padding-bottom: calc($default-spacing / 2);
       
       color: $black;
-      font-size: $large-font-size;
+      font-size: $default-font-size;
       caret-color: $color-primary;
 
       user-select: none;
@@ -45,12 +45,6 @@
       }
       &:hover {
         background: $default-color-alpha;
-      }
-    }
-    
-    &.filled {
-      .dropdown-field-list-item {
-        font-size: $default-font-size;
       }
     }
   }
