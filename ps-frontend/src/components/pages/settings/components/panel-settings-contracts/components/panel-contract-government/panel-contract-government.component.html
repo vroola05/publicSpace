@@ -1,5 +1,5 @@
 <app-settings-title></app-settings-title>
-<div class="row list-panel" *ngIf="contract">
+<div class="row list-panel">
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
@@ -7,24 +7,20 @@
                 [id]="'contractor'"
                 [name]="'contractor'"
                 [form]="'contract-government'"
-                [label]="'Aannemer'"
-                [placeholder]="'Selecteer een Aannemer'"
+                [label]="'Zoek een aannemer'"
+                [placeholder]="'Zoek een aannemer'"
+                [required]="true"
+                [disabled]="!isNew"
                 (typing)="findContractors($event)"
                 #contractorsComponent></app-text-field-prefill>
-
-        <!-- <app-dropdown-field [id]="'contractor'" [form]="'contract-government'" [disabled]="!isNew" [required]="true"
-          [name]="'contractor'" [options]="contractorItems" [label]="'Aannemer'" [placeholder]="'Selecteer een Aannemer'"
-          (changed)="onDomainChanged($event)" #domainComponent>
-        </app-dropdown-field> -->
       </div>
     </div>
   </div>
   <div class="col-md-6 list-panel-block">
     <div class="row">
       <div class="col-md-12">
-        <h4>Geaccepteerd</h4>
         <div class="field-wrapper">
-          <app-checkbox-field [id]="'accepted'" [name]="'accepted'" [value]="contract?.accepted"
+          <app-checkbox-field [id]="'accepted'" [label]="'Geaccepteerd'" [name]="'accepted'" [value]="contract?.accepted"
             [readonly]="true">Geaccepteerd</app-checkbox-field>
         </div>
       </div>
@@ -33,16 +29,28 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <app-panel-toggle [toggle]="true" [title]="['Categorieën']">
-      <div *ngFor="let mainCategory of contract?.mainCategories; let colIndex = index">
-        <div *ngIf="hasCategories(mainCategory)">
-          <h4>{{mainCategory.name}}</h4>
-          <ul>
-            <li *ngFor="let category of mainCategory?.categories; let colIndex = index">{{category.name}}</li>
-          </ul>
-        </div>
+    <app-textarea-field
+        [form]="'contract-government'"
+        [name]="'contract-description'"
+        [style]="'default'"
+        [label]="'Omschrijving'"
+        [placeholder]="'Omschrijving'"
+        [value]="contract?.description"
+        [required]="true"
+        [maxLength]="2000"
+        ></app-textarea-field>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div *ngFor="let mainCategory of contract?.mainCategories; let colIndex = index">
+      <div *ngIf="hasCategories(mainCategory)">
+        <h4>{{mainCategory.name}}</h4>
+        <ul>
+          <li *ngFor="let category of mainCategory?.categories; let colIndex = index">{{category.name}}</li>
+        </ul>
       </div>
-    </app-panel-toggle>
+    </div>
   </div>
 </div>
 

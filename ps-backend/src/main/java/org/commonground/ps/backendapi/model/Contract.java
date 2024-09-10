@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Contract {
   private Long id;
+  private String description;
   private Boolean accepted;
   private Date dateCreated;
   private Domain domain;

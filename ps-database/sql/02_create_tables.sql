@@ -1056,6 +1056,7 @@ CREATE TABLE public.contract (
     domain_id_governent integer NOT NULL,
     domain_id_contractor integer NOT NULL,
     date_created timestamp with time zone DEFAULT now() NOT NULL,
+    description text NOT NULL,
     accepted boolean
 );
 

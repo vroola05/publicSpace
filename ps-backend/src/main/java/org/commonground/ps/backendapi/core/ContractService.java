@@ -11,6 +11,6 @@ public interface ContractService {
     public Contract getContract(Long domainId, Long id);
     public Optional<Contract> getContractBy(Long domainIdGovernment, Long domainIdContractor);
     public Contract save(Long domainId, Contract contract);
-    public Contract update(Long domainIdContractor, Long id, Contract contract);
+    public Contract update(Long domainId, Long id, Contract contract);
     public boolean delete(Long domainIdGovernment, Long id);
 }

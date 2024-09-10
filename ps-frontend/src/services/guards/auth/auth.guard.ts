@@ -7,7 +7,7 @@ import { AuthorisationService } from '../../authorisation/authorisation.service'
 export const authGuard: CanActivateFn = (route, state) => {
   const authorisationService = inject(AuthorisationService);
   const data = route.data;
-  console.log(data);
+
   if (data?.['domainType'] && !authorisationService.isDomainType(data['domainType'])) {
     return false;
   }

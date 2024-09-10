@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { EndpointService } from '../../../../../../../services/endpoint/endpoint.service';
 import { ValidationService } from '../../../../../../../services/validation/validation.service';
@@ -18,7 +18,7 @@ import { NavigationService } from '../../../../../../../services/navigation/navi
   templateUrl: './panel-contract-government.component.html',
   styleUrls: ['./panel-contract-government.component.scss']
 })
-export class PanelContractGovernmentComponent implements OnInit {
+export class PanelContractGovernmentComponent implements OnInit, AfterViewInit {
   @ViewChild('contractorsComponent') contractorsComponent: DropdownFieldComponent;
   
   @Input() isNew = true;
@@ -27,7 +27,7 @@ export class PanelContractGovernmentComponent implements OnInit {
 
   public contract: Contract;
   
-  public contractorItems: { name: string, value?: string, data?: any }[] = [];
+  public domainItems: { name: string, value?: string, data?: any }[] = [];
   
   constructor(
     protected router: Router,
@@ -40,32 +40,47 @@ export class PanelContractGovernmentComponent implements OnInit {
     private navigationService: NavigationService
   ) {
     this.transform.setVariable('path', this.activatedRoute.snapshot.paramMap);
-
-    const contract = this.getContract();
-
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id && (!contract.id || contract.id != parseInt(id))) {
-      contract.id = parseInt(id);
-      this.transform.setVariable('contract', contract);
-      //this.getContractById();
+
+    const contract = this.getContractFromStorage();
+
+    if (id) {
+      if (!contract || contract.id !== parseInt(id)) {
+        this.contract = new Contract();
+        this.contract.id = parseInt(id);
+        this.transform.setVariable('contract', this.contract);
+        this.getContractById();
+      } else {
+        this.contract = contract;
+        this.domainItems = [{ name: contract.domain.name, value: '', data: contract.domain }];
+      }
+      
+      this.isNew = false;
+      
     } else {
-      this.contract = contract;
-      //this.selectDomain();
+      if (contract && contract.id) {
+        this.contract = new Contract();
+      }else {
+        this.contract = contract;
+        this.domainItems = [{ name: contract.domain.name, value: '', data: contract.domain }];
+      }
     }
+    
   }
 
   public ngOnInit(): void {
-    //this.findContractorsByName();
   }
 
-  public getContract(): Contract {
+  public ngAfterViewInit(): void {
+    this.selectDomain();
+  }
+
+  public getContractFromStorage(): Contract {
     const contract = this.storage.getSession('contract');
     if (contract) {
-      this.contract = JSON.parse(contract) as Contract;
-    } else {
-      this.contract =  new Contract();
+      return JSON.parse(contract) as Contract;
     }
-    return this.contract;
+    return null;
   }
 
   public findContractors($event: any) {
@@ -73,59 +88,49 @@ export class PanelContractGovernmentComponent implements OnInit {
       this.contractorsComponent.clear();
     } else if ($event.target.value.length >= 3) {
       this.endpoints.post('findContractorsByName', $event.target.value).then((domains: Domain[]) => {
-        const options: { name: string, value: string, data: any }[] = [];
-
+        this.domainItems = [];
         domains.forEach(domain => {
-          options.push({ name: `${domain.name}`, value: '', data: location });
+          this.domainItems.push({ name: domain.name, value: '', data: domain });
         });
 
-        this.contractorsComponent.setItems(options);
+        this.contractorsComponent.setItems(this.domainItems);
       });
     }
   }
 
-  // public getContractById(): void {
-  //   this.endpoints.get('getContractById').then((contract: Contract) => {
-  //     this.contract.id = contract.id;
-  //     this.contract.accepted = contract.accepted;
-  //     this.contract.dateCreated = contract.dateCreated;
-  //     this.contract.domain = contract.domain;
-  //     this.contract.mainCategories = contract.mainCategories;
-  //     this.selectDomain();
-  //   });
-  // }
+  public getContractById(): void {
+    this.endpoints.get('getContractById').then((contract: Contract) => {
+      this.contract = new Contract();
+      this.contract.id = contract.id;
+      this.contract.description = contract.description;
+      this.contract.accepted = contract.accepted;
+      this.contract.dateCreated = contract.dateCreated;
+      this.contract.domain = contract.domain;
+      this.contract.mainCategories = contract.mainCategories;
 
-  // public findContractorsByName(): void {
-  //   this.endpoints.get('findContractorsByName').then((domains: Domain[]) => {
-  //     const domainItems = [];
-  //     domains.forEach(domain => {
-  //       domainItems.push({ name: this.getDomainName(domain), value: '' + domain.id, data: domain });
-  //     })
-  //     this.contractorItems = domainItems;
-  //     this.selectDomain();
-  //   });
-  // }
+      this.storage.setSession('contract', JSON.stringify(this.contract), true);
+      this.domainItems = [{ name: contract.domain.name, value: '', data: contract.domain }];
+      this.selectDomain();
+    });
+  }
 
   public getDomainName(domain: Domain): string {
     return domain.company ? domain.company.name + ' - ' + domain.name : domain.name;
   }
 
-  // public selectDomain() {
-  //   if ( this.domainComponent) {
-  //     if (!this.contract?.domain) {
-  //       this.domainComponent.select(null);
-  //       return;
-  //     }
+  public selectDomain() {
+    console.log(this.contract);
+    if ( this.contractorsComponent) {
+      if (!this.contract?.domain) {
+        this.contractorsComponent.select(null);
+        return;
+      }
 
-  //     this.domainComponent.select(this.contractorItems.find( type => !type.data || type.data.id === this.contract.domain.id));
-  //   }
-  // }
-
-  // public onDomainChanged($event) {
-  //   if (this.domainComponent.validate()) {
-  //     this.contract.domain = $event.data;
-  //   }
-  // }
+      const a = this.domainItems.find( type => !type.data || type.data.id === this.contract.domain.id);
+      console.log(a);
+      this.contractorsComponent.select(a);
+    }
+  }
 
   public hasCategories(mainCategory: MainCategory): boolean {
     return mainCategory.categories && mainCategory.categories.length > 0;
@@ -133,6 +138,7 @@ export class PanelContractGovernmentComponent implements OnInit {
 
   public cancel(): void {
     this.transform.deleteVariable('contract');
+    this.storage.clearProcessData();
     this.navigationService.navigateToParent(this.activatedRoute);
   }
 
@@ -153,6 +159,7 @@ export class PanelContractGovernmentComponent implements OnInit {
     this.transform.setVariable('contract', contract);
     this.endpoints.post('postContract', contract).then((c: Contract) => {
       this.transform.deleteVariable('contract');
+      this.storage.clearProcessData();
       this.navigationService.navigateToParent(this.activatedRoute);
     })
     .catch((response) => {

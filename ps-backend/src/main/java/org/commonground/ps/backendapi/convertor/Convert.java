@@ -516,6 +516,7 @@ public class Convert {
   public static Contract contractEntity(ContractEntity contractEntity) {
     Contract contract = new Contract();
     contract.setId(contractEntity.getId());
+    contract.setDescription(contractEntity.getDescription());
     contract.setAccepted(contractEntity.getAccepted());
     contract.setDateCreated(contractEntity.getDateCreated());
     return contract;

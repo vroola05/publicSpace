@@ -29,6 +29,7 @@ public class ContractEntity {
   @SequenceGenerator(name = "seq_contract_id", sequenceName = "seq_contract_id", allocationSize = 1)
   private Long id;
   private Date dateCreated;
+  private String description;
   private Boolean accepted;
 
   @ManyToOne(fetch = FetchType.EAGER)

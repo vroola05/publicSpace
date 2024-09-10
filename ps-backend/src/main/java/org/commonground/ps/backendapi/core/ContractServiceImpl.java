@@ -99,20 +99,21 @@ public class ContractServiceImpl implements ContractService {
     public Contract getContract(Long domainId, Long id) {
         Optional<ContractEntity> contractEntityOptional = contractRepository.getContractById(id);
         Optional<DomainEntity> domainEntityOptional = domainRepository.getDomainById(domainId);
-		if (domainEntityOptional.isPresent() && contractEntityOptional.isPresent()) {
-			DomainEntity domainEntity = domainEntityOptional.get();
-            ContractEntity contractEntity = contractEntityOptional.get();
-			if (domainEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id) {
-                if (contractEntity.getDomainGovernment().getId() == domainId) {
-                    return convertContract(contractEntity, contractEntity.getDomainContractor(), true);
-                }
-			} else if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id) {
-                if (contractEntity.getDomainContractor().getId() == domainId) {
-                    return convertContract(contractEntity, contractEntity.getDomainGovernment(), true);
-                }
-			}
-		}
+		if (domainEntityOptional.isEmpty() || contractEntityOptional.isEmpty()) {
+            return null;
+        }
 
+        DomainEntity domainEntity = domainEntityOptional.get();
+        ContractEntity contractEntity = contractEntityOptional.get();
+
+        if (domainEntity.getDomainType().getId() == DomainTypeEnum.GOVERNMENT.id
+                && contractEntity.getDomainGovernment().getId() == domainId) {
+                return convertContract(contractEntity, contractEntity.getDomainContractor(), true);
+        }
+        if (domainEntity.getDomainType().getId() == DomainTypeEnum.CONTRACTOR.id
+                && contractEntity.getDomainContractor().getId() == domainId) {
+                return convertContract(contractEntity, contractEntity.getDomainGovernment(), true);
+        }
         return null;
     }
 
@@ -182,22 +183,22 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Contract update(Long domainIdContractor, Long id, Contract contract) {
+    public Contract update(Long domainId, Long id, Contract contract) {
         Optional<ContractEntity> contractEntityOptional = contractRepository.getContractById(id);
-        if (contractEntityOptional.isPresent()) {
-            ContractEntity contractEntity = contractEntityOptional.get();
-            if (contractEntity.getDomainContractor().getId().equals(domainIdContractor)) {
-                contractEntity.setAccepted(contract.getAccepted());
-
-                updateContractMainCategories(contract.getMainCategories(), contractEntity);
-
-                contractRepository.saveAndFlush(contractEntity);
-                removeContractMainCategories(contract.getMainCategories(), contractEntity.getContractMainCategories());
-            }
-
-            return contract;
+        if (contractEntityOptional.isEmpty()) {
+            return null;
         }
-        return null;
+
+        ContractEntity contractEntity = contractEntityOptional.get();
+        if (contractEntity.getDomainContractor().getId().equals(domainId)) {
+            contractEntity.setAccepted(contract.getAccepted());
+            updateContractMainCategories(contract.getMainCategories(), contractEntity);
+            contractRepository.saveAndFlush(contractEntity);
+            removeContractMainCategories(contract.getMainCategories(), contractEntity.getContractMainCategories());
+        } else if (contractEntity.getDomainGovernment().getId().equals(domainId)) {
+            contractEntity.setDescription(contract.getDescription());
+        }
+        return contract;
     }
 
     private void removeContractMainCategories(List<MainCategory> mainCategories, List<ContractMainCategoryEntity> contractMainCategoryEntities) throws BadRequestException {
